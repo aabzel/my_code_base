@@ -1,3 +1,4 @@
+#include "algorithms.h"
 #include "linked_list.h"
 #include "utils.h"
 #include "uTests.h"
@@ -12,16 +13,16 @@ int main (int argc, char **argv) {
     //list_print_reverse ();
     //combine (4, 2);
     //permutation (4) ;
-    #if 1
-    int ret=unitTest ();
-    if(0!=ret){
-        printf("Unit Test Error: %d\n",ret);
-    }else{
+#if 1
+    int ret = unitTest ();
+    if (0 != ret) {
+        printf ("Unit Test Error: %d\n", ret);
+    } else {
         combine (4, 2);
-      //char alphabet [] = "123";
-      //print_combinations(alphabet);
+        //char alphabet [] = "123";
+        //print_combinations(alphabet);
     }
-    printf ("amountOfComb: %d\n",amountOfComb);
+    printf ("amountOfComb: %d\n", amountOfComb);
 #endif
 
     //permute (alphabet);
@@ -38,8 +39,4 @@ int main (int argc, char **argv) {
 //    getchar ();
     return 0;
 }
-
-
-
-
 

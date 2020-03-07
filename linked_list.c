@@ -84,9 +84,9 @@ bool linked_list_deinit (list_node_t *pInHead) {
     return res;
 }
 
-int linked_list_add_array (list_node_t **pInHead, int *inArr, int arrSize) {
+bool linked_list_add_array (list_node_t **pInHead, int *inArr, int arrSize) {
     /*Find the end of Linked List*/
-    int res = 0;
+    bool res = false;
     if (0 < arrSize) {
         list_node_t *newNode = NULL;
         int amountOfElem = list_num_of_elements (*pInHead);
@@ -103,7 +103,7 @@ int linked_list_add_array (list_node_t **pInHead, int *inArr, int arrSize) {
                 newNode->data.arrSize = arrSize;
                 newNode->data.pArr = memdup (inArr, sizeof(int) * arrSize);
                 pEndNode->nextNode = newNode;
-                res = 1;
+                res = true;
             } else {
                 printf ("\nUnable to malloc new node!\n");
             }
@@ -116,7 +116,7 @@ int linked_list_add_array (list_node_t **pInHead, int *inArr, int arrSize) {
                 newNode->data.pArr = memdup (inArr, sizeof(int) * arrSize);
 
                 *pInHead = newNode;
-                res = 1;
+                res = true;
             } else {
                 printf ("\nUnable to malloc new node!\n");
             }
@@ -131,11 +131,12 @@ int linked_list_add_array (list_node_t **pInHead, int *inArr, int arrSize) {
 int list_num_of_elements (list_node_t *pHead) {
     int amountOfElem = 0;
     if (pHead) {
-        amountOfElem++;
         list_node_t *pCurNode = pHead;
-        while (NULL != pCurNode->nextNode) {
-            pCurNode = pCurNode->nextNode;
-            amountOfElem++;
+        if (pCurNode) {
+            while (pCurNode) {
+                amountOfElem++;
+                pCurNode = pCurNode->nextNode;
+            }
         }
     }
 

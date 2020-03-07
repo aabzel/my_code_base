@@ -9,19 +9,21 @@
 #include <stdint.h>
 #include <string.h>
 
+
 int unitTest (void) {
     printf ("\n");
     char intStr [] = "ABCD";
     char *outStr = NULL;
     int *outArray;
     int cmpRes;
+    bool res;
 
     int arr1 [] =
         { 1, 2 };
     int arr2 [] =
         { 2, 1 };
-    cmpRes = is_permutation (arr1, arr2, 2);
-    if (1 != cmpRes) {
+    res = is_permutation (arr1, arr2, 2);
+    if (false == res) {
         return 11;
     }
 
@@ -29,8 +31,8 @@ int unitTest (void) {
         { 1, 2, 5 };
     int arra2 [] =
         { 2, 1, 6 };
-    cmpRes = is_permutation (arra1, arra2, 3);
-    if (0 != cmpRes) {
+    res = is_permutation (arra1, arra2, 3);
+    if (true == cmpRes) {
         return 12;
     }
 
@@ -53,7 +55,9 @@ int unitTest (void) {
 
     strcpy (intStr, "ABCD");
     outStr = removeCharFromString (intStr, 1);
+#if DEBUG_UTEST
     printf ("in %s -%d out %s", intStr, 1, outStr);
+#endif
     cmpRes = strcmp (outStr, "ACD");
     if (0 != cmpRes) {
         printf ("error intStr %s outStr %s", intStr, outStr);
@@ -63,7 +67,9 @@ int unitTest (void) {
 
     strcpy (intStr, "ABCD");
     outStr = removeCharFromString (intStr, 0);
+#if DEBUG_UTEST
     printf ("in %s -%d out %s", intStr, 0, outStr);
+#endif
     cmpRes = strcmp (outStr, "BCD");
     free (outStr);
     if (0 != cmpRes) {
@@ -85,11 +91,13 @@ int unitTest (void) {
 
     strcpy (intStr, "ABCD");
     outStr = removeCharFromString (intStr, 5);
+#if DEBUG_UTEST
     printf ("in %s -%d out %s", intStr, 5, outStr);
     printf ("\n");
+#endif
     free (outStr);
 
-    bool res = test_linked_list ();
+    res = test_linked_list ();
     if (false == res) {
         return LL_ERROR;
     }
