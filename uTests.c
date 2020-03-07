@@ -134,7 +134,9 @@ bool test_linked_list (void) {
     } else {
         printf ("List Add2 Error\n");
     }
+#if DEBUG_LL
     print_list (llHead);
+#endif
     res = linked_list_deinit (llHead);
     if (false == res) {
         printf ("List Deinit Error\n");

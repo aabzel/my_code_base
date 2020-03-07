@@ -129,10 +129,15 @@ void combine (int n, int k) {
         amountOfComb = 0;
         combine_from_alph (numArray, n, k, NULL, 0);
         free (numArray);
-        printf ("amount of permutation: [%d]", amountOfComb);
+        printf ("permutation list:");
         print_list (permutllHead);
+        printf ("\n");
+
         combinationListHead = NULL;
         assemble_combination_list (permutllHead, &combinationListHead);
+
+        printf ("compination list:");
+        print_list (combinationListHead);
     } else {
         printf ("malloc for init alphabet array error");
     }
@@ -156,15 +161,15 @@ bool assemble_combination_list (list_node_t *pPermutHead, list_node_t **pCombine
                 if (false == res) {
 #if DEBUG_ASSEMBLE_COMB
                     printf ("\nAdd array to final list\n");
-#endif
                     print_curr_array (curNode->data.pArr, curNode->data.arrSize);
+#endif
+
                     res = linked_list_add_array (pCombineHead, curNode->data.pArr, curNode->data.arrSize);
                     if (false == res) {
                         printf ("\nError in add array!\n");
                     }
                 }
             }
-
         }
     } else {
         printf ("\nEmpty permut list\n");
@@ -172,7 +177,6 @@ bool assemble_combination_list (list_node_t *pPermutHead, list_node_t **pCombine
 #if DEBUG_ASSEMBLE_COMB
     printf ("\nList of combinations: \n");
 #endif
-    print_list (*pCombineHead);
 #if DEBUG_ASSEMBLE_COMB
     printf ("%s() done", __FUNCTION__);
 #endif
@@ -184,8 +188,9 @@ void combine_from_alph (int *inAlphabet, int sizeOfAlphabet, int k, int *curArr,
     if (0 == k) {
         amountOfComb++;
         print_array_to_file (curArr, curArrSize);
+#if DEBUG_COMBINE
         print_curr_array (curArr, curArrSize);
-        /*Add array to linked list*/
+#endif
         linked_list_add_array (&permutllHead, curArr, curArrSize);
     }
     if (0 < k) {

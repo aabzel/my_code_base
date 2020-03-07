@@ -22,7 +22,6 @@ int main (int argc, char **argv) {
         //char alphabet [] = "123";
         //print_combinations(alphabet);
     }
-    printf ("amountOfComb: %d\n", amountOfComb);
 #endif
 
     //permute (alphabet);
