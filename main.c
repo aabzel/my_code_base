@@ -14,11 +14,12 @@ int main (int argc, char **argv) {
     //combine (4, 2);
     //permutation (4) ;
 #if 1
+    init_file_name ();
     int ret = unitTest ();
     if (0 != ret) {
         printf ("Unit Test Error: %d\n", ret);
     } else {
-        combine (4, 2);
+        combine (5, 2);
         //char alphabet [] = "123";
         //print_combinations(alphabet);
     }

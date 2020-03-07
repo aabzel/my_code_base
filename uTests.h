@@ -12,7 +12,6 @@ typedef enum {
 } error_t;
 
 int unitTest (void);
-
 bool test_linked_list (void);
 
 #endif /* __UTESTS_H */

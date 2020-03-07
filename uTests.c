@@ -1,5 +1,6 @@
 #include "uTests.h"
 
+#include "algorithms.h"
 #include "arrays.h"
 #include "linked_list.h"
 #include "utils.h"
@@ -32,7 +33,7 @@ int unitTest (void) {
     int arra2 [] =
         { 2, 1, 6 };
     res = is_permutation (arra1, arra2, 3);
-    if (true == cmpRes) {
+    if (true == res) {
         return 12;
     }
 

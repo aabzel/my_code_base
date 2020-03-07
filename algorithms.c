@@ -129,8 +129,10 @@ void combine (int n, int k) {
         amountOfComb = 0;
         combine_from_alph (numArray, n, k, NULL, 0);
         free (numArray);
+
         printf ("permutation list:");
         print_list (permutllHead);
+        save_list_to_file (permutllHead, pemutationFile);
         printf ("\n");
 
         combinationListHead = NULL;
@@ -138,6 +140,7 @@ void combine (int n, int k) {
 
         printf ("compination list:");
         print_list (combinationListHead);
+        save_list_to_file (combinationListHead, kitFile);
     } else {
         printf ("malloc for init alphabet array error");
     }
@@ -187,7 +190,7 @@ bool assemble_combination_list (list_node_t *pPermutHead, list_node_t **pCombine
 void combine_from_alph (int *inAlphabet, int sizeOfAlphabet, int k, int *curArr, int curArrSize) {
     if (0 == k) {
         amountOfComb++;
-        print_array_to_file (curArr, curArrSize);
+        //print_array_to_file (curArr, curArrSize);
 #if DEBUG_COMBINE
         print_curr_array (curArr, curArrSize);
 #endif

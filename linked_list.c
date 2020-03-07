@@ -61,6 +61,36 @@ void list_print_fwd (void) {
 }
 #endif
 
+void print_array_to_file (FILE * filePointer, int *array, int size) {
+    int i = 0;
+
+    for (i = 0; i < size; i++) {
+        fprintf (filePointer, "%d ", array [i]);
+    }
+    fprintf (filePointer, "\n");
+}
+
+void save_list_to_file (list_node_t *pInHead, char *filename) {
+    FILE * fp;
+    fp = fopen (filename, "a");
+    if (fp) {
+        list_node_t *curNode = pInHead;
+        while (curNode) {
+            print_array_to_file (fp, curNode->data.pArr, curNode->data.arrSize);
+            curNode = curNode->nextNode;
+        }
+        /* write 10 lines of text into the file stream*/
+        //for (i = 0; i < numItem; i++) {
+        //    fprintf (fp, "%d ", array [i]);
+        //}
+        //fprintf (fp, "\n");
+        fclose (fp);
+    } else {
+        printf ("\n Unable to open file %s", filename);
+    }
+
+}
+
 bool linked_list_deinit (list_node_t *pInHead) {
     list_node_t *curNode = pInHead;
     list_node_t *prevNode = pInHead;

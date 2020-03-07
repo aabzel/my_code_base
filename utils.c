@@ -6,6 +6,38 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include <time.h>
+
+char pemutationFile [100];
+char kitFile [100];
+
+void init_file_name (void) {
+    time_t rawtime;
+    struct tm * timeinfo;
+
+    time (&rawtime);
+    timeinfo = localtime (&rawtime);
+    sprintf (
+        pemutationFile,
+        "permutation_%d_%d_%d_%d_%d_%d.txt",
+        timeinfo->tm_mday,
+        timeinfo->tm_mon + 1,
+        timeinfo->tm_year + 1900,
+        timeinfo->tm_hour,
+        timeinfo->tm_min,
+        timeinfo->tm_sec);
+
+    sprintf (
+        kitFile,
+        "kit_%d_%d_%d_%d_%d_%d.txt",
+        timeinfo->tm_mday,
+        timeinfo->tm_mon + 1,
+        timeinfo->tm_year + 1900,
+        timeinfo->tm_hour,
+        timeinfo->tm_min,
+        timeinfo->tm_sec);
+
+}
 
 char *generate_num_string (int n) {
     char *charStr = NULL;
@@ -27,17 +59,25 @@ void print_array (int *alphabet, int sizeOfAlphabet, int k) {
     printf ("\n");
 }
 
-int print_array_to_file (int *array, int numItem) {
-    FILE * fp;
-    int i;
-    fp = fopen ("log.txt", "a");
+// Store the formatted string of time in the output
+char * format_time_txt (void) {
+    char static output [1000];
+    time_t rawtime;
+    struct tm * timeinfo;
 
-    /* write 10 lines of text into the file stream*/
-    for (i = 0; i < numItem; i++) {
-        fprintf (fp, "%d ", array [i]);
-    }
-    fprintf (fp, "\n");
+    time (&rawtime);
+    timeinfo = localtime (&rawtime);
 
-    fclose (fp);
-    return 0;
+    sprintf (
+        output,
+        "[%d %d %d %d:%d:%d].txt",
+        timeinfo->tm_mday,
+        timeinfo->tm_mon + 1,
+        timeinfo->tm_year + 1900,
+        timeinfo->tm_hour,
+        timeinfo->tm_min,
+        timeinfo->tm_sec);
+    return output;
 }
+
+
