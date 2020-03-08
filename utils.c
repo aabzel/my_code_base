@@ -43,7 +43,7 @@ char *generate_num_string (int n) {
     char *charStr = NULL;
     charStr = malloc (n + 1);
     for (int i = 0; i < n; i++) {
-        charStr [i] = (i ) + '0';
+        charStr [i] = (i) + '0';
     }
     charStr [n] = '\0';
     return charStr;
@@ -80,4 +80,24 @@ char * format_time_txt (void) {
     return output;
 }
 
+void test_heap (void) {
+    uint32_t byte = 3;
+    float kByte = 4;
+    float MByte = 4;
+    float GByte = 4;
+    while (1) {
+        char *ptr = NULL;
+        ptr = (char *) malloc (byte);
+        if (ptr) {
+            byte = (byte * 3) / 2;
+            free (ptr);
+        } else {
+            break;
+        }
+    } //[2327387742]
+     kByte = (float) byte / 1024.0f;
+     MByte= (float) kByte / 1024.0f;
+     GByte= (float) MByte / 1024.0f;
+    printf ("\nmax Available heap size [%u] byte [%f] k_Byte [%f] M_Byte [%f] G_Byte\n", byte, kByte, MByte, GByte);
+}
 

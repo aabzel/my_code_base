@@ -72,7 +72,7 @@ void print_array_to_file (FILE * filePointer, int *array, int size) {
 
 void save_list_to_file (list_node_t *pInHead, char *filename) {
     FILE * fp;
-    printf ("\nSave to file: %s\n",filename);
+    printf ("\nSave to file: %s\n", filename);
     fp = fopen (filename, "a");
     if (fp) {
         list_node_t *curNode = pInHead;
@@ -157,6 +157,38 @@ bool linked_list_add_array (list_node_t **pInHead, int *inArr, int arrSize) {
     }
     return res;
 
+}
+
+int list_num_of_data_byte (list_node_t *pHead) {
+    int amountOfByte = 0;
+    if (pHead) {
+        list_node_t *pCurNode = pHead;
+        if (pCurNode) {
+            while (pCurNode) {
+                amountOfByte += (pCurNode->data.arrSize) * (sizeof(int));
+                pCurNode = pCurNode->nextNode;
+            }
+        }
+    }
+    return amountOfByte;
+}
+
+list_node_t *get_node_by_index (list_node_t *pHead, int desInd) {
+    list_node_t *pCurNode = pHead;
+    list_node_t *pRetNode = NULL;
+    int curIndex = 0;
+    if (pCurNode) {
+        while (pCurNode) {
+            if (desInd == curIndex) {
+                pRetNode = pCurNode;
+                break;
+            }
+            curIndex++;
+            pCurNode = pCurNode->nextNode;
+        }
+    }
+
+    return pRetNode;
 }
 
 int list_num_of_elements (list_node_t *pHead) {

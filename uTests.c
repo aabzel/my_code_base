@@ -2,6 +2,8 @@
 
 #include "algorithms.h"
 #include "arrays.h"
+#include "permutations.h"
+#include "str_ops.h"
 #include "linked_list.h"
 #include "utils.h"
 
@@ -12,7 +14,9 @@
 
 
 int unitTest (void) {
-    printf ("\n");
+
+    test_heap ();
+
     char intStr [] = "ABCD";
     char *outStr = NULL;
     int *outArray;

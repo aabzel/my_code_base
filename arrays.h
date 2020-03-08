@@ -5,8 +5,8 @@
 #include <string.h>
 
 typedef struct xArray_t {
-    int32_t *pArr;
-    uint32_t arrSize;
+    int *pArr;
+    int arrSize;
 } Array_t;
 
 void* memdup (const void* mem, size_t sizeByte);
@@ -14,5 +14,6 @@ int *remove_int_from_arr (int *inArr, int arrSize, int delIndex);
 int *add_val_to_end_array (int *inArr, int arrSize, int val);
 void print_curr_array (int *alphabet, int sizeOfAlphabet);
 int *generate_num_array (int n);
+void print_array_of_arrays (int **arrOfArr, int amountOfLine, int amountOfCol);
 
 #endif /* __ARRAYS_H */

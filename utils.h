@@ -19,4 +19,6 @@ void init_file_name (void);
 char *generate_num_string (int n);
 void print_array (int *alphabet, int sizeOfAlphabet, int k);
 void print_curr_array (int *alphabet, int sizeOfAlphabet);
+void test_heap (void);
+
 #endif /* __UTILS_H */

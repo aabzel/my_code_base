@@ -13,7 +13,7 @@ void* memdup (const void* mem, size_t sizeByte) {
             if (NULL != out) {
                 memcpy (out, mem, sizeByte);
             }
-        }else{
+        } else {
             printf ("NUll Array pointer!");
         }
     } else {
@@ -27,7 +27,9 @@ int *add_val_to_end_array (int *inArr, int arrSize, int val) {
     int *newArr = NULL;
     newArr = malloc (sizeof(int) * (arrSize + 1));
     if (newArr) {
-        memcpy (newArr, inArr, sizeof(int) * arrSize);
+        if (inArr) {
+            memcpy (newArr, inArr, sizeof(int) * arrSize);
+        }
         newArr [arrSize] = val;
     } else {
         printf ("Unable to accoc");
@@ -54,7 +56,7 @@ int *generate_num_array (int n) {
     int *outArray = NULL;
     outArray = malloc (sizeof(int) * (n));
     for (int i = 0; i < n; i++) {
-        outArray [i] = (i );
+        outArray [i] = (i);
     }
 
     return outArray;
@@ -67,3 +69,8 @@ void print_curr_array (int *alphabet, int sizeOfAlphabet) {
     printf ("\n");
 }
 
+void print_array_of_arrays (int **arrOfArr, int amountOfLine, int amountOfCol) {
+    for (int line = 0; line < amountOfLine; line++) {
+        print_curr_array (arrOfArr [line], amountOfCol);
+    }
+}
