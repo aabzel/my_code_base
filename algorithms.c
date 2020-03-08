@@ -131,15 +131,19 @@ void combine (int n, int k) {
         free (numArray);
 
         printf ("permutation list:");
+#if PRINT_PERMUTATIONS
         print_list (permutllHead);
+#endif
         save_list_to_file (permutllHead, pemutationFile);
         printf ("\n");
 
         combinationListHead = NULL;
         assemble_combination_list (permutllHead, &combinationListHead);
 
+#if PRINT_COMBINATIONS
         printf ("compination list:");
         print_list (combinationListHead);
+#endif
         save_list_to_file (combinationListHead, kitFile);
     } else {
         printf ("malloc for init alphabet array error");
@@ -158,7 +162,6 @@ bool assemble_combination_list (list_node_t *pPermutHead, list_node_t **pCombine
 #if DEBUG_ASSEMBLE_COMB
             printf ("\nElement %d", ++cnt);
 #endif
-            curNode = curNode->nextNode;
             if (curNode) {
                 res = is_permutated_element_in_list (*pCombineHead, curNode->data.pArr, curNode->data.arrSize);
                 if (false == res) {
@@ -173,6 +176,7 @@ bool assemble_combination_list (list_node_t *pPermutHead, list_node_t **pCombine
                     }
                 }
             }
+            curNode = curNode->nextNode;
         }
     } else {
         printf ("\nEmpty permut list\n");

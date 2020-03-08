@@ -19,7 +19,8 @@ int main (int argc, char **argv) {
     if (0 != ret) {
         printf ("Unit Test Error: %d\n", ret);
     } else {
-        combine (5, 2);
+        //combine (10, 7);
+        combine (10, 1);
         //char alphabet [] = "123";
         //print_combinations(alphabet);
     }

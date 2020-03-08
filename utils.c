@@ -43,7 +43,7 @@ char *generate_num_string (int n) {
     char *charStr = NULL;
     charStr = malloc (n + 1);
     for (int i = 0; i < n; i++) {
-        charStr [i] = (i + 1) + '0';
+        charStr [i] = (i ) + '0';
     }
     charStr [n] = '\0';
     return charStr;

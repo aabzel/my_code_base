@@ -72,6 +72,7 @@ void print_array_to_file (FILE * filePointer, int *array, int size) {
 
 void save_list_to_file (list_node_t *pInHead, char *filename) {
     FILE * fp;
+    printf ("\nSave to file: %s\n",filename);
     fp = fopen (filename, "a");
     if (fp) {
         list_node_t *curNode = pInHead;

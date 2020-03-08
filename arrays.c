@@ -54,7 +54,7 @@ int *generate_num_array (int n) {
     int *outArray = NULL;
     outArray = malloc (sizeof(int) * (n));
     for (int i = 0; i < n; i++) {
-        outArray [i] = (i + 1);
+        outArray [i] = (i );
     }
 
     return outArray;

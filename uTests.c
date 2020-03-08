@@ -39,16 +39,16 @@ int unitTest (void) {
 
     outArray = generate_num_array (4);
     if (NULL != outArray) {
-        if (1 != outArray [0]) {
+        if (0 != outArray [0]) {
             return 1;
         }
-        if (2 != outArray [1]) {
+        if (1 != outArray [1]) {
             return 2;
         }
-        if (3 != outArray [2]) {
+        if (2 != outArray [2]) {
             return 3;
         }
-        if (4 != outArray [3]) {
+        if (3 != outArray [3]) {
             return 4;
         }
         free (outArray);
@@ -80,7 +80,7 @@ int unitTest (void) {
 
     outStr = generate_num_string (4);
     if (NULL != outStr) {
-        cmpRes = strcmp (outStr, "1234");
+        cmpRes = strcmp (outStr, "0123");
         free (outStr);
         if (0 != cmpRes) {
             return 33;
