@@ -1,4 +1,5 @@
 #include "algorithms.h"
+#include "combinations.h"
 #include "linked_list.h"
 #include "permutations.h"
 #include "utils.h"
@@ -15,17 +16,7 @@ int main (int argc, char **argv) {
     if (0 != ret) {
         printf ("Unit Test Error: %d\n", ret);
     } else {
-        //combine (10, 7);
-        //combine (10, 1);
-        int** resArray;
-        int* returnColumnSizes = NULL;
-        int returnSize = 0;
-        int inArray [4] = { 1, 2, 3 , 4};
-        int numsSize = sizeof(inArray) / sizeof(inArray [0]);
-        resArray=permute_array (inArray, numsSize, &returnSize, &returnColumnSizes);
-        print_array_of_arrays (resArray, returnSize, numsSize);
-        //char alphabet [] = "123";
-        //print_combinations(alphabet);
+        test_combine ();
     }
 #endif
 
@@ -42,5 +33,17 @@ int main (int argc, char **argv) {
     printf ("Done!\n\n");
 //    getchar ();
     return 0;
+}
+
+
+void test_permut (void) {
+    int** resArray;
+    int* returnColumnSizes = NULL;
+    int returnSize = 0;
+    int inArray [4] =
+        { 1, 2, 3, 4 };
+    int numsSize = sizeof(inArray) / sizeof(inArray [0]);
+    resArray = permute_array (inArray, numsSize, &returnSize, &returnColumnSizes);
+    print_array_of_arrays (resArray, returnSize, numsSize);
 }
 
