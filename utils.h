@@ -14,6 +14,10 @@ typedef uint8_t  bool;
 extern char pemutationFile [100];
 extern char kitFile [100];
 
+unsigned int GrayToBinary32(unsigned int num);
+unsigned int GrayToBinary(unsigned int num);
+unsigned int BinaryToGray(unsigned int num);
+char * format_time_txt (void);
 void init_file_name (void);
 // cur date string
 char *generate_num_string (int n);

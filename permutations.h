@@ -12,6 +12,7 @@
 
 extern list_node_t *permutllHead;
 
+void test_permut (void);
 int** permute_array(int* nums, int numsSize, int* returnSize, int** returnColumnSizes);
 void permutation (int n);
 void permut_set (char *InSet);

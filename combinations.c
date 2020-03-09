@@ -15,7 +15,7 @@
 list_node_t *combinationListHead = NULL;
 
 void print_combinations (char * const alphabet) {
-    size_t alphabetLength = strlen (alphabet);
+    int32_t alphabetLength = strlen (alphabet);
     static int cnt = 0;
     cnt++;
     if (1 == cnt) {
@@ -35,7 +35,7 @@ void print_combinations (char * const alphabet) {
             permute (sepMem);
             free (sepMem);
         }
-        for (uint32_t firstLet = 0; firstLet < alphabetLength; firstLet++) {
+        for (int32_t firstLet = 0; firstLet < alphabetLength; firstLet++) {
             char *remainAlphabet = NULL;
             remainAlphabet = removeCharFromString (alphabet, firstLet);
 #if DEBUG_REMAIN_ALPH==1

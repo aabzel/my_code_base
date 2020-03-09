@@ -61,7 +61,7 @@ void print_array (int *alphabet, int sizeOfAlphabet, int k) {
 
 // Store the formatted string of time in the output
 char * format_time_txt (void) {
-    char static output [1000];
+    static char output [1000];
     time_t rawtime;
     struct tm * timeinfo;
 
@@ -101,3 +101,50 @@ void test_heap (void) {
     printf ("\nmax Available heap size [%u] byte [%f] k_Byte [%f] M_Byte [%f] G_Byte\n", byte, kByte, MByte, GByte);
 }
 
+/*
+* This function converts an unsigned binary
+* number to reflected binary Gray code.
+*
+* The operator >> is shift right. The operator ^ is exclusive or.
+*/
+unsigned int BinaryToGray(unsigned int num)
+{
+   return num ^ (num >> 1);
+}
+
+/*
+* This function converts a reflected binary
+* Gray code number to a binary number.
+* Each Gray code bit is exclusive-ored with all
+* more significant bits.
+*/
+unsigned int GrayToBinary(unsigned int num)
+{
+   unsigned int mask = num >> 1;
+   while (mask != 0)
+   {
+       num = num ^ mask;
+       mask = mask >> 1;
+   }
+   return num;
+}
+
+/*
+* A more efficient version for Gray codes 32 bits or fewer
+* through the use of SWAR (SIMD within a register) techniques.
+* It implements a parallel prefix XOR function.  The assignment
+* statements can be in any order.
+*
+* This function can be adapted for longer Gray codes by adding steps.
+* A 4-bit variant changes a binary number (abcd)2 to (abcd)2 ^ (00ab)2,
+* then to (abcd)2 ^ (00ab)2 ^ (0abc)2 ^ (000a)2.
+*/
+unsigned int GrayToBinary32(unsigned int num)
+{
+   num = num ^ (num >> 16);
+   num = num ^ (num >> 8);
+   num = num ^ (num >> 4);
+   num = num ^ (num >> 2);
+   num = num ^ (num >> 1);
+   return num;
+}
