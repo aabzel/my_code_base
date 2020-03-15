@@ -95,56 +95,77 @@ void test_heap (void) {
             break;
         }
     } //[2327387742]
-     kByte = (float) byte / 1024.0f;
-     MByte= (float) kByte / 1024.0f;
-     GByte= (float) MByte / 1024.0f;
+    kByte = (float) byte / 1024.0f;
+    MByte = (float) kByte / 1024.0f;
+    GByte = (float) MByte / 1024.0f;
     printf ("\nmax Available heap size [%u] byte [%f] k_Byte [%f] M_Byte [%f] G_Byte\n", byte, kByte, MByte, GByte);
 }
 
 /*
-* This function converts an unsigned binary
-* number to reflected binary Gray code.
-*
-* The operator >> is shift right. The operator ^ is exclusive or.
-*/
-unsigned int BinaryToGray(unsigned int num)
-{
-   return num ^ (num >> 1);
+ * This function converts an unsigned binary
+ * number to reflected binary Gray code.
+ *
+ * The operator >> is shift right. The operator ^ is exclusive or.
+ */
+uint32_t bin_to_gray (uint32_t num) {
+    return num ^ (num >> 1);
 }
 
 /*
-* This function converts a reflected binary
-* Gray code number to a binary number.
-* Each Gray code bit is exclusive-ored with all
-* more significant bits.
-*/
-unsigned int GrayToBinary(unsigned int num)
-{
-   unsigned int mask = num >> 1;
-   while (mask != 0)
-   {
-       num = num ^ mask;
-       mask = mask >> 1;
-   }
-   return num;
+ * This function converts a reflected binary
+ * Gray code number to a binary number.
+ * Each Gray code bit is exclusive-ored with all
+ * more significant bits.
+ */
+unsigned int GrayToBinary (unsigned int num) {
+    unsigned int mask = num >> 1;
+    while (mask != 0) {
+        num = num ^ mask;
+        mask = mask >> 1;
+    }
+    return num;
 }
 
 /*
-* A more efficient version for Gray codes 32 bits or fewer
-* through the use of SWAR (SIMD within a register) techniques.
-* It implements a parallel prefix XOR function.  The assignment
-* statements can be in any order.
-*
-* This function can be adapted for longer Gray codes by adding steps.
-* A 4-bit variant changes a binary number (abcd)2 to (abcd)2 ^ (00ab)2,
-* then to (abcd)2 ^ (00ab)2 ^ (0abc)2 ^ (000a)2.
-*/
-unsigned int GrayToBinary32(unsigned int num)
-{
-   num = num ^ (num >> 16);
-   num = num ^ (num >> 8);
-   num = num ^ (num >> 4);
-   num = num ^ (num >> 2);
-   num = num ^ (num >> 1);
-   return num;
+ * A more efficient version for Gray codes 32 bits or fewer
+ * through the use of SWAR (SIMD within a register) techniques.
+ * It implements a parallel prefix XOR function.  The assignment
+ * statements can be in any order.
+ *
+ * This function can be adapted for longer Gray codes by adding steps.
+ * A 4-bit variant changes a binary number (abcd)2 to (abcd)2 ^ (00ab)2,
+ * then to (abcd)2 ^ (00ab)2 ^ (0abc)2 ^ (000a)2.
+ */
+unsigned int GrayToBinary32 (unsigned int num) {
+    num = num ^ (num >> 16);
+    num = num ^ (num >> 8);
+    num = num ^ (num >> 4);
+    num = num ^ (num >> 2);
+    num = num ^ (num >> 1);
+    return num;
+}
+
+uint32_t max_val (uint32_t amountofbit) {
+    uint32_t val = 0u;
+    for (uint32_t i = 0; i < amountofbit; i++) {
+        val |= (1 << i);
+    }
+    return val;
+}
+
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* grayCode (int n, int* returnSize) {
+    uint32_t maxVal = 0u;
+    maxVal = max_val (n);
+    int *outArr = NULL;
+    *returnSize = maxVal + 1;
+    outArr = malloc ((maxVal + 1) * sizeof(int));
+    if (outArr) {
+        for (uint32_t binVal = 0; binVal <= maxVal; binVal++) {
+            outArr [binVal] = bin_to_gray (binVal);
+        }
+    }
+    return outArr;
 }

@@ -19,7 +19,9 @@ int main (void) {
         printf ("Unit Test Error: %d\n", ret);
     } else {
         printf ("Unit Test fine\n");
+#if 0
         test_combine ();
+#endif
     }
 #endif
 
@@ -33,6 +35,7 @@ int main (void) {
         printf ("\n uTestOk!\n");
     }
 #endif
+
     printf ("Done!\n\n");
 //    getchar ();
     return 0;

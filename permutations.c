@@ -61,7 +61,6 @@ void permutation (int n) {
 /* k - amount of letters*/
 void combine_from_alph (int *inAlphabet, int sizeOfAlphabet, int k, int *curArr, int curArrSize) {
     if (0 == k) {
-
         //print_array_to_file (curArr, curArrSize);
 #if DEBUG_COMBINE
         print_curr_array (curArr, curArrSize);

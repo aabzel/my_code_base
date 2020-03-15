@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+static void reverse_util (ListNode* curr, ListNode* prev, ListNode** head);
+
 #if 0
 list_node_t *pHead;
 
@@ -215,6 +217,103 @@ void print_list (list_node_t *pHead) {
             print_curr_array (pCurNode->data.pArr, pCurNode->data.arrSize);
             pCurNode = pCurNode->nextNode;
         }
+    }
+}
+
+/* Function to push a node */
+void list_add_node_front (ListNode** headNode, int new_data) {
+    ListNode* newNode = NULL;
+    newNode = (ListNode*) malloc (sizeof(ListNode));
+    if (NULL != newNode) {
+        newNode->val = new_data;
+        newNode->next = (*headNode);
+        *headNode = newNode;
+    }
+}
+
+/* Function to print linked list */
+void show_list (ListNode* headNode) {
+    ListNode* curNode = headNode;
+    printf ("\n Start of list\n");
+    while (curNode != NULL) {
+        printf ("%d  ", curNode->val);
+        curNode = curNode->next;
+    }
+    printf ("\n End of list\n");
+}
+
+ListNode* reverseList (ListNode* head) {
+    ListNode* prevNode = NULL;
+    ListNode* currentNode = head;
+    ListNode* nextNode = NULL;
+    while (currentNode != NULL) {
+        // Store next
+        nextNode = currentNode->next;
+
+        // Reverse current node's pointer
+        currentNode->next = prevNode;
+
+        // Move pointers one position ahead.
+        prevNode = currentNode;
+        currentNode = nextNode;
+    }
+    head = prevNode;
+    return head;
+}
+
+// This function mainly calls reverseUtil()
+// with prev as NULL
+void reverse_rec (ListNode** head) {
+    if (!head)
+        return;
+    reverse_util (*head, NULL, head);
+}
+
+// A simple and tail recursive function to reverse
+// a linked list.  prev is passed as NULL initially.
+static void reverse_util (ListNode* curr, ListNode* prev, ListNode** head) {
+    /* If last node mark it head*/
+    if (!curr->next) {
+        *head = curr;
+
+        /* Update next to prev node */
+        curr->next = prev;
+        return;
+    }
+
+    /* Save curr->next node for recursive call */
+    ListNode* next = curr->next;
+
+    /* and update next ..*/
+    curr->next = prev;
+
+    reverse_util (next, curr, head);
+}
+
+ListNode* middle_node (ListNode* head) {
+    ListNode* slow = head;
+    ListNode* fast = head;
+    while (fast != NULL && fast->next != NULL) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    return slow;
+}
+
+bool delete_node (ListNode* node) {
+    if (NULL == node) {
+        return false;
+    } else {
+        if (node->next == NULL) {
+            printf ("This is last node, require head, can't be freed\n");
+            return false;
+        }
+        ListNode* temp = node->next;
+        // Copy data of the next node to current node
+        node->val = node->next->val;
+        node->next = node->next->next;
+        free(temp);
+        return true;
     }
 }
 

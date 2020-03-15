@@ -119,7 +119,7 @@ bool assemble_combination_list (list_node_t *pPermutHead, list_node_t **pCombine
 }
 
 void test_combine (void) {
-    combine (4, 2);
+    //combine (4, 2);
 }
 /**
  * Return an array of arrays of size *returnSize.
