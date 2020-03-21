@@ -1,19 +1,30 @@
-#ifndef __ARRAYS_H
-#define __ARRAYS_H
+#ifndef __ARRAY_H
+#define __ARRAY_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "utils.h"
+
+#include <stdio.h>
 #include <stdint.h>
 #include <string.h>
 
-typedef struct xArray_t {
-    int *pArr;
-    int arrSize;
-} Array_t;
-
+bool is_single_zero (int * const arr, int sizeOfArr, int indexToArr);
+void print_array_to_file_pointer (FILE * filePointer, int *array, int size);
+void print_array_to_filename (char *filename, int *array, int size);
+int count_max_amout_of_one_after_del (int *arr, int sizeOfArr);
 void* memdup (const void* mem, size_t sizeByte);
 int *remove_int_from_arr (int *inArr, int arrSize, int delIndex);
 int *add_val_to_end_array (int *inArr, int arrSize, int val);
 void print_curr_array (int *alphabet, int sizeOfAlphabet);
 int *generate_num_array (int n);
+void print_array_of_diff_arrays (int **arrOfArr, int amountOfLine, int *colSizes);
 void print_array_of_arrays (int **arrOfArr, int amountOfLine, int amountOfCol);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __ARRAYS_H */

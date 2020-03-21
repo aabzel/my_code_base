@@ -14,11 +14,12 @@ int main (void);
 int main (void) {
 #if 1
     init_file_name ();
+
     int ret = unitTest ();
     if (0 != ret) {
-        printf ("Unit Test Error: %d\n", ret);
+        printf ("\n\nUnit Test Error: %d\n", ret);
     } else {
-        printf ("Unit Test fine\n");
+        printf ("\n\nUnit Test fine\n");
 #if 0
         test_combine ();
 #endif

@@ -1,5 +1,6 @@
 #include "combinations.h"
 
+#include "arrays.h"
 #include "algorithms.h"
 #include "permutations.h"
 #include "str_ops.h"
@@ -54,8 +55,7 @@ void print_combinations (char * const alphabet) {
 void combine (int n, int k) {
     int *numArray = generate_num_array (n);
     if (numArray) {
-
-        combine_from_alph (numArray, n, k, NULL, 0);
+        assemble_from_alph (numArray, n, k, NULL, 0);
         free (numArray);
 
         printf ("permutation list:");
@@ -118,9 +118,34 @@ bool assemble_combination_list (list_node_t *pPermutHead, list_node_t **pCombine
     return res;
 }
 
-void test_combine (void) {
-    //combine (4, 2);
+
+
+/**
+ * Return an array of arrays of size *returnSize.
+ * The sizes of the arrays are returned as *returnColumnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
+ */
+int** subsets (int* nums, int numsSize, int* returnSize, int** returnColumnSizes) {
+    int amOfelem = 0u;
+    int **arrOfArrys;
+    for (amOfelem = 1u; amOfelem <= numsSize; amOfelem++) {
+        assemble_from_alph (nums, numsSize, amOfelem, NULL, 0u);
+    }
+    combinationListHead = NULL;
+    assemble_combination_list (permutllHead, &combinationListHead);
+#if PRINT_COMBINATIONS
+    printf ("compination list:");
+    print_list (combinationListHead);
+    *returnSize = list_num_of_elements (combinationListHead);
+    *returnColumnSizes = NULL;
+#endif
+#if SAVE_COMBINATIONS
+    save_list_to_file (combinationListHead, kitFile);
+#endif
+    arrOfArrys = list_of_arr_to_arr_of_arr (combinationListHead, returnSize, returnColumnSizes);
+    return arrOfArrys;
 }
+
 /**
  * Return an array of arrays of size *returnSize.
  * The sizes of the arrays are returned as *returnColumnSizes array.
@@ -128,4 +153,3 @@ void test_combine (void) {
  */
 //int** combine(int n, int k, int* returnSize, int** returnColumnSizes){
 //}
-

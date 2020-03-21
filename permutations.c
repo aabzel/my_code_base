@@ -42,10 +42,6 @@ void permute (char *string) {
     }
 }
 
-
-
-
-
 void permutation (int n) {
     if (0 < n) {
         char *numString = NULL;
@@ -57,19 +53,24 @@ void permutation (int n) {
     }
 }
 
-
+/*
+ * inAlphabet array of elements to get values for the combinations
+ * sizeOfAlphabet size of that array
+ * k - amount of letters in result combination instance
+ *
+ * */
 /* k - amount of letters*/
-void combine_from_alph (int *inAlphabet, int sizeOfAlphabet, int k, int *curArr, int curArrSize) {
+void assemble_from_alph (int *inAlphabet, int sizeOfAlphabet, int k, int *curArr, int curArrSize) {
     if (0 == k) {
-        //print_array_to_file (curArr, curArrSize);
-#if DEBUG_COMBINE
+#if DEBUG_ASSEMBLE
+        print_array_to_filename (kitFile, curArr, curArrSize);
         print_curr_array (curArr, curArrSize);
 #endif
         linked_list_add_array (&permutllHead, curArr, curArrSize);
     }
     if (0 < k) {
         if (0 < sizeOfAlphabet) {
-#if DEBUG_COMBINE
+#if DEBUG_ASSEMBLE
             print_array (inAlphabet, sizeOfAlphabet, k);
 #endif
             int *localAlphabet = malloc (sizeof(int) * sizeOfAlphabet);
@@ -85,7 +86,7 @@ void combine_from_alph (int *inAlphabet, int sizeOfAlphabet, int k, int *curArr,
                     int *redusedAlphabet = NULL;
                     redusedAlphabet = remove_int_from_arr (localAlphabet, sizeOfAlphabet, numOrger);
                     if (redusedAlphabet) {
-                        combine_from_alph (redusedAlphabet, (sizeOfAlphabet - 1), (k - 1), currArray, curArrSize + 1);
+                        assemble_from_alph (redusedAlphabet, (sizeOfAlphabet - 1), (k - 1), currArray, curArrSize + 1);
                         free (redusedAlphabet);
                         free (currArray);
                     } else {
@@ -102,7 +103,6 @@ void combine_from_alph (int *inAlphabet, int sizeOfAlphabet, int k, int *curArr,
 
     }
 }
-
 
 #define DEBUG_IS_PERMUTATED 0
 bool is_permutation (int *arr1, int *arr2, int sizeOfArr) {
@@ -163,7 +163,9 @@ bool is_permutated_element_in_list (list_node_t *pHead, int *inArr, int arrSize)
                     break;
                 }
             } else {
-                printf ("\nsize unmatch inArrSize %d arrCurSize %d", arrSize, curNode->data.arrSize);
+#if DEBUG_IS_PERMUT
+                printf ("\nsize of array unmatch inArrSize %d arrCurSize %d", arrSize, curNode->data.arrSize);
+#endif
             }
             curNode = curNode->nextNode;
         }
@@ -176,24 +178,12 @@ bool is_permutated_element_in_list (list_node_t *pHead, int *inArr, int arrSize)
  * The sizes of the arrays are returned as *returnColumnSizes array.
  * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
  */
-int** permute_array (int* nums, int numsSize, int* returnSize, int** returnColumnSizes) {
-    combine_from_alph (nums, numsSize, numsSize, NULL, 0);
+int** permute_array (int* array, int numsSize, int* returnSize, int** returnColumnSizes) {
+    int **arrayOfPtr;
+    //clean list permutllHead
+    assemble_from_alph (array, numsSize, numsSize, NULL, 0);
     //save_list_to_file (permutllHead, pemutationFile);
-
-    int numElem = list_num_of_elements (permutllHead);
-    *returnSize = numElem;
-    int **arrayOfPtr = (int **) malloc (numElem * sizeof(int));
-    int* columnSizes = malloc (numElem * sizeof(int));
-    for (int i = 0; i < numElem; i++) {
-        list_node_t *curNode = get_node_by_index (permutllHead, i);
-        if (curNode) {
-            columnSizes [i] = curNode->data.arrSize;
-            arrayOfPtr [i] = curNode->data.pArr;
-        } else {
-            printf ("\n lack of element with %d.", i);
-        }
-    }
-    *returnColumnSizes = columnSizes;
+    arrayOfPtr = list_of_arr_to_arr_of_arr (permutllHead, returnSize, returnColumnSizes);
     return arrayOfPtr;
 }
 

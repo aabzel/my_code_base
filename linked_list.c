@@ -1,5 +1,7 @@
 #include "linked_list.h"
 
+#include "arrays.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -63,15 +65,6 @@ void list_print_fwd (void) {
 }
 #endif
 
-void print_array_to_file (FILE * filePointer, int *array, int size) {
-    int i = 0;
-
-    for (i = 0; i < size; i++) {
-        fprintf (filePointer, "%d ", array [i]);
-    }
-    fprintf (filePointer, "\n");
-}
-
 void save_list_to_file (list_node_t *pInHead, char *filename) {
     FILE * fp;
     printf ("\nSave to file: %s\n", filename);
@@ -79,7 +72,7 @@ void save_list_to_file (list_node_t *pInHead, char *filename) {
     if (fp) {
         list_node_t *curNode = pInHead;
         while (curNode) {
-            print_array_to_file (fp, curNode->data.pArr, curNode->data.arrSize);
+            print_array_to_file_pointer (fp, curNode->data.pArr, curNode->data.arrSize);
             curNode = curNode->nextNode;
         }
         /* write 10 lines of text into the file stream*/
@@ -312,7 +305,7 @@ bool delete_node (ListNode* node) {
         // Copy data of the next node to current node
         node->val = node->next->val;
         node->next = node->next->next;
-        free(temp);
+        free (temp);
         return true;
     }
 }

@@ -4,10 +4,13 @@
 #include "arrays.h"
 #include "bin_tree.h"
 #include "bin_search_tree.h"
+#include "combinations.h"
+#include "min_path.h"
 #include "permutations.h"
 #include "str_ops.h"
 #include "linked_list.h"
 #include "utils.h"
+#include "amount_of_uio_states.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -15,6 +18,32 @@
 #include <string.h>
 
 int unitTest (void) {
+    bool res = false;
+
+    res = test_min_path ();
+    if (false == res) {
+        return MIN_PATH_ERROR;
+    }
+#if TEST_UIO_COMB
+    res = save_the_amount_of_uio ();
+#endif
+
+#if TEST_BIT_UTILS
+    uint32_t n;
+    n = reverseBits (0x00000001);
+    if (0x80000000 != n) {
+        return REV_BIT_ERROR;
+    }
+    n = reverseBits (0x0000000F);
+    if (0xF0000000 != n) {
+        return REV_BIT_ERROR;
+    }
+
+    uint8_t numSetBit = hamming_weight (56);
+    if (3 != numSetBit) {
+        return ONE_BIT_ERROR;
+    }
+    printf ("\n numSetBit:%d\n", numSetBit);
 
     test_heap ();
 
@@ -22,15 +51,33 @@ int unitTest (void) {
     char *outStr = NULL;
     int *outArray;
     int cmpRes;
-    bool res;
 
+#endif
+
+#if TEST_ARR_COMB
+    res = test_array_combinations ();
+    if (false == res) {
+        return ARR_COMB_ERROR;
+    }
+#endif
+
+#if TEST_YA_TASK
+    res = test_ya_task ();
+    if (false == res) {
+        return CON_11_ERROR;
+    }
+#endif
+
+#if TEST_UNIQ_PATH_TASK
     res = test_uniq_path ();
     if (false == res) {
         return UNIQ_PATH_ERROR;
-    }else{
+    } else {
         printf ("\ntest_uniq_path fine!\n");
     }
+#endif
 
+#if DEPLOY_REMAINED_TESTS
     res = test_parse_bin_tree_init_array ();
     if (false == res) {
         return BIN_ARR_PARSE_TREE_ERROR;
@@ -146,6 +193,7 @@ int unitTest (void) {
     if (false == res) {
         return LL_ERROR;
     }
+#endif
 
     return FINE;
 }
@@ -337,9 +385,6 @@ bool test_reverse_list (void) {
     return res;
 }
 
-
-
-
 bool test_uniq_path (void) {
     int numPath;
 
@@ -347,7 +392,7 @@ bool test_uniq_path (void) {
     if (2 != numPath) {
         return false;
     }
-    printf ("\n%s %d\n", __FUNCTION__,__COUNTER__);
+    printf ("\n%s %d\n", __FUNCTION__, __COUNTER__);
     numPath = uniquePaths (3, 2);
     if (3 != numPath) {
         return false;
@@ -359,22 +404,106 @@ bool test_uniq_path (void) {
         return false;
     }
 
-
     numPath = uniquePaths (7, 3);
     if (28 != numPath) {
         printf ("\n wrong numPath %d\n", numPath);
         return false;
     }
 
-
-
     numPath = uniquePaths (51, 9);
-    if(1916797311!=numPath ){
+    if (1916797311 != numPath) {
         printf ("\nnumPath 51 9  %d\n", numPath);
         return false;
     }
 
-
-
     return true;
+}
+
+bool test_ya_task (void) {
+    bool res = false;
+    int sizeOfArr = 0;
+    int numOnes = 0;
+    int arr [] =
+        { 0, 1, 1, 0, 1, 1, 0 };
+    sizeOfArr = sizeof(arr) / sizeof(arr [0]);
+
+    res = is_single_zero (arr, sizeOfArr, 6);
+    if (false == res) {
+        printf ("\n unspot single zero 6");
+        return false;
+    }
+
+    res = is_single_zero (arr, sizeOfArr, 0);
+    if (false == res) {
+        printf ("\n unspot single zero 0");
+        return false;
+    }
+
+    res = is_single_zero (arr, sizeOfArr, 3);
+    if (false == res) {
+        printf ("\n unspot single zero 3");
+        return false;
+    }
+
+    numOnes = count_max_amout_of_one_after_del (arr, sizeOfArr);
+    if (4 == numOnes) {
+        res = true;
+    } else {
+        printf ("\n num of error ones %d", numOnes);
+    }
+
+    int arr2 [] =
+        { 0, 1, 1, 1, 1, 1, 0 };
+    sizeOfArr = sizeof(arr2) / sizeof(arr2 [0]);
+    numOnes = count_max_amout_of_one_after_del (arr2, sizeOfArr);
+    if (5 == numOnes) {
+        res = true;
+    } else {
+        printf ("\n num of error ones %d", numOnes);
+    }
+
+    return res;
+}
+
+bool test_array_combinations (void) {
+    bool res = false;
+    int arr [] =
+        { 1, 2, 3 };
+    int arrSize = sizeof(arr) / sizeof(arr [0]);
+    int returnSize = 0;
+    int* returnColumnSizes = NULL;
+    int** arrayOfArr = NULL;
+    arrayOfArr = subsets (arr, arrSize, &returnSize, &returnColumnSizes);
+
+    if (7 == returnSize) {
+        res = true;
+    }
+    print_array_of_diff_arrays (arrayOfArr, returnSize, returnColumnSizes);
+
+    return res;
+}
+
+void test_heap (void) {
+    uint32_t byte = 3;
+    float kByte = 4;
+    float MByte = 4;
+    float GByte = 4;
+    while (1) {
+        char *ptr = NULL;
+        ptr = (char *) malloc (byte);
+        if (ptr) {
+            byte = (byte * 3) / 2;
+            free (ptr);
+        } else {
+            break;
+        }
+    } //[2327387742]
+    kByte = (float) byte / 1024.0f;
+    MByte = (float) kByte / 1024.0f;
+    GByte = (float) MByte / 1024.0f;
+    printf ("\nmax Available heap size [%u] byte [%f] k_Byte [%f] M_Byte [%f] G_Byte\n", byte, kByte, MByte, GByte);
+}
+
+void test_combine (void) {
+    //combine (4, 2);
 }

@@ -1,11 +1,17 @@
 #ifndef __LINKED_LIST_OF_ARRAYS_H
 #define __LINKED_LIST_OF_ARRAYS_H
 //https://leetcode.com/tag/linked-list/
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "custom_type.h"
+
+#include "array_type.h"
+#include "linked_list_types.h"
+#include "utils.h"
 
 #include <stdint.h>
-
-#include "arrays.h"
-#include "utils.h"
 #include <stdio.h>
 
 typedef struct xListNode {
@@ -13,30 +19,25 @@ typedef struct xListNode {
     struct xListNode *next;
 } ListNode;
 
-typedef struct xList_node_t {
-    Array_t data;
-    struct xList_node_t *nextNode;
-} list_node_t;
-
-ListNode* middle_node (ListNode* head);
-bool delete_node (ListNode* node);
-void print_array_to_file (FILE * filePointer, int *array, int size);
+bool linked_list_deinit (list_node_t *pInHead);
+bool linked_list_add_array (list_node_t **pInHead, int *inArr, int arrSize);
 bool is_permutated_element_in_list (list_node_t *pHead, int *inArr, int arrSize);
+bool delete_node (ListNode* node);
+ListNode* middle_node (ListNode* head);
+void print_array_to_file (FILE * filePointer, int *array, int size);
 // reverse list
 void print_list (list_node_t *pHead);
-bool linked_list_add_array (list_node_t **pInHead, int *inArr, int arrSize);
 int list_num_of_elements (list_node_t *pHead);
 int list_num_of_data_byte (list_node_t *pHead);
 list_node_t *get_node_by_index (list_node_t *pHead, int desInd);
 
 list_node_t *list_get_elem_by_index (int index);
-bool linked_list_deinit (list_node_t *pInHead);
 void save_list_to_file (list_node_t *pInHead, char *filename);
 
 void show_list (ListNode* headNode);
-void list_add_node_front (ListNode**  headNode, int new_data);
+void list_add_node_front (ListNode** headNode, int new_data);
 ListNode* reverseList (ListNode* head);
-void reverse_rec(ListNode** head);
+void reverse_rec (ListNode** head);
 
 #if 0
 
@@ -45,6 +46,10 @@ void list_print_fwd (void);
 void list_print_reverse (void);
 void list_print_rev (list_node_t *pHead);
 
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif /* __LINKED_LIST_OF_ARRAYS_H */

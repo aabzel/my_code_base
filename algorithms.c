@@ -12,11 +12,19 @@
 #include <string.h>
 
 int max (int val1, int val2) {
-    int val = val1;
+    int outVal = val1;
     if (val1 < val2) {
-        val = val2;
+        outVal = val2;
     }
-    return val;
+    return outVal;
+}
+
+int min (int val1, int val2) {
+    int outVal = val2;
+    if (val1 < val2) {
+        outVal = val1;
+    }
+    return outVal;
 }
 
 /* Function to swap values at two pointers */
@@ -40,7 +48,7 @@ typedef struct xPox_t {
 #define DIM_OF_LUTABLE (100)
 static int lootUpTable [DIM_OF_LUTABLE] [DIM_OF_LUTABLE];
 
-#define USE_PRINT_LT 1
+#define USE_PRINT_LT 0
 
 #if USE_PRINT_LT
 static void print_lookUpTable (void) {
@@ -51,7 +59,7 @@ static void print_lookUpTable (void) {
         for (y = 0; y < DIM_OF_LUTABLE; y++) {
             if (0 <= lootUpTable [x] [y]) {
                 amountOflines++;
-                printf ("\n x: %d y: %d: path: %d ", x+1,y+1,lootUpTable [x] [y]);
+                printf ("\n x: %d y: %d: path: %d ", x + 1, y + 1, lootUpTable [x] [y]);
             }
         }
     }
@@ -107,7 +115,7 @@ static bool is_val_in_look_up_table (int xMax, int yMax) {
 int unique_paths (int xMax, int yMax) {
     int amountOfPaths = 0;
     bool res = false;
-    if(1==xMax || 1==yMax){
+    if (1 == xMax || 1 == yMax) {
         return 1;
     }
     res = is_val_in_look_up_table (xMax, yMax);
@@ -137,11 +145,16 @@ int cmp_int (const void * p1, const void * p2) {
 }
 
 int uniquePaths (int xMax, int yMax) {
+#if DEBUG_AM_PATH
     printf ("\n %s %d %d", __FUNCTION__, xMax, yMax);
+#endif
+
     int amountOfPaths;
     init_lookUpTable ();
     amountOfPaths = unique_paths (xMax, yMax);
+#if DEBUG_AM_PATH
     printf ("\n g_mantchCnt %d g_unMantchCnt %d", g_mantchCnt, g_unMantchCnt);
+#endif
 #if USE_PRINT_LT
     print_lookUpTable ();
 #endif

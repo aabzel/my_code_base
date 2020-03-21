@@ -1,25 +1,30 @@
 PROJECT_ROOT = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
-#CC=gcc
+CC=gcc
 LDFLAGS=
 
 SOURCES = arrays.c combinations.c str_ops.c uTests.c utils.c permutations.c linked_list.c
 SOURCES += algorithms.c main.c 
+SOURCES += bin_tree.c 
+SOURCES += bin_search_tree.c 
+SOURCES += amount_of_uio_states.c
+SOURCES += min_path.c
 
 EXECUTABLE=training
 
 OBJECTS=$(SOURCES:.c=.o)
 
-
-CFLAGS += -g -c
-CFLAGS += -O2 -Werror -Wall -Wextra  
+CFLAGS = -O2
+#CFLAGS += -g -c
+CFLAGS += -Werror -Wall -Wextra  
 CFLAGS += -Wstrict-prototypes -Wmissing-prototypes
  
 
 all: $(EXECUTABLE)
 
+	
 $(EXECUTABLE):	$(OBJECTS)
-	$(CXX) -o $@ $^
+	$(CC) -o $@ $^
 
 %.o:	$(PROJECT_ROOT)%.cpp
 	$(CXX) -c $(CFLAGS) $(CXXFLAGS) $(CPPFLAGS) -o $@ $<

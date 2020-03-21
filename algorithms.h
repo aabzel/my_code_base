@@ -13,6 +13,7 @@
 int uniquePaths (int xMax, int yMax);
 int unique_paths (int m, int n);
 int max (int val1, int val2);
+int min (int val1, int val2);
 int cmp_int (const void * p1, const void * p2);
 void swap (char * const x, char * const y);
 

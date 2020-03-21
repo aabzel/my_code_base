@@ -20,7 +20,7 @@ void permute_ll (char *string, int left, int right);
 void permute (char *string);
 int *generate_num_array (int n);
 char *generate_num_string (int n);
-void combine_from_alph (int *inAlphabet, int sizeOfAlphabet, int k, int *curArr, int curArrSize);
+void assemble_from_alph (int *inAlphabet, int sizeOfAlphabet, int k, int *curArr, int curArrSize);
 bool is_permutation (int *arr1, int *arr2, int sizeOfArr);
 bool is_permutated_element_in_list (list_node_t *pHead, int *inArr, int arrSize);
 

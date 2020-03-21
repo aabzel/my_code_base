@@ -80,27 +80,6 @@ char * format_time_txt (void) {
     return output;
 }
 
-void test_heap (void) {
-    uint32_t byte = 3;
-    float kByte = 4;
-    float MByte = 4;
-    float GByte = 4;
-    while (1) {
-        char *ptr = NULL;
-        ptr = (char *) malloc (byte);
-        if (ptr) {
-            byte = (byte * 3) / 2;
-            free (ptr);
-        } else {
-            break;
-        }
-    } //[2327387742]
-    kByte = (float) byte / 1024.0f;
-    MByte = (float) kByte / 1024.0f;
-    GByte = (float) MByte / 1024.0f;
-    printf ("\nmax Available heap size [%u] byte [%f] k_Byte [%f] M_Byte [%f] G_Byte\n", byte, kByte, MByte, GByte);
-}
-
 /*
  * This function converts an unsigned binary
  * number to reflected binary Gray code.
@@ -169,3 +148,75 @@ int* grayCode (int n, int* returnSize) {
     }
     return outArr;
 }
+
+uint32_t reverseBits (uint32_t num) {
+    uint32_t numOfbit = 4 * 8u;
+    uint32_t reverseNum = 0u;
+    uint32_t i;
+    uint32_t temp;
+
+    for (i = 0u; i < numOfbit; i++) {
+        temp = (num & (1 << i));
+        if (temp) {
+            reverseNum |= (1 << ((numOfbit - 1) - i));
+        }
+    }
+    return reverseNum;
+}
+
+uint8_t hamming_weight (uint32_t n) {
+    uint8_t sum = 0;
+    while (n != 0) {
+        printf ("\nn      :%s", uint32_to_bin_str (n));
+        printf ("\n n-1   :%s", uint32_to_bin_str (n - 1));
+        printf ("\nn&(n-1):%s", uint32_to_bin_str (n & (n - 1)));
+        printf ("\n");
+        sum++;
+        n &= (n - 1);
+    }
+    return sum;
+}
+
+char *uint32_to_bin_str (uint32_t const inVal32bit) {
+    static char outBitStr [33] = "";
+    int8_t rBit = 0;
+    uint8_t cell = 0u;
+    uint32_t mask = 0u;
+    for (rBit = 31; 0 <= rBit; rBit--) {
+        cell = (((uint8_t) 31u) - ((uint8_t) rBit));
+        if (cell < sizeof(outBitStr)) {
+            mask = (uint32_t) (((uint32_t) 1u) << ((uint32_t) rBit));
+            if (0u != (inVal32bit & mask)) {
+                outBitStr [cell] = '1';
+            } else {
+                outBitStr [cell] = '0';
+            }
+        }
+    }
+    return outBitStr;
+}
+
+int **list_of_arr_to_arr_of_arr (list_node_t * const listOfArrays, int * const amountOfArrays, int** returnColumnSizes) {
+    int numElem = list_num_of_elements (listOfArrays);
+    int **arrayOfPtr;
+    arrayOfPtr = NULL;
+    if (0 < numElem) {
+        *amountOfArrays = numElem;
+        arrayOfPtr = (int **) malloc (numElem * sizeof(int));
+        int* columnSizes = malloc (numElem * sizeof(int));
+        for (int i = 0; i < numElem; i++) {
+            list_node_t *curNode = get_node_by_index (listOfArrays, i);
+            if (NULL != curNode) {
+                columnSizes [i] = curNode->data.arrSize;
+                arrayOfPtr [i] = curNode->data.pArr;
+            } else {
+                printf ("\n lack of element with ind %d in the list listOfArrays", i);
+            }
+        }
+        *returnColumnSizes = columnSizes;
+    }
+
+    return arrayOfPtr;
+
+}
+

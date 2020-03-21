@@ -5,6 +5,8 @@
 
 #include "utils.h"
 
+#define TEST_YA_TASK 0
+
 typedef enum {
     FINE = 0,
     LIST_REV_ERROR = 5,
@@ -12,7 +14,12 @@ typedef enum {
     BIN_ARR_TREE_ERROR = 7,
     BIN_ARR_PARSE_TREE_ERROR = 8,
     MAX_BIT_VAL_ERROR = 66,
-    UNIQ_PATH_ERROR=9,
+    UNIQ_PATH_ERROR = 9,
+    CON_11_ERROR = 10,
+    ARR_COMB_ERROR = 13,
+    ONE_BIT_ERROR = 11,
+    REV_BIT_ERROR = 12,
+    MIN_PATH_ERROR = 13,
     GRAY_ERROR = 88,
     LL_ERROR = 99,
     NUM_ERROR
@@ -20,7 +27,9 @@ typedef enum {
 
 int unitTest (void);
 
-bool test_uniq_path(void);
+bool test_array_combinations (void);
+bool test_ya_task (void);
+bool test_uniq_path (void);
 bool test_parse_bin_tree_init_array (void);
 bool test_bin_tree_init_array (void);
 bool test_bin_tree (void);
