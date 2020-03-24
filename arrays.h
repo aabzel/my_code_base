@@ -12,6 +12,9 @@ extern "C" {
 #include <string.h>
 
 bool is_single_zero (int * const arr, int sizeOfArr, int indexToArr);
+int findMaxConsecutiveOnes (int* nums, int numsSize);
+int findMaxConsecutiveOnesFlip1 (int* nums, int length);
+int findMaxConOnesDel1 (int * const array, int length);
 void print_array_to_file_pointer (FILE * filePointer, int *array, int size);
 void print_array_to_filename (char *filename, int *array, int size);
 int count_max_amout_of_one_after_del (int *arr, int sizeOfArr);

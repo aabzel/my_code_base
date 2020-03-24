@@ -19,11 +19,13 @@
 
 int unitTest (void) {
     bool res = false;
-
+#if TEST_MIN_PATH
     res = test_min_path ();
     if (false == res) {
         return MIN_PATH_ERROR;
     }
+#endif
+
 #if TEST_UIO_COMB
     res = save_the_amount_of_uio ();
 #endif
@@ -65,6 +67,15 @@ int unitTest (void) {
     res = test_ya_task ();
     if (false == res) {
         return CON_11_ERROR;
+    }
+#endif
+
+#if TEST_UNIQ_DIAG_PATH_TASK
+    res = test_uniq_path_diag ();
+    if (false == res) {
+        return UNIQ_PATH_DIAG_ERROR;
+    } else {
+        printf ("\ntest_uniq_path fine!\n");
     }
 #endif
 
@@ -419,6 +430,41 @@ bool test_uniq_path (void) {
     return true;
 }
 
+bool test_uniq_path_diag (void) {
+    bool res = false;
+    int numPath;
+    numPath = uniquePathDiag (2, 2);
+    if (3 == numPath) {
+        printf ("\n exp %d real %d", 3, numPath);
+        res = true;
+    }
+    numPath = uniquePathDiag (2, 3);
+    if (5 != numPath) {
+        printf ("\n exp %d real %d", 5, numPath);
+        return false;
+    }
+
+    numPath = uniquePathDiag (3, 2);
+    if (5 != numPath) {
+        printf ("\n exp %d real %d", 5, numPath);
+        return false;
+    }
+    numPath = uniquePathDiag (3, 3);
+    if (13 != numPath) {
+        printf ("\n 3x3 exp %d real %d", 13, numPath);
+        return false;
+    }
+    numPath = uniquePathDiag (3, 4);
+    if (25 != numPath) {
+        printf ("\n 3x4 exp %d real %d", 25, numPath);
+        return false;
+    }
+    numPath = uniquePathDiag (6, 6);
+    printf ("\n 6x6 numPath = %d", numPath);
+
+    return res;
+}
+
 bool test_ya_task (void) {
     bool res = false;
     int sizeOfArr = 0;
@@ -426,6 +472,17 @@ bool test_ya_task (void) {
     int arr [] =
         { 0, 1, 1, 0, 1, 1, 0 };
     sizeOfArr = sizeof(arr) / sizeof(arr [0]);
+
+    numOnes = findMaxConsecutiveOnesFlip1 (arr, sizeOfArr);
+    printf ("\n findMaxConsecutiveOnesFlip1: %d\n", numOnes);
+
+    numOnes = findMaxConOnesDel1 (arr, sizeOfArr);
+    printf ("\n findMaxConsecutiveOnesFlip1_: %d\n", numOnes);
+
+    numOnes = findMaxConsecutiveOnes (arr, sizeOfArr);
+    if (2 != numOnes) {
+        return false;
+    }
 
     res = is_single_zero (arr, sizeOfArr, 6);
     if (false == res) {
@@ -452,10 +509,24 @@ bool test_ya_task (void) {
         printf ("\n num of error ones %d", numOnes);
     }
 
+    numOnes = findMaxConOnesDel1 (arr, sizeOfArr);
+    if (4 == numOnes) {
+        res = true;
+    } else {
+        printf ("\n num of error ones %d", numOnes);
+    }
+
     int arr2 [] =
         { 0, 1, 1, 1, 1, 1, 0 };
     sizeOfArr = sizeof(arr2) / sizeof(arr2 [0]);
     numOnes = count_max_amout_of_one_after_del (arr2, sizeOfArr);
+    if (5 == numOnes) {
+        res = true;
+    } else {
+        printf ("\n num of error ones %d", numOnes);
+    }
+
+    numOnes = findMaxConOnesDel1 (arr2, sizeOfArr);
     if (5 == numOnes) {
         res = true;
     } else {
@@ -474,7 +545,6 @@ bool test_array_combinations (void) {
     int* returnColumnSizes = NULL;
     int** arrayOfArr = NULL;
     arrayOfArr = subsets (arr, arrSize, &returnSize, &returnColumnSizes);
-
     if (7 == returnSize) {
         res = true;
     }

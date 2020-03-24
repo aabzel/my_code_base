@@ -8,6 +8,12 @@
 #include <stdlib.h>
 #include <time.h>
 
+int g_mantchCnt = 0;
+int g_unMantchCnt = 0;
+
+static int lootUpTable [DIM_OF_LUTABLE] [DIM_OF_LUTABLE];
+static int UniqPathDiagLootUpTable [DIM_OF_LUTABLE] [DIM_OF_LUTABLE];
+
 /*
  *
  Given a m x n grid filled with non-negative numbers, find a path from
@@ -29,6 +35,11 @@ static int min_path (
     Cell_t ** finalPath,
     int *lenOfFinalPath);
 
+static void print_lookUpTable (int *array);
+static bool is_val_in_look_up_table (int * const table, int x, int y);
+static void updateLookUpTabel (int * const matrix, int x, int y, int val);
+static void initUniqPathDiagLookUpTable (void);
+static void init_lookUpTable (void);
 static bool is_exist_in_path (int x, int y, Cell_t * const arrayOfDot, int sizeOfPath);
 static int min_path_sum (int* grid, int numLine, int numColumn, int curCellx, int curCelly, int curPrevSumm);
 
@@ -85,10 +96,69 @@ bool minPath (int* grid, int numLine, int numColumn) {
     Cell_t *minPath = NULL;
     int minPathLen;
     find_min_path (grid, numLine, numColumn, mPathSum, &minPath, &minPathLen);
-    print_path (minPath, minPathLen);
-    save_map_path_as_dot ("minPath.dot", grid, numLine, numColumn, minPath, minPathLen);
-    printf ("\n find_min_path done !\n");
+    if (minPath) {
+        //print_path (minPath, minPathLen);
+        save_map_path_as_dot ("minPath.dot", grid, numLine, numColumn, minPath, minPathLen);
+        printf ("\n find_min_path done !\n");
+    } else {
+        printf ("\n min path not found !\n");
+    }
+
     return true;
+}
+
+int uniquePathDiag (int xMax, int yMax) {
+    int amountOfPaths;
+    initUniqPathDiagLookUpTable ();
+    amountOfPaths = unique_path_diag (xMax, yMax);
+#if USE_PRINT_LT
+    print_lookUpTable ((int *) UniqPathDiagLootUpTable);
+#endif
+    return amountOfPaths;
+}
+
+int unique_path_diag (int xMax, int yMax) {
+    int amountOfPaths = 0;
+    bool res = false;
+    if (1 == xMax || 1 == yMax) {
+        amountOfPaths = UniqPathDiagLootUpTable [0] [0];
+    } else {
+        res = is_val_in_look_up_table ((int *) UniqPathDiagLootUpTable, xMax, yMax);
+        if (true == res) {
+            amountOfPaths = UniqPathDiagLootUpTable [xMax - 1] [yMax - 1];
+            g_mantchCnt++;
+        } else {
+            g_unMantchCnt++;
+            int amountOfPaths1 = 0;
+            int amountOfPaths2 = 0;
+            int amountOfPaths3 = 0;
+            amountOfPaths1 = unique_path_diag (xMax - 1, yMax);
+            amountOfPaths2 = unique_path_diag (xMax, yMax - 1);
+            amountOfPaths3 = unique_path_diag (xMax - 1, yMax - 1);
+            amountOfPaths = (amountOfPaths1 + amountOfPaths2 + amountOfPaths3);
+
+            updateLookUpTabel ((int *) UniqPathDiagLootUpTable, xMax, yMax, amountOfPaths);
+        }
+    }
+
+    return amountOfPaths;
+}
+
+int uniquePaths (int xMax, int yMax) {
+#if DEBUG_AM_PATH
+    printf ("\n %s %d %d", __FUNCTION__, xMax, yMax);
+#endif
+
+    int amountOfPaths;
+    init_lookUpTable ();
+    amountOfPaths = unique_paths (xMax, yMax);
+#if DEBUG_AM_PATH
+    printf ("\n g_mantchCnt %d g_unMantchCnt %d", g_mantchCnt, g_unMantchCnt);
+#endif
+#if USE_PRINT_LT
+    print_lookUpTable ((int*) lootUpTable);
+#endif
+    return amountOfPaths;
 }
 
 static int min_path (
@@ -124,6 +194,8 @@ static int min_path (
             locArr [lenOfCurrPath].x = curCellx;
             locArr [lenOfCurrPath].y = curCelly;
             locArr [lenOfCurrPath].val = curCellVal;
+        } else {
+            printf ("\nLack of heap memory");
         }
         // add a dot to LL
 #if DEBUG_MIN_PATH
@@ -195,7 +267,9 @@ static int min_path (
             //curCelly=numLine-1
             minPathSum = curPrevSumm + curCellVal;
             //Print final Arrays
+#if DEBUG_MIN_PATH
             print_path (locArr, lenOfCurrPath + 1);
+#endif
             *finalPath = locArr;
             *lenOfFinalPath = lenOfCurrPath + 1;
             //return LL to up
@@ -248,21 +322,25 @@ bool test_min_path (void) {
             { 1, 5, 1 },
             { 4, 2, 1 } };
     int minSum;
-    int sizeOfGrid = 3;
-    int gridColSize = 3;
-    minSum = minPathSum ((int *) grid, sizeOfGrid, gridColSize);
+    int numOfLine = 3;
+    int numOfcolomn = 3;
+    minSum = minPathSum ((int *) grid, numOfLine, numOfcolomn);
     if (7 == minSum) {
         res = true;
     } else {
         return false;
     }
-    save_array_as_dot ("map1.dot", (int *) grid, 3, 3);
+    //save_array_as_dot ("map1.dot", (int *) grid, 3, 3);
 
-    minPath ((int *) grid, sizeOfGrid, gridColSize);
-    //int grid2 [10] [10];
-    //init_rand_array ((int *) grid2, 10, 10);
+    //minPath ((int *) grid, sizeOfGrid, gridColSize);
+    int grid2 [10] [10];
+    numOfLine = 10;
+    numOfcolomn = 10;
+    init_ramp_map ((int *) grid2, numOfLine, numOfcolomn);
+    //init_rand_array ((int *) grid2, numOfLine, numOfcolomn);
     //minSum = minPathSum ((int *) grid2, 10, 10);
     //save_array_as_dot ("map.dot", (int *) grid2, 10, 10);
+    minPath ((int *) grid2, numOfLine, numOfcolomn);
 
     return res;
 }
@@ -283,6 +361,47 @@ bool init_rand_array (int *grid, int numLine, int numColumn) {
     }
 
     return res;
+}
+
+bool init_one_map (int *grid, int numLine, int numColumn) {
+    time_t t;
+    bool res = false;
+    if (NULL != grid) {
+        res = true;
+        srand ((unsigned) time (&t));
+        for (int x = 0; x < numLine; x++) {
+            for (int y = 0; y < numColumn; y++) {
+                *((int *) grid + x * numColumn + y) = 1;
+
+            }
+        }
+    }
+    return res;
+}
+
+void init_rod_map (int *grid, int numLine, int numColumn) {
+    init_one_map (grid, numLine, numColumn);
+    int x = numLine / 2;
+    int y = 0;
+    for (y = 0; y < numColumn / 2; y++) {
+        *((int *) grid + x * numColumn + y) = 100;
+    }
+
+    y = numColumn / 3;
+    for (x = 0; x < numLine / 4; x++) {
+        *((int *) grid + x * numColumn + y) = 200;
+    }
+}
+
+void init_ramp_map (int *grid, int numLine, int numColumn) {
+    init_one_map (grid, numLine, numColumn);
+    int x = numLine / 2;
+    int y = 0;
+    for (y = 0; y < numColumn; y++) {
+        for (x = 0; x < numLine; x++) {
+            *((int *) grid + x * numColumn + y) = 3 * abs (x - numLine / 2) + 3 * abs (y - numColumn / 2);
+        }
+    }
 }
 
 bool save_array_as_dot (char *fileName, int *grid, int numLine, int numColumn) {
@@ -335,7 +454,7 @@ bool save_map_path_as_dot (char *fileName, int *grid, int numLine, int numColumn
                     if (true == res) {
                         fprintf (stream, "<td BGCOLOR=\"yellow\">%d</td> ", *((int *) grid + x * numColumn + y));
                     } else {
-                        fprintf (stream, "<td> %d </td> ", *((int *) grid + x * numColumn + y));
+                        fprintf (stream, "<td>%d</td> ", *((int *) grid + x * numColumn + y));
                     }
                 }
                 fprintf (stream, " </tr>\n");
@@ -373,5 +492,124 @@ void print_path (Cell_t * const arrayOfDot, int sizeOfPath) {
             }
             printf ("\n");
         }
+    } else {
+        printf ("\nNull Array");
     }
 }
+
+int unique_paths (int xMax, int yMax) {
+    int amountOfPaths = 0;
+    bool res = false;
+    if (1 == xMax || 1 == yMax) {
+        return 1;
+    }
+    res = is_val_in_look_up_table ((int *) lootUpTable, xMax, yMax);
+    if (true == res) {
+        int val = lootUpTable [xMax - 1] [yMax - 1];
+        g_mantchCnt++;
+        return val;
+    }
+    g_unMantchCnt++;
+    int amountOfPaths1 = 0;
+    int amountOfPaths2 = 0;
+    amountOfPaths1 = unique_paths (xMax - 1, yMax);
+    amountOfPaths2 = unique_paths (xMax, yMax - 1);
+    amountOfPaths = (amountOfPaths1 + amountOfPaths2);
+
+    updateLookUpTabel ((int *) lootUpTable, xMax, yMax, amountOfPaths);
+    return amountOfPaths;
+}
+
+static void initUniqPathDiagLookUpTable (void) {
+    g_mantchCnt = 0;
+    g_unMantchCnt = 0;
+    int x = 0, y = 0;
+    for (x = 0; x < DIM_OF_LUTABLE; x++) {
+        for (y = 0; y < DIM_OF_LUTABLE; y++) {
+            UniqPathDiagLootUpTable [x] [y] = -1;
+        }
+    }
+    UniqPathDiagLootUpTable [1-1] [1-1] = 1;  // 1x1
+    UniqPathDiagLootUpTable [1-1] [2-1] = 1;  // 1x2
+    UniqPathDiagLootUpTable [2-1] [1-1] = 1;  // 2x1
+    UniqPathDiagLootUpTable [2-1] [2-1] = 3;  // 2x2
+    UniqPathDiagLootUpTable [2-1] [3-1] = 5;  // 2x3
+    UniqPathDiagLootUpTable [3-1] [1-1] = 1;  // 3x1
+    UniqPathDiagLootUpTable [3-1] [2-1] = 5;  // 3x2
+    UniqPathDiagLootUpTable [3-1] [3-1] = 13; // 3x3
+    //UniqPathDiagLootUpTable [3-1] [4-1] = ?; // 3x4
+}
+
+static void init_lookUpTable (void) {
+    //printf ("\n");
+    g_mantchCnt = 0;
+    g_unMantchCnt = 0;
+    int x, y;
+    for (x = 0; x < DIM_OF_LUTABLE; x++) {
+        for (y = 0; y < DIM_OF_LUTABLE; y++) {
+            lootUpTable [x] [y] = -1;
+        }
+    }
+    lootUpTable [0] [0] = 1;
+    lootUpTable [1] [1] = 2;
+    lootUpTable [2] [1] = 3;
+
+#if HINT
+    lootUpTable [50] [8] = 1916797311;
+    lootUpTable [37] [9] = 1101716330;
+#endif
+
+}
+
+static void updateLookUpTabel (int * const matrix, int x, int y, int val) {
+    if ((x <= DIM_OF_LUTABLE) && (y <= DIM_OF_LUTABLE)) {
+        //lootUpTable [xMax - 1] [yMax - 1] = amountOfPaths;
+        //*((int *) matrix + x * DIM_OF_LUTABLE + y) = val;
+        if (matrix == (int *) UniqPathDiagLootUpTable) {
+            UniqPathDiagLootUpTable [x] [y] = val;
+        }
+    }
+}
+
+static bool is_val_in_look_up_table (int * const table, int x, int y) {
+    bool res = false;
+    int val=-1;
+    if ((0 < x) && (x <= DIM_OF_LUTABLE)) {
+        if ((0 < y) && (y <= DIM_OF_LUTABLE)) {
+            if(table==(int *)UniqPathDiagLootUpTable){
+                val = UniqPathDiagLootUpTable [x - 1] [y - 1];
+            }
+            //int val = UniqPathDiagLootUpTable [xMax - 1] [yMax - 1];
+            //int val = *((int *) table + x * DIM_OF_LUTABLE + y);
+            if (0 <= val) {
+                res = true;
+            }
+        }
+    }
+    return res;
+}
+
+#if USE_PRINT_LT
+static void print_lookUpTable (int * const array) {
+    printf ("\n");
+    int amountOflines = 0;
+    if (array != (int *) UniqPathDiagLootUpTable) {
+        printf ("\n  Undef table! ");
+        return;
+    }
+    int x=0, y=0;
+    int val = 0;
+    for (x = 0; x < DIM_OF_LUTABLE; x++) {
+        for (y = 0; y < DIM_OF_LUTABLE; y++) {
+            //val = *((int*) array + x * DIM_OF_LUTABLE + y);
+            val = UniqPathDiagLootUpTable [x] [y];
+            if (0 <= val) {
+                amountOflines++;
+                printf ("\n x: %d y: %d: path: %d ", x + 1, y + 1, val);
+            }
+        }
+    }
+    printf ("\n amountOflines: %d ", amountOflines);
+}
+#endif
+

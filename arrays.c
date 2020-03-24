@@ -1,5 +1,6 @@
 #include "arrays.h"
 
+#include "algorithms.h"
 #include "array_type.h"
 #include "utils.h"
 
@@ -102,6 +103,69 @@ int count_max_amout_of_one_after_del (int *arr, int sizeOfArr) {
     }
     return maxOnes;
 }
+
+int findMaxConsecutiveOnes (int* nums, int numsSize) {
+    int currentCount = 0;
+    int curMax = 0;
+    for (int i = 0; i < numsSize; i++) {
+        if (0 == nums [i]) {
+            currentCount = 0;
+        } else {
+            currentCount++;
+        }
+        curMax = max (curMax, currentCount);
+
+    }
+    return curMax;
+}
+
+//    xor
+//00   0
+//01   1
+//10   1
+//11   0
+// O(N) Solution
+int findMaxConsecutiveOnesFlip1 (int* nums, int length) {
+    int count [2] =
+        { 0 };
+    int index = 0;
+    int maxConOne = 0;
+    bool zero = false;
+    for (int i = 0; i < length; i++) {
+        if (nums [i] == 1) {
+            count [index]++;
+            maxConOne = max (maxConOne, count [0] + count [1]);
+        } else {
+            zero = true;
+            index = index ^ 1; // 0->1   1->0
+            count [index] = 0;
+        }
+    }
+    if (zero == true) {
+        //maxConOne++;
+    }
+    printf ("\n%d %d", count [0], count [1]);
+    return maxConOne;
+}
+
+
+
+// O(n)
+int findMaxConOnesDel1 (int * const array, int length) {
+    int maxConOne = 0, prevOneCnt = 0, oneCnt = 0;
+    for (int i = 0; i < length; i++) {
+        if (array [i] == 0) {
+            prevOneCnt = oneCnt;
+            oneCnt = 0;
+        } else {
+            oneCnt++;
+        }
+        maxConOne = max (maxConOne, oneCnt + prevOneCnt);
+    }
+    return maxConOne;
+}
+
+
 
 void* memdup (const void* mem, size_t sizeByte) {
     void* out = NULL;

@@ -7,12 +7,21 @@ extern "C" {
 
 #include "custom_type.h"
 
+#define DIM_OF_LUTABLE (100)
+
+#define USE_PRINT_LT 1
+
+
 typedef struct xCell_t {
     int x;
     int y;
     int val;
 } Cell_t;
 
+int unique_path_diag (int xMax, int yMax);
+int unique_paths (int xMax, int yMax);
+int uniquePaths (int xMax, int yMax);
+int uniquePathDiag (int xMax, int yMax);
 int minPathSum (int* grid, int numLine, int numColumn);
 bool test_min_path (void);
 bool minPath (int* grid, int numLine, int numColumn);
@@ -22,6 +31,9 @@ void print_path (Cell_t * const arrayOfDot, int sizeOfArray);
 void find_min_path (int* grid, int numLine, int numColumn, int minSum, Cell_t **minPathArr, int *minPathLen);
 bool save_array_as_dot (char *fileName, int *grid, int numLine, int numColumn);
 bool init_rand_array (int *grid, int numLine, int numColumn);
+bool init_one_map (int *grid, int numLine, int numColumn);
+void init_rod_map (int *grid, int numLine, int numColumn);
+void init_ramp_map (int *grid, int numLine, int numColumn);
 
 #ifdef __cplusplus
 }
