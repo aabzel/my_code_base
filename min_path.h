@@ -9,8 +9,8 @@ extern "C" {
 
 #define DIM_OF_LUTABLE (100)
 
-#define USE_PRINT_LT 1
-
+#define USE_PRINT_LT_DIAG 1
+#define USE_PRINT_LT 0
 
 typedef struct xCell_t {
     int x;
@@ -23,7 +23,9 @@ int unique_paths (int xMax, int yMax);
 int uniquePaths (int xMax, int yMax);
 int uniquePathDiag (int xMax, int yMax);
 int minPathSum (int* grid, int numLine, int numColumn);
+int minPathDiagSum (int* grid, int numLine, int numColumn);
 bool test_min_path (void);
+bool test_min_path_diag (void);
 bool minPath (int* grid, int numLine, int numColumn);
 
 bool save_map_path_as_dot (char *fileName, int *grid, int numLine, int numColumn, Cell_t * const arrayOfDot, int sizeOfPath);

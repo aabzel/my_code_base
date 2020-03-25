@@ -220,3 +220,16 @@ int **list_of_arr_to_arr_of_arr (list_node_t * const listOfArrays, int * const a
 
 }
 
+void print_bit_representation (float val) {
+    union union_type {
+        uint32_t vali;
+        float val;
+    };
+    union union_type cnvt;
+    cnvt.val = val;
+    printf("size of %d", (int )sizeof(float));
+    printf ("\n %f %d \n%s\n", cnvt.val, cnvt.vali, uint32_to_bin_str (cnvt.vali));
+
+}
+
+

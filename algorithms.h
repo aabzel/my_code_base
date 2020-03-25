@@ -12,6 +12,7 @@
 
 int max (int val1, int val2);
 int min (int val1, int val2);
+int min3 (int val1, int val2, int val3);
 int cmp_int (const void * p1, const void * p2);
 void swap (char * const x, char * const y);
 int *generate_num_array (int n);

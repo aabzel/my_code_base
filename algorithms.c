@@ -27,6 +27,12 @@ int min (int val1, int val2) {
     return outVal;
 }
 
+int min3 (int val1, int val2, int val3) {
+    int outVal = 0;
+    outVal = min (val1, val2);
+    outVal = min (outVal, val3);
+    return outVal;
+}
 /* Function to swap values at two pointers */
 void swap (char * const x, char * const y) {
     if (x != y) {
@@ -46,12 +52,6 @@ typedef struct xPox_t {
 } xPox_t;
 
 #define USE_PRINT_LT 0
-
-
-
-
-
-
 
 // <0 if x<y
 // >0 if x>y

@@ -74,9 +74,11 @@ bool save_the_amount_of_uio (void) {
         }
 
         printf ("\n\nAmount Of combinations %d\n", amountOfStates);
-
+        fclose(stream);
+    }else{
+        printf ("\n\nUnable to open file\n");
     }
-    fclose(stream);
+
 
     return true;
 }

@@ -26,6 +26,20 @@ int unitTest (void) {
     }
 #endif
 
+#if TEST_MIN_PATH_DIAG
+    res = test_min_path_diag ();
+    if (false == res) {
+        return MIN_PATH_DIAG_ERROR;
+    }
+#endif
+
+    res = test_algo ();
+    if (false == res) {
+        return ALGO_ERROR;
+    }
+
+    res = test_float ();
+
 #if TEST_UIO_COMB
     res = save_the_amount_of_uio ();
 #endif
@@ -577,3 +591,32 @@ void test_heap (void) {
 void test_combine (void) {
     //combine (4, 2);
 }
+
+bool test_algo (void) {
+    int min3val;
+    min3val = min3 (2, 3, 5);
+    if (2 != min3val) {
+        return false;
+    }
+    min3val = min3 (42, 33, 75);
+    if (33 != min3val) {
+        return false;
+    }
+    min3val = min3 (42, 533, 5);
+    if (5 != min3val) {
+        return false;
+    }
+
+    return true;
+
+}
+
+bool test_float (void) {
+    bool res = true;
+    float val = 3.25f;
+    print_bit_representation (val);
+    print_bit_representation (0.15625f);
+
+    return res;
+}
+

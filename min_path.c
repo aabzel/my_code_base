@@ -42,6 +42,23 @@ static void initUniqPathDiagLookUpTable (void);
 static void init_lookUpTable (void);
 static bool is_exist_in_path (int x, int y, Cell_t * const arrayOfDot, int sizeOfPath);
 static int min_path_sum (int* grid, int numLine, int numColumn, int curCellx, int curCelly, int curPrevSumm);
+static int min_path_diag_sum (int* grid, int numLine, int numColumn, int curCellx, int curCelly, int curPrevSumm);
+
+int minPathDiagSum (int* grid, int numLine, int numColumn) {
+    int curSum = 0;
+    int minPathSum = 0;
+    int minPathSum1 = 0;
+    int minPathSum2 = 0;
+    int minPathSum3 = 0;
+    int x = 0;
+    int y = 0;
+    curSum = *((int *) grid + x * numColumn + y);
+    minPathSum1 = min_path_diag_sum (grid, numLine, numColumn, x + 1, y + 1, curSum);
+    minPathSum2 = min_path_diag_sum (grid, numLine, numColumn, x, y + 1, curSum);
+    minPathSum3 = min_path_diag_sum (grid, numLine, numColumn, x + 1, y, curSum);
+    minPathSum = min3 (minPathSum1, minPathSum2, minPathSum3);
+    return minPathSum;
+}
 
 int minPathSum (int* grid, int numLine, int numColumn) {
     int curSum = 0;
@@ -111,7 +128,7 @@ int uniquePathDiag (int xMax, int yMax) {
     int amountOfPaths;
     initUniqPathDiagLookUpTable ();
     amountOfPaths = unique_path_diag (xMax, yMax);
-#if USE_PRINT_LT
+#if USE_PRINT_LT_DIAG
     print_lookUpTable ((int *) UniqPathDiagLootUpTable);
 #endif
     return amountOfPaths;
@@ -312,6 +329,77 @@ static int min_path_sum (int* grid, int numLine, int numColumn, int curCellx, in
         }
     }
     return minPathSum;
+}
+
+static int min_path_diag_sum (int* grid, int numLine, int numColumn, int curCellx, int curCelly, int curPrevSumm) {
+    int curOutSum = 0;
+    int minPathSum1 = 0, minPathSum2 = 0, minPathSum3 = 0, minPathSum = 0;
+
+    int curCellVal = *((int *) grid + curCellx * numColumn + curCelly);
+    if (curCellx < (numColumn - 1)) {
+        if (curCelly < (numLine - 1)) {
+            curOutSum = curPrevSumm + curCellVal;
+            minPathSum1 = min_path_diag_sum (grid, numLine, numColumn, curCellx + 1, curCelly + 1, curOutSum);
+            minPathSum2 = min_path_diag_sum (grid, numLine, numColumn, curCellx, curCelly + 1, curOutSum);
+            minPathSum3 = min_path_diag_sum (grid, numLine, numColumn, curCellx + 1, curCelly, curOutSum);
+            minPathSum = min3 (minPathSum1, minPathSum2, minPathSum3);
+        } else {
+            //curCelly=numLine-1
+            curOutSum = curPrevSumm + curCellVal;
+            minPathSum = min_path_diag_sum (grid, numLine, numColumn, curCellx + 1, curCelly, curOutSum);
+        }
+    } else {
+        //curCellx=numColumn-1
+        if (curCelly < (numLine - 1)) {
+            curOutSum = curPrevSumm + curCellVal;
+            minPathSum = min_path_diag_sum (grid, numLine, numColumn, curCellx, curCelly + 1, curOutSum);
+        } else {
+            //curCellx=numColumn-1
+            //curCelly=numLine-1
+            minPathSum = curPrevSumm + curCellVal;
+        }
+    }
+    return minPathSum;
+}
+
+bool test_min_path_diag (void) {
+    bool res = false;
+    int grid [3] [3] =
+        {
+            { 1, 3, 1 },
+            { 1, 5, 1 },
+            { 4, 2, 1 } };
+    int minSum;
+    int numOfLine = 3;
+    int numOfcolomn = 3;
+    minSum = minPathDiagSum ((int *) grid, numOfLine, numOfcolomn);
+    if (5 == minSum) {
+        res = true;
+    } else {
+        return false;
+    }
+#define TEST_DIM 10
+    int grid1 [TEST_DIM] [TEST_DIM];
+    res = init_one_map ((int *) grid1, TEST_DIM, TEST_DIM);
+    minSum = minPathDiagSum ((int *) grid1, TEST_DIM, TEST_DIM);
+    if (TEST_DIM == minSum) {
+        res = true;
+    } else {
+        return false;
+    }
+    //save_array_as_dot ("map1.dot", (int *) grid, 3, 3);
+
+    //minPath ((int *) grid, sizeOfGrid, gridColSize);
+    //int grid2 [10] [10];
+    //numOfLine = 10;
+    //numOfcolomn = 10;
+    //init_ramp_map ((int *) grid2, numOfLine, numOfcolomn);
+    //init_rand_array ((int *) grid2, numOfLine, numOfcolomn);
+    //minSum = minPathSum ((int *) grid2, 10, 10);
+    //save_array_as_dot ("map.dot", (int *) grid2, 10, 10);
+    //minPath ((int *) grid2, numOfLine, numOfcolomn);
+
+    return res;
 }
 
 bool test_min_path (void) {
@@ -529,14 +617,14 @@ static void initUniqPathDiagLookUpTable (void) {
             UniqPathDiagLootUpTable [x] [y] = -1;
         }
     }
-    UniqPathDiagLootUpTable [1-1] [1-1] = 1;  // 1x1
-    UniqPathDiagLootUpTable [1-1] [2-1] = 1;  // 1x2
-    UniqPathDiagLootUpTable [2-1] [1-1] = 1;  // 2x1
-    UniqPathDiagLootUpTable [2-1] [2-1] = 3;  // 2x2
-    UniqPathDiagLootUpTable [2-1] [3-1] = 5;  // 2x3
-    UniqPathDiagLootUpTable [3-1] [1-1] = 1;  // 3x1
-    UniqPathDiagLootUpTable [3-1] [2-1] = 5;  // 3x2
-    UniqPathDiagLootUpTable [3-1] [3-1] = 13; // 3x3
+    UniqPathDiagLootUpTable [1 - 1] [1 - 1] = 1;  // 1x1
+    UniqPathDiagLootUpTable [1 - 1] [2 - 1] = 1;  // 1x2
+    UniqPathDiagLootUpTable [2 - 1] [1 - 1] = 1;  // 2x1
+    UniqPathDiagLootUpTable [2 - 1] [2 - 1] = 3;  // 2x2
+    UniqPathDiagLootUpTable [2 - 1] [3 - 1] = 5;  // 2x3
+    UniqPathDiagLootUpTable [3 - 1] [1 - 1] = 1;  // 3x1
+    UniqPathDiagLootUpTable [3 - 1] [2 - 1] = 5;  // 3x2
+    UniqPathDiagLootUpTable [3 - 1] [3 - 1] = 13; // 3x3
     //UniqPathDiagLootUpTable [3-1] [4-1] = ?; // 3x4
 }
 
@@ -566,17 +654,17 @@ static void updateLookUpTabel (int * const matrix, int x, int y, int val) {
         //lootUpTable [xMax - 1] [yMax - 1] = amountOfPaths;
         //*((int *) matrix + x * DIM_OF_LUTABLE + y) = val;
         if (matrix == (int *) UniqPathDiagLootUpTable) {
-            UniqPathDiagLootUpTable [x] [y] = val;
+            UniqPathDiagLootUpTable [x-1] [y-1] = val;
         }
     }
 }
 
 static bool is_val_in_look_up_table (int * const table, int x, int y) {
     bool res = false;
-    int val=-1;
+    int val = -1;
     if ((0 < x) && (x <= DIM_OF_LUTABLE)) {
         if ((0 < y) && (y <= DIM_OF_LUTABLE)) {
-            if(table==(int *)UniqPathDiagLootUpTable){
+            if (table == (int *) UniqPathDiagLootUpTable) {
                 val = UniqPathDiagLootUpTable [x - 1] [y - 1];
             }
             //int val = UniqPathDiagLootUpTable [xMax - 1] [yMax - 1];
@@ -589,7 +677,7 @@ static bool is_val_in_look_up_table (int * const table, int x, int y) {
     return res;
 }
 
-#if USE_PRINT_LT
+
 static void print_lookUpTable (int * const array) {
     printf ("\n");
     int amountOflines = 0;
@@ -597,7 +685,7 @@ static void print_lookUpTable (int * const array) {
         printf ("\n  Undef table! ");
         return;
     }
-    int x=0, y=0;
+    int x = 0, y = 0;
     int val = 0;
     for (x = 0; x < DIM_OF_LUTABLE; x++) {
         for (y = 0; y < DIM_OF_LUTABLE; y++) {
@@ -611,5 +699,5 @@ static void print_lookUpTable (int * const array) {
     }
     printf ("\n amountOflines: %d ", amountOflines);
 }
-#endif
+
 

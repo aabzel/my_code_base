@@ -31,6 +31,7 @@ void print_curr_array (int *alphabet, int sizeOfAlphabet);
 void test_heap (void);
 uint32_t max_val (uint32_t amountofbit);
 int* grayCode (int n, int* returnSize);
+void print_bit_representation (float val);
 char *uint32_to_bin_str (uint32_t const inVal32bit);
 int **list_of_arr_to_arr_of_arr (list_node_t * const listOfArrays, int * const amountOfArrays, int** returnColumnSizes);
 
