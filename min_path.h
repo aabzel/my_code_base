@@ -9,7 +9,8 @@ extern "C" {
 
 #define DIM_OF_LUTABLE (100)
 
-#define DEBUG_MIN_PATH_DIAG 1
+#define DEBUG_MIN_PATH_DIAG_END 1
+#define DEBUG_MIN_PATH_DIAG 0
 #define USE_PRINT_LT_DIAG 0
 #define USE_PRINT_LT 0
 
@@ -37,10 +38,13 @@ void find_min_path_diag (int* grid, int numLine, int numColumn, int minSum, Cell
 void find_min_path (int* grid, int numLine, int numColumn, int minSum, Cell_t **minPathArr, int *minPathLen);
 
 bool save_array_as_dot (char *fileName, int *grid, int numLine, int numColumn);
+
 bool init_rand_array (int *grid, int numLine, int numColumn);
 bool init_one_map (int *grid, int numLine, int numColumn);
 void init_rod_map (int *grid, int numLine, int numColumn);
+void init_box_map (int *grid, int numLine, int numColumn);
 void init_ramp_map (int *grid, int numLine, int numColumn);
+void init_hole_map (int *grid, int numLine, int numColumn) ;
 void print_lookUpTable (int *array);
 
 #ifdef __cplusplus
