@@ -35,7 +35,19 @@ static int min_path (
     Cell_t ** finalPath,
     int *lenOfFinalPath);
 
-static void print_lookUpTable (int *array);
+static int min_path_diag (
+    int* grid,
+    int numLine,
+    int numColumn,
+    int curCellx,
+    int curCelly,
+    int curPrevSumm,
+    int minSum,
+    Cell_t * const dotArr,
+    int lenOfCurrPath,
+    Cell_t ** finalPath,
+    int *lenOfFinalPath);
+
 static bool is_val_in_look_up_table (int * const table, int x, int y);
 static void updateLookUpTabel (int * const matrix, int x, int y, int val);
 static void initUniqPathDiagLookUpTable (void);
@@ -73,10 +85,7 @@ int minPathSum (int* grid, int numLine, int numColumn) {
     minPathSum = min (minPathSum1, minPathSum2);
     return minPathSum;
 }
-/* ак получить на выходе св€занный список с координатами наименьшего пути?*/
-/*«аписывать в файл все пути а потом произвести его синтаксический разбор и выбрать тот, что дошел до конца. (медленно)*/
-/*ѕри каждом вызове функции min_path передавать в нее список уже пройденных точек. ѕри
- * достижении тупика удал€ть этот список. ѕри достижении цели возвращать этот список*/
+
 void find_min_path (int* grid, int numLine, int numColumn, int minSum, Cell_t **minPathArr, int *minPathLen) {
     int curSum = 0;
     int x = 0;
@@ -94,7 +103,6 @@ void find_min_path (int* grid, int numLine, int numColumn, int minSum, Cell_t **
     currPath1 [0].val = curSum;
     min_path (grid, numLine, numColumn, x, y + 1, curSum, minSum, currPath1, lenOfCurrPath, minPathArr, minPathLen);
     if ((0 == minPathLen) && (NULL == *minPathArr)) {
-        lenOfCurrPath = 1;
         Cell_t currPath2 [1];
         currPath2 [0].x = 0;
         currPath2 [0].y = 0;
@@ -103,6 +111,74 @@ void find_min_path (int* grid, int numLine, int numColumn, int minSum, Cell_t **
     }
     //printf ("\n[%d,%d]->", 0, 0);
 
+}
+
+/* ак получить на выходе св€занный список с координатами наименьшего пути?*/
+/*«аписывать в файл все пути а потом произвести его синтаксический разбор и выбрать тот, что дошел до конца. (медленно)*/
+/*ѕри каждом вызове функции min_path передавать в нее список уже пройденных точек. ѕри
+ * достижении тупика удал€ть этот список. ѕри достижении цели возвращать этот список*/
+void find_min_path_diag (int* grid, int numLine, int numColumn, int minSum, Cell_t **minPathArr, int *minPathLen) {
+    int curSum = 0;
+    int x = 0;
+    int y = 0;
+    int lenOfCurrPath = 0;
+    *minPathLen = 0;
+    *minPathArr = NULL;
+    //printf ("\n[%d,%d]->", 0, 0);
+    curSum = *((int *) grid + x * numColumn + y);
+    lenOfCurrPath = 1;
+
+    if ((0 == *minPathLen) && (NULL == *minPathArr)) {
+        Cell_t *currPath1 = malloc (sizeof(Cell_t));
+        if (currPath1) {
+            currPath1->x = 0;
+            currPath1->y = 0;
+            currPath1->val = curSum;
+            min_path_diag (grid, numLine, numColumn, x + 1, y + 1, curSum, minSum, currPath1, lenOfCurrPath, minPathArr, minPathLen);
+        }
+    }
+
+    if ((0 == *minPathLen) && (NULL == *minPathArr)) {
+        Cell_t *currPath2 = malloc (sizeof(Cell_t));
+        if (currPath2) {
+            currPath2->x = 0;
+            currPath2->y = 0;
+            currPath2->val = curSum;
+            min_path_diag (grid, numLine, numColumn, x + 1, y, curSum, minSum, currPath2, lenOfCurrPath, minPathArr, minPathLen);
+        }
+    }
+
+    if ((0 == *minPathLen) && (NULL == *minPathArr)) {
+        Cell_t *currPath3 = malloc (sizeof(Cell_t));
+        if (currPath3) {
+            currPath3->x = 0;
+            currPath3->y = 0;
+            currPath3->val = curSum;
+            min_path_diag (grid, numLine, numColumn, x, y + 1, curSum, minSum, currPath3, lenOfCurrPath, minPathArr, minPathLen);
+        }
+    }
+
+    //printf ("\n[%d,%d]->", 0, 0);
+
+}
+
+bool minPathDiag (int* grid, int numLine, int numColumn) {
+    int numPath = uniquePathDiag (numLine, numColumn);
+    printf ("\n Amount of Path %d\n", numPath);
+    int mPathSum = minPathDiagSum (grid, numLine, numColumn);
+    printf ("\n sumOfMinPath %d\n", mPathSum);
+    Cell_t *minPath = NULL;
+    int minPathLen;
+    find_min_path_diag (grid, numLine, numColumn, mPathSum, &minPath, &minPathLen);
+    if (minPath) {
+        //print_path (minPath, minPathLen);
+        save_map_path_as_dot ("minPathDiag.dot", grid, numLine, numColumn, minPath, minPathLen);
+        printf ("\n find_min_path done !\n");
+    } else {
+        printf ("\n\n\n min path not found ! \n\n");
+    }
+
+    return true;
 }
 
 bool minPath (int* grid, int numLine, int numColumn) {
@@ -128,6 +204,7 @@ int uniquePathDiag (int xMax, int yMax) {
     int amountOfPaths;
     initUniqPathDiagLookUpTable ();
     amountOfPaths = unique_path_diag (xMax, yMax);
+    printf ("\n %dx%d amountOfPaths %d", xMax, yMax, amountOfPaths);
 #if USE_PRINT_LT_DIAG
     print_lookUpTable ((int *) UniqPathDiagLootUpTable);
 #endif
@@ -301,6 +378,141 @@ static int min_path (
     return minPathSum;
 }
 
+static int min_path_diag (
+    int* grid,
+    int numLine,
+    int numColumn,
+    int curCellx,
+    int curCelly,
+    int curPrevSumm,
+    int minSum,
+    Cell_t * const dotArr,
+    int lenOfCurrPath,
+    Cell_t ** finalPath,
+    int *lenOfFinalPath) {
+    static int callDeep = 1;
+    callDeep++;
+    int curOutSum = 0;
+    int minPathSum1 = 0, minPathSum2 = 0, minPathSum3 = 0, minPathSum = 0;
+    int curCellVal = 0;
+    Cell_t *locArr = NULL;
+    if (minSum < curPrevSumm) {
+        //free LL of dots
+        free (dotArr);
+#if DEBUG_MIN_PATH_DIAG
+        printf ("\n->[%d][%d]-deadlock\n", curCellx, curCelly);
+#endif
+        return curPrevSumm;
+    } else {
+        curCellVal = *((int *) grid + curCellx * numColumn + curCelly);
+        // create a copy of LL in heap mem
+        locArr = (Cell_t *) memdup (dotArr, (lenOfCurrPath + 1) * sizeof(Cell_t));
+        if (locArr) {
+            locArr [lenOfCurrPath].x = curCellx;
+            locArr [lenOfCurrPath].y = curCelly;
+            locArr [lenOfCurrPath].val = curCellVal;
+        } else {
+            printf ("\n  Lack of heap memory!\n");
+        }
+        // add a dot to LL
+#if DEBUG_MIN_PATH_DIAG
+        printf ("[%d,%d]->", curCellx, curCelly);
+#endif
+    }
+    if (curCellx < (numColumn - 1)) {
+        if (curCelly < (numLine - 1)) {
+            curOutSum = curPrevSumm + curCellVal;
+            minPathSum1 = min_path_diag (
+                grid,
+                numLine,
+                numColumn,
+                curCellx + 1,
+                curCelly + 1,
+                curOutSum,
+                minSum,
+                locArr,
+                lenOfCurrPath + 1,
+                finalPath,
+                lenOfFinalPath);
+            minPathSum2 = min_path_diag (
+                grid,
+                numLine,
+                numColumn,
+                curCellx,
+                curCelly + 1,
+                curOutSum,
+                minSum,
+                locArr,
+                lenOfCurrPath + 1,
+                finalPath,
+                lenOfFinalPath);
+            minPathSum3 = min_path_diag (
+                grid,
+                numLine,
+                numColumn,
+                curCellx + 1,
+                curCelly,
+                curOutSum,
+                minSum,
+                locArr,
+                lenOfCurrPath + 1,
+                finalPath,
+                lenOfFinalPath);
+            minPathSum = min3 (minPathSum1, minPathSum2, minPathSum3);
+        } else {
+            //curCelly=numLine-1
+            curOutSum = curPrevSumm + curCellVal;
+            minPathSum = min_path_diag (
+                grid,
+                numLine,
+                numColumn,
+                curCellx + 1,
+                curCelly,
+                curOutSum,
+                minSum,
+                locArr,
+                lenOfCurrPath + 1,
+                finalPath,
+                lenOfFinalPath);
+        }
+    } else {
+        //curCellx=numColumn-1
+        if (curCelly < (numLine - 1)) {
+            curOutSum = curPrevSumm + curCellVal;
+            minPathSum = min_path_diag (
+                grid,
+                numLine,
+                numColumn,
+                curCellx,
+                curCelly + 1,
+                curOutSum,
+                minSum,
+                locArr,
+                lenOfCurrPath + 1,
+                finalPath,
+                lenOfFinalPath);
+        } else {
+            //curCellx=numColumn-1
+            //curCelly=numLine-1
+            minPathSum = curPrevSumm + curCellVal;
+            //Print final Arrays
+#if DEBUG_MIN_PATH_DIAG
+            print_path (locArr, lenOfCurrPath + 1);
+#endif
+            *finalPath = locArr;
+            *lenOfFinalPath = lenOfCurrPath + 1;
+            //return LL to up
+#if DEBUG_MIN_PATH_DIAG
+            printf (" EndOfRoute! Sum: %d len: %d\n", minPathSum, callDeep);
+#endif
+        }
+    }
+
+    callDeep--;
+
+    return minPathSum;
+}
+
 static int min_path_sum (int* grid, int numLine, int numColumn, int curCellx, int curCelly, int curPrevSumm) {
     int curOutSum = 0;
     int minPathSum1 = 0, minPathSum2 = 0, minPathSum = 0;
@@ -378,7 +590,7 @@ bool test_min_path_diag (void) {
     } else {
         return false;
     }
-#define TEST_DIM 10
+#define TEST_DIM 3
     int grid1 [TEST_DIM] [TEST_DIM];
     res = init_one_map ((int *) grid1, TEST_DIM, TEST_DIM);
     minSum = minPathDiagSum ((int *) grid1, TEST_DIM, TEST_DIM);
@@ -389,7 +601,7 @@ bool test_min_path_diag (void) {
     }
     //save_array_as_dot ("map1.dot", (int *) grid, 3, 3);
 
-    //minPath ((int *) grid, sizeOfGrid, gridColSize);
+    minPathDiag ((int *) grid, numOfLine, numOfcolomn);
     //int grid2 [10] [10];
     //numOfLine = 10;
     //numOfcolomn = 10;
@@ -654,7 +866,7 @@ static void updateLookUpTabel (int * const matrix, int x, int y, int val) {
         //lootUpTable [xMax - 1] [yMax - 1] = amountOfPaths;
         //*((int *) matrix + x * DIM_OF_LUTABLE + y) = val;
         if (matrix == (int *) UniqPathDiagLootUpTable) {
-            UniqPathDiagLootUpTable [x-1] [y-1] = val;
+            UniqPathDiagLootUpTable [x - 1] [y - 1] = val;
         }
     }
 }
@@ -677,8 +889,7 @@ static bool is_val_in_look_up_table (int * const table, int x, int y) {
     return res;
 }
 
-
-static void print_lookUpTable (int * const array) {
+void print_lookUpTable (int * const array) {
     printf ("\n");
     int amountOflines = 0;
     if (array != (int *) UniqPathDiagLootUpTable) {
@@ -699,5 +910,4 @@ static void print_lookUpTable (int * const array) {
     }
     printf ("\n amountOflines: %d ", amountOflines);
 }
-
 

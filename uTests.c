@@ -8,6 +8,7 @@
 #include "min_path.h"
 #include "permutations.h"
 #include "str_ops.h"
+
 #include "linked_list.h"
 #include "utils.h"
 #include "amount_of_uio_states.h"
@@ -26,6 +27,11 @@ int unitTest (void) {
     }
 #endif
 
+    res = test_algo ();
+    if (false == res) {
+        return ALGO_ERROR;
+    }
+
 #if TEST_MIN_PATH_DIAG
     res = test_min_path_diag ();
     if (false == res) {
@@ -33,12 +39,10 @@ int unitTest (void) {
     }
 #endif
 
-    res = test_algo ();
-    if (false == res) {
-        return ALGO_ERROR;
-    }
 
+#if TEST_FLOAT
     res = test_float ();
+#endif
 
 #if TEST_UIO_COMB
     res = save_the_amount_of_uio ();
@@ -474,7 +478,9 @@ bool test_uniq_path_diag (void) {
         return false;
     }
     numPath = uniquePathDiag (6, 6);
-    printf ("\n 6x6 numPath = %d", numPath);
+
+    numPath = uniquePathDiag (7, 7);
+    //printf ("\n 6x6 numPath = %d", numPath);
 
     return res;
 }

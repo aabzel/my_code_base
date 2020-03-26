@@ -5,8 +5,9 @@
 
 #include "utils.h"
 
-#define TEST_UNIQ_DIAG_PATH_TASK 1
+#define TEST_UNIQ_DIAG_PATH_TASK 0
 #define TEST_MIN_PATH_DIAG 1
+#define TEST_UNIQ_PATH_TASK 0
 #define TEST_UIO_COMB 0
 #define TEST_YA_TASK 0
 
