@@ -9,14 +9,17 @@ extern "C" {
 #include "min_path.h"
 
 #define DEBUG_MIN_DIAG_SCALE 0
+#define DEBUG_MIN_PATH_DIAG_SCALE 1
+
+#define SQRT2 (1.414213f)
 
 #define DIAG_ENTRY (true)
 #define STRAIGHT_ENTRY (false)
 
 int uniquePathDiagScale (int xMax, int yMax);
-float minPathDiagScalseSum (int* grid, int numLine, int numColumn);
+float minPathDiagScaleSum (int* grid, int numLine, int numColumn);
 bool minPathDiagScale (int* grid, int numLine, int numColumn);
-//void find_min_path_diag_scale (int* grid, int numLine, int numColumn, int minSum, Cell_t **minPathArr, int *minPathLen, bool isDiag);
+void find_min_path_diag_stale (int* grid, int numLine, int numColumn, float minSum, Cell_t **minPathArr, int *minPathLen);
 
 #ifdef __cplusplus
 }

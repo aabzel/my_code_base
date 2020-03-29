@@ -9,7 +9,7 @@
 #define DEBUR_LET_POS 1
 #define DEBUG_ARG 0
 #define DEBUG_REMAIN_ALPH 1
-#define F_EPSILON 0.0000005f
+#define F_EPSILON 0.0005f
 
 
 int max (int val1, int val2);

@@ -64,7 +64,7 @@ int min3 (int val1, int val2, int val3) {
 
 
 float min3f (float val1, float val2, float val3) {
-    float outVal = 0;
+    float outVal = 0.0f;
     outVal = minf (val1, val2);
     outVal = minf (outVal, val3);
     return outVal;

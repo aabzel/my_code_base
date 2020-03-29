@@ -27,10 +27,13 @@ int unitTest (void) {
         return ALGO_ERROR;
     }
 
+#if TEST_STR_STR
     res = test_stsstr ();
     if (false == res) {
         return STRCASESTR_ERROR;
     }
+#endif
+
 #if TEST_MIN_PATH
     res = test_min_path ();
     if (false == res) {
@@ -38,17 +41,24 @@ int unitTest (void) {
     }
 #endif
 
-    res = test_min_diag_scale_summ ();
-    if (false == res) {
-        return MIN_PATH_DIAG_SCALE_ERROR;
-    }
-
 #if TEST_MIN_PATH_DIAG
     res = test_min_path_diag ();
     if (false == res) {
         return MIN_PATH_DIAG_ERROR;
     }
 #endif
+
+#if TEST_MIN_DIAG_SCALE_SUMM
+    res = test_min_diag_scale_summ ();
+    if (false == res) {
+        return MIN_PATH_DIAG_SCALE_ERROR;
+    }
+#endif
+
+    res = test_find_min_diag_scale_summ ();
+    if (false == res) {
+        return FIND_MIN_PATH_DIAG_SCALE_ERROR;
+    }
 
 #if TEST_FLOAT
     res = test_float ();
@@ -794,7 +804,7 @@ bool test_min_diag_scale_summ (void) {
             { 1, 1, 1 },
             { 1, 1, 1 },
             { 1, 1, 1 } };
-    float totalSum = minPathDiagScalseSum ((int*) grid, 3, 3);
+    float totalSum = minPathDiagScaleSum ((int*) grid, 3, 3);
     if (is_floats_equal (totalSum, 2.828f)) {
         res = true;
     } else {
@@ -803,3 +813,20 @@ bool test_min_diag_scale_summ (void) {
     }
     return res;
 }
+
+bool test_find_min_diag_scale_summ (void) {
+    bool res = false;
+    int grid [5] [5] =
+        {
+            { 1, 1, 100, 100, 100 },
+            { 1, 1, 100, 100, 100 },
+            { 1, 1, 100, 100, 100 },
+            { 1, 1, 100, 100, 100 },
+            { 1, 1, 100, 100, 100 } };
+    res = minPathDiagScale ((int*) grid, 5, 5);
+    if (true == res) {
+        res = true;
+    }
+    return res;
+}
+

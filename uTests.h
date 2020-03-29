@@ -6,7 +6,8 @@
 #include "utils.h"
 
 #define TEST_UNIQ_DIAG_PATH_TASK 0
-#define TEST_MIN_PATH_DIAG 1
+#define TEST_MIN_PATH_DIAG 0
+#define TEST_MIN_DIAG_SCALE_SUMM 1
 #define TEST_UNIQ_PATH_TASK 0
 #define TEST_UIO_COMB 0
 #define TEST_YA_TASK 0
@@ -30,11 +31,10 @@ typedef enum {
     ALGO_ERROR = 19,
     MIN_PATH_DIAG_ERROR = 20,
     STRCASESTR_ERROR = 21,
-    MIN_PATH_DIAG_SCALE_ERROR=22,
+    MIN_PATH_DIAG_SCALE_ERROR = 22,
+    FIND_MIN_PATH_DIAG_SCALE_ERROR = 23,
     NUM_ERROR
 } error_t;
-
-
 
 int unitTest (void);
 
@@ -56,5 +56,6 @@ bool test_min_diag_scale_summ (void);
 bool test_min_path_diag (void);
 bool test_min_path (void);
 bool test_min_path_diag_atmospher (void);
+bool test_find_min_diag_scale_summ (void);
 
 #endif /* __UTESTS_H */

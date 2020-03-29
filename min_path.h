@@ -14,10 +14,11 @@ extern "C" {
 #define USE_PRINT_LT_DIAG 0
 #define USE_PRINT_LT 0
 
+
 typedef struct xCell_t {
     int x;
     int y;
-    int val;
+    float val; //
 } Cell_t;
 
 int unique_path_diag (int xMax, int yMax);
