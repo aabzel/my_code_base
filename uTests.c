@@ -12,6 +12,7 @@
 #include "linked_list.h"
 #include "utils.h"
 #include "amount_of_uio_states.h"
+#include "min_path_diag_scale.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -20,6 +21,16 @@
 
 int unitTest (void) {
     bool res = false;
+
+    res = test_algo ();
+    if (false == res) {
+        return ALGO_ERROR;
+    }
+
+    res = test_stsstr ();
+    if (false == res) {
+        return STRCASESTR_ERROR;
+    }
 #if TEST_MIN_PATH
     res = test_min_path ();
     if (false == res) {
@@ -27,9 +38,9 @@ int unitTest (void) {
     }
 #endif
 
-    res = test_algo ();
+    res = test_min_diag_scale_summ ();
     if (false == res) {
-        return ALGO_ERROR;
+        return MIN_PATH_DIAG_SCALE_ERROR;
     }
 
 #if TEST_MIN_PATH_DIAG
@@ -38,7 +49,6 @@ int unitTest (void) {
         return MIN_PATH_DIAG_ERROR;
     }
 #endif
-
 
 #if TEST_FLOAT
     res = test_float ();
@@ -617,6 +627,53 @@ bool test_algo (void) {
 
 }
 
+bool test_stsstr (void) {
+    char text [100];
+    char pattern [100];
+    char *nullPtr = NULL;
+    char *resPtr;
+
+    strcpy (text, "uArT_BaYpass tExt to uart");
+    strcpy (pattern, "");
+    resPtr = str_case_str (text, pattern);
+    if (NULL == resPtr) {
+        printf ("\nDid not spot\n");
+        return false;
+    }
+
+    strcpy (text, "uArT_BaYpass tExt to uart");
+    strcpy (pattern, "bAy");
+    resPtr = str_case_str (text, pattern);
+    if (NULL == resPtr) {
+        printf ("\nDid not spot\n");
+        return false;
+    }
+    printf ("\n[%s] [%s]\n", text, pattern);
+
+    strcpy (pattern, "paTtern");
+    resPtr = str_case_str (text, pattern);
+    if (NULL != resPtr) {
+        printf ("\nfalse spot\n");
+        return false;
+    }
+    printf ("\n[%s] [%s]\n", text, pattern);
+
+    resPtr = str_case_str (text, nullPtr);
+    if (NULL != resPtr) {
+        printf ("\nfalse spot pattern NULL\n");
+        return false;
+    }
+    printf ("\n[%s] [%s]\n", text, pattern);
+
+    resPtr = str_case_str (nullPtr, text);
+    if (NULL != resPtr) {
+        printf ("\nfalse spot text NULL\n");
+        return false;
+    }
+    printf ("\n[%s] [%s]\n", text, pattern);
+    return true;
+}
+
 bool test_float (void) {
     bool res = true;
     float val = 3.25f;
@@ -626,3 +683,123 @@ bool test_float (void) {
     return res;
 }
 
+bool test_min_path (void) {
+    bool res = false;
+    int grid [3] [3] =
+        {
+            { 1, 3, 1 },
+            { 1, 5, 1 },
+            { 4, 2, 1 } };
+    int minSum;
+    int numOfLine = 3;
+    int numOfcolomn = 3;
+    minSum = minPathSum ((int *) grid, numOfLine, numOfcolomn);
+    if (7 == minSum) {
+        res = true;
+    } else {
+        return false;
+    }
+
+    //save_array_as_dot ("map1.dot", (int *) grid, 3, 3);
+
+    //minPath ((int *) grid, sizeOfGrid, gridColSize);
+    int grid2 [10] [10];
+    numOfLine = 10;
+    numOfcolomn = 10;
+    init_ramp_map ((int *) grid2, numOfLine, numOfcolomn);
+    //init_rand_array ((int *) grid2, numOfLine, numOfcolomn);
+    //minSum = minPathSum ((int *) grid2, 10, 10);
+    //save_array_as_dot ("map.dot", (int *) grid2, 10, 10);
+    minPath ((int *) grid2, numOfLine, numOfcolomn);
+
+    return res;
+}
+
+bool test_min_path_diag_atmospher (void) {
+    bool res = false;
+
+    int grid5 [5] [5] =
+        {
+            { 1, 1, 1, 999, 999 },
+            { 1, 1, 1, 999, 999 },
+            { 1, 1, 1, 999, 999 },
+            { 1, 1, 1, 999, 999 },
+            { 1, 1, 1, 999, 999 } };
+    res = minPathDiag ((int *) grid5, 5, 5);
+
+    return res;
+}
+
+bool test_min_path_diag (void) {
+    bool res = false;
+    int grid [3] [3] =
+        {
+            { 1, 3, 1 },
+            { 1, 5, 1 },
+            { 4, 2, 1 } };
+    int minSum;
+    int numOfLine = 3;
+    int numOfcolomn = 3;
+    minSum = minPathDiagSum ((int *) grid, numOfLine, numOfcolomn);
+    if (5 == minSum) {
+        res = true;
+    } else {
+        return false;
+    }
+#define TEST_DIM 3
+    int grid1 [TEST_DIM] [TEST_DIM];
+    res = init_one_map ((int *) grid1, TEST_DIM, TEST_DIM);
+    minSum = minPathDiagSum ((int *) grid1, TEST_DIM, TEST_DIM);
+    if (TEST_DIM == minSum) {
+        res = true;
+    } else {
+        return false;
+    }
+
+#define TEST_DIM2 8
+    int grid2 [TEST_DIM2] [TEST_DIM2];
+    //init_rod_map ((int *) grid2, TEST_DIM2, TEST_DIM2);
+    //init_rand_array((int *) grid2, TEST_DIM2, TEST_DIM2);
+    //init_box_map ((int *) grid2, TEST_DIM2, TEST_DIM2);
+    init_ramp_map ((int *) grid2, TEST_DIM2, TEST_DIM2);
+    minPathDiag ((int *) grid2, TEST_DIM2, TEST_DIM2);
+    //int grid2 [10] [10];
+    //numOfLine = 10;
+    //numOfcolomn = 10;
+    //init_ramp_map ((int *) grid2, numOfLine, numOfcolomn);
+    //init_rand_array ((int *) grid2, numOfLine, numOfcolomn);
+    //minSum = minPathSum ((int *) grid2, 10, 10);
+    //save_array_as_dot ("map.dot", (int *) grid2, 10, 10);
+    //minPath ((int *) grid2, numOfLine, numOfcolomn);
+#if TEST_3_3
+    int grid3 [3] [3] =
+        {
+            { 1, 93, 9 },
+            { 1, 95, 9 },
+            { 4, 2, 9 } };
+    minPathDiag ((int *) grid3, 3, 3);
+#endif
+
+    res = test_min_path_diag_atmospher ();
+    if (false == res) {
+        return false;
+    }
+    return res;
+}
+
+bool test_min_diag_scale_summ (void) {
+    bool res = false;
+    int grid [3] [3] =
+        {
+            { 1, 1, 1 },
+            { 1, 1, 1 },
+            { 1, 1, 1 } };
+    float totalSum = minPathDiagScalseSum ((int*) grid, 3, 3);
+    if (is_floats_equal (totalSum, 2.828f)) {
+        res = true;
+    } else {
+        printf ("\n totalSum %f \n", totalSum);
+
+    }
+    return res;
+}

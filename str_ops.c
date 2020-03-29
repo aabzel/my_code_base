@@ -4,6 +4,38 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include <ctype.h>
+
+/*
+ * Find the first occurrence of pattern in text, ignore case.
+ */
+
+// time complexity O(T*P)
+char *str_case_str (const char * const text, const char * const pattern) {
+    char *retPtr = NULL;
+    if ((NULL != text) && (NULL != pattern)) {
+        char * textPtr = (char *) text;
+        if ('\0' == (*pattern)) {
+            retPtr = (char *) text;
+        } else {
+            for (; '\0' != (*textPtr); ++textPtr) {
+                const char *txtPtr = textPtr, *patternPtr = pattern;
+
+                while ((*txtPtr) && ((tolower (*txtPtr)) == tolower (*patternPtr))) {
+                    ++txtPtr;
+                    ++patternPtr;
+                }
+
+                if ('\0' == (*patternPtr)) {
+                    retPtr = textPtr;
+                    break;
+                }
+            }
+        }
+    }
+
+    return retPtr;
+}
 
 char *removeCharFromString (char *str, uint32_t delIndex) {
     size_t alphabetLength = strlen (str);
@@ -24,6 +56,4 @@ char *removeCharFromString (char *str, uint32_t delIndex) {
 
     return NULL;
 }
-
-
 

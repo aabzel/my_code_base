@@ -164,7 +164,7 @@ void find_min_path_diag (int* grid, int numLine, int numColumn, int minSum, Cell
 
 bool minPathDiag (int* grid, int numLine, int numColumn) {
     int numPath = uniquePathDiag (numLine, numColumn);
-    printf ("\n Amount of Path %d\n", numPath);
+    printf ("\n %dx%d Amount of Path %d\n", numLine, numColumn, numPath);
     int mPathSum = minPathDiagSum (grid, numLine, numColumn);
     printf ("\n sumOfMinPath: [%d]\n", mPathSum);
     Cell_t *minPath = NULL;
@@ -174,7 +174,7 @@ bool minPathDiag (int* grid, int numLine, int numColumn) {
         //print_path (minPath, minPathLen);
         save_map_path_as_dot ("minPathDiag.dot", grid, numLine, numColumn, minPath, minPathLen);
         printf ("\n find_min_path done !\n");
-        free(minPath);
+        free (minPath);
     } else {
         printf ("\n\n\n min path not found ! \n\n");
     }
@@ -506,8 +506,8 @@ static int min_path_diag (
 #if DEBUG_MIN_PATH_DIAG_END
                 printf (" EndOfRoute! Sum: %d lenOfPath: %d\n", minPathSum, lenOfCurrPath + 1);
 #endif
-            }else{
-                free(locArr);
+            } else {
+                free (locArr);
             }
             //return LL to up
         }
@@ -579,80 +579,8 @@ static int min_path_diag_sum (int* grid, int numLine, int numColumn, int curCell
     return minPathSum;
 }
 
-bool test_min_path_diag (void) {
-    bool res = false;
-    int grid [3] [3] =
-        {
-            { 1, 3, 1 },
-            { 1, 5, 1 },
-            { 4, 2, 1 } };
-    int minSum;
-    int numOfLine = 3;
-    int numOfcolomn = 3;
-    minSum = minPathDiagSum ((int *) grid, numOfLine, numOfcolomn);
-    if (5 == minSum) {
-        res = true;
-    } else {
-        return false;
-    }
-#define TEST_DIM 3
-    int grid1 [TEST_DIM] [TEST_DIM];
-    res = init_one_map ((int *) grid1, TEST_DIM, TEST_DIM);
-    minSum = minPathDiagSum ((int *) grid1, TEST_DIM, TEST_DIM);
-    if (TEST_DIM == minSum) {
-        res = true;
-    } else {
-        return false;
-    }
-#define TEST_DIM2 8
-    int grid2 [TEST_DIM2] [TEST_DIM2];
-    //init_rod_map ((int *) grid2, TEST_DIM2, TEST_DIM2);
-    //init_rand_array((int *) grid2, TEST_DIM2, TEST_DIM2);
-    init_box_map((int *) grid2, TEST_DIM2, TEST_DIM2);
-    //init_ramp_map ((int *) grid2, TEST_DIM2, TEST_DIM2);
-    minPathDiag ((int *) grid2, TEST_DIM2, TEST_DIM2);
-    //int grid2 [10] [10];
-    //numOfLine = 10;
-    //numOfcolomn = 10;
-    //init_ramp_map ((int *) grid2, numOfLine, numOfcolomn);
-    //init_rand_array ((int *) grid2, numOfLine, numOfcolomn);
-    //minSum = minPathSum ((int *) grid2, 10, 10);
-    //save_array_as_dot ("map.dot", (int *) grid2, 10, 10);
-    //minPath ((int *) grid2, numOfLine, numOfcolomn);
 
-    return res;
-}
 
-bool test_min_path (void) {
-    bool res = false;
-    int grid [3] [3] =
-        {
-            { 1, 3, 1 },
-            { 1, 5, 1 },
-            { 4, 2, 1 } };
-    int minSum;
-    int numOfLine = 3;
-    int numOfcolomn = 3;
-    minSum = minPathSum ((int *) grid, numOfLine, numOfcolomn);
-    if (7 == minSum) {
-        res = true;
-    } else {
-        return false;
-    }
-    //save_array_as_dot ("map1.dot", (int *) grid, 3, 3);
-
-    //minPath ((int *) grid, sizeOfGrid, gridColSize);
-    int grid2 [10] [10];
-    numOfLine = 10;
-    numOfcolomn = 10;
-    init_ramp_map ((int *) grid2, numOfLine, numOfcolomn);
-    //init_rand_array ((int *) grid2, numOfLine, numOfcolomn);
-    //minSum = minPathSum ((int *) grid2, 10, 10);
-    //save_array_as_dot ("map.dot", (int *) grid2, 10, 10);
-    minPath ((int *) grid2, numOfLine, numOfcolomn);
-
-    return res;
-}
 
 bool init_rand_array (int *grid, int numLine, int numColumn) {
     time_t t;
@@ -702,18 +630,15 @@ void init_rod_map (int *grid, int numLine, int numColumn) {
     }
 }
 
-
-
 void init_box_map (int *grid, int numLine, int numColumn) {
     init_one_map (grid, numLine, numColumn);
     int x = 0;
     int y = 0;
-    for (y = 1; y < numColumn-1; y++) {
-        for (x = 1; x < numLine-1; x++) {
+    for (y = 1; y < numColumn - 1; y++) {
+        for (x = 1; x < numLine - 1; x++) {
             *((int *) grid + x * numColumn + y) = 99999;
         }
     }
-
 }
 
 void init_hole_map (int *grid, int numLine, int numColumn) {
@@ -733,8 +658,8 @@ void init_ramp_map (int *grid, int numLine, int numColumn) {
     int y = 0;
     for (y = 0; y < numColumn; y++) {
         for (x = 0; x < numLine; x++) {
-            int val = 1+y*y;
-            *((int *) grid + x * numColumn + y) =1+ val;
+            int val = 1 + y * y;
+            *((int *) grid + x * numColumn + y) = 1 + val;
         }
     }
 }

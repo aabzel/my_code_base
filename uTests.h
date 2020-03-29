@@ -29,11 +29,16 @@ typedef enum {
     LL_ERROR = 18,
     ALGO_ERROR = 19,
     MIN_PATH_DIAG_ERROR = 20,
+    STRCASESTR_ERROR = 21,
+    MIN_PATH_DIAG_SCALE_ERROR=22,
     NUM_ERROR
 } error_t;
 
+
+
 int unitTest (void);
 
+bool test_stsstr (void);
 bool test_array_combinations (void);
 bool test_ya_task (void);
 bool test_uniq_path (void);
@@ -47,5 +52,9 @@ bool test_grey_conversation (void);
 bool test_reverse_list (void);
 bool test_float (void);
 bool test_algo (void);
+bool test_min_diag_scale_summ (void);
+bool test_min_path_diag (void);
+bool test_min_path (void);
+bool test_min_path_diag_atmospher (void);
 
 #endif /* __UTESTS_H */
