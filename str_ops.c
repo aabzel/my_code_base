@@ -11,23 +11,20 @@
  */
 
 // time complexity O(T*P)
-char *str_case_str (const char * const text, const char * const pattern) {
-    char *retPtr = NULL;
+const char *str_case_str (const char * const text, const char * const pattern) {
+    const char *retPtr = NULL;
     if ((NULL != text) && (NULL != pattern)) {
-        char * textPtr = (char *) text;
+        int i = 0;
         if ('\0' == (*pattern)) {
-            retPtr = (char *) text;
+            retPtr =  &text[0];
         } else {
-            for (; '\0' != (*textPtr); ++textPtr) {
-                const char *txtPtr = textPtr, *patternPtr = pattern;
-
-                while ((*txtPtr) && ((tolower (*txtPtr)) == tolower (*patternPtr))) {
-                    ++txtPtr;
-                    ++patternPtr;
+            for (; '\0' != text [i]; ++i) {
+                int j = 0;
+                while (('\0' != text [i + j]) && ((tolower ((int)text [i + j]) == tolower ((int)pattern [j])))) {
+                    ++j;
                 }
-
-                if ('\0' == (*patternPtr)) {
-                    retPtr = textPtr;
+                if ('\0' == (pattern [j])) {
+                    retPtr =  &text [i];
                     break;
                 }
             }
@@ -36,7 +33,6 @@ char *str_case_str (const char * const text, const char * const pattern) {
 
     return retPtr;
 }
-
 char *removeCharFromString (char *str, uint32_t delIndex) {
     size_t alphabetLength = strlen (str);
     char *tempArray = malloc (alphabetLength);

@@ -13,6 +13,7 @@
 #include "utils.h"
 #include "amount_of_uio_states.h"
 #include "min_path_diag_scale.h"
+#include "parse_keepass.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -27,6 +28,10 @@ int unitTest (void) {
         return ALGO_ERROR;
     }
 
+    res = try_to_open_kdbx_file ();
+    if(false==res){
+        return TRY_OPEN_KEEPASS_ERROR;
+    }
 #if TEST_STR_STR
     res = test_stsstr ();
     if (false == res) {
@@ -55,10 +60,16 @@ int unitTest (void) {
     }
 #endif
 
+#if TEST_FIND_MIN_DIAG_SCALE_SUMM
     res = test_find_min_diag_scale_summ ();
     if (false == res) {
         return FIND_MIN_PATH_DIAG_SCALE_ERROR;
     }
+    res = test_find_min_diag_scale_summ2 ();
+    if (false == res) {
+        return FIND_MIN_PATH_DIAG_SCALE2_ERROR;
+    }
+#endif
 
 #if TEST_FLOAT
     res = test_float ();
@@ -641,7 +652,7 @@ bool test_stsstr (void) {
     char text [100];
     char pattern [100];
     char *nullPtr = NULL;
-    char *resPtr;
+    const char *resPtr;
 
     strcpy (text, "uArT_BaYpass tExt to uart");
     strcpy (pattern, "");
@@ -797,6 +808,7 @@ bool test_min_path_diag (void) {
     return res;
 }
 
+
 bool test_min_diag_scale_summ (void) {
     bool res = false;
     int grid [3] [3] =
@@ -810,6 +822,20 @@ bool test_min_diag_scale_summ (void) {
     } else {
         printf ("\n totalSum %f \n", totalSum);
 
+    }
+    return res;
+}
+
+
+
+bool test_find_min_diag_scale_summ2 (void) {
+    bool res = false;
+#define TEST_ARR_DIM2 7
+    int grid [TEST_ARR_DIM2] [TEST_ARR_DIM2] ;
+    init_ramp_map((int*) grid, TEST_ARR_DIM2, TEST_ARR_DIM2);
+    res = minPathDiagScale ((int*) grid, TEST_ARR_DIM2, TEST_ARR_DIM2);
+    if (true == res) {
+        res = true;
     }
     return res;
 }

@@ -227,9 +227,16 @@ void print_bit_representation (float val) {
     };
     union union_type cnvt;
     cnvt.val = val;
-    printf("size of %d", (int )sizeof(float));
+    printf ("size of %d", (int) sizeof(float));
     printf ("\n %f %d \n%s\n", cnvt.val, cnvt.vali, uint32_to_bin_str (cnvt.vali));
-
 }
 
+void print_mem (uint8_t *memPtr, uint32_t sizeOfAlphabet) {
+    printf ("\n");
+    uint32_t i;
+    for (i = 0; i < sizeOfAlphabet; i++) {
+        printf ("%02X", memPtr [i]);
+    }
+    printf ("\n");
+}
 

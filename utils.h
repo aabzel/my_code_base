@@ -28,6 +28,7 @@ void init_file_name (void);
 char *generate_num_string (int n);
 void print_array (int *alphabet, int sizeOfAlphabet, int k);
 void print_curr_array (int *alphabet, int sizeOfAlphabet);
+void print_mem (uint8_t *memPtr, uint32_t sizeOfAlphabet);
 void test_heap (void);
 uint32_t max_val (uint32_t amountofbit);
 int* grayCode (int n, int* returnSize);
