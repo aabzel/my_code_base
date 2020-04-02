@@ -36,11 +36,13 @@ typedef enum {
     FIND_MIN_PATH_DIAG_SCALE_ERROR = 23,
     FIND_MIN_PATH_DIAG_SCALE2_ERROR = 24,
     TRY_OPEN_KEEPASS_ERROR = 25,
+    IS_STR_FALSE_ERROR = 26,
     NUM_ERROR
 } error_t;
 
 int unitTest (void);
 
+bool test_valid_float_number (void);
 bool test_stsstr (void);
 bool test_array_combinations (void);
 bool test_ya_task (void);

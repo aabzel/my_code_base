@@ -28,10 +28,17 @@ int unitTest (void) {
         return ALGO_ERROR;
     }
 
+    res = test_valid_float_number ();
+    if (false == res) {
+        return IS_STR_FALSE_ERROR;
+    }
+#if TEST_KDBX
     res = try_to_open_kdbx_file ();
-    if(false==res){
+    if (false == res) {
         return TRY_OPEN_KEEPASS_ERROR;
     }
+#endif
+
 #if TEST_STR_STR
     res = test_stsstr ();
     if (false == res) {
@@ -808,7 +815,6 @@ bool test_min_path_diag (void) {
     return res;
 }
 
-
 bool test_min_diag_scale_summ (void) {
     bool res = false;
     int grid [3] [3] =
@@ -826,13 +832,11 @@ bool test_min_diag_scale_summ (void) {
     return res;
 }
 
-
-
 bool test_find_min_diag_scale_summ2 (void) {
     bool res = false;
 #define TEST_ARR_DIM2 7
-    int grid [TEST_ARR_DIM2] [TEST_ARR_DIM2] ;
-    init_ramp_map((int*) grid, TEST_ARR_DIM2, TEST_ARR_DIM2);
+    int grid [TEST_ARR_DIM2] [TEST_ARR_DIM2];
+    init_ramp_map ((int*) grid, TEST_ARR_DIM2, TEST_ARR_DIM2);
     res = minPathDiagScale ((int*) grid, TEST_ARR_DIM2, TEST_ARR_DIM2);
     if (true == res) {
         res = true;
@@ -856,3 +860,131 @@ bool test_find_min_diag_scale_summ (void) {
     return res;
 }
 
+bool test_valid_float_number (void) {
+    bool res;
+    char string [100];
+
+#if 1
+
+    strcpy (string, " 4e3.");
+    res = isNumber (string);
+    if (true == res) {
+        printf ("\n error [%s]", string);
+        return false;
+    }
+
+    strcpy (string, "53K");
+    res = isNumber (string);
+    if (true == res) {
+        printf ("\n error [%s]", string);
+        return false;
+    }
+
+    strcpy (string, ".1.");
+    res = isNumber (string);
+    if (true == res) {
+        printf ("\n error [%s]", string);
+        return false;
+    }
+
+    strcpy (string, "3. ");
+    res = isNumber (string);
+    if (false == res) {
+        printf ("\n error [%s]", string);
+        return false;
+    }
+
+    strcpy (string, "0..");
+    res = isNumber (string);
+    if (true == res) {
+        printf ("\n error [%s]", string);
+        return false;
+    }
+
+    strcpy (string, "3.");
+    res = isNumber (string);
+    if (false == res) {
+        printf ("\n error [%s]", string);
+        return false;
+    }
+
+    strcpy (string, "078332e437");
+    res = isNumber (string);
+    if (false == res) {
+        printf ("\n error [%s]", string);
+        return false;
+    }
+
+    strcpy (string, ".2e81");
+    res = isNumber (string);
+    if (false == res) {
+        printf ("\n error [%s]", string);
+        return false;
+    }
+
+    strcpy (string, "1  ");
+    res = isNumber (string);
+    if (false == res) {
+        printf ("\n error [%s]", string);
+        return false;
+    }
+
+    strcpy (string, ".  ");
+    res = isNumber (string);
+    if (true == res) {
+        printf ("\n error [%s]", string);
+        return false;
+    }
+
+    strcpy (string, ".1");
+    res = isNumber (string);
+    if (false == res) {
+        printf ("\n error [%s]", string);
+        return false;
+    }
+
+    strcpy (string, "0");
+    res = isNumber (string);
+    if (false == res) {
+        printf ("\n error [%s]", string);
+        return false;
+    }
+
+    strcpy (string, "1 ");
+    res = isNumber (string);
+    if (false == res) {
+        printf ("\n error [%s]", string);
+        return false;
+    }
+
+    strcpy (string, "0e");
+    res = isNumber (string);
+    if (true == res) {
+        printf ("\n error [%s]", string);
+        return false;
+    }
+#endif
+
+    strcpy (string, "1 4");
+    res = isNumber (string);
+    if (true == res) {
+        printf ("\n error [%s]", string);
+        return false;
+    }
+
+    strcpy (string, " 0.1 ");
+    res = isNumber (string);
+    if (false == res) {
+        printf ("\n error [%s]", string);
+        return false;
+    }
+    strcpy (string, "2e10");
+    res = isNumber (string);
+    if (false == res) {
+        printf ("\n error [%s]", string);
+        return false;
+    }
+
+    return true;
+
+}

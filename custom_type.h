@@ -11,6 +11,11 @@ extern "C" {
 #define false (0u)
 typedef uint8_t bool;
 
+#if 0
+typedef float float_t;
+typedef double double_t;
+#endif
+
 #ifdef __cplusplus
 }
 #endif
