@@ -170,10 +170,12 @@ int findMaxConOnesDel1 (int * const array, int length) {
 void* memdup (const void* mem, size_t sizeByte) {
     void* out = NULL;
     if (0 < sizeByte) {
-        if (mem) {
-            out = malloc (sizeByte);
+        if (NULL != mem) {
+            out = (void*) malloc (sizeByte);
             if (NULL != out) {
                 memcpy (out, mem, sizeByte);
+            } else {
+                printf ("\n Unable to malloc %u byte", (unsigned int) sizeByte);
             }
         } else {
             printf ("NUll Array pointer!");
@@ -181,7 +183,6 @@ void* memdup (const void* mem, size_t sizeByte) {
     } else {
         printf ("NUll Array!");
     }
-
     return out;
 }
 

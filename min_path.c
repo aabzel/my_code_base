@@ -3,6 +3,7 @@
 #include "algorithms.h"
 #include "arrays.h"
 #include "custom_type.h"
+#include "min_path_diag_scale.h"
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,3 +1,5 @@
+#include "algorithms.h"
+
 #include "utils.h"
 #include "arrays.h"
 #include "linked_list.h"
@@ -54,6 +56,16 @@ void print_array (int *alphabet, int sizeOfAlphabet, int k) {
     printf ("{");
     for (int i = 0; i < sizeOfAlphabet; i++) {
         printf ("%d", alphabet [i]);
+    }
+    printf ("}");
+    printf ("\n");
+}
+
+void print_array_double (double *alphabet, int sizeOfAlphabet) {
+
+    printf ("\n{");
+    for (int i = 0; i < sizeOfAlphabet; i++) {
+        printf ("%f ", alphabet [i]);
     }
     printf ("}");
     printf ("\n");
@@ -238,5 +250,77 @@ void print_mem (uint8_t *memPtr, uint32_t sizeOfAlphabet) {
         printf ("%02X", memPtr [i]);
     }
     printf ("\n");
+}
+
+long long summ_array (int const* const inArr, int sizeOfArr) {
+    long long int sum = 0;
+    if (inArr) {
+        for (int i = 0; i < sizeOfArr; i++) {
+            sum += inArr [i];
+        }
+    }
+    return sum;
+}
+
+double avrage_two (int val1, int val2) {
+    double avagage = (double) ( ((double) ( ( (double) val1 ) + ( (double) val2 ) ) /  2.0) );
+    return avagage;
+}
+
+bool is_odd (int val) {
+    bool res = false;
+    if (val & 1) {
+        res = true;
+    }
+    return res;
+}
+
+double calc_average (int const * const inArr, int sizeOfArr) {
+    double median = 0.0;
+    if (inArr) {
+        if (0 < sizeOfArr) {
+            double sum = (double) summ_array (inArr, sizeOfArr);
+            median = sum / sizeOfArr;
+        }
+    }
+    return median;
+}
+
+double calc_median (int * const inArr, int sizeOfArr) {
+    double median = 0.0;
+    if (inArr) {
+        int *localArr = memdup (inArr, sizeOfArr * sizeof(int));
+        if (localArr) {
+            qsort (localArr, sizeOfArr, sizeof(int), cmp_int);
+            if (is_odd (sizeOfArr)) {
+                median = localArr [((int) sizeOfArr / 2)];
+            } else {
+                median = avrage_two (localArr [sizeOfArr / 2 - 1], localArr [sizeOfArr / 2]);
+                //median = calc_average (&localArr [sizeOfArr / 2 - 1], 2);
+            }
+            free (localArr);
+        } else {
+            printf ("Unable to alloc %d byte", 4 * sizeOfArr);
+        }
+    }
+    return median;
+}
+
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+double* medianSlidingWindow (int* nums, int numsSize, int k, int* returnSize) {
+// how many window position exest?
+    int size = numsSize - k + 1;
+    double *ptrArray = (double *) malloc (sizeof(double) * size);
+    if (ptrArray) {
+        *returnSize = size;
+        for (int j = 0; j < size; j++) {
+            ptrArray [j] = calc_median (&nums [j], k);
+        }
+    } else {
+        printf ("Unable to malloc %u byte", (unsigned int) sizeof(double) * size);
+    }
+    return ptrArray;
 }
 

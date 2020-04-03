@@ -23,9 +23,16 @@
 int unitTest (void) {
     bool res = false;
 
+    test_heap ();
+
     res = test_algo ();
     if (false == res) {
         return ALGO_ERROR;
+    }
+
+    res = test_medianSlidingWindow ();
+    if (false == res) {
+        return MEDIAN_ERROR;
     }
 
     res = test_valid_float_number ();
@@ -611,25 +618,32 @@ bool test_array_combinations (void) {
     return res;
 }
 
-void test_heap (void) {
-    uint32_t byte = 3;
+void print_bytes (uint32_t byte) {
     float kByte = 4;
     float MByte = 4;
     float GByte = 4;
+    kByte = (float) byte / 1024.0f;
+    MByte = (float) kByte / 1024.0f;
+    GByte = (float) MByte / 1024.0f;
+    printf ("\nmax Available heap size [%u] byte [%f] k_Byte [%f] M_Byte [%f] G_Byte\n", byte, kByte, MByte, GByte);
+}
+
+void test_heap (void) {
+    uint32_t byte = 3;
+    uint32_t mult = 10;
+    uint32_t div = 2;
     while (1) {
         char *ptr = NULL;
         ptr = (char *) malloc (byte);
         if (ptr) {
-            byte = (byte * 3) / 2;
+            byte = (byte * mult) / div;
+            //print_bytes (byte);
             free (ptr);
         } else {
             break;
         }
     } //[2327387742]
-    kByte = (float) byte / 1024.0f;
-    MByte = (float) kByte / 1024.0f;
-    GByte = (float) MByte / 1024.0f;
-    printf ("\nmax Available heap size [%u] byte [%f] k_Byte [%f] M_Byte [%f] G_Byte\n", byte, kByte, MByte, GByte);
+    print_bytes (byte);
 }
 
 void test_combine (void) {
@@ -987,4 +1001,24 @@ bool test_valid_float_number (void) {
 
     return true;
 
+}
+
+bool test_medianSlidingWindow (void) {
+    bool res = false;
+    int arr [] =
+        { 1, 3, -1, -3, 5, 3, 6, 7 };
+    int numsSize = sizeof(arr) / sizeof(arr [0]);
+    int returnSize = 0;
+    int k = 3;
+    double* prt = medianSlidingWindow (arr, numsSize, k, &returnSize);
+    if (prt) {
+        printf ("\n mem Alloced! %d ", returnSize);
+        if (returnSize == (numsSize - k + 1)) {
+            print_array_double (prt, returnSize);
+            res = true;
+        }
+        free (prt);
+    }
+
+    return res;
 }

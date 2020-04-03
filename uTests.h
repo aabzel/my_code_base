@@ -37,6 +37,7 @@ typedef enum {
     FIND_MIN_PATH_DIAG_SCALE2_ERROR = 24,
     TRY_OPEN_KEEPASS_ERROR = 25,
     IS_STR_FALSE_ERROR = 26,
+    MEDIAN_ERROR = 27,
     NUM_ERROR
 } error_t;
 
@@ -60,6 +61,7 @@ bool test_algo (void);
 bool test_min_diag_scale_summ (void);
 bool test_min_path_diag (void);
 bool test_min_path (void);
+bool test_medianSlidingWindow (void);
 bool test_min_path_diag_atmospher (void);
 bool test_find_min_diag_scale_summ (void);
 bool test_find_min_diag_scale_summ2 (void);

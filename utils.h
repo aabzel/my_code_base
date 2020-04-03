@@ -30,11 +30,20 @@ void print_array (int *alphabet, int sizeOfAlphabet, int k);
 void print_curr_array (int *alphabet, int sizeOfAlphabet);
 void print_mem (uint8_t *memPtr, uint32_t sizeOfAlphabet);
 void test_heap (void);
+double avrage_two (int val1, int val2);
 uint32_t max_val (uint32_t amountofbit);
 int* grayCode (int n, int* returnSize);
 void print_bit_representation (float val);
 char *uint32_to_bin_str (uint32_t const inVal32bit);
 int **list_of_arr_to_arr_of_arr (list_node_t * const listOfArrays, int * const amountOfArrays, int** returnColumnSizes);
+double calc_median (int * const inArr, int sizeOfArr);
+long long summ_array (int const* const inArr, int sizeOfArr);
+double avrage_two (int val1, int val2);
+double* medianSlidingWindow (int* nums, int numsSize, int k, int* returnSize);
+void print_array_double (double *alphabet, int sizeOfAlphabet);
+bool is_odd (int val);
+double calc_average (int const * const inArr, int sizeOfArr);
+void print_bytes (uint32_t byte);
 
 #ifdef __cplusplus
 }
