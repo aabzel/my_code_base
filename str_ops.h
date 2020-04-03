@@ -16,6 +16,7 @@
 const char *str_case_str (const char * const text, const char * const pattern);
 char *removeCharFromString (char *str, uint32_t delIndex);
 bool isNumber (char * s);
+bool is_real_number (const char str []);
 bool try_dec_char_to_u8 (uint8_t dec_char, uint8_t * dec_char_to_u8_value);
 bool is_float_number (const char float_str [] ) ;
 #endif /* __STRING_OPS_H */

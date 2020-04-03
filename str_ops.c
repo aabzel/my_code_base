@@ -12,7 +12,7 @@
 /*
  * Find the first occurrence of pattern in text, ignore case.
  */
-static bool is_number (const char str []);
+bool is_real_number (const char str []);
 
 // time complexity O(T*P)
 const char *str_case_str (const char * const text, const char * const pattern) {
@@ -65,7 +65,7 @@ bool isNumber (char * s) {
 }
 
 bool is_float_number (const char inStr []) {
-    bool float_success = is_number (inStr);
+    bool float_success = is_real_number (inStr);
     return float_success;
 }
 
@@ -89,7 +89,8 @@ static bool is_spaces (const char str []) {
     return res;
 }
 
-static bool is_number (const char str []) {
+
+bool is_real_number (const char str []) {
     bool strtod_success = true;
     double_t number = 0.0;
     uint32_t str_index = 0U;
