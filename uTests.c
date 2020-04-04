@@ -26,11 +26,20 @@
 
 int unitTest (void) {
     bool res = false;
+#if TEST_HEAP_DELET_ONE
+    res= test_bin_heap_rand_add_and_del_one();
+    if (false == res) {
+         return BIN_HEAP_DEL_ERROR;
+     }
+#endif
 
+#if TEST_HEAP_DELET
     res = test_bin_heap_delete();
     if (false == res) {
         return BIN_HEAP_DEL_ERROR;
     }
+#endif
+
 #if TEST_HEAP_SAME
     res = test_bin_heap_same_add ();
     if (false == res) {
@@ -1138,6 +1147,33 @@ bool test_bin_heap_rand_add (void) {
     return res;
 }
 
+bool test_bin_heap_rand_add_and_del_one (void) {
+    bool res = true;
+    time_t t;
+    TreeNode_t *binMaxHeapRoot = NULL;
+    srand ((unsigned) time (&t));
+    for (int a = 10; 0 < a; a -= 1) {
+        if (true == res) {
+            int b = rand () % 100;
+            res = max_heap_insert (&binMaxHeapRoot, b);
+            if (false == res) {
+                printf ("\n max_heap_insert %d err", b);
+            }
+            res = is_max_heap (binMaxHeapRoot);
+            if (false == res) {
+                printf ("\n Notheap!");
+            }
+        }
+    }
+
+    print_tree_to_file (binMaxHeapRoot, "bin_heap_rand.dot");
+    get_max (&binMaxHeapRoot);
+
+    print_tree_to_file (binMaxHeapRoot, "bin_heap_rand_after_del.dot");
+
+    return res;
+}
+
 bool test_bin_heap_dec_add (void) {
     bool res = true;
     TreeNode_t *binMaxHeapRoot = NULL;
@@ -1189,3 +1225,4 @@ bool test_bin_heap_delete (void) {
 
     return res;
 }
+

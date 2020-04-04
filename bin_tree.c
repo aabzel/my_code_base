@@ -63,7 +63,24 @@ bool is_balanced (TreeNode_t * root) {
         /* Get the height of left and right sub trees */
         lheight = height (root->left);
         rheight = height (root->right);
-        if (abs (lheight - rheight) <= 1 && is_balanced (root->left) && is_balanced (root->right)) {
+        if ((abs (lheight - rheight)<=1)  && is_balanced (root->left) && is_balanced (root->right)) {
+            res = true;
+        }
+    } else {
+        res = true;
+    }
+    return res;
+}
+
+bool is_complete (TreeNode_t * root) {
+    bool res = false;
+    if (root) {
+        int lheight; /* for height of left subtree */
+        int rheight; /* for height of right subtree */
+        /* Get the height of left and right sub trees */
+        lheight = height (root->left);
+        rheight = height (root->right);
+        if ((0==abs (lheight - rheight))  && is_complete (root->left) && is_complete (root->right)) {
             res = true;
         }
     } else {
