@@ -44,7 +44,8 @@ TreeNode_t *get_first_spare_leaf_node (TreeNode_t * root) ;
 void print2DUtil (TreeNode_t *root, int space);
 void print2D (TreeNode_t *root);
 void bst_print_dot (TreeNode_t* tree, FILE* stream);
-void bst_print_dot_null (int key, int nullcount, FILE* stream);
+
+void bst_print_dot_null (unsigned long long int nodeAdddr, FILE* stream);
 void bst_print_dot_aux (TreeNode_t* node, FILE* stream);
 bool print_tree_to_file (TreeNode_t* root, char *fileName);
 

@@ -26,19 +26,21 @@
 int unitTest (void) {
     bool res = false;
 
+#if TEST_HEAP_SAME
     res = test_bin_heap_same_add ();
     if (false == res) {
         return BIN_HEAP_SAME_ERROR;
     }
+#endif
 
-#if TEST_HEAP1
-    res = test_bin_heap ();
+#if TEST_HEAP_CON
+    res = test_bin_heap_dec_add ();
     if (false == res) {
         return BIN_HEAP_ERROR;
     }
 #endif
 
-#if BIN_HEAP_SAME_ADD
+#if BIN_HEAP_RAND_ADD
     res = test_bin_heap_rand_add ();
     if (false == res) {
         return BIN_HEAP_RAND_ERROR;
@@ -1088,7 +1090,7 @@ bool test_bin_heap_same_add (void) {
     time_t t;
     TreeNode_t *binMaxHeapRoot = NULL;
     srand ((unsigned) time (&t));
-    for (int a = 10; 0 < a; a -= 2) {
+    for (int a = 5; 0 < a; a -= 1) {
         if (true == res) {
             int b = 10;
             res = max_heap_insert (&binMaxHeapRoot, b);
@@ -1102,7 +1104,7 @@ bool test_bin_heap_same_add (void) {
         }
     }
 
-    print_tree_to_file (binMaxHeapRoot, "bin_heap_rand.dot");
+    print_tree_to_file (binMaxHeapRoot, "bin_heap_same.dot");
 
     return res;
 }
@@ -1134,7 +1136,7 @@ bool test_bin_heap_rand_add (void) {
 bool test_bin_heap_dec_add (void) {
     bool res = true;
     TreeNode_t *binMaxHeapRoot = NULL;
-    for (int a = 100; 0 < a; a -= 2) {
+    for (int a = 10; 0 < a; a -= 2) {
         if (true == res) {
             res = max_heap_insert (&binMaxHeapRoot, a);
             if (false == res) {
@@ -1147,7 +1149,7 @@ bool test_bin_heap_dec_add (void) {
         }
     }
 
-    print_tree_to_file (binMaxHeapRoot, "bin_heap.dot");
+    print_tree_to_file (binMaxHeapRoot, "bin_heap_dec.dot");
 
     return res;
 }

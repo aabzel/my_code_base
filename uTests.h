@@ -12,6 +12,8 @@
 #define TEST_UNIQ_PATH_TASK 0
 #define TEST_UIO_COMB 0
 #define TEST_YA_TASK 0
+#define TEST_HEAP_CON 0
+#define TEST_HEAP_SAME 1
 
 typedef enum {
     FINE = 0,

@@ -206,25 +206,33 @@ void print2DUtil (TreeNode_t *root, int space) {
     print2DUtil (root->left, space);
 }
 
-void bst_print_dot_null (int key, int nullcount, FILE* stream) {
-    fprintf (stream, "    null%d [shape=point];\n", nullcount);
-    fprintf (stream, "    %d -> null%d;\n", key, nullcount);
+int gNullCnt = 0;
+void bst_print_dot_null (unsigned long long int nodeAdddr, FILE* stream) {
+    gNullCnt++;
+    fprintf (stream, "    null%d [shape=point];\n", gNullCnt);
+    fprintf (stream, "    node%llu -> null%d;\n", nodeAdddr, gNullCnt);
 }
 
 void bst_print_dot_aux (TreeNode_t* node, FILE* stream) {
-    static int nullcount = 0;
+    unsigned long long int nodeAddr = (unsigned long long int) node;
+    if (node) {
+        fprintf (stream, "    node%llu;\n", (unsigned long long int) node);
+    }
 
-    if (node->left) {
-        fprintf (stream, "    %d -> %d;\n", node->val, node->left->val);
+    if (NULL != node->left) {
+        unsigned long long int leftNodeAddr = (unsigned long long int) (node->left);
+        fprintf (stream, "   node%llu -> node%llu ; \n", nodeAddr, leftNodeAddr);
         bst_print_dot_aux (node->left, stream);
-    } else
-        bst_print_dot_null (node->val, nullcount++, stream);
-
-    if (node->right) {
-        fprintf (stream, "    %d -> %d;\n", node->val, node->right->val);
+    } else {
+        bst_print_dot_null (nodeAddr, stream);
+    }
+    if (NULL != node->right) {
+        unsigned long long int rightNodeAddr = (uint64_t) (node->right);
+        fprintf (stream, "   node%llu -> node%llu ; \n", nodeAddr, rightNodeAddr);
         bst_print_dot_aux (node->right, stream);
-    } else
-        bst_print_dot_null (node->val, nullcount++, stream);
+    } else {
+        bst_print_dot_null (nodeAddr, stream);
+    }
 }
 
 //use Graphviz Online
@@ -247,13 +255,13 @@ void bst_print_dot (TreeNode_t* tree, FILE* stream) {
     fprintf (stream, "digraph BST {\n");
     fprintf (stream, "    node [fontname=\"Arial\"];\n");
 
-    if (!tree)
+    if (NULL == tree) {
         fprintf (stream, "\n");
-    else if (!tree->right && !tree->left)
-        fprintf (stream, "    %d;\n", tree->val);
-    else
+    } else if (NULL == tree->right && NULL == tree->left) {
+        fprintf (stream, "    node%llu;\n", (unsigned long long int) tree);
+    } else {
         bst_print_dot_aux (tree, stream);
-
+    }
     fprintf (stream, "}\n");
 }
 
