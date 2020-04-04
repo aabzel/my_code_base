@@ -6,6 +6,7 @@ LDFLAGS=
 SOURCES = arrays.c  
 SOURCES += permutations.c 
 SOURCES += utils.c  
+SOURCES += bin_tree_draw.c   
 SOURCES += uTests.c   
 SOURCES += min_path_diag_scale.c
 SOURCES += str_ops.c  

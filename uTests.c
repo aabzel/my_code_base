@@ -3,6 +3,7 @@
 #include "algorithms.h"
 #include "arrays.h"
 #include "bin_tree.h"
+#include "bin_tree_draw.h"
 #include "bin_heap.h"
 #include "bin_search_tree.h"
 #include "combinations.h"
@@ -26,6 +27,10 @@
 int unitTest (void) {
     bool res = false;
 
+    res = test_bin_heap_delete();
+    if (false == res) {
+        return BIN_HEAP_DEL_ERROR;
+    }
 #if TEST_HEAP_SAME
     res = test_bin_heap_same_add ();
     if (false == res) {
@@ -1114,7 +1119,7 @@ bool test_bin_heap_rand_add (void) {
     time_t t;
     TreeNode_t *binMaxHeapRoot = NULL;
     srand ((unsigned) time (&t));
-    for (int a = 40; 0 < a; a -= 2) {
+    for (int a = 40; 0 < a; a -= 1) {
         if (true == res) {
             int b = rand () % 100;
             res = max_heap_insert (&binMaxHeapRoot, b);
@@ -1150,6 +1155,37 @@ bool test_bin_heap_dec_add (void) {
     }
 
     print_tree_to_file (binMaxHeapRoot, "bin_heap_dec.dot");
+
+    return res;
+}
+
+bool test_bin_heap_delete (void) {
+    bool res = true;
+    TreeNode_t *binMaxHeapRoot = NULL;
+    for (int a = 10; 0 < a; a--) {
+        if (true == res) {
+            res = max_heap_insert (&binMaxHeapRoot, a);
+            if (false == res) {
+                printf ("\n max_heap_insert %d err\n", a);
+            }
+            res = is_max_heap (binMaxHeapRoot);
+            if (false == res) {
+                printf ("\n tree is not heap!\n");
+            }
+        }
+    }
+
+    int val = 0;
+    for (int a = 10; 0 < a; a--) {
+        if (true == res) {
+            val = get_max (&binMaxHeapRoot);
+            if (val != a) {
+                res = false;
+            }
+        }
+    }
+
+    print_tree_to_file (binMaxHeapRoot, "bin_heap_del.dot");
 
     return res;
 }

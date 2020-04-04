@@ -13,7 +13,8 @@
 #define TEST_UIO_COMB 0
 #define TEST_YA_TASK 0
 #define TEST_HEAP_CON 0
-#define TEST_HEAP_SAME 1
+#define TEST_HEAP_SAME 0
+#define BIN_HEAP_RAND_ADD 0
 
 typedef enum {
     FINE = 0,
@@ -43,14 +44,15 @@ typedef enum {
     K_SMALL_ERROR = 28,
     BIN_HEAP_ERROR = 29,
     BIN_HEAP_RAND_ERROR = 30,
-    BIN_HEAP_SAME_ERROR =31,
+    BIN_HEAP_SAME_ERROR = 31,
+    BIN_HEAP_DEL_ERROR = 32,
     NUM_ERROR
 } error_t;
 
 int unitTest (void);
 
 bool test_bin_heap (void);
-bool test_bin_heap_same_add(void);
+bool test_bin_heap_same_add (void);
 bool test_bin_heap_rand_add (void);
 bool test_bin_heap_dec_add (void);
 bool test_heap (void);
@@ -78,5 +80,6 @@ bool test_medianSlidingWindow (void);
 bool test_min_path_diag_atmospher (void);
 bool test_find_min_diag_scale_summ (void);
 bool test_find_min_diag_scale_summ2 (void);
+bool test_bin_heap_delete (void);
 
 #endif /* __UTESTS_H */
