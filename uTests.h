@@ -40,12 +40,17 @@ typedef enum {
     MEDIAN_ERROR = 27,
     K_SMALL_ERROR = 28,
     BIN_HEAP_ERROR = 29,
+    BIN_HEAP_RAND_ERROR = 30,
+    BIN_HEAP_SAME_ERROR =31,
     NUM_ERROR
 } error_t;
 
 int unitTest (void);
 
 bool test_bin_heap (void);
+bool test_bin_heap_same_add(void);
+bool test_bin_heap_rand_add (void);
+bool test_bin_heap_dec_add (void);
 bool test_heap (void);
 int qselect (int *v, int len, int k);
 bool test_k_smallest (void);

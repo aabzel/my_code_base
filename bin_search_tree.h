@@ -13,4 +13,5 @@ void assemble_tree_from_array (TreeNode_t ** root, int *arr, int arraySize);
 void create_binary_search_tree (TreeNode_t ** root, int how_many_elements);
 void binary_tree_add_val (TreeNode_t ** root, int val);
 
+
 #endif /* __BINARY_SEARCH_TREE_H */

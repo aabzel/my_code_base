@@ -18,6 +18,7 @@
 #include "parse_keepass.h"
 
 #include <stdlib.h>
+#include <time.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
@@ -25,10 +26,25 @@
 int unitTest (void) {
     bool res = false;
 
+    res = test_bin_heap_same_add ();
+    if (false == res) {
+        return BIN_HEAP_SAME_ERROR;
+    }
+
+#if TEST_HEAP1
     res = test_bin_heap ();
     if (false == res) {
         return BIN_HEAP_ERROR;
     }
+#endif
+
+#if BIN_HEAP_SAME_ADD
+    res = test_bin_heap_rand_add ();
+    if (false == res) {
+        return BIN_HEAP_RAND_ERROR;
+    }
+#endif
+
 #if TEST_HEAP_MEM
     test_heap ();
 #endif
@@ -1067,19 +1083,66 @@ bool test_medianSlidingWindow (void) {
 
     return res;
 }
-
-bool test_bin_heap (void) {
+bool test_bin_heap_same_add (void) {
     bool res = true;
+    time_t t;
     TreeNode_t *binMaxHeapRoot = NULL;
-    for (int a = 100; 0 < a; a-=2) {
+    srand ((unsigned) time (&t));
+    for (int a = 10; 0 < a; a -= 2) {
         if (true == res) {
-            res = max_heap_insert (&binMaxHeapRoot, a);
+            int b = 10;
+            res = max_heap_insert (&binMaxHeapRoot, b);
             if (false == res) {
-                printf ("\n max_heap_insert %d err", a);
+                printf ("\n max_heap_insert %d err", b);
             }
             res = is_max_heap (binMaxHeapRoot);
             if (false == res) {
                 printf ("\n Notheap!");
+            }
+        }
+    }
+
+    print_tree_to_file (binMaxHeapRoot, "bin_heap_rand.dot");
+
+    return res;
+}
+
+bool test_bin_heap_rand_add (void) {
+    bool res = true;
+    time_t t;
+    TreeNode_t *binMaxHeapRoot = NULL;
+    srand ((unsigned) time (&t));
+    for (int a = 40; 0 < a; a -= 2) {
+        if (true == res) {
+            int b = rand () % 100;
+            res = max_heap_insert (&binMaxHeapRoot, b);
+            if (false == res) {
+                printf ("\n max_heap_insert %d err", b);
+            }
+            res = is_max_heap (binMaxHeapRoot);
+            if (false == res) {
+                printf ("\n Notheap!");
+            }
+        }
+    }
+
+    print_tree_to_file (binMaxHeapRoot, "bin_heap_rand.dot");
+
+    return res;
+}
+
+bool test_bin_heap_dec_add (void) {
+    bool res = true;
+    TreeNode_t *binMaxHeapRoot = NULL;
+    for (int a = 100; 0 < a; a -= 2) {
+        if (true == res) {
+            res = max_heap_insert (&binMaxHeapRoot, a);
+            if (false == res) {
+                printf ("\n max_heap_insert %d err\n", a);
+            }
+            res = is_max_heap (binMaxHeapRoot);
+            if (false == res) {
+                printf ("\n tree is not heap!\n");
             }
         }
     }

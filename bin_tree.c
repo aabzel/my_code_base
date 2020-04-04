@@ -10,6 +10,51 @@
 int g_maxDepthVal = 0;
 static void find_max_depth (struct xTreeNode_t * tree, int level);
 
+bool is_node_has_vacant (TreeNode_t * root) {
+    bool res = false;
+    if (root) {
+        if (NULL == root->left) {
+            res = true;
+        }
+        if (NULL == root->right) {
+            res = true;
+        }
+    }
+    return res;
+}
+
+//get fist node with spare leaf
+TreeNode_t *get_first_spare_leaf_node (TreeNode_t * root) {
+    TreeNode_t *outNode = NULL;
+    TreeNode_t *someSpareNode = get_first_spare_node (root);
+    if (someSpareNode) {
+        if (root) {
+            if (NULL == someSpareNode->left) {
+                outNode = someSpareNode->left;
+            }
+            if (NULL == someSpareNode->right) {
+                outNode = someSpareNode->right;
+            }
+        }
+    }
+    return outNode;
+}
+
+TreeNode_t *get_first_spare_node (TreeNode_t * root) {
+    TreeNode_t *outNode = NULL;
+    if (root) {
+        if (is_node_has_vacant (root)) {
+            outNode = root;
+        } else {
+            outNode = get_first_spare_node (root->left);
+            if (NULL == outNode) {
+                outNode = get_first_spare_node (root->right);
+            }
+        }
+    }
+    return outNode;
+}
+
 bool is_balanced (TreeNode_t * root) {
     bool res = false;
     if (root) {
@@ -292,3 +337,42 @@ int deepestLeavesSum (TreeNode_t * root) {
     return sum;
 
 }
+
+void init_node (TreeNode_t * Node, int val) {
+    Node->left = NULL;
+    Node->right = NULL;
+    Node->val = val;
+}
+
+//Set new val to NodePtr
+bool binary_tree_add_node (TreeNode_t ** NodePtr, int val) {
+    bool res = false;
+    TreeNode_t *newNode = NULL;
+    newNode = (TreeNode_t *) malloc (sizeof(TreeNode_t));
+    if (NULL != newNode) {
+        init_node (newNode, val);
+        *NodePtr = newNode;
+        res = true;
+    }
+    return res;
+}
+
+bool binary_tree_attace_node (TreeNode_t * NodePtr, int val, bool isleft) {
+    bool res = false;
+    if (NodePtr) {
+        TreeNode_t *newNode = NULL;
+        newNode = (TreeNode_t *) malloc (sizeof(TreeNode_t));
+        if (NULL != newNode) {
+            init_node (newNode, val);
+            if (isleft) {
+                NodePtr->left = newNode;
+            } else {
+                NodePtr->right = newNode;
+            }
+            res = true;
+        }
+    }
+
+    return res;
+}
+

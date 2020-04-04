@@ -25,18 +25,27 @@ void parse_bin_tree (int *arr, int size);
 int get_parent_index (int nodeIndex, int size);
 int max_depth (TreeNode_t* root);
 void parse_bin_tree (int *arr, int size);
-
+bool is_node_has_vacant (TreeNode_t * root);
+void detele_tree (TreeNode_t * root);
+TreeNode_t *get_first_spare_node (TreeNode_t * root);
 int height (TreeNode_t * node);
 bool is_balanced (TreeNode_t * root);
 void print_inorder_traversal (TreeNode_t * tree);
 int find_size (TreeNode_t * tree, int curSize);
+int deepestLeavesSum (TreeNode_t * root);
+int calc_leaves_sum (TreeNode_t* root, int maxDepth);
+void init_node (TreeNode_t * Node, int val);
+bool binary_tree_attace_node (TreeNode_t * NodePtr, int val, bool isleft);
+bool binary_tree_add_node (TreeNode_t ** Node, int val);
+TreeNode_t *get_first_spare_leaf_node (TreeNode_t * root) ;
+
+
+
 void print2DUtil (TreeNode_t *root, int space);
 void print2D (TreeNode_t *root);
 void bst_print_dot (TreeNode_t* tree, FILE* stream);
 void bst_print_dot_null (int key, int nullcount, FILE* stream);
 void bst_print_dot_aux (TreeNode_t* node, FILE* stream);
 bool print_tree_to_file (TreeNode_t* root, char *fileName);
-void binary_tree_add_val (TreeNode_t ** root, int val);
-int deepestLeavesSum(TreeNode_t * root);
-int calc_leaves_sum (TreeNode_t* root, int maxDepth);
+
 #endif /* __BINARY_TREE_H */
