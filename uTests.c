@@ -1128,7 +1128,7 @@ bool test_bin_heap_rand_add (void) {
     time_t t;
     TreeNode_t *binMaxHeapRoot = NULL;
     srand ((unsigned) time (&t));
-    for (int a = 40; 0 < a; a -= 1) {
+    for (int a = 20; 0 < a; a -= 1) {
         if (true == res) {
             int b = rand () % 100;
             res = max_heap_insert (&binMaxHeapRoot, b);
