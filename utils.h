@@ -25,11 +25,11 @@ uint32_t bin_to_gray (uint32_t num);
 char * format_time_txt (void);
 void init_file_name (void);
 // cur date string
+double calc_median_naiv (int * const inArr, int sizeOfArr) ;
 char *generate_num_string (int n);
 void print_array (int *alphabet, int sizeOfAlphabet, int k);
 void print_curr_array (int *alphabet, int sizeOfAlphabet);
 void print_mem (uint8_t *memPtr, uint32_t sizeOfAlphabet);
-void test_heap (void);
 double avrage_two (int val1, int val2);
 uint32_t max_val (uint32_t amountofbit);
 int* grayCode (int n, int* returnSize);

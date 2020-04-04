@@ -3,10 +3,12 @@
 #include "algorithms.h"
 #include "arrays.h"
 #include "bin_tree.h"
+#include "bin_heap.h"
 #include "bin_search_tree.h"
 #include "combinations.h"
 #include "min_path.h"
 #include "permutations.h"
+#include "bin_heap.h"
 #include "str_ops.h"
 
 #include "linked_list.h"
@@ -23,11 +25,22 @@
 int unitTest (void) {
     bool res = false;
 
+    res = test_bin_heap ();
+    if (false == res) {
+        return BIN_HEAP_ERROR;
+    }
+#if TEST_HEAP_MEM
     test_heap ();
+#endif
 
     res = test_algo ();
     if (false == res) {
         return ALGO_ERROR;
+    }
+
+    res = test_k_smallest ();
+    if (false == res) {
+        return K_SMALL_ERROR;
     }
 
     res = test_medianSlidingWindow ();
@@ -628,7 +641,7 @@ void print_bytes (uint32_t byte) {
     printf ("\nmax Available heap size [%u] byte [%f] k_Byte [%f] M_Byte [%f] G_Byte\n", byte, kByte, MByte, GByte);
 }
 
-void test_heap (void) {
+bool test_heap (void) {
     uint32_t byte = 3;
     uint32_t mult = 10;
     uint32_t div = 2;
@@ -644,6 +657,8 @@ void test_heap (void) {
         }
     } //[2327387742]
     print_bytes (byte);
+
+    return true;
 }
 
 void test_combine (void) {
@@ -1003,6 +1018,36 @@ bool test_valid_float_number (void) {
 
 }
 
+bool test_k_smallest (void) {
+    int numsSize;
+    int val;
+    int arr1 [] =
+        { 1, 3, -1 };
+    numsSize = sizeof(arr1) / sizeof(arr1 [0]);
+
+    val = qselect (arr1, numsSize, 1);
+    if (1 != val) {
+        return false;
+    }
+    int arr2 [] =
+        { 3, -1, -3 };
+    numsSize = sizeof(arr2) / sizeof(arr2 [0]);
+    val = qselect (arr2, numsSize, 1);
+    if (-1 != val) {
+        return false;
+    }
+    int arr3 [] =
+        { -1, -3, 5 };
+    numsSize = sizeof(arr3) / sizeof(arr2 [0]);
+
+    val = qselect (arr3, numsSize, 1);
+    if (-1 != val) {
+        return false;
+    }
+
+    return true;
+}
+
 bool test_medianSlidingWindow (void) {
     bool res = false;
     int arr [] =
@@ -1019,6 +1064,27 @@ bool test_medianSlidingWindow (void) {
         }
         free (prt);
     }
+
+    return res;
+}
+
+bool test_bin_heap (void) {
+    bool res = true;
+    TreeNode_t *binMaxHeapRoot = NULL;
+    for (int a = 100; 0 < a; a-=2) {
+        if (true == res) {
+            res = max_heap_insert (&binMaxHeapRoot, a);
+            if (false == res) {
+                printf ("\n max_heap_insert %d err", a);
+            }
+            res = is_max_heap (binMaxHeapRoot);
+            if (false == res) {
+                printf ("\n Notheap!");
+            }
+        }
+    }
+
+    print_tree_to_file (binMaxHeapRoot, "bin_heap.dot");
 
     return res;
 }

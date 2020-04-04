@@ -16,6 +16,10 @@ int max (int val1, int val2);
 int min (int val1, int val2);
 int min3 (int val1, int val2, int val3);
 
+void swap_char (char * const x, char * const y) ;
+void swap_int (int * const x, int * const y);
+int partition (int *arr, int l, int r);
+int qselect (int *v, int len, int k) ;
 float minf (float val1, float val2);
 float min3f (float val1, float val2, float val3);
 bool is_floats_equal (float valA, float valB);

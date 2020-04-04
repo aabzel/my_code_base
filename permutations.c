@@ -24,9 +24,9 @@ void permute_ll (char *string, int left, int right) {
 
     } else {
         for (index = left; index <= right; index++) {
-            swap ((string + left), (string + index));
+            swap_char ((string + left), (string + index));
             permute_ll (string, left + 1, right);
-            swap ((string + left), (string + index)); //backtrack
+            swap_char ((string + left), (string + index)); //backtrack
         }
     }
 }

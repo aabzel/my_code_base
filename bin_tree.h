@@ -25,6 +25,9 @@ void parse_bin_tree (int *arr, int size);
 int get_parent_index (int nodeIndex, int size);
 int max_depth (TreeNode_t* root);
 void parse_bin_tree (int *arr, int size);
+
+int height (TreeNode_t * node);
+bool is_balanced (TreeNode_t * root);
 void print_inorder_traversal (TreeNode_t * tree);
 int find_size (TreeNode_t * tree, int curSize);
 void print2DUtil (TreeNode_t *root, int space);

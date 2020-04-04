@@ -10,6 +10,33 @@
 int g_maxDepthVal = 0;
 static void find_max_depth (struct xTreeNode_t * tree, int level);
 
+bool is_balanced (TreeNode_t * root) {
+    bool res = false;
+    if (root) {
+        int lheight; /* for height of left subtree */
+        int rheight; /* for height of right subtree */
+        /* Get the height of left and right sub trees */
+        lheight = height (root->left);
+        rheight = height (root->right);
+        if (abs (lheight - rheight) <= 1 && is_balanced (root->left) && is_balanced (root->right)) {
+            res = true;
+        }
+    } else {
+        res = true;
+    }
+    return res;
+}
+
+int height (TreeNode_t * node) {
+    /* base case tree is empty */
+    if (node == NULL)
+        return 0;
+
+    /* If tree is not empty then height = 1 + max of left
+     height and right heights */
+    return 1 + max (height (node->left), height (node->right));
+}
+
 int max_depth (struct xTreeNode_t* root) {
     if (root) {
         g_maxDepthVal = 0;
@@ -165,6 +192,8 @@ bool print_tree_to_file (TreeNode_t* root, char *fileName) {
     if (fp) {
         bst_print_dot (root, fp);
         res = true;
+    } else {
+        printf ("\n Unable to open file!");
     }
     return res;
 }

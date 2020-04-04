@@ -38,11 +38,17 @@ typedef enum {
     TRY_OPEN_KEEPASS_ERROR = 25,
     IS_STR_FALSE_ERROR = 26,
     MEDIAN_ERROR = 27,
+    K_SMALL_ERROR = 28,
+    BIN_HEAP_ERROR = 29,
     NUM_ERROR
 } error_t;
 
 int unitTest (void);
 
+bool test_bin_heap (void);
+bool test_heap (void);
+int qselect (int *v, int len, int k);
+bool test_k_smallest (void);
 bool test_valid_float_number (void);
 bool test_stsstr (void);
 bool test_array_combinations (void);

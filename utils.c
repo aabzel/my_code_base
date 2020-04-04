@@ -263,7 +263,7 @@ long long summ_array (int const* const inArr, int sizeOfArr) {
 }
 
 double avrage_two (int val1, int val2) {
-    double avagage = (double) ( ((double) ( ( (double) val1 ) + ( (double) val2 ) ) /  2.0) );
+    double avagage = (double) (((double) (((double) val1) + ((double) val2)) / 2.0));
     return avagage;
 }
 
@@ -286,7 +286,11 @@ double calc_average (int const * const inArr, int sizeOfArr) {
     return median;
 }
 
-double calc_median (int * const inArr, int sizeOfArr) {
+/* Given an unsorted list of numbers, how do we find the median element? */
+/*How to find the kth(N/2) largest element in an unsorted array of length n in O(n)?*/
+
+/*O(logN)*/
+double calc_median_naiv (int * const inArr, int sizeOfArr) {
     double median = 0.0;
     if (inArr) {
         int *localArr = memdup (inArr, sizeOfArr * sizeof(int));
@@ -306,9 +310,30 @@ double calc_median (int * const inArr, int sizeOfArr) {
     return median;
 }
 
+double calc_median (int * const inArr, int sizeOfArr) {
+    double median = 0.0;
+    if (inArr) {
+        int *localArr = memdup (inArr, sizeOfArr * sizeof(int));
+        if (localArr) {
+            if (is_odd (sizeOfArr)) {
+                median = (double) qselect (localArr, sizeOfArr, sizeOfArr / 2);
+            } else {
+                int val1 = qselect (localArr, sizeOfArr, (sizeOfArr / 2) - 1);
+                int val2 = qselect (localArr, sizeOfArr, sizeOfArr / 2);
+                median = avrage_two (val1, val2);
+            }
+            free (localArr);
+        } else {
+            printf ("Unable to alloc %d byte", 4 * sizeOfArr);
+        }
+    }
+    return median;
+}
+
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
+//https://medium.com/@nitishchandra/sliding-window-median-98a6710ab2a0
 double* medianSlidingWindow (int* nums, int numsSize, int k, int* returnSize) {
 // how many window position exest?
     int size = numsSize - k + 1;
