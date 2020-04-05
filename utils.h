@@ -10,6 +10,9 @@ extern "C" {
 
 #include <stdint.h>
 
+#define INT_MIN (-2147483648)
+#define INT_MAX (2147483647)
+
 #define DEBUR_LET_POS 1
 #define DEBUG_ARG 0
 #define DEBUG_REMAIN_ALPH 1

@@ -31,16 +31,18 @@ TreeNode_t *get_first_spare_node (TreeNode_t * root);
 bool is_complete (TreeNode_t * root);
 
 int height (TreeNode_t * node);
-int get_amount_of_node(TreeNode_t* root);
+int get_amount_of_node (TreeNode_t* root);
 bool is_balanced (TreeNode_t * root);
 void print_inorder_traversal (TreeNode_t * tree);
 int find_size (TreeNode_t * tree, int curSize);
 int deepestLeavesSum (TreeNode_t * root);
 int calc_leaves_sum (TreeNode_t* root, int maxDepth);
 void init_node (TreeNode_t * Node, int val);
+
+bool init_tree_node (TreeNode_t * NodePar, int val, TreeNode_t * NodeLeftChild, TreeNode_t * NodeRightChild);
+
 bool binary_tree_attace_node (TreeNode_t * NodePtr, int val, bool isleft);
 bool binary_tree_add_node (TreeNode_t ** Node, int val);
-TreeNode_t *get_first_spare_leaf_node (TreeNode_t * root) ;
-
+TreeNode_t *get_first_spare_leaf_node (TreeNode_t * root);
 
 #endif /* __BINARY_TREE_H */

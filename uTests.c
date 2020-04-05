@@ -26,6 +26,11 @@
 
 int unitTest (void) {
     bool res = false;
+
+    res = test_is_bin_tree ();
+    if (false == res) {
+        return IS_BIN_SEARCH_TREE_ERROR;
+    }
 #if TEST_HEAP_DELET_ONE
     res= test_bin_heap_rand_add_and_del_one();
     if (false == res) {
@@ -1130,7 +1135,7 @@ bool test_bin_heap_rand_add (void) {
     srand ((unsigned) time (&t));
     for (int a = 20; 0 < a; a -= 1) {
         if (true == res) {
-            int b = rand () % 100;
+            int b = rand () % 3;
             res = max_heap_insert (&binMaxHeapRoot, b);
             if (false == res) {
                 printf ("\n max_heap_insert %d err", b);
@@ -1226,3 +1231,91 @@ bool test_bin_heap_delete (void) {
     return res;
 }
 
+bool test_is_bin_tree (void) {
+    bool res = false;
+
+    TreeNode_t node1;
+    TreeNode_t node2;
+
+    node1.val = 1;
+    node1.left = &node2;
+    node1.right = NULL;
+
+    node2.val = 1;
+    node2.left = NULL;
+    node2.right = NULL;
+
+    res = is_bin_search_tree (&node1);
+    if (true == res) {
+        printf ("\n Error! 1\n");
+        return false;
+    }
+
+    TreeNode_t node3;
+    TreeNode_t node4;
+
+    init_tree_node (&node3, 1, NULL, &node4);
+    init_tree_node (&node4, 1, NULL, NULL);
+
+    res = is_bin_search_tree (&node3);
+    if (true == res) {
+        printf ("\n Error! 2\n");
+        return false;
+    }
+
+    TreeNode_t node11;
+    TreeNode_t node22;
+    TreeNode_t node33;
+    TreeNode_t node44;
+    TreeNode_t node55;
+
+    init_tree_node (&node11, 10, &node22, &node33);
+    init_tree_node (&node22, 5, NULL, NULL);
+    init_tree_node (&node33, 15, &node44, &node55);
+    init_tree_node (&node44, 6, NULL, NULL);
+    init_tree_node (&node55, 20, NULL, NULL);
+
+    print_tree_to_file (&node11, "not_BST.dot");
+    res = is_bin_search_tree (&node11);
+    if (true == res) {
+        printf ("\n Error! 3\n");
+        return false;
+    }
+
+    TreeNode_t nod0;
+    TreeNode_t nod1;
+    TreeNode_t nod2;
+    TreeNode_t nod3;
+    TreeNode_t nod4;
+    TreeNode_t nod5;
+    TreeNode_t nod6;
+    TreeNode_t nod7;
+    init_tree_node (&nod0, 3, &nod1, &nod2);
+    init_tree_node (&nod1, 1, &nod3, &nod4);
+    init_tree_node (&nod2, 5, &nod5, &nod6);
+    init_tree_node (&nod3, 0, NULL, NULL);
+    init_tree_node (&nod4, 2, NULL, &nod7);
+    init_tree_node (&nod5, 4, NULL, NULL);
+    init_tree_node (&nod6, 6, NULL, NULL);
+    init_tree_node (&nod7, 3, NULL, NULL);
+    print_tree_to_file (&nod0, "not_BST2.dot");
+
+    res = is_bin_search_tree (&nod0);
+    if (true == res) {
+        printf ("\n Error! 4\n");
+        return false;
+    }
+
+    TreeNode_t nd0;
+    TreeNode_t nd1;
+    init_tree_node (&nd0, -2147483648, NULL, &nd1);
+    init_tree_node (&nd1, 2147483647, NULL, NULL);
+
+    res = is_bin_search_tree (&nd0);
+    if (false == res) {
+        printf ("\n Error! 5\n");
+        return false;
+    }
+
+    return true;
+}

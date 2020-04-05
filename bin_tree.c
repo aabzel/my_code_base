@@ -63,7 +63,7 @@ bool is_balanced (TreeNode_t * root) {
         /* Get the height of left and right sub trees */
         lheight = height (root->left);
         rheight = height (root->right);
-        if ((abs (lheight - rheight)<=1)  && is_balanced (root->left) && is_balanced (root->right)) {
+        if ((abs (lheight - rheight) <= 1) && is_balanced (root->left) && is_balanced (root->right)) {
             res = true;
         }
     } else {
@@ -80,7 +80,7 @@ bool is_complete (TreeNode_t * root) {
         /* Get the height of left and right sub trees */
         lheight = height (root->left);
         rheight = height (root->right);
-        if ((0==abs (lheight - rheight))  && is_complete (root->left) && is_complete (root->right)) {
+        if ((0 == abs (lheight - rheight)) && is_complete (root->left) && is_complete (root->right)) {
             res = true;
         }
     } else {
@@ -193,8 +193,6 @@ void print_inorder_traversal (TreeNode_t * tree) {
     }
 }
 
-
-
 int get_parent_index (int nodeIndex, int size) {
     double paretnt = ceil (((double) nodeIndex / 2.0f) - 1.0f);
     int outParent = (int) paretnt;
@@ -273,7 +271,17 @@ int deepestLeavesSum (TreeNode_t * root) {
     maxDepth = max_depth (root);
     sum = calc_leaves_sum (root, maxDepth);
     return sum;
+}
 
+bool init_tree_node (TreeNode_t * NodePar, int val, TreeNode_t * NodeLeftChild, TreeNode_t * NodeRightChild) {
+    bool res = false;
+    if (NodePar) {
+        NodePar->val = val;
+        NodePar->left = NodeLeftChild;
+        NodePar->right = NodeRightChild;
+        res = true;
+    }
+    return res;
 }
 
 void init_node (TreeNode_t * Node, int val) {

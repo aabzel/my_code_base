@@ -7,6 +7,9 @@
 #include <time.h>
 #include <math.h>
 
+static bool is_bin_search_left_sub_tree (TreeNode_t * root, int *minVal, int *maxVal);
+static bool is_bin_search_right_sub_tree (TreeNode_t * root, int *minVal, int *maxVal);
+
 // Recursively inserts elements into binary search tree
 void insert (TreeNode_t ** tree, TreeNode_t * item) {
     if (NULL == (*tree)) {
@@ -37,6 +40,90 @@ void binary_tree_add_val (TreeNode_t ** root, int val) {
         currNode->val = val;
         insert (root, currNode);
     }
+}
+
+bool is_bin_search_tree (TreeNode_t * root) {
+    bool res = true;
+    if (root) {
+        if (root->left) {
+            if (!((root->left->val) < (root->val))) {
+                return false;
+            } else {
+                res = is_bin_search_left_sub_tree (root->left, NULL, &root->val);
+            }
+        }
+        if (root->right && (true == res)) {
+            if (!((root->val) < (root->right->val))) {
+                return false;
+            } else {
+                res = is_bin_search_right_sub_tree (root->right, &root->val, NULL);
+            }
+        }
+    }
+    return res;
+}
+
+static bool is_bin_search_right_sub_tree (TreeNode_t * root, int *minVal, int *maxVal) {
+    bool res = true;
+    if (root) {
+        if (minVal) {
+            if (!(*minVal < root->val)) {
+                return false;
+            }
+        }
+        if (maxVal) {
+            if (!(root->val < *maxVal)) {
+                return false;
+            }
+        }
+
+        if (root->left) {
+            if (!((root->left->val) < (root->val))) {
+                return false;
+            } else {
+                res = is_bin_search_left_sub_tree (root->left, minVal, &(root->val));
+            }
+        }
+        if (root->right && (true == res)) {
+            if (!((root->val) < (root->right->val))) {
+                return false;
+            } else {
+                res = is_bin_search_right_sub_tree (root->right, &(root->val), maxVal);
+            }
+        }
+    }
+    return res;
+}
+
+static bool is_bin_search_left_sub_tree (TreeNode_t * root, int *minVal, int *maxVal) {
+    bool res = true;
+    if (root) {
+        if (minVal) {
+            if (!(*minVal < root->val)) {
+                return false;
+            }
+        }
+        if (maxVal) {
+            if (!(root->val < *maxVal)) {
+                return false;
+            }
+        }
+        if (root->left) {
+            if (!((root->left->val) < (root->val))) {
+                return false;
+            } else {
+                res = is_bin_search_left_sub_tree (root->left, minVal, &(root->val));
+            }
+        }
+        if (root->right && (true == res)) {
+            if (!((root->val) < (root->right->val))) {
+                return false;
+            } else {
+                res = is_bin_search_right_sub_tree (root->right, &(root->val), maxVal);
+            }
+        }
+    }
+    return res;
 }
 
 // Creates a binary search tree

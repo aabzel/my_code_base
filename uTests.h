@@ -46,11 +46,13 @@ typedef enum {
     BIN_HEAP_RAND_ERROR = 30,
     BIN_HEAP_SAME_ERROR = 31,
     BIN_HEAP_DEL_ERROR = 32,
+    IS_BIN_SEARCH_TREE_ERROR = 33,
     NUM_ERROR
 } error_t;
 
 int unitTest (void);
 
+bool test_is_bin_tree (void);
 bool test_bin_heap_rand_add_and_del_one (void);
 bool test_bin_heap (void);
 bool test_bin_heap_same_add (void);
