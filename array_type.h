@@ -1,5 +1,5 @@
-#ifndef __ARRAY_TYPE_H
-#define __ARRAY_TYPE_H
+#ifndef ARRAY_TYPE_H
+#define ARRAY_TYPE_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -16,4 +16,4 @@ typedef struct xArray_t {
 }
 #endif
 
-#endif /* __ARRAY_TYPE_H */
+#endif /* ARRAY_TYPE_H */

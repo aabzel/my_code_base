@@ -15,6 +15,7 @@ SOURCES += linked_list.c
 SOURCES += algorithms.c main.c 
 SOURCES += bin_tree.c 
 SOURCES += bin_heap.c 
+SOURCES += bin_heap_array.c 
 SOURCES += bin_search_tree.c 
 SOURCES += amount_of_uio_states.c
 SOURCES += min_path.c

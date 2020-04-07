@@ -203,6 +203,7 @@ int get_parent_index (int nodeIndex, int size) {
     return outParent;
 }
 
+#if 0
 static int get_left_child_index (int perent, int sizeOfArr) {
     int leftChild = perent * 2 + 1;
     if (sizeOfArr < leftChild) {
@@ -220,7 +221,6 @@ static bool is_left_son_exist (int patentIndex, int *arr, int size) {
     }
     return res;
 }
-
 static int get_right_child_index (int parentIndex, int sizeOfArr) {
     int rightChild = parentIndex * 2 + 2;
     if (sizeOfArr < rightChild) {
@@ -264,6 +264,7 @@ void parse_bin_tree (int *arr, int size) {
         //}
     }
 }
+#endif
 
 int deepestLeavesSum (TreeNode_t * root) {
     int sum = 0;

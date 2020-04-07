@@ -1,5 +1,6 @@
 #include "uTests.h"
 
+#include "bin_heap_array.h"
 #include "algorithms.h"
 #include "arrays.h"
 #include "bin_tree.h"
@@ -26,6 +27,30 @@
 
 int unitTest (void) {
     bool res = false;
+
+    res = test_bin_heap_par_ind_arr ();
+    if (false == res) {
+        return ARR_HEAP_ERROR;
+    }
+
+    res = test_bin_heap_insert ();
+    if (false == res) {
+        return BIN_HEAP_INSERT_ERROR;
+    }
+    res = test_delim_amount ();
+    if (false == res) {
+        return STRING_DELIM_ERROR;
+    }
+
+    res = test_string_clean ();
+    if (false == res) {
+        return STRING_CLEAN_ERROR;
+    }
+
+    res = test_split ();
+    if (false == res) {
+        return STRING_SPLIT_ERROR;
+    }
 
     res = test_is_bin_tree ();
     if (false == res) {
@@ -417,7 +442,7 @@ bool test_linked_list (void) {
 
     return res;
 }
-
+#if 0
 bool test_parse_bin_tree_init_array (void) {
     bool res = true;
     int array [] =
@@ -427,6 +452,7 @@ bool test_parse_bin_tree_init_array (void) {
 
     return res;
 }
+#endif
 
 bool test_bin_tree_init_array (void) {
     bool res = false;
@@ -1316,6 +1342,214 @@ bool test_is_bin_tree (void) {
         printf ("\n Error! 5\n");
         return false;
     }
+
+    return true;
+}
+
+bool test_delim_amount (void) {
+
+    char text [] = "Hello world";
+    char pattern [] = "lo";
+    int amountOfItem = 0;
+    amountOfItem = count_amount_of_item (text, pattern);
+    if (2 != amountOfItem) {
+        printf ("\n-1\n");
+        return false;
+    }
+
+    amountOfItem = count_amount_of_item (text, "He");
+    if (1 != amountOfItem) {
+        printf ("\n0\n");
+        return false;
+    }
+
+    amountOfItem = count_amount_of_item (text, "ld");
+    if (1 != amountOfItem) {
+        printf ("\n1\n");
+        return false;
+    }
+    amountOfItem = count_amount_of_item ("a b c d e", " ");
+    if (5 != amountOfItem) {
+        printf ("\n2\n");
+        return false;
+    }
+
+    amountOfItem = count_amount_of_item ("1231567190", "1");
+    if (3 != amountOfItem) {
+        printf ("\n3\n");
+        return false;
+    }
+
+    amountOfItem = count_amount_of_item ("qpeptypiop", "p");
+    if (4 != amountOfItem) {
+        printf ("\n4\n");
+        return false;
+    }
+
+    return true;
+}
+
+bool test_split (void) {
+    int amountOfval = 0;
+    int resCmp = 0;
+
+    char **ArrOfStrings;
+    printf ("\n sizeof(char *) %ld \n", sizeof(char *));
+    amountOfval = split ("Hello world", "wo", &ArrOfStrings);
+    if (2 != amountOfval) {
+        printf ("\n%s: %d\n", __FUNCTION__, amountOfval);
+        return false;
+    }
+
+    if (NULL == ArrOfStrings) {
+        printf ("\nNull pointer to array of pointer: %p\n", ArrOfStrings);
+        return false;
+    } else {
+        printf ("\n (ArrOfStrings [0]): <%s> \n", ArrOfStrings [0]);
+        printf ("\n (ArrOfStrings [1]): <%s> \n", ArrOfStrings [1]);
+
+        //printf ("\n *ArrOfStrings+1: %llu\n",(long long unsigned int) *ArrOfStrings + ((char *)1));
+    }
+
+    resCmp = strncmp ((char *) ArrOfStrings [0], "Hello ", strlen ("Hello "));
+    if (0 != resCmp) {
+        printf ("\n%s: [%s]\n", __FUNCTION__, (char *) ArrOfStrings [0]);
+        return false;
+    }
+    resCmp = strncmp ((char *) ArrOfStrings [1], "rld", strlen ("rld"));
+    if (0 != resCmp) {
+        printf ("\n%s: [%s]\n", __FUNCTION__, (char *) (ArrOfStrings [1]));
+        return false;
+    }
+
+    return true;
+}
+
+bool test_bin_heap_par_ind_arr (void) {
+
+    int parentIndex = 0;
+    parentIndex = get_perent_index (0);
+    if (-1 != parentIndex) {
+        printf ("\n parentIndex %d\n", parentIndex);
+        printf ("\n [%s] %d\n", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+    parentIndex = get_perent_index (1);
+    if (0 != parentIndex) {
+        printf ("\n parentIndex %d\n", parentIndex);
+        printf ("\n [%s] %d\n", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+    parentIndex = get_perent_index (2);
+    if (0 != parentIndex) {
+        printf ("\n parentIndex %d\n", parentIndex);
+        printf ("\n [%s] %d\n", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+
+    parentIndex = get_perent_index (3);
+    if (1 != parentIndex) {
+        printf ("\n parentIndex %d\n", parentIndex);
+        printf ("\n [%s] %d\n", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+
+    parentIndex = get_perent_index (6);
+    if (2 != parentIndex) {
+        printf ("\n parentIndex %d\n", parentIndex);
+        printf ("\n [%s] %d\n", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+
+    parentIndex = get_rihgt_child_index (3);
+    if (8 != parentIndex) {
+        printf ("\n parentIndex %d\n", parentIndex);
+        printf ("\n [%s] %d\n", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+
+    parentIndex = get_left_child_index (2);
+    if (5 != parentIndex) {
+        printf ("\n parentIndex %d\n", parentIndex);
+        printf ("\n [%s] %d\n", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+
+    return true;
+}
+
+bool test_bin_heap_insert (void) {
+    BinaryHeap_t binHeapObj;
+    binHeapObj.length = 0;
+    bool res=true;
+    time_t t;
+    srand ((unsigned) time (&t));
+
+    for (int a = 0; a < 20; a++) {
+        if (true==res) {
+            int b = rand () % 50;
+            res = insert_val (&binHeapObj, b);
+            if (false == res) {
+                printf ("\n [%s] %d\n", __FUNCTION__, __COUNTER__);
+                return false;
+            }
+        }
+    }
+
+    res = is_max_bin_heap (&binHeapObj);
+    if (false == res) {
+        printf ("\n [%s] %d\n", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+    res = draw_bin_heap_in_file (&binHeapObj, "bin_heap_array.dot");
+
+    return true;
+}
+
+bool test_string_clean (void) {
+    int cmpres;
+    char *ptrString = NULL;
+    ptrString = select_sub_string ("qwerty", "ui");
+    if (NULL == ptrString) {
+        printf ("\n%s %d\n", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+
+    cmpres = strcmp (ptrString, "qwerty");
+    if (0 != cmpres) {
+        printf ("\n%s %d\n", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+    free (ptrString);
+    ptrString = NULL;
+
+    ptrString = select_sub_string ("qweRTy", "RT");
+    if (NULL == ptrString) {
+        printf ("\n%s %d\n", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+
+    cmpres = strcmp (ptrString, "qwe");
+    if (0 != cmpres) {
+        printf ("\n%s %d\n", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+    free (ptrString);
+    ptrString = NULL;
+
+    ptrString = select_sub_string ("QWerty", "QW");
+    if (NULL == ptrString) {
+        printf ("\n%s %d\n", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+
+    cmpres = strcmp (ptrString, "");
+    if (0 != cmpres) {
+        printf ("\n%s %d\n", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+    free (ptrString);
+    ptrString = NULL;
 
     return true;
 }

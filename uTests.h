@@ -47,11 +47,18 @@ typedef enum {
     BIN_HEAP_SAME_ERROR = 31,
     BIN_HEAP_DEL_ERROR = 32,
     IS_BIN_SEARCH_TREE_ERROR = 33,
+    STRING_DELIM_ERROR = 34,
+    STRING_CLEAN_ERROR = 35,
+    STRING_SPLIT_ERROR = 36,
+    ARR_HEAP_ERROR = 37,
+    BIN_HEAP_INSERT_ERROR = 38,
     NUM_ERROR
 } error_t;
 
 int unitTest (void);
 
+bool test_split (void);
+bool test_string_clean (void);
 bool test_is_bin_tree (void);
 bool test_bin_heap_rand_add_and_del_one (void);
 bool test_bin_heap (void);
@@ -63,6 +70,7 @@ int qselect (int *v, int len, int k);
 bool test_k_smallest (void);
 bool test_valid_float_number (void);
 bool test_stsstr (void);
+bool test_bin_heap_par_ind_arr (void);
 bool test_array_combinations (void);
 bool test_ya_task (void);
 bool test_uniq_path (void);
@@ -84,5 +92,7 @@ bool test_min_path_diag_atmospher (void);
 bool test_find_min_diag_scale_summ (void);
 bool test_find_min_diag_scale_summ2 (void);
 bool test_bin_heap_delete (void);
+bool test_delim_amount (void);
+bool test_bin_heap_insert (void);
 
 #endif /* __UTESTS_H */

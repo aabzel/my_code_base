@@ -10,6 +10,7 @@ extern "C" {
 
 #include <stdint.h>
 
+#define NOT_NUM (-999999)
 #define INT_MIN (-2147483648)
 #define INT_MAX (2147483647)
 

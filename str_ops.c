@@ -9,6 +9,148 @@
 #include <string.h>
 #include <ctype.h>
 
+//output: pointer address to the array of pointers
+int split (char *source, char *delim, char ***outStrArr) {
+    printf ("\n text  [%s] pattern [%s]\n", source, delim);
+    *outStrArr = NULL;
+    int numItem = 0, numItemInStr = 0;
+    int j = 0;
+    bool isFirst = true;
+    int srcLen = strlen (source);
+    int delimLen = strlen (delim);
+    numItemInStr = count_amount_of_item (source, delim);
+    char** arrStrings = malloc ((1 + numItem) * sizeof(char*));
+    for (int k = 0; k < numItemInStr; k++) {
+        printf ("\n address of ptrs: arrStrings[p]: [%p]", arrStrings [k]);
+    }
+    printf ("\n");
+    if (*arrStrings) {
+        for (int i = 0; i <= (srcLen - delimLen); i++) {
+            int cmpRes = strncmp (delim, &source [i], delimLen);
+            if (0 == cmpRes) {
+                //printf ("\nSpot pattern\n");
+                if (0 == i) {
+                    //pattern in the first
+                    numItem++;
+                    isFirst = false;
+                    char *str = select_sub_string (&source [i + delimLen], delim);
+                    printf (" [%s] ", str);
+                    arrStrings [j++] = (char*) str;
+                } else if ((srcLen - delimLen) == i) {
+                    //pattern in the end
+                    if (0 == numItem) {
+                        char *str = select_sub_string (&source [0], delim);
+                        printf (" [%s] ", str);
+                        arrStrings [j++] = (char*) str;
+                        numItem = 1;
+                    }
+                } else {
+                    //pattern in the middle
+                    if (true == isFirst) {
+                        char *str = select_sub_string (&source [0], delim);
+                        if (str) {
+                            printf (" [%s] ", str);
+                            arrStrings [j++] = (char*) str;
+
+                        } else {
+                            printf ("\n malloc Error! \n");
+                        }
+                        numItem += 2;
+                        isFirst = false;
+                    } else {
+                        numItem++;
+                    }
+                    char *str = select_sub_string (&source [i + delimLen], delim);
+                    printf (" [%s] ", str);
+                    arrStrings [j++] = (char*) str;
+                }
+            }
+        }
+
+        *outStrArr = arrStrings;
+    } else {
+        printf ("malloc error");
+    }
+    printf ("\n ");
+    return numItemInStr;
+}
+//(qwerrty    RE)   return   "qwerty"
+//(qweRTy    RT)   return   "qwe"
+//(QWerty    QW)   return   ""
+char *select_sub_string (char *text, char *tail) {
+    char *outStr = NULL;
+    if (text && tail) {
+        bool isPatternSpot = false;
+        int lenText = strlen (text);
+        int lenTail = strlen (tail);
+        if (lenTail < lenText) {
+            for (int i = 0; i <= (lenText - lenTail); i++) {
+                int cmpRes = strncmp (&text [i], tail, lenTail);
+                if (0 == cmpRes) {
+                    isPatternSpot = true;
+                    if (0 < i) {
+                        outStr = malloc (sizeof(char) * i + 1);
+                        if (outStr) {
+                            memset (outStr, 0x00, sizeof(char) * (i + 1));
+                            memcpy (outStr, text, sizeof(char) * i);
+                            return outStr;
+                        }
+                    } else {
+                        outStr = strdup ("");
+                        if (outStr) {
+                            return outStr;
+                        }
+                    }
+                }
+            }
+            if (false == isPatternSpot) {
+                outStr = strdup (text);
+                if (outStr) {
+                    return outStr;
+                }
+            }
+        }
+    }
+    return outStr;
+}
+
+//strstr
+int count_amount_of_item (char *source, char *delim) {
+    int numItem = 0;
+    bool isFirst = true;
+    int srcLen = strlen (source);
+    int delimLen = strlen (delim);
+    if (delimLen < srcLen) {
+        for (int i = 0; i <= (srcLen - delimLen); i++) {
+            int cmpRes = strncmp (delim, &source [i], delimLen);
+            if (0 == cmpRes) {
+                //printf ("\nSpot pattern\n");
+                if (0 == i) {
+                    //pattern in the first
+                    isFirst = false;
+                    numItem++;
+                } else if ((srcLen - delimLen) == i) {
+                    //pattern in the end
+                    if (0 == numItem) {
+                        numItem = 1;
+                    }
+
+                } else {
+                    //pattern in the middle
+                    if (true == isFirst) {
+                        numItem += 2;
+                        isFirst = false;
+                    } else {
+                        numItem++;
+                    }
+                }
+            }
+        }
+
+    }
+    return numItem;
+}
+
 /*
  * Find the first occurrence of pattern in text, ignore case.
  */
@@ -89,7 +231,6 @@ static bool is_spaces (const char str []) {
     return res;
 }
 
-
 bool is_real_number (const char str []) {
     bool strtod_success = true;
     double_t number = 0.0;
@@ -169,9 +310,6 @@ bool is_real_number (const char str []) {
             str_index++;
 
             if (('-' == str [str_index]) || ('+' == str [str_index])) {
-                if ('-' == str [str_index]) {
-
-                }
                 str_index++;
             }
             if (false == isdigit ((int32_t) (str [str_index]))) {

@@ -7,7 +7,6 @@
 #include "utils.h"
 #include <stdio.h>
 
-#define NOT_NUM (99999)
 #define COUNT 10
 
 typedef struct xTreeNode_t {
@@ -17,6 +16,9 @@ typedef struct xTreeNode_t {
 } TreeNode_t;
 
 extern int g_sum;
+
+
+int* inorderTraversal(TreeNode_t* root, int* returnSize);
 //how to parse array representation of binary tree from leetcode
 //How to build an incomplete binary tree from array representation
 //construct a binary tree described as array from leetcode  [1,2,3,4,5,null,6,7,null,null,null,null,8]

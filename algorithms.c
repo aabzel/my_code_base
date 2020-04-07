@@ -96,16 +96,16 @@ void swap_char (char * const x, char * const y) {
     }
 }
 
-
-void swap_int (int * const x, int * const y) {
+bool swap_int (int * const x, int * const y) {
+    bool res = false;
     if (x != y) {
         int temp;
         temp = *x;
         *x = *y;
         *y = temp;
-    } else {
-        //printf ("The same element\n");
+        res = true;
     }
+    return res;
 }
 
 typedef struct xPox_t {
@@ -123,7 +123,6 @@ int cmp_int (const void * p1, const void * p2) {
     int y = *(int *) p2; // добываем из указателя значение по этому указателю
     return x - y;
 }
-
 
 // Standard partition process of QuickSort().
 // It considers the last element as pivot

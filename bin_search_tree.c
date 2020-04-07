@@ -10,15 +10,15 @@
 static bool is_bin_search_sub_tree (TreeNode_t * root, int *minVal, int *maxVal);
 
 // Recursively inserts elements into binary search tree
-void insert (TreeNode_t ** tree, TreeNode_t * item) {
+void bst_insert (TreeNode_t ** tree, TreeNode_t * item) {
     if (NULL == (*tree)) {
         *tree = item;
         return;
     }
     if ((item->val) < ((*tree)->val)) {
-        insert (&(*tree)->left, item);
+        bst_insert (&(*tree)->left, item);
     } else if (item->val > (*tree)->val) {
-        insert (&(*tree)->right, item);
+        bst_insert (&(*tree)->right, item);
     }
     return;
 }
@@ -37,7 +37,7 @@ void binary_tree_add_val (TreeNode_t ** root, int val) {
         currNode->left = NULL;
         currNode->right = NULL;
         currNode->val = val;
-        insert (root, currNode);
+        bst_insert (root, currNode);
     }
 }
 
@@ -93,7 +93,6 @@ static bool is_bin_search_sub_tree (TreeNode_t * root, int *minVal, int *maxVal)
     }
     return res;
 }
-
 
 // Creates a binary search tree
 void create_binary_search_tree (TreeNode_t ** root, int how_many_elements) {
