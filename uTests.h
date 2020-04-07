@@ -52,6 +52,7 @@ typedef enum {
     STRING_SPLIT_ERROR = 36,
     ARR_HEAP_ERROR = 37,
     BIN_HEAP_INSERT_ERROR = 38,
+    ARR_HEAP_GET_ERROR = 39,
     NUM_ERROR
 } error_t;
 
@@ -94,5 +95,6 @@ bool test_find_min_diag_scale_summ2 (void);
 bool test_bin_heap_delete (void);
 bool test_delim_amount (void);
 bool test_bin_heap_insert (void);
+bool test_bin_heap_remove (void);
 
 #endif /* __UTESTS_H */
