@@ -1,7 +1,8 @@
-#include "algorithms.h"
-
 #include "utils.h"
+
+#include "algorithms.h"
 #include "arrays.h"
+#include "bin_heap_array.h"
 #include "linked_list.h"
 
 #include <stdlib.h>
@@ -61,13 +62,19 @@ void print_array (int *alphabet, int sizeOfAlphabet, int k) {
     printf ("\n");
 }
 
+void init_double_array (double * ptrArray, int size) {
+    for (int i = 0; i < size; i++) {
+        ptrArray [i] = 0.0;
+    }
+}
+
 void print_array_double (double *alphabet, int sizeOfAlphabet) {
 
-    printf ("\n{");
+    printf ("\n{ ");
     for (int i = 0; i < sizeOfAlphabet; i++) {
-        printf ("%f ", alphabet [i]);
+        printf ("%.3f, ", alphabet [i]);
     }
-    printf ("}");
+    printf (" }");
     printf ("\n");
 }
 
@@ -335,6 +342,119 @@ double calc_median (int * const inArr, int sizeOfArr) {
  */
 //https://medium.com/@nitishchandra/sliding-window-median-98a6710ab2a0
 double* medianSlidingWindow (int* nums, int numsSize, int k, int* returnSize) {
+// how many window position exest?
+    int size;
+    double *ptrArray = NULL;
+    if (0 < numsSize) {
+        if (k <= numsSize) {
+            size = numsSize - k + 1;
+            ptrArray = (double *) malloc (sizeof(double) * size);
+            if (ptrArray) {
+                init_double_array (ptrArray, size);
+                *returnSize = size;
+                bool res = false;
+                BinaryHeap_t minBinHeap;
+                BinaryHeap_t maxBinHeap;
+                res = bin_heap_init (&minBinHeap, k);
+                if (true == res) {
+                    res = bin_heap_init (&maxBinHeap, k);
+                }
+
+                if (true == res) {
+                    /*minHeap.len > maxheap.len by one*/
+                    /*load min heap*/
+                    int i = 0;
+                    for (i = 0; i < k; i++) {
+                        res = heap_insert_val (&minBinHeap, nums [i], false);
+                    }
+                    /*load max heap     k=4: maxHeap:2
+                     * k=5: maxHeap:2
+                     * k=7: maxHeap:3
+                     * */
+                    for (i = 0; i < (k - (k / 2)); i++) {
+                        int minVal;
+                        minVal = heap_pop (&minBinHeap, false);
+                        res = heap_insert_val (&maxBinHeap, minVal, true);
+                    }
+                    if (k & 1) {
+                        ptrArray [0] = heap_peek (&minBinHeap);
+                    } else {
+                        ptrArray [0] = (heap_peek (&minBinHeap) + heap_peek (&maxBinHeap)) / 2.0f;
+                    }
+                    for (int j = k; j < numsSize; j++) {
+                        if (k & 1) {
+                            ptrArray [j - k] = heap_peek (&minBinHeap);
+                        } else {
+                            ptrArray [j - k] = (heap_peek (&maxBinHeap) + heap_peek (&minBinHeap)) / 2.0f;
+                        }
+                        res = insert_val_to_2_heaps (&maxBinHeap, &minBinHeap, nums [j], nums [j - k], k);
+                    }
+                }
+            } else {
+                printf ("Unable to malloc %u byte", (unsigned int) sizeof(double) * size);
+            }
+        }
+    }
+    return ptrArray;
+}
+
+bool insert_val_to_2_heaps (BinaryHeap_t *maxBinHeap, BinaryHeap_t * minBinHeap, int newVal, int oldVal, int sizeOfWind) {
+    bool res = false;
+    if (0 < maxBinHeap->length && 0 < minBinHeap->length) {
+        if (heap_peek (maxBinHeap) <= heap_peek (minBinHeap)) {
+            if ((oldVal != heap_peek (maxBinHeap)) && (oldVal != heap_peek (minBinHeap))) {
+                if (oldVal < heap_peek (maxBinHeap)) {
+                    maxBinHeap->length--;
+                } else {
+                    if (heap_peek (minBinHeap) < oldVal) {
+                        minBinHeap->length--;
+                    }
+                }
+            } else if ((oldVal != heap_peek (maxBinHeap)) && (oldVal == heap_peek (minBinHeap))) {
+                heap_pop (minBinHeap, false);
+            } else if ((oldVal == heap_peek (maxBinHeap)) && (oldVal != heap_peek (minBinHeap))) {
+                heap_pop (maxBinHeap, true);
+            } else if ((oldVal == heap_peek (maxBinHeap)) && (oldVal == heap_peek (minBinHeap))) {
+                if (minBinHeap->length < maxBinHeap->length) {
+                    heap_pop (maxBinHeap, true);
+                } else {
+                    heap_pop (minBinHeap, false);
+                }
+            }
+            if ((heap_peek (maxBinHeap) < newVal) && (newVal < heap_peek (minBinHeap))) {
+                //res = heap_insert_val (maxBinHeap, newVal, true);
+                if (heap_peek (minBinHeap) <= newVal) {
+                    res = heap_insert_val (minBinHeap, newVal, false);
+                } else if (newVal <= heap_peek (maxBinHeap)) {
+                    res = heap_insert_val (maxBinHeap, newVal, true);
+                } else {
+                    /*heap_peek(maxBinHeap)<newVal<heap_peek(minBinHeap)*/
+                    if (maxBinHeap->length < minBinHeap->length) {
+                        res = heap_insert_val (maxBinHeap, newVal, true);
+                    } else {
+                        res = heap_insert_val (minBinHeap, newVal, false);
+                    }
+                }
+            }
+            if ((maxBinHeap->length + minBinHeap->length) != sizeOfWind) {
+                printf ("\n maxBinHeap->length %d \n", maxBinHeap->length);
+                printf ("\n minBinHeap->length %d \n", minBinHeap->length);
+                printf ("\n Window error!\n");
+            }
+        } else {
+            printf ("\nError in heap pair\n");
+        }
+    } else {
+        printf ("\nError in heap lenght\n");
+        printf ("\n maxBinHeap->length %d n", maxBinHeap->length);
+        printf ("   minBinHeap->length %d\n", minBinHeap->length);
+
+    }
+
+    return res;
+}
+
+double* medianSlidingWindowArr (int* nums, int numsSize, int k, int* returnSize) {
 // how many window position exest?
     int size = numsSize - k + 1;
     double *ptrArray = (double *) malloc (sizeof(double) * size);

@@ -53,11 +53,16 @@ typedef enum {
     ARR_HEAP_ERROR = 37,
     BIN_HEAP_INSERT_ERROR = 38,
     ARR_HEAP_GET_ERROR = 39,
+    ARR_MIN_HEAP_ERROR = 40,
+    ARR_HEAP_DELETE_VAL_ERROR = 41,
+    ARR_MAX_HEAP_INSERT_ERROR = 42,
     NUM_ERROR
 } error_t;
 
 int unitTest (void);
 
+bool test_max_bin_heap_insert (void);
+int test_heap_api (void);
 bool test_split (void);
 bool test_string_clean (void);
 bool test_is_bin_tree (void);
@@ -94,7 +99,10 @@ bool test_find_min_diag_scale_summ (void);
 bool test_find_min_diag_scale_summ2 (void);
 bool test_bin_heap_delete (void);
 bool test_delim_amount (void);
+bool test_min_bin_heap_insert (void);
 bool test_bin_heap_insert (void);
 bool test_bin_heap_remove (void);
+bool test_bin_heap_delete_val (void);
+bool fill_up_heap_continuous_vals (BinaryHeap_t *binHeap, int maxVal, bool isMaxHeap);
 
 #endif /* __UTESTS_H */

@@ -5,6 +5,7 @@
 extern "C" {
 #endif
 
+#include "bin_heap_array.h"
 #include "custom_type.h"
 #include "linked_list.h"
 
@@ -21,6 +22,7 @@ extern "C" {
 extern char pemutationFile [100];
 extern char kitFile [100];
 
+void init_double_array (double * ptrArray, int size);
 uint32_t reverseBits (uint32_t num);
 uint8_t hamming_weight (uint32_t n);
 unsigned int GrayToBinary32 (unsigned int num);
@@ -29,7 +31,7 @@ uint32_t bin_to_gray (uint32_t num);
 char * format_time_txt (void);
 void init_file_name (void);
 // cur date string
-double calc_median_naiv (int * const inArr, int sizeOfArr) ;
+double calc_median_naiv (int * const inArr, int sizeOfArr);
 char *generate_num_string (int n);
 void print_array (int *alphabet, int sizeOfAlphabet, int k);
 void print_curr_array (int *alphabet, int sizeOfAlphabet);
@@ -48,6 +50,8 @@ void print_array_double (double *alphabet, int sizeOfAlphabet);
 bool is_odd (int val);
 double calc_average (int const * const inArr, int sizeOfArr);
 void print_bytes (uint32_t byte);
+double* medianSlidingWindowArr (int* nums, int numsSize, int k, int* returnSize);
+bool insert_val_to_2_heaps (BinaryHeap_t *maxBinHeap, BinaryHeap_t * minBinHeap, int newVal, int oldVal, int sizeOfWind);
 
 #ifdef __cplusplus
 }

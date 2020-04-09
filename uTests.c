@@ -25,21 +25,44 @@
 #include <stdint.h>
 #include <string.h>
 
-int unitTest (void) {
+int test_heap_api (void) {
     bool res = false;
+
     res = test_bin_heap_par_ind_arr ();
     if (false == res) {
         return ARR_HEAP_ERROR;
     }
 
-    res = test_bin_heap_insert ();
+    res = test_bin_heap_delete_val ();
     if (false == res) {
-        return BIN_HEAP_INSERT_ERROR;
+        return ARR_HEAP_DELETE_VAL_ERROR;
+    }
+
+    res = test_max_bin_heap_insert ();
+    if (false == res) {
+        return ARR_MAX_HEAP_INSERT_ERROR;
+    }
+
+    res = test_min_bin_heap_insert ();
+    if (false == res) {
+        return ARR_MIN_HEAP_ERROR;
     }
 
     res = test_bin_heap_remove ();
     if (false == res) {
         return ARR_HEAP_GET_ERROR;
+    }
+
+    return FINE;
+}
+
+int unitTest (void) {
+    bool res = false;
+    int ret = 0;
+
+    ret = test_heap_api ();
+    if (ret) {
+        return ret;
     }
 
     res = test_delim_amount ();
@@ -1118,12 +1141,13 @@ bool test_k_smallest (void) {
 
 bool test_medianSlidingWindow (void) {
     bool res = false;
+    double* prt;
     int arr [] =
         { 1, 3, -1, -3, 5, 3, 6, 7 };
     int numsSize = sizeof(arr) / sizeof(arr [0]);
     int returnSize = 0;
     int k = 3;
-    double* prt = medianSlidingWindow (arr, numsSize, k, &returnSize);
+    prt = medianSlidingWindow (arr, numsSize, k, &returnSize);
     if (prt) {
         printf ("\n mem Alloced! %d ", returnSize);
         if (returnSize == (numsSize - k + 1)) {
@@ -1131,6 +1155,17 @@ bool test_medianSlidingWindow (void) {
             res = true;
         }
         free (prt);
+        prt = NULL;
+    }
+    prt = medianSlidingWindowArr (arr, numsSize, k, &returnSize);
+    if (prt) {
+        printf ("\n mem Alloced! %d ", returnSize);
+        if (returnSize == (numsSize - k + 1)) {
+            print_array_double (prt, returnSize);
+            res = true;
+        }
+        free (prt);
+        prt = NULL;
     }
 
     return res;
@@ -1490,22 +1525,60 @@ bool test_bin_heap_par_ind_arr (void) {
     return true;
 }
 
-bool test_bin_heap_insert (void) {
+bool test_max_bin_heap_insert (void) {
     BinaryHeap_t binHeapObj;
     binHeapObj.length = 0;
     bool res = true;
     time_t t;
     srand ((unsigned) time (&t));
 
+    res = bin_heap_init (&binHeapObj, 20);
+    if (true == res) {
+        for (int a = 0; a < 20; a++) {
+            if (true == res) {
+                int b = rand () % 50;
+                res = heap_insert_val (&binHeapObj, b, true);
+                if (false == res) {
+                    printf ("\n [%s] %d heap_insert_val\n", __FUNCTION__, __COUNTER__);
+                    return false;
+                }
+                res = is_bin_heap (&binHeapObj, true);
+                if (false == res) {
+                    printf ("\n [%s] %d is_bin_heap\n", __FUNCTION__, __COUNTER__);
+                    return false;
+                }
+            }
+        }
+
+        res = is_bin_heap (&binHeapObj, true);
+        if (false == res) {
+            printf ("\n [%s] %d is_bin_heap\n", __FUNCTION__, __COUNTER__);
+            return false;
+        }
+        res = draw_bin_heap_in_file (&binHeapObj, "bin_heap_array.dot");
+    }
+
+    return true;
+}
+
+bool test_min_bin_heap_insert (void) {
+    BinaryHeap_t binHeapObj;
+    binHeapObj.length = 0;
+    bool res = true;
+    time_t t;
+    srand ((unsigned) time (&t));
+
+    res = bin_heap_init (&binHeapObj, 20);
+
     for (int a = 0; a < 20; a++) {
         if (true == res) {
             int b = rand () % 50;
-            res = insert_val (&binHeapObj, b);
+            res = heap_insert_val (&binHeapObj, b, false);
             if (false == res) {
                 printf ("\n [%s] %d\n", __FUNCTION__, __COUNTER__);
                 return false;
             }
-            res = is_max_bin_heap (&binHeapObj);
+            res = is_bin_heap (&binHeapObj, false);
             if (false == res) {
                 printf ("\n [%s] %d\n", __FUNCTION__, __COUNTER__);
                 return false;
@@ -1513,12 +1586,12 @@ bool test_bin_heap_insert (void) {
         }
     }
 
-    res = is_max_bin_heap (&binHeapObj);
+    res = is_bin_heap (&binHeapObj, false);
     if (false == res) {
         printf ("\n [%s] %d\n", __FUNCTION__, __COUNTER__);
         return false;
     }
-    res = draw_bin_heap_in_file (&binHeapObj, "bin_heap_array.dot");
+    res = draw_bin_heap_in_file (&binHeapObj, "min_bin_heap_array.dot");
 
     return true;
 }
@@ -1571,50 +1644,98 @@ bool test_string_clean (void) {
     return true;
 }
 
+bool test_bin_heap_delete_val (void) {
+    bool res = false;
+    BinaryHeap_t maxBinHeapObj;
+    res = bin_heap_init (&maxBinHeapObj, 20);
+    if (res) {
+        res = fill_up_heap_continuous_vals (&maxBinHeapObj, 20, true);
+        if (false == res) {
+            printf ("\nUnable to fill up array\n");
+        }
+    }
+    draw_bin_heap_in_file (&maxBinHeapObj, "bin_heap_array1_20.dot");
+
+    res = is_val_in_bin_heap (&maxBinHeapObj, true, 10, 0);
+    if (true == res) {
+        res = bin_heap_remove_val (&maxBinHeapObj, true, 10);
+        if (true == res) {
+            draw_bin_heap_in_file (&maxBinHeapObj, "bin_heap_array1_20-10.dot");
+            res = is_val_in_bin_heap (&maxBinHeapObj, true, 10, 0);
+            if (true == res) {
+                printf ("\nphantom  val in the heap\n");
+                res = false;
+            } else {
+                res = true;
+            }
+        } else {
+            printf ("\nUnable to remove val\n");
+        }
+    } else {
+        printf ("\nNo extected val 10\n");
+    }
+    bin_heap_deinit (&maxBinHeapObj);
+
+    return res;
+}
+
+bool fill_up_heap_continuous_vals (BinaryHeap_t *binHeap, int maxVal, bool isMaxHeap) {
+    bool res = true;
+    if (binHeap) {
+        for (int ind = 1; ind <= maxVal; ind++) {
+            if (true == res) {
+                res = heap_insert_val (binHeap, ind, isMaxHeap);
+            }
+        }
+    }
+    return res;
+}
+
 bool test_bin_heap_remove (void) {
     BinaryHeap_t binHeapObj;
-    binHeapObj.length = 0;
+
     bool res = true;
     time_t t;
     srand ((unsigned) time (&t));
 
-    for (int ind = 0; ind < 20; ind++) {
-        if (true == res) {
-            int b = rand () % 50;
-            res = insert_val (&binHeapObj, b);
-            if (false == res) {
-                printf ("\n [%s] %d insert_val ind=%d\n", __FUNCTION__, __COUNTER__, ind);
-                return false;
+    res = bin_heap_init (&binHeapObj, 20);
+    if (res) {
+        for (int ind = 0; ind < 20; ind++) {
+            if (true == res) {
+                int b = rand () % 50;
+                res = heap_insert_val (&binHeapObj, b, true);
+                if (false == res) {
+                    printf ("\n [%s] %d insert_val ind=%d\n", __FUNCTION__, __COUNTER__, ind);
+                    return false;
+                }
+                res = is_bin_heap (&binHeapObj, true);
+                if (false == res) {
+                    res = draw_bin_heap_in_file (&binHeapObj, "bin_heap_array_error.dot");
+                    printf ("\n [%s] %d is_max_bin_heap ind=%d\n", __FUNCTION__, __COUNTER__, ind);
+                    return false;
+                }
             }
-            res = is_max_bin_heap (&binHeapObj);
+        }
+        res = draw_bin_heap_in_file (&binHeapObj, "rand_bin_heap_array.dot");
+
+        printf ("\n");
+        for (int a = 0; a < 20; a++) {
+            int val = heap_pop (&binHeapObj, true);
+            printf (" %d ", val);
+            res = is_bin_heap (&binHeapObj, true);
             if (false == res) {
                 res = draw_bin_heap_in_file (&binHeapObj, "bin_heap_array_error.dot");
-                printf ("\n [%s] %d is_max_bin_heap ind=%d\n", __FUNCTION__, __COUNTER__, ind);
+                printf ("\n [%s] %d is_max_bin_heap a=%d\n", __FUNCTION__, __COUNTER__, a);
                 return false;
             }
         }
-    }
-    res = draw_bin_heap_in_file (&binHeapObj, "rand_bin_heap_array.dot");
-
-    printf ("\n");
-    for (int a = 0; a < 20; a++) {
-        int val = heap_get_max (&binHeapObj);
-        printf (" %d ", val);
-        res = is_max_bin_heap (&binHeapObj);
+        printf ("\n");
+        res = is_bin_heap (&binHeapObj, true);
         if (false == res) {
-            res = draw_bin_heap_in_file (&binHeapObj, "bin_heap_array_error.dot");
-            printf ("\n [%s] %d is_max_bin_heap a=%d\n", __FUNCTION__, __COUNTER__, a);
+            printf ("\n [%s] %d\n", __FUNCTION__, __COUNTER__);
             return false;
         }
+        res = draw_bin_heap_in_file (&binHeapObj, "bin_heap_array.dot");
     }
-    printf ("\n");
-
-    res = is_max_bin_heap (&binHeapObj);
-    if (false == res) {
-        printf ("\n [%s] %d\n", __FUNCTION__, __COUNTER__);
-        return false;
-    }
-    res = draw_bin_heap_in_file (&binHeapObj, "bin_heap_array.dot");
-
-    return true;
+    return res;
 }
