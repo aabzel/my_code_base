@@ -144,6 +144,9 @@ bool bin_heap_remove_val (BinaryHeap_t *binHeap, bool isMaxHeap, int val) {
                 swap_int (&binHeap->array [indexVal], &binHeap->array [binHeap->length - 1]);
                 binHeap->length--;
                 res = make_bin_heap (binHeap, isMaxHeap);
+                if (false == res) {
+                    printf ("\n Unable to gather heap after delete %d\n", val);
+                }
             }
         }
     }
@@ -210,6 +213,9 @@ bool make_bin_heap (BinaryHeap_t *binHeap, bool isMaxHeap) {
             res = make_bin_heap_ll (binHeap, isMaxHeap, 0);
             printf ("\n make_bin_heap_ll!\n");
             iter++;
+        }
+        if (0 == iter) {
+            res = true;
         }
         printf ("\n iter: %d\n", iter);
     }

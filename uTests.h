@@ -56,6 +56,7 @@ typedef enum {
     ARR_MIN_HEAP_ERROR = 40,
     ARR_HEAP_DELETE_VAL_ERROR = 41,
     ARR_MAX_HEAP_INSERT_ERROR = 42,
+    ARR_MIN_BIN_HEAP_DELETE_VAL_ERROR = 43,
     NUM_ERROR
 } error_t;
 
@@ -97,10 +98,12 @@ bool test_medianSlidingWindow (void);
 bool test_min_path_diag_atmospher (void);
 bool test_find_min_diag_scale_summ (void);
 bool test_find_min_diag_scale_summ2 (void);
-bool test_bin_heap_delete (void);
 bool test_delim_amount (void);
+
+bool test_bin_heap_delete (void);
 bool test_min_bin_heap_insert (void);
 bool test_bin_heap_insert (void);
+bool test_min_bin_heap_delete_val (void);
 bool test_bin_heap_remove (void);
 bool test_bin_heap_delete_val (void);
 bool fill_up_heap_continuous_vals (BinaryHeap_t *binHeap, int maxVal, bool isMaxHeap);

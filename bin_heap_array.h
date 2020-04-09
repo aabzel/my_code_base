@@ -7,7 +7,6 @@
  A Binary Max Heap implementation
  */
 
-
 typedef struct xBinaryHeap_t {
     int length; //current amount of items
     int capacity; //max allowable amount of items
@@ -22,7 +21,7 @@ bool heap_insert_val (BinaryHeap_t *binHeap, int newVal, bool isMaxHeap);
 int heap_peek (BinaryHeap_t *binHeap);
 //bool is_min_bin_heap (BinaryHeap_t *binHeap);
 //bool is_max_bin_heap (BinaryHeap_t *binHeap);
-bool bin_heap_remove_val(BinaryHeap_t *binHeap, bool isMax,int val);
+bool bin_heap_remove_val (BinaryHeap_t *binHeap, bool isMax, int val);
 bool max_heap_insert_val (BinaryHeap_t *binHeap, int val);
 bool min_heap_insert_val (BinaryHeap_t *binHeap, int val);
 bool is_right_ch_exist (BinaryHeap_t *binHeap, int parInd);
@@ -55,7 +54,6 @@ void make_empty (BinaryHeap_t *binHeap);
 
 int heap_pop (BinaryHeap_t *binHeap, bool isMaxHeap);
 bool bubble_down_val_heap (BinaryHeap_t *binHeap, bool isMaxHeap);
-
 
 //TOTO
 //void make_max_heap (TreeNode_t * root) ;

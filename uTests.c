@@ -33,6 +33,11 @@ int test_heap_api (void) {
         return ARR_HEAP_ERROR;
     }
 
+    res = test_min_bin_heap_delete_val ();
+    if (false == res) {
+        return ARR_MIN_BIN_HEAP_DELETE_VAL_ERROR;
+    }
+
     res = test_bin_heap_delete_val ();
     if (false == res) {
         return ARR_HEAP_DELETE_VAL_ERROR;
@@ -1642,6 +1647,41 @@ bool test_string_clean (void) {
     ptrString = NULL;
 
     return true;
+}
+
+bool test_min_bin_heap_delete_val (void) {
+    bool res = false;
+    BinaryHeap_t minBinHeapObj;
+    res = bin_heap_init (&minBinHeapObj, 20);
+    if (res) {
+        res = fill_up_heap_continuous_vals (&minBinHeapObj, 20, false);
+        if (false == res) {
+            printf ("\nUnable to fill up array\n");
+        }
+    }
+    draw_bin_heap_in_file (&minBinHeapObj, "min_bin_heap_array1_20.dot");
+
+    res = is_val_in_bin_heap (&minBinHeapObj, false, 10, 0);
+    if (true == res) {
+        res = bin_heap_remove_val (&minBinHeapObj, false, 10);
+        if (true == res) {
+            draw_bin_heap_in_file (&minBinHeapObj, "min_bin_heap_array1_20-10.dot");
+            res = is_val_in_bin_heap (&minBinHeapObj, false, 10, 0);
+            if (true == res) {
+                printf ("\nphantom  val in the heap\n");
+                res = false;
+            } else {
+                res = true;
+            }
+        } else {
+            printf ("\nUnable to remove val\n");
+        }
+    } else {
+        printf ("\nNo extected val 10\n");
+    }
+    bin_heap_deinit (&minBinHeapObj);
+
+    return res;
 }
 
 bool test_bin_heap_delete_val (void) {
