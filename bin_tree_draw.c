@@ -123,7 +123,7 @@ static bool draw_bin_heap_in_file_ll (BinaryHeap_t *binHeap, FILE * stream) {
             for (int node = 0; node < binHeap->length; node++) {
                 fprintf (stream, "    node%u[ label = \"%d\"]; \n", (unsigned int) node, binHeap->array [node]);
                 if (is_right_ch_exist (binHeap, node)) {
-                    int childIndex = get_rihgt_child_index (node);
+                    int childIndex = get_right_child_index (node);
                     fprintf (stream, "   node%u -> node%u ; \n", node, childIndex);
                 } else {
                     gNullCnt++;
