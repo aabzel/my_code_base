@@ -52,6 +52,9 @@ double calc_average (int const * const inArr, int sizeOfArr);
 void print_bytes (uint32_t byte);
 double* medianSlidingWindowArr (int* nums, int numsSize, int k, int* returnSize);
 bool insert_val_to_2_heaps (BinaryHeap_t *maxBinHeap, BinaryHeap_t * minBinHeap, int newVal, int oldVal, int sizeOfWind);
+bool is_double_arr_equal (double *arr1, double *arr2, int arrSize);
+bool remove_old_val_from_bin_heaps (BinaryHeap_t *maxBinHeap, BinaryHeap_t *minBinHeap, int oldVal);
+bool insert_new_val_to_bin_heaps (BinaryHeap_t *maxBinHeap, BinaryHeap_t *minBinHeap, int newVal);
 
 #ifdef __cplusplus
 }

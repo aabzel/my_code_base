@@ -1147,6 +1147,7 @@ bool test_k_smallest (void) {
 bool test_medianSlidingWindow (void) {
     bool res = false;
     double* prt;
+    double* prtCorrect;
     int arr [] =
         { 1, 3, -1, -3, 5, 3, 6, 7 };
     int numsSize = sizeof(arr) / sizeof(arr [0]);
@@ -1159,19 +1160,22 @@ bool test_medianSlidingWindow (void) {
             print_array_double (prt, returnSize);
             res = true;
         }
-        free (prt);
-        prt = NULL;
     }
-    prt = medianSlidingWindowArr (arr, numsSize, k, &returnSize);
-    if (prt) {
+
+    prtCorrect = medianSlidingWindowArr (arr, numsSize, k, &returnSize);
+    if (prtCorrect) {
         printf ("\n mem Alloced! %d ", returnSize);
         if (returnSize == (numsSize - k + 1)) {
-            print_array_double (prt, returnSize);
+            print_array_double (prtCorrect, returnSize);
             res = true;
         }
-        free (prt);
-        prt = NULL;
     }
+    res = is_double_arr_equal (prtCorrect, prt, returnSize);
+    if (false == res) {
+        printf ("\n Arrays are not equals \n");
+    }
+    free (prt);
+    free (prtCorrect);
 
     return res;
 }
@@ -1542,7 +1546,7 @@ bool test_max_bin_heap_insert (void) {
         for (int a = 0; a < 20; a++) {
             if (true == res) {
                 int b = rand () % 50;
-                res = heap_insert_val (&binHeapObj, b, true);
+                res = heap_insert_val (&binHeapObj, true, b);
                 if (false == res) {
                     printf ("\n [%s] %d heap_insert_val\n", __FUNCTION__, __COUNTER__);
                     return false;
@@ -1578,7 +1582,7 @@ bool test_min_bin_heap_insert (void) {
     for (int a = 0; a < 20; a++) {
         if (true == res) {
             int b = rand () % 50;
-            res = heap_insert_val (&binHeapObj, b, false);
+            res = heap_insert_val (&binHeapObj, false, b);
             if (false == res) {
                 printf ("\n [%s] %d\n", __FUNCTION__, __COUNTER__);
                 return false;
@@ -1677,7 +1681,7 @@ bool test_min_bin_heap_delete_val (void) {
             printf ("\nUnable to remove val\n");
         }
     } else {
-        printf ("\nNo extected val 10\n");
+        printf ("\nNo expected val 10\n");
     }
     bin_heap_deinit (&minBinHeapObj);
 
@@ -1724,7 +1728,7 @@ bool fill_up_heap_continuous_vals (BinaryHeap_t *binHeap, int maxVal, bool isMax
     if (binHeap) {
         for (int ind = 1; ind <= maxVal; ind++) {
             if (true == res) {
-                res = heap_insert_val (binHeap, ind, isMaxHeap);
+                res = heap_insert_val (binHeap, isMaxHeap, ind);
             }
         }
     }
@@ -1743,7 +1747,7 @@ bool test_bin_heap_remove (void) {
         for (int ind = 0; ind < 20; ind++) {
             if (true == res) {
                 int b = rand () % 50;
-                res = heap_insert_val (&binHeapObj, b, true);
+                res = heap_insert_val (&binHeapObj, true, b);
                 if (false == res) {
                     printf ("\n [%s] %d insert_val ind=%d\n", __FUNCTION__, __COUNTER__, ind);
                     return false;

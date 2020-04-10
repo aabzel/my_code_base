@@ -150,9 +150,13 @@ bool bin_heap_remove_val (BinaryHeap_t *binHeap, bool isMaxHeap, int val) {
             }
         }
     }
+    if (false == res) {
+        printf ("\n Unable to delete val %d\n", val);
+    }
     return res;
 }
 
+#if 0
 bool min_heap_insert_val (BinaryHeap_t *binHeap, int newVal) {
     bool res = false;
     if (binHeap) {
@@ -168,10 +172,11 @@ bool min_heap_insert_val (BinaryHeap_t *binHeap, int newVal) {
     }
     return res;
 }
+#endif
 
-bool heap_insert_val (BinaryHeap_t *binHeap, int newVal, bool isMaxHeap) {
+bool heap_insert_val (BinaryHeap_t *binHeap, bool isMaxHeap, int newVal) {
     bool res = false;
-    if (binHeap) {
+    if (binHeap && ((false == isMaxHeap) || (true == isMaxHeap))) {
         if (binHeap->length <= binHeap->capacity) {
             binHeap->array [binHeap->length] = newVal;
             if (true == isMaxHeap) {
@@ -186,9 +191,14 @@ bool heap_insert_val (BinaryHeap_t *binHeap, int newVal, bool isMaxHeap) {
             printf ("\n Heap is full!\n");
         }
     }
+    if (false == res) {
+        printf ("\n heap insert val [%d] error \n", res);
+    }
+
     return res;
 }
 
+#if 0
 bool max_heap_insert_val (BinaryHeap_t *binHeap, int newVal) {
     bool res = false;
     if (binHeap) {
@@ -204,6 +214,7 @@ bool max_heap_insert_val (BinaryHeap_t *binHeap, int newVal) {
     }
     return res;
 }
+#endif
 
 bool make_bin_heap (BinaryHeap_t *binHeap, bool isMaxHeap) {
     bool res = false;
