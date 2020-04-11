@@ -13,16 +13,18 @@ typedef struct xBinaryHeap_t {
     int *array; // pointer to array in heap memory
 } BinaryHeap_t;
 
+bool bin_heap_print (BinaryHeap_t *binHeap, bool isMax);
 bool bin_heap_init (BinaryHeap_t *binHeap, int amountOfItems);
 bool bin_heap_deinit (BinaryHeap_t *binHeap);
+bool is_empty_heap (BinaryHeap_t *binHeap);
 bool heap_insert_val (BinaryHeap_t *binHeap, bool isMaxHeap, int newVal);
 int heap_peek (BinaryHeap_t *binHeap);
+char *type_heap_to_name (bool isMaxHeap);
 int heap_pop (BinaryHeap_t *binHeap, bool isMaxHeap);
 bool is_bin_heap (BinaryHeap_t *binHeap, bool isMaxHeap);
 bool bin_heap_remove_val (BinaryHeap_t *binHeap, bool isMax, int val);
 
 int height_of_bin_heap (BinaryHeap_t *binHeap);
-bool is_empty_heap (BinaryHeap_t *binHeap);
 bool make_bin_heap (BinaryHeap_t *binHeap, bool isMaxHeap);
 
 // low level bin heap API functions

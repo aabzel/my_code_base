@@ -35,7 +35,7 @@ int heap_peek (BinaryHeap_t *binHeap) {
         if (0 < binHeap->length) {
             val = binHeap->array [0];
         } else {
-            printf ("\n binHeap is emply!\n");
+            printf ("\n %s Bin Heap is empty!\n", __FUNCTION__);
         }
     }
     return val;
@@ -210,9 +210,19 @@ bool bin_heap_remove_val (BinaryHeap_t *binHeap, bool isMaxHeap, int val) {
         }
     }
     if (false == res) {
-        printf ("\n Unable to delete val %d\n", val);
+        printf ("\n Unable to delete val %d from %s bin heap\n", val, type_heap_to_name (isMaxHeap));
     }
     return res;
+}
+
+char *type_heap_to_name (bool isMaxHeap) {
+    static char *str = "undef";
+    if (true == isMaxHeap) {
+        str = "Max";
+    } else if (false == isMaxHeap) {
+        str = "Min";
+    }
+    return str;
 }
 
 bool heap_insert_val (BinaryHeap_t *binHeap, bool isMaxHeap, int newVal) {
@@ -463,5 +473,24 @@ bool is_left_ch_exist (BinaryHeap_t *binHeap, int parInd) {
             }
         }
     }
+    return res;
+}
+
+bool bin_heap_print (BinaryHeap_t *binHeap, bool isMax) {
+    bool res = false;
+    if (binHeap) {
+        printf ("\n%s Bin heap tree [ \n", type_heap_to_name (isMax));
+        if (0 < (binHeap->length)) {
+            for (int i = 0; i < binHeap->length; i++) {
+                printf (" %d ", binHeap->array [i]);
+                if (0 == (i & (i - 1))) {
+                    printf ("\n");
+                }
+            }
+        }
+        res = true;
+        printf ("]\n");
+    }
+
     return res;
 }

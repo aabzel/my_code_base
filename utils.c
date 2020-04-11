@@ -343,8 +343,10 @@ double calc_median (int * const inArr, int sizeOfArr) {
 //https://medium.com/@nitishchandra/sliding-window-median-98a6710ab2a0
 double* medianSlidingWindow (int* nums, int numsSize, int k, int* returnSize) {
 // how many window position exest?
-
+    printf ("\n Size of Array: %d \n", numsSize);
+#if DEBUG_WINDOW
     print_curr_array (nums, numsSize);
+#endif
     int size;
     double *ptrArray = NULL;
     if (0 < numsSize) {
@@ -380,119 +382,136 @@ double* medianSlidingWindow (int* nums, int numsSize, int k, int* returnSize) {
                     }
                     int j = k;
                     for (j = k; j < numsSize; j++) {
-                        if (k & 1) {
+                        if (1 == k) {
+                            ptrArray [j - k] = nums [j - k];
+                        } else {
+                            if (k & 1) {
+                                ptrArray [j - k] = heap_peek (&maxBinHeap);
+                            } else {
+                                ptrArray [j - k] = (((double) heap_peek (&maxBinHeap)) + ((double) heap_peek (&minBinHeap))) / 2.0f;
+                            }
+                            res = insert_val_to_2_heaps (&maxBinHeap, &minBinHeap, nums [j], nums [j - k], k, &nums [j - k]);
+                            if (false == res) {
+                                bin_heap_deinit (&minBinHeap);
+                                bin_heap_deinit (&maxBinHeap);
+                                return ptrArray;
+                            }
+                        }
+                    }
+                    if (1 != k) {
+                        if ((k & 1)) {
                             ptrArray [j - k] = heap_peek (&maxBinHeap);
                         } else {
-                            ptrArray [j - k] = (heap_peek (&maxBinHeap) + heap_peek (&minBinHeap)) / 2.0f;
+                            ptrArray [j - k] = (((double) heap_peek (&maxBinHeap)) + ((double) heap_peek (&minBinHeap))) / 2.0f;
                         }
-                        res = insert_val_to_2_heaps (&maxBinHeap, &minBinHeap, nums [j], nums [j - k], k, &nums [j - k]);
-                    }
-                    if (k & 1) {
-                        ptrArray [j - k] = heap_peek (&maxBinHeap);
                     } else {
-                        ptrArray [j - k] = (heap_peek (&maxBinHeap) + heap_peek (&minBinHeap)) / 2.0f;
+                        ptrArray [j - k] = nums [j - k];
                     }
+                    bin_heap_deinit (&minBinHeap);
+                    bin_heap_deinit (&maxBinHeap);
                 }
             } else {
-                printf ("Unable to malloc %u byte", (unsigned int) sizeof(double) * size);
+                printf ("\n Unable to malloc %u byte", (unsigned int) sizeof(double) * size);
             }
         }
     }
     return ptrArray;
 }
 
-#define DEBUG_INSERT 1
 bool insert_val_to_2_heaps (BinaryHeap_t *maxBinHeap, BinaryHeap_t * minBinHeap, int newVal, int oldVal, int sizeOfWind, int *curWinArr) {
     bool res = false;
+    (void) curWinArr;
 #if DEBUG_INSERT
     printf ("\n\n ");
     print_curr_array (curWinArr + 1, sizeOfWind);
     printf ("\n oldVal: [%d] newVal: [%d] ", oldVal, newVal);
+    bin_heap_print (minBinHeap, false);
+    bin_heap_print (maxBinHeap, true);
 #endif
-    if (0 < maxBinHeap->length && 0 < minBinHeap->length) {
-        if (heap_peek (maxBinHeap) <= heap_peek (minBinHeap) || 1) {
-            res = remove_old_val_from_bin_heaps (maxBinHeap, minBinHeap, oldVal);
-            if (false == res) {
-                printf ("\n heaps remove error!\n");
-            }
-            res = insert_new_val_to_bin_heaps (maxBinHeap, minBinHeap, newVal);
-            if (false == res) {
-                printf ("\n to heaps insert error!\n");
-            }
-            if ((maxBinHeap->length + minBinHeap->length) != sizeOfWind) {
-                printf ("\n Window error!\n");
-                printf ("\n maxBinHeap->length %d \n", maxBinHeap->length);
-                printf ("\n minBinHeap->length %d \n", minBinHeap->length);
-                printf ("\n Window error!\n");
-            } else {
-                int emigratingValue;
-                if (sizeOfWind & 1) {
-                    /*maxHeap.len- minHeap.len =1*/
 
-                    if (1 < (maxBinHeap->length - minBinHeap->length)) {
-                        emigratingValue = heap_pop (maxBinHeap, true);
-                        heap_insert_val (minBinHeap, false, emigratingValue);
-                    } else {
-                        if (-1 < (minBinHeap->length - maxBinHeap->length)) {
-                            emigratingValue = heap_pop (minBinHeap, false);
-                            heap_insert_val (maxBinHeap, true, emigratingValue);
-                        } else {
+    res = remove_old_val_from_bin_heaps (maxBinHeap, minBinHeap, oldVal);
+    if (false == res) {
+        printf ("\n heaps remove error!\n");
+        return res;
+    }
+    res = insert_new_val_to_bin_heaps (maxBinHeap, minBinHeap, newVal);
+    if (false == res) {
+        printf ("\n to heaps insert error!\n");
+        return res;
+    }
+    if ((maxBinHeap->length + minBinHeap->length) != sizeOfWind) {
+        printf ("\n Window error!\n");
+        printf ("\n maxBinHeap->length %d \n", maxBinHeap->length);
+        printf ("\n minBinHeap->length %d \n", minBinHeap->length);
+        printf ("\n Window error!\n");
+    } else {
+        int emigratingValue;
+        if (sizeOfWind & 1) {
+            /*maxHeap.len- minHeap.len =1*/
+
+            if (1 < (maxBinHeap->length - minBinHeap->length)) {
+                emigratingValue = heap_pop (maxBinHeap, true);
+                heap_insert_val (minBinHeap, false, emigratingValue);
+            } else {
+                if (-1 < (minBinHeap->length - maxBinHeap->length)) {
+                    emigratingValue = heap_pop (minBinHeap, false);
+                    heap_insert_val (maxBinHeap, true, emigratingValue);
+                } else {
 #if DEBUG
                             printf ("\n heap size invariant fine\n");
 #endif
-                        }
-                    }
-                } else {
-                    /*maxHeap.len- minHeap.len =0*/
-                    if (0 < (maxBinHeap->length - minBinHeap->length)) {
-                        emigratingValue = heap_pop (maxBinHeap, true);
-                        heap_insert_val (minBinHeap, false, emigratingValue);
-                    } else {
-                        if (0 < (minBinHeap->length - maxBinHeap->length)) {
-                            emigratingValue = heap_pop (minBinHeap, false);
-                            heap_insert_val (maxBinHeap, true, emigratingValue);
-                        } else {
-                            printf ("\n heap size invariant fine\n");
-                        }
-                    }
                 }
             }
         } else {
-            printf ("\nError in heap pair: ");
-            printf ("\n heap_peek (maxBinHeap) %d ", heap_peek (maxBinHeap));
-            printf ("\n heap_peek (minBinHeap) %d \n", heap_peek (minBinHeap));
-
+            /*maxHeap.len- minHeap.len =0*/
+            if (0 < (maxBinHeap->length - minBinHeap->length)) {
+                emigratingValue = heap_pop (maxBinHeap, true);
+                heap_insert_val (minBinHeap, false, emigratingValue);
+            } else {
+                if (0 < (minBinHeap->length - maxBinHeap->length)) {
+                    emigratingValue = heap_pop (minBinHeap, false);
+                    heap_insert_val (maxBinHeap, true, emigratingValue);
+                } else {
+                    printf ("\n heap size invariant fine\n");
+                }
+            }
         }
-    } else {
-        printf ("\nError in heap lenght\n");
-        printf ("\n maxBinHeap->length %d ", maxBinHeap->length);
-        printf ("   minBinHeap->length %d\n", minBinHeap->length);
-
     }
-    printf ("\n heap_peek (maxBinHeap): [%d] heap_peek (minBinHeap): [%d] ", heap_peek (maxBinHeap), heap_peek (minBinHeap));
 
+#if DEBUG_INSERT
+    printf ("\n heap_peek (maxBinHeap): [%d] heap_peek (minBinHeap): [%d] ", heap_peek (maxBinHeap), heap_peek (minBinHeap));
+#endif
     return res;
 }
 
 bool remove_old_val_from_bin_heaps (BinaryHeap_t *maxBinHeap, BinaryHeap_t *minBinHeap, int oldVal) {
     bool res = false;
-    if (oldVal < heap_peek (maxBinHeap)) {
-        res = bin_heap_remove_val (maxBinHeap, true, oldVal);
-        // transfer val from min to max heap
-        return res;
+
+    if (!is_empty_heap (maxBinHeap)) {
+        if (oldVal < heap_peek (maxBinHeap)) {
+            res = bin_heap_remove_val (maxBinHeap, true, oldVal);
+            // transfer val from min to max heap
+            return res;
+        }
     }
 
-    if (heap_peek (minBinHeap) < oldVal) {
-        res = bin_heap_remove_val (minBinHeap, false, oldVal);
-        // transfer val from max to min heap
-        return res;
+    if (!is_empty_heap (minBinHeap)) {
+        if (heap_peek (minBinHeap) < oldVal) {
+            res = bin_heap_remove_val (minBinHeap, false, oldVal);
+            // transfer val from max to min heap
+            return res;
+        }
     }
 
+    //if (!is_empty_heap (maxBinHeap) && !is_empty_heap (minBinHeap)) {
     if ((oldVal != heap_peek (maxBinHeap)) && (oldVal == heap_peek (minBinHeap))) {
         heap_pop (minBinHeap, false);
         return true;
     } else if ((oldVal == heap_peek (maxBinHeap)) && (oldVal != heap_peek (minBinHeap))) {
-        heap_pop (maxBinHeap, true);
+        int val = heap_pop (maxBinHeap, true);
+        if (val != oldVal) {
+            printf ("\nunidentified error\n");
+        }
         return true;
     } else if ((oldVal == heap_peek (maxBinHeap)) && (oldVal == heap_peek (minBinHeap))) {
         if (minBinHeap->length < maxBinHeap->length) {
@@ -502,14 +521,18 @@ bool remove_old_val_from_bin_heaps (BinaryHeap_t *maxBinHeap, BinaryHeap_t *minB
         }
         return true;
     }
+    //}
+
     return false;
 }
 
 // newVal:1  heap_peek (maxBinHeap) 3
 bool insert_new_val_to_bin_heaps (BinaryHeap_t *maxBinHeap, BinaryHeap_t *minBinHeap, int newVal) {
+#if DEBUG_INSERT
     printf ("\n newVal [%d] ", newVal);
     printf ("\n heap_peek (maxBinHeap) [%d] ", heap_peek (maxBinHeap));
     printf (" heap_peek (minBinHeap) [%d] ", heap_peek (minBinHeap));
+#endif
     bool res = false;
 
     if (!is_empty_heap (minBinHeap) && !is_empty_heap (maxBinHeap)) {
@@ -528,7 +551,7 @@ bool insert_new_val_to_bin_heaps (BinaryHeap_t *maxBinHeap, BinaryHeap_t *minBin
     } else if (is_empty_heap (minBinHeap) && !is_empty_heap (maxBinHeap)) {
         res = heap_insert_val (maxBinHeap, true, newVal);
     } else if (is_empty_heap (maxBinHeap) && !is_empty_heap (minBinHeap)) {
-        res = heap_insert_val (minBinHeap, true, newVal);
+        res = heap_insert_val (minBinHeap, false, newVal);
     } else {
         printf ("incredible error");
     }

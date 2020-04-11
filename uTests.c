@@ -79,11 +79,12 @@ int unitTest (void) {
     if (false == res) {
         return STRING_CLEAN_ERROR;
     }
-
+#if DEBUG_MAIL
     res = test_split ();
     if (false == res) {
         return STRING_SPLIT_ERROR;
     }
+#endif
 
     res = test_is_bin_tree ();
     if (false == res) {
@@ -1146,68 +1147,86 @@ bool test_k_smallest (void) {
 
 bool test_medianSlidingWindow (void) {
     bool res = false;
-    double* prt;
-    double* prtCorrect;
+
+    int arr5 [] =
+        { 2147483647, 1, 2, 3, 4, 5, 6, 7, 2147483647 };
+    int arr4 [] =
+        { 2147483647, 2147483647 };
+
+    int arr3 [] =
+        { 1, 2 };
 
     int arr2 [] =
         { 1, 2, 3, 4, 2, 3, 1, 4, 2 };
 
     int arr [] =
         { 1, 3, -1, -3, 5, 3, 6, 7 };
-    int numsSize = sizeof(arr) / sizeof(arr [0]);
+
+    int numsSize = 0;
+
+    numsSize = sizeof(arr5) / sizeof(arr5 [0]);
+    res = check_array (arr5, numsSize, 2);
+    if (false == res) {
+        return res;
+    }
+
+    numsSize = sizeof(arr4) / sizeof(arr4 [0]);
+    res = check_array (arr4, numsSize, 2);
+    if (false == res) {
+        return res;
+    }
+
+    numsSize = sizeof(arr3) / sizeof(arr3 [0]);
+    res = check_array (arr3, numsSize, 1);
+    if (false == res) {
+        return res;
+    }
+
+    numsSize = sizeof(arr) / sizeof(arr [0]);
+    res = check_array (arr, numsSize, 3);
+    if (false == res) {
+        return res;
+    }
+
+    numsSize = sizeof(arr2) / sizeof(arr2 [0]);
+    res = check_array (arr2, numsSize, 3);
+    if (false == res) {
+        return res;
+    }
+
+    return res;
+}
+
+bool check_array (int *arr, int numsSize, int k) {
+    bool res;
     int returnSize = 0;
-    int k = 3;
+    double* prt;
+    double* prtCorrect;
+
     prt = medianSlidingWindow (arr, numsSize, k, &returnSize);
     if (prt) {
-        printf ("\n mem Alloced! %d ", returnSize);
         if (returnSize == (numsSize - k + 1)) {
-            print_array_double (prt, returnSize);
-            res = true;
         }
     }
 
     prtCorrect = medianSlidingWindowArr (arr, numsSize, k, &returnSize);
     if (prtCorrect) {
-        printf ("\n mem Alloced! %d ", returnSize);
         if (returnSize == (numsSize - k + 1)) {
-            print_array_double (prtCorrect, returnSize);
-            res = true;
         }
     }
     res = is_double_arr_equal (prtCorrect, prt, returnSize);
     if (false == res) {
         printf ("\n Arrays are not equals \n");
+        printf ("\n right ");
+        print_array_double (prtCorrect, returnSize);
+        printf ("\n calced ");
+        print_array_double (prt, returnSize);
     }
     free (prt);
     free (prtCorrect);
-
-     numsSize = sizeof(arr2) / sizeof(arr2 [0]);
-    prt = medianSlidingWindow (arr2, numsSize, k, &returnSize);
-    if (prt) {
-        printf ("\n mem Alloced! %d ", returnSize);
-        if (returnSize == (numsSize - k + 1)) {
-            print_array_double (prt, returnSize);
-            res = true;
-        }
-    }
-
-    prtCorrect = medianSlidingWindowArr (arr2, numsSize, k, &returnSize);
-    if (prtCorrect) {
-        printf ("\n mem Alloced! %d ", returnSize);
-        if (returnSize == (numsSize - k + 1)) {
-            print_array_double (prtCorrect, returnSize);
-            res = true;
-        }
-    }
-    res = is_double_arr_equal (prtCorrect, prt, returnSize);
-    if (false == res) {
-        printf ("\n Arrays are not equals \n");
-    }
-    free (prt);
-    free (prtCorrect);
-
     return res;
 }
+
 bool test_bin_heap_same_add (void) {
     bool res = true;
     time_t t;

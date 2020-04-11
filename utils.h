@@ -15,9 +15,10 @@ extern "C" {
 #define INT_MIN (-2147483648)
 #define INT_MAX (2147483647)
 
-#define DEBUR_LET_POS 1
+#define DEBUG_INSERT 1
+#define DEBUR_LET_POS 0
 #define DEBUG_ARG 0
-#define DEBUG_REMAIN_ALPH 1
+#define DEBUG_REMAIN_ALPH 0
 
 extern char pemutationFile [100];
 extern char kitFile [100];
@@ -45,15 +46,14 @@ int **list_of_arr_to_arr_of_arr (list_node_t * const listOfArrays, int * const a
 double calc_median (int * const inArr, int sizeOfArr);
 long long summ_array (int const* const inArr, int sizeOfArr);
 double avrage_two (int val1, int val2);
-double* medianSlidingWindow (int* nums, int numsSize, int k, int* returnSize);
 void print_array_double (double *alphabet, int sizeOfAlphabet);
 bool is_odd (int val);
 double calc_average (int const * const inArr, int sizeOfArr);
 void print_bytes (uint32_t byte);
+double* medianSlidingWindow (int* nums, int numsSize, int k, int* returnSize);
 double* medianSlidingWindowArr (int* nums, int numsSize, int k, int* returnSize);
 
 bool insert_val_to_2_heaps (BinaryHeap_t *maxBinHeap, BinaryHeap_t * minBinHeap, int newVal, int oldVal, int sizeOfWind, int *curWinArr);
-
 bool remove_old_val_from_bin_heaps (BinaryHeap_t *maxBinHeap, BinaryHeap_t *minBinHeap, int oldVal);
 bool insert_new_val_to_bin_heaps (BinaryHeap_t *maxBinHeap, BinaryHeap_t *minBinHeap, int newVal);
 

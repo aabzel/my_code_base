@@ -99,6 +99,7 @@ bool test_min_path_diag_atmospher (void);
 bool test_find_min_diag_scale_summ (void);
 bool test_find_min_diag_scale_summ2 (void);
 bool test_delim_amount (void);
+bool check_array (int *arr, int numsSize, int k);
 
 bool test_bin_heap_delete (void);
 bool test_min_bin_heap_insert (void);
