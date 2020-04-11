@@ -158,10 +158,10 @@ int bin_heap_val_index_ll (BinaryHeap_t *binHeap, bool isMaxHeap, int val) {
     return indexVal;
 }
 
-//SIG SEG
+//SIG SEG unable to find val index
 int bin_heap_val_index_lll (BinaryHeap_t *binHeap, bool isMaxHeap, int val, int parentIndex) {
     int indexVal = -1;
-    if (binHeap) {
+    if (binHeap && (0 <= parentIndex) && (parentIndex < (binHeap->length))) {
         if (val == binHeap->array [parentIndex]) {
             return parentIndex;
         } else {
@@ -201,7 +201,7 @@ bool bin_heap_remove_val (BinaryHeap_t *binHeap, bool isMaxHeap, int val) {
 #if DEBUG_HEAP
             printf ("\n val [%d] exists in heap. Its index [%d] \n", val, indexVal);
 #endif
-            if (0 < indexVal && indexVal < binHeap->length) {
+            if (0 <= indexVal && indexVal < binHeap->length) {
                 swap_int (&binHeap->array [indexVal], &binHeap->array [binHeap->length - 1]);
                 binHeap->length--;
                 res = make_bin_heap (binHeap, isMaxHeap);

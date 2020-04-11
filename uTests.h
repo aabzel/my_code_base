@@ -57,11 +57,13 @@ typedef enum {
     ARR_HEAP_DELETE_VAL_ERROR = 41,
     ARR_MAX_HEAP_INSERT_ERROR = 42,
     ARR_MIN_BIN_HEAP_DELETE_VAL_ERROR = 43,
+    SLIDING_WINDOW_MAX_ERROR = 45,
     NUM_ERROR
 } error_t;
 
 int unitTest (void);
 
+bool test_sliding_window_max (void);
 bool test_max_bin_heap_insert (void);
 int test_heap_api (void);
 bool test_split (void);
