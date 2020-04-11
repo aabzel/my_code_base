@@ -14,7 +14,7 @@
 #define TEST_YA_TASK 0
 #define TEST_HEAP_CON 0
 #define TEST_HEAP_SAME 0
-#define BIN_HEAP_RAND_ADD 1
+#define BIN_HEAP_RAND_ADD 0
 
 typedef enum {
     FINE = 0,

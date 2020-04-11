@@ -15,7 +15,7 @@ extern "C" {
 #define INT_MIN (-2147483648)
 #define INT_MAX (2147483647)
 
-#define DEBUG_INSERT 1
+#define DEBUG_INSERT 0
 #define DEBUR_LET_POS 0
 #define DEBUG_ARG 0
 #define DEBUG_REMAIN_ALPH 0

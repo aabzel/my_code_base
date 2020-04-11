@@ -149,7 +149,8 @@ int bin_heap_val_index_ll_bf (BinaryHeap_t *binHeap, bool isMaxHeap, int val) {
 int bin_heap_val_index_ll (BinaryHeap_t *binHeap, bool isMaxHeap, int val) {
     int indexVal = -1;
     if (binHeap) {
-        indexVal = bin_heap_val_index_lll (binHeap, isMaxHeap, val, 0);
+        indexVal = bin_heap_val_index_ll_bf (binHeap, isMaxHeap, val);
+        //indexVal = bin_heap_val_index_lll (binHeap, isMaxHeap, val, 0);
         if (indexVal < 0) {
             printf ("\nUnable to find index of val in bin heap [%d]\n", val);
         }
@@ -157,6 +158,7 @@ int bin_heap_val_index_ll (BinaryHeap_t *binHeap, bool isMaxHeap, int val) {
     return indexVal;
 }
 
+//SIG SEG
 int bin_heap_val_index_lll (BinaryHeap_t *binHeap, bool isMaxHeap, int val, int parentIndex) {
     int indexVal = -1;
     if (binHeap) {

@@ -6,7 +6,7 @@
 
 #include <stdint.h>
 
-#define DEBUG_LET_POS 1
+#define DEBUG_LET_POS 0
 #define DEBUG_ARG 0
 
 #define F_EPSILON 0.0005f
