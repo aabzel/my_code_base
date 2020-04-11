@@ -54,9 +54,11 @@ int* maxSlidingWindow (int* nums, int numsSize, int k, int* returnSize) {
 
 bool update_max_heap (BinaryHeap_t *maxBinHeap, int newVal, int oldVal, int sizeOfWind) {
     bool res = true;
+#if DEBUG_HEAP_MAX_UPDATE
     printf ("\n oldVal: [%d] newVal: [%d] ", oldVal, newVal);
     printf ("\n old heap ");
     bin_heap_print (maxBinHeap, true);
+#endif
     if (maxBinHeap->length != sizeOfWind) {
         printf ("\n size error window %d bin heap %d", sizeOfWind, maxBinHeap->length);
         res = false;
@@ -73,8 +75,10 @@ bool update_max_heap (BinaryHeap_t *maxBinHeap, int newVal, int oldVal, int size
         printf ("\n Unable heap_insert_val");
         return res;
     }
+#if DEBUG_HEAP_MAX_UPDATE
     printf ("\n New heap ");
     bin_heap_print (maxBinHeap, true);
+#endif
     if (maxBinHeap->length != sizeOfWind) {
         printf ("\n size error window %d bin heap %d", sizeOfWind, maxBinHeap->length);
         res = false;

@@ -8,7 +8,8 @@ extern "C" {
 #include "bin_heap_array.h"
 #include "custom_type.h"
 
-#define DEBUG_MAXSLIDINGWINDOW 1
+#define DEBUG_MAXSLIDINGWINDOW 0
+#define DEBUG_HEAP_MAX_UPDATE 0
 
 int* maxSlidingWindow (int* nums, int numsSize, int k, int* returnSize);
 bool update_max_heap (BinaryHeap_t *maxBinHeap, int newVal, int oldVal, int sizeOfWind) ;

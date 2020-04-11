@@ -47,4 +47,6 @@ bool is_right_ch_exist (BinaryHeap_t *binHeap, int parInd);
 
 bool bubble_up_val_max_heap (BinaryHeap_t *binHeap, int index);
 bool bubble_down_val_max_heap (BinaryHeap_t *binHeap);
+
+
 #endif /* __BINARY_MAX_HEAP_ARRAY_H */
