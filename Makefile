@@ -19,6 +19,9 @@ SOURCES += bin_heap_array.c
 SOURCES += bin_search_tree.c 
 SOURCES += amount_of_uio_states.c
 SOURCES += min_path.c
+SOURCES += avl_tree.c
+SOURCES += test_avl_tree.c
+SOURCES += slidingWindowMid.c
 SOURCES += slidingWindowMax.c
 
 EXECUTABLE=training

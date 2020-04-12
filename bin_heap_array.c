@@ -149,8 +149,8 @@ int bin_heap_val_index_ll_bf (BinaryHeap_t *binHeap, bool isMaxHeap, int val) {
 int bin_heap_val_index_ll (BinaryHeap_t *binHeap, bool isMaxHeap, int val) {
     int indexVal = -1;
     if (binHeap) {
-        indexVal = bin_heap_val_index_ll_bf (binHeap, isMaxHeap, val);
-        //indexVal = bin_heap_val_index_lll (binHeap, isMaxHeap, val, 0);
+        //indexVal = bin_heap_val_index_ll_bf (binHeap, isMaxHeap, val);
+        indexVal = bin_heap_val_index_lll (binHeap, isMaxHeap, val, 0);
         if (indexVal < 0) {
             printf ("\nUnable to find index of val in bin heap [%d]\n", val);
         }
@@ -192,22 +192,28 @@ int bin_heap_val_index_lll (BinaryHeap_t *binHeap, bool isMaxHeap, int val, int 
 bool bin_heap_remove_val (BinaryHeap_t *binHeap, bool isMaxHeap, int val) {
     bool res = false;
     if (binHeap && ((true == isMaxHeap) || (false == isMaxHeap))) {
-        res = is_val_in_bin_heap (binHeap, isMaxHeap, val, 0);
+        int indexValFast = -1;
+        res = is_val_in_bin_heap (binHeap, isMaxHeap, val, 0, &indexValFast);
         if (true == res) {
 #if DEBUG_HEAP
             printf ("\n val [%d] exists in heap \n", val);
 #endif
-            int indexVal = bin_heap_val_index_ll (binHeap, isMaxHeap, val);
+            //int indexVal = bin_heap_val_index_ll (binHeap, isMaxHeap, val);
+            //if (indexVal != indexVal1) {
+            //    printf ("\n %s: Val Index   fast %d slow %d \n", __FUNCTION__, indexVal1, indexVal);
+            //}
 #if DEBUG_HEAP
             printf ("\n val [%d] exists in heap. Its index [%d] \n", val, indexVal);
 #endif
-            if (0 <= indexVal && indexVal < binHeap->length) {
-                swap_int (&binHeap->array [indexVal], &binHeap->array [binHeap->length - 1]);
+            if (0 <= indexValFast && indexValFast < binHeap->length) {
+                swap_int (&binHeap->array [indexValFast], &binHeap->array [binHeap->length - 1]);
                 binHeap->length--;
                 res = make_bin_heap (binHeap, isMaxHeap);
                 if (false == res) {
                     printf ("\n Unable to gather heap after delete %d\n", val);
                 }
+            } else {
+                printf ("\n %s: Index error fast %d slow \n", __FUNCTION__, indexValFast);
             }
         }
     }
@@ -375,12 +381,14 @@ bool bin_heap_init (BinaryHeap_t *binHeap, int amountOfItems) {
     return res;
 }
 
-bool is_val_in_bin_heap (BinaryHeap_t *binHeap, bool isMaxHeap, int val, int parentIdnex) {
+bool is_val_in_bin_heap (BinaryHeap_t *binHeap, bool isMaxHeap, int val, int parentIdnex, int * const outIndex) {
     bool res = false;
+    int valIndex = 0;
     if (binHeap) {
         if ((0 < binHeap->length) && (parentIdnex < (binHeap->length))) {
             int parentVal = binHeap->array [parentIdnex];
             if (parentVal == val) {
+                *outIndex = parentIdnex;
                 return true;
             }
             int rChildIndex = get_right_child_index (parentIdnex);
@@ -396,12 +404,14 @@ bool is_val_in_bin_heap (BinaryHeap_t *binHeap, bool isMaxHeap, int val, int par
                 }
             }
 
-            res = is_val_in_bin_heap (binHeap, isMaxHeap, val, rChildIndex);
+            res = is_val_in_bin_heap (binHeap, isMaxHeap, val, rChildIndex, &valIndex);
             if (true == res) {
+                *outIndex = valIndex;
                 return true;
             }
-            res = is_val_in_bin_heap (binHeap, isMaxHeap, val, lChildIndex);
+            res = is_val_in_bin_heap (binHeap, isMaxHeap, val, lChildIndex, &valIndex);
             if (true == res) {
+                *outIndex = valIndex;
                 return true;
             }
         }
@@ -485,7 +495,7 @@ bool bin_heap_print (BinaryHeap_t *binHeap, bool isMax) {
         if (0 < (binHeap->length)) {
             for (int i = 0; i < binHeap->length; i++) {
                 printf (" %d ", binHeap->array [i]);
-                if (0 == (i & (i - 1))) {
+                if (is_power_of_two (i)) {
                     printf ("\n");
                 }
             }

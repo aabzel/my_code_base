@@ -108,6 +108,10 @@ bool swap_int (int * const x, int * const y) {
     return res;
 }
 
+bool is_power_of_two (int x) {
+    return ((0 < x) && (0 == (x & (x - 1))));
+}
+
 typedef struct xPox_t {
     int x;
     int y;
@@ -140,3 +144,10 @@ int partition (int *arr, int l, int r) {
     return i;
 }
 
+short compare (int Data1, int Data2) {
+    if (Data1 > Data2)
+        return 1;
+    else if (Data1 < Data2)
+        return -1;
+    return 0;
+}

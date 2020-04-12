@@ -9,47 +9,20 @@
 #include <time.h>
 #include <math.h>
 
+static void bst_print_dot_null (unsigned long long int nodeAdddr, FILE* stream);
+static void bst_print_dot_aux (TreeNode_t* node, FILE* stream);
+
 static bool draw_bin_heap_in_file_ll (BinaryHeap_t *binHeap, FILE * stream);
 static void bst_print_dot (TreeNode_t* tree, FILE* stream);
 
-// Wrapper over print2DUtil()
-void print2D (TreeNode_t *root) {
-// Pass initial space count as 0
-    print2DUtil (root, 0);
-}
-
-// Function to print binary tree in 2D
-// It does reverse inorder traversal
-void print2DUtil (TreeNode_t *root, int space) {
-// Base case
-    if (root == NULL)
-        return;
-
-// Increase distance between levels
-    space += COUNT;
-
-// Process right child first
-    print2DUtil (root->right, space);
-
-// Print current node after space
-// count
-    printf ("\n");
-    for (int i = COUNT; i < space; i++)
-        printf (" ");
-    printf ("%d\n", root->val);
-
-// Process left child
-    print2DUtil (root->left, space);
-}
-
 int gNullCnt = 0;
-void bst_print_dot_null (unsigned long long int nodeAdddr, FILE* stream) {
+static void bst_print_dot_null (unsigned long long int nodeAdddr, FILE* stream) {
     gNullCnt++;
     fprintf (stream, "    null%d [shape=point];\n", gNullCnt);
     fprintf (stream, "    node%llu -> null%d;\n", nodeAdddr, gNullCnt);
 }
 
-void bst_print_dot_aux (TreeNode_t* node, FILE* stream) {
+static void bst_print_dot_aux (TreeNode_t* node, FILE* stream) {
     unsigned long long int nodeAddr = (unsigned long long int) node;
     if (node) {
         fprintf (stream, "    node%llu[ label = \"%d\"]; \n", (unsigned long long int) node, node->val);
@@ -81,6 +54,7 @@ bool print_tree_to_file (TreeNode_t* root, char *fileName) {
     if (fp) {
         bst_print_dot (root, fp);
         res = true;
+        fclose (fp);
     } else {
         printf ("\n Unable to open file!");
     }
@@ -107,6 +81,7 @@ bool draw_bin_heap_in_file (BinaryHeap_t *binHeap, char *fileName) {
     if (fp) {
         draw_bin_heap_in_file_ll (binHeap, fp);
         res = true;
+        fclose (fp);
     } else {
         printf ("\n Unable to open file!");
     }

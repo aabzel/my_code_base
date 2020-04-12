@@ -58,6 +58,7 @@ typedef enum {
     ARR_MAX_HEAP_INSERT_ERROR = 42,
     ARR_MIN_BIN_HEAP_DELETE_VAL_ERROR = 43,
     SLIDING_WINDOW_MAX_ERROR = 45,
+    AVL_TREE_ERROR = 46,
     NUM_ERROR
 } error_t;
 

@@ -11,8 +11,12 @@
 
 typedef struct xTreeNode_t {
     int val;
+    struct xTreeNode_t *parent;
     struct xTreeNode_t *left;
     struct xTreeNode_t *right;
+    int height;
+    char *Name;
+    short Balance;
 } TreeNode_t;
 
 extern int g_sum;
@@ -28,7 +32,7 @@ int get_parent_index (int nodeIndex, int size);
 int max_depth (TreeNode_t* root);
 void parse_bin_tree (int *arr, int size);
 bool is_node_has_vacant (TreeNode_t * root);
-void detele_tree (TreeNode_t * root);
+//void detele_tree (TreeNode_t * root);
 TreeNode_t *get_first_spare_node (TreeNode_t * root);
 bool is_complete (TreeNode_t * root);
 

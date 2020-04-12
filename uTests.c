@@ -5,6 +5,7 @@
 #include "arrays.h"
 #include "bin_tree.h"
 #include "bin_tree_draw.h"
+#include "slidingWindowMid.h"
 #include "slidingWindowMax.h"
 #include "bin_heap.h"
 #include "bin_search_tree.h"
@@ -12,6 +13,7 @@
 #include "min_path.h"
 #include "permutations.h"
 #include "bin_heap.h"
+#include "test_avl_tree.h"
 #include "str_ops.h"
 
 #include "linked_list.h"
@@ -65,6 +67,11 @@ int test_heap_api (void) {
 int unitTest (void) {
     bool res = false;
     int ret = 0;
+
+    res = test_avl_tree ();
+    if (false == res) {
+        return AVL_TREE_ERROR;
+    }
 
     ret = test_heap_api ();
     if (ret) {
@@ -540,7 +547,7 @@ bool test_bin_tree (void) {
     if (NULL != root) {
         int depth = max_depth (root);
         printf ("\ndepth:%d\n", depth);
-        print2D (root);
+        //print2D (root);
         sumOfLeaves = deepestLeavesSum (root);
         printf ("\n SumOfLeaves:%d\n", sumOfLeaves);
         res = print_tree_to_file (root, "rand_tree.txt");
@@ -2730,12 +2737,13 @@ bool test_min_bin_heap_delete_val (void) {
     }
     draw_bin_heap_in_file (&minBinHeapObj, "min_bin_heap_array1_20.dot");
 
-    res = is_val_in_bin_heap (&minBinHeapObj, false, 10, 0);
+    int valIndex;
+    res = is_val_in_bin_heap (&minBinHeapObj, false, 10, 0, &valIndex);
     if (true == res) {
         res = bin_heap_remove_val (&minBinHeapObj, false, 10);
         if (true == res) {
             draw_bin_heap_in_file (&minBinHeapObj, "min_bin_heap_array1_20-10.dot");
-            res = is_val_in_bin_heap (&minBinHeapObj, false, 10, 0);
+            res = is_val_in_bin_heap (&minBinHeapObj, false, 10, 0, &valIndex);
             if (true == res) {
                 printf ("\nphantom  val in the heap\n");
                 res = false;
@@ -2756,6 +2764,7 @@ bool test_min_bin_heap_delete_val (void) {
 bool test_bin_heap_delete_val (void) {
     bool res = false;
     BinaryHeap_t maxBinHeapObj;
+    int valIndex;
     res = bin_heap_init (&maxBinHeapObj, 20);
     if (res) {
         res = fill_up_heap_continuous_vals (&maxBinHeapObj, 20, true);
@@ -2765,14 +2774,14 @@ bool test_bin_heap_delete_val (void) {
     }
     draw_bin_heap_in_file (&maxBinHeapObj, "bin_heap_array1_20.dot");
 
-    res = is_val_in_bin_heap (&maxBinHeapObj, true, 10, 0);
+    res = is_val_in_bin_heap (&maxBinHeapObj, true, 10, 0, &valIndex);
     if (true == res) {
         res = bin_heap_remove_val (&maxBinHeapObj, true, 10);
         if (true == res) {
             draw_bin_heap_in_file (&maxBinHeapObj, "bin_heap_array1_20-10.dot");
-            res = is_val_in_bin_heap (&maxBinHeapObj, true, 10, 0);
+            res = is_val_in_bin_heap (&maxBinHeapObj, true, 10, 0, &valIndex);
             if (true == res) {
-                printf ("\nphantom  val in the heap\n");
+                printf ("\nPhantom  val in the heap\n");
                 res = false;
             } else {
                 res = true;
@@ -2858,10 +2867,10 @@ bool test_sliding_window_max (void) {
     numsSize = sizeof(arr) / sizeof(arr [0]);
     int* resArr;
     resArr = maxSlidingWindow (arr, numsSize, 3, &returnSize);
-    if(resArr){
-        res=true;
+    if (resArr) {
+        res = true;
         print_curr_array (resArr, returnSize);
-        free(resArr);
+        free (resArr);
     }
     return res;
 }

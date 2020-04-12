@@ -16,6 +16,7 @@ typedef struct xBinaryHeap_t {
 bool bin_heap_print (BinaryHeap_t *binHeap, bool isMax);
 bool bin_heap_init (BinaryHeap_t *binHeap, int amountOfItems);
 bool bin_heap_deinit (BinaryHeap_t *binHeap);
+
 bool is_empty_heap (BinaryHeap_t *binHeap);
 bool heap_insert_val (BinaryHeap_t *binHeap, bool isMaxHeap, int newVal);
 int heap_peek (BinaryHeap_t *binHeap);
@@ -38,7 +39,7 @@ int get_right_child_index (int parentIndex);
 int bin_heap_val_index_lll (BinaryHeap_t *binHeap, bool isMaxHeap, int val, int parentIndex);
 int bin_heap_val_index_ll (BinaryHeap_t *binHeap, bool isMaxHeap, int val);
 int bin_heap_val_index_ll_bf (BinaryHeap_t *binHeap, bool isMaxHeap, int val);
-bool is_val_in_bin_heap (BinaryHeap_t *binHeap, bool isMaxHeap, int val, int parentIdnex);
+bool is_val_in_bin_heap (BinaryHeap_t *binHeap, bool isMaxHeap, int val, int parentIdnex, int * const outIndex);
 bool bubble_down_val_heap (BinaryHeap_t *binHeap, bool isMaxHeap);
 bool is_right_ch_exist (BinaryHeap_t *binHeap, int parInd);
 bool bubble_up_val_min_heap (BinaryHeap_t *binHeap, int index);
