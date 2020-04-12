@@ -547,7 +547,6 @@ bool test_bin_tree (void) {
     if (NULL != root) {
         int depth = max_depth (root);
         printf ("\ndepth:%d\n", depth);
-        //print2D (root);
         sumOfLeaves = deepestLeavesSum (root);
         printf ("\n SumOfLeaves:%d\n", sumOfLeaves);
         res = print_tree_to_file (root, "rand_tree.txt");

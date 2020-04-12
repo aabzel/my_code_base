@@ -9,6 +9,7 @@
 
 int g_maxDepthVal = 0;
 static void find_max_depth (struct xTreeNode_t * tree, int level);
+static int find_size_ll (TreeNode_t * tree);
 
 bool is_node_has_vacant (TreeNode_t * root) {
     bool res = false;
@@ -169,17 +170,10 @@ int calc_leaves_sum (TreeNode_t* root, int maxDepth) {
     return g_sum;
 }
 
-// Finds the size of the binary tree
-int find_size (TreeNode_t * tree, int curSize) {
-    if (tree->left) {
-        curSize++;
-        find_size (tree->left, curSize);
-    }
-    if (tree->right) {
-        curSize++;
-        find_size (tree->right, curSize);
-    }
-    return curSize + 1;
+int find_size (TreeNode_t * tree) {
+    int numOfNodes = 0;
+    numOfNodes = find_size_ll (tree);
+    return numOfNodes;
 }
 
 // In Order traversal
@@ -323,3 +317,20 @@ bool binary_tree_attace_node (TreeNode_t * NodePtr, int val, bool isleft) {
     return res;
 }
 
+// Finds the size of the binary tree
+static int find_size_ll (TreeNode_t * tree) {
+    int amountOfElements = 0;
+    if (tree) {
+        amountOfElements++;
+        if (tree->left) {
+            amountOfElements += find_size_ll (tree->left);
+        }
+        if (tree->right) {
+            amountOfElements += find_size_ll (tree->right);
+        }
+    } else {
+        amountOfElements = 0;
+    }
+
+    return amountOfElements;
+}

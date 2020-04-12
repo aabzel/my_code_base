@@ -144,10 +144,10 @@ int partition (int *arr, int l, int r) {
     return i;
 }
 
-short compare (int Data1, int Data2) {
-    if (Data1 > Data2)
+short compare (int leftVal, int rightVal) {
+    if (rightVal < leftVal)
         return 1;
-    else if (Data1 < Data2)
+    else if (leftVal < rightVal)
         return -1;
     return 0;
 }
