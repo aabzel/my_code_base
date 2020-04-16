@@ -9,15 +9,6 @@
 #include <stdint.h>
 #include <string.h>
 
-static int update_max (int curMax, int newVal) {
-    int newMax = 0;
-    if (curMax < newVal) {
-        newMax = newVal;
-    } else {
-        newMax = curMax;
-    }
-    return newMax;
-}
 
 //{1,1,1,1,1,1,1,1}
 //{0,0,0,1,1,1,1,1}

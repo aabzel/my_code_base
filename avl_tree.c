@@ -4,7 +4,7 @@
 
 #include <stdlib.h>
 
-static TreeNode_t * _avl_subtree_insert (TreeNode_t * n, int val) ;
+static TreeNode_t * _avl_subtree_insert (TreeNode_t * n, int val);
 static TreeNode_t * _avl_node_create (int val);
 static int _avl_get_height (TreeNode_t* n);
 static int _avl_balance_factor (TreeNode_t * n);
@@ -14,21 +14,6 @@ static TreeNode_t * _avl_rotate_right (TreeNode_t * n);
 static void _avl_update_height (TreeNode_t * n);
 static TreeNode_t * _avl_subtree_remove (TreeNode_t * n, int oldVal);
 static TreeNode_t* _avl_balance (TreeNode_t* n);
-static TreeNode_t *DoubleRightRotation (TreeNode_t *rootNode);
-static TreeNode_t *DoubleLeftRotation (TreeNode_t *rootNode);
-static TreeNode_t *CheckTreeNodeRotation (TreeNode_t *tnode, TreeNode_t *subtree, short *finished);
-static TreeNode_t *SingleLeftRotation (TreeNode_t *rootNode);
-static TreeNode_t *SingleRightRotation (TreeNode_t *rootNode);
-static TreeNode_t *InsertNode (TreeNode_t *tnode, int val, short *finished);
-static TreeNode_t *DeleteLeftMost (TreeNode_t **deletedNode, TreeNode_t *rootNode, short *finished);
-static TreeNode_t *DeleteByElementRecursive (TreeNode_t *rootNode, int oldVal, short *finished);
-
-TreeNode_t *avl_insert_ok (TreeNode_t *root, int newVal) {
-    TreeNode_t *node;
-    short done = 0;
-    node = InsertNode (root, newVal, &done);
-    return node;
-}
 
 TreeNode_t * avl_insert (TreeNode_t *root, int newVal) {
     TreeNode_t *node;
@@ -40,11 +25,12 @@ TreeNode_t * avl_insert (TreeNode_t *root, int newVal) {
     return node;
 }
 
-TreeNode_t *avl_delete_bad (TreeNode_t *rootNode, int oldVal) {
-    short finished = 0;
-    TreeNode_t *newRoot = NULL;
-    newRoot = DeleteByElementRecursive (rootNode, oldVal, &finished);
-    return newRoot;
+bool avl_is_empty (TreeNode_t *rootNode) {
+    bool res = false;
+    if (NULL == rootNode) {
+        res = true;
+    }
+    return res;
 }
 
 TreeNode_t * avl_delete (TreeNode_t *rootNode, int oldVal) {
@@ -52,211 +38,6 @@ TreeNode_t * avl_delete (TreeNode_t *rootNode, int oldVal) {
     if (rootNode) {
         newRoot = _avl_subtree_remove (rootNode, oldVal);
     }
-    return newRoot;
-}
-
-static TreeNode_t *DeleteByElementRecursive (TreeNode_t *rootNode, int oldVal, short *finished) {
-    TreeNode_t *subtree = NULL;
-    short comp = 0;
-
-    /* found a leaf */
-    if (rootNode == NULL)
-        return NULL;
-    /* figure out where the node in question is in relation to the current */
-    comp = compare (rootNode->val, oldVal);
-    if (comp < 0) {
-        /* buried somewhere in the right subtree */
-        subtree = DeleteByElementRecursive (rootNode->right, oldVal, finished);
-        rootNode->right = subtree;
-        if ((!*finished) && (subtree != NULL)) {
-            rootNode->Balance--;
-            rootNode = CheckTreeNodeRotation (rootNode, subtree, finished);
-        }
-    } else if (0 < comp) {
-        subtree = DeleteByElementRecursive (rootNode->left, oldVal, finished);
-        rootNode->left = subtree;
-        if ((!*finished) && (subtree != NULL)) {
-            rootNode->Balance++;
-            rootNode = CheckTreeNodeRotation (rootNode, subtree, finished);
-        }
-    } else {
-        /* found what we were looking for */
-        if (rootNode->right == NULL) {
-            /* rootNode is replaced by the left child; can be null */
-            subtree = rootNode->left;
-
-            free (rootNode);
-            rootNode = subtree;
-        } else if (rootNode->right->left == NULL) {
-            /* rootNode is replaced by Right */
-            subtree = rootNode->right;
-            subtree->Balance = rootNode->Balance;
-            subtree->left = rootNode->left;
-            free (rootNode);
-            rootNode = subtree;
-        } else {
-            /* rootNode is replaced by inorder successor */
-            /* re-using comp as another flag since it is 0 */
-            rootNode->right = DeleteLeftMost (&rootNode, rootNode->right, &comp);
-        }
-    }
-
-    return rootNode;
-}
-
-static TreeNode_t *DeleteLeftMost (TreeNode_t **deletedNode, TreeNode_t *rootNode, short *finished) {
-    TreeNode_t *subtree = rootNode->right;
-    if (rootNode == NULL) {
-        printf ("bailing!\n");
-        return NULL;
-    }
-    if (rootNode->left == NULL) {
-        free (rootNode);
-        rootNode = subtree;
-    } else {
-        rootNode->left = DeleteLeftMost (deletedNode, rootNode->left, finished);
-        if (!*finished) {
-            rootNode->Balance++;
-            if (rootNode->left != NULL)
-                rootNode = CheckTreeNodeRotation (rootNode, rootNode->left, finished);
-        }
-    }
-    return rootNode;
-}
-
-static TreeNode_t *InsertNode (TreeNode_t *tnode, int newVal, short *finished) {
-    TreeNode_t *subtree = NULL;
-    short comp = 0;
-
-    if (tnode == NULL) {
-        /* found the spot that the TreeNode belongs */
-        tnode = malloc (sizeof(TreeNode_t));
-        /* malloc problem, return NULL */
-        if (tnode == NULL)
-            return NULL;
-        else {
-            /* default settings for a new node */
-            tnode->left = NULL;
-            tnode->right = NULL;
-            tnode->val = newVal;
-            tnode->Balance = 0;
-        }
-    } else {
-        /* need to find the new node, don't check for a 0,
-         cos its already in teh tree, foo */
-        comp = compare (newVal, tnode->val);
-        if (comp < 0) {
-            /* go left */
-            subtree = InsertNode (tnode->left, newVal, finished);
-            /* if this is NULL, there is problem. quit now */
-            if (subtree == NULL)
-                return NULL;
-            /* you are not finished until Balance == 0, reached the root
-             or a rotation has occured */
-            if (!*finished)
-                tnode->Balance--;
-            tnode->left = subtree;
-        } else if (comp > 0) {
-            /* go right */
-            subtree = InsertNode (tnode->right, newVal, finished);
-            if (subtree == NULL)
-                return NULL;
-            if (!*finished)
-                tnode->Balance++;
-            tnode->right = subtree;
-        } else
-            /* got a dupe, return NULL */
-            return NULL;
-
-        /* check if a rotation is neccessary */
-        if (!*finished) {
-            tnode = CheckTreeNodeRotation (tnode, subtree, finished);
-        }
-    }
-    return tnode;
-}
-
-static TreeNode_t *CheckTreeNodeRotation (TreeNode_t *tnode, TreeNode_t *subtree, short *finished) {
-    /* this function will check to see if tnode's Balance factor indicates
-     that a rotation is needed. Subtree is the child link that was either
-     just added or possibly changed */
-    switch (tnode->Balance) {
-        case 0:
-            /* nothing special, but we have balanced out properly, yay */
-            *finished = 1;
-            break;
-        case 2:
-            /* right heavy */
-            *finished = 1;
-            if (subtree->Balance == -1) {
-                /* update balance factors */
-                if (subtree->left->Balance == 1) {
-                    subtree->Balance = 0;
-                    tnode->Balance = -1;
-                } else if (subtree->left->Balance == -1) {
-                    subtree->Balance = 1;
-                    tnode->Balance = 0;
-                } else
-                    subtree->Balance = tnode->Balance = 0;
-                subtree->left->Balance = 0;
-                tnode = DoubleLeftRotation (tnode);
-            } else if (subtree->Balance == 1) {
-                /* update balance factors */
-                subtree->Balance = tnode->Balance = 0;
-                tnode = SingleLeftRotation (tnode);
-            }
-            break;
-        case -2:
-            /* left heavy */
-            *finished = 1;
-            if (subtree->Balance == 1) {
-                /* update balance factors */
-                if (subtree->right->Balance == -1) {
-                    subtree->Balance = 0;
-                    tnode->Balance = 1;
-                } else if (subtree->right->Balance == 1) {
-                    subtree->Balance = -1;
-                    tnode->Balance = 0;
-                } else
-                    subtree->Balance = tnode->Balance = 0;
-                subtree->right->Balance = 0;
-                tnode = DoubleRightRotation (tnode);
-            } else if (subtree->Balance == -1) {
-                /* update balance factors */
-                subtree->Balance = tnode->Balance = 0;
-                tnode = SingleRightRotation (tnode);
-            }
-    }
-    return tnode;
-}
-
-static TreeNode_t *DoubleRightRotation (TreeNode_t *rootNode) {
-    TreeNode_t *newRoot = SingleLeftRotation (rootNode->left);
-    rootNode->left = newRoot;
-    newRoot = SingleRightRotation (rootNode);
-    return newRoot;
-}
-
-static TreeNode_t *DoubleLeftRotation (TreeNode_t *rootNode) {
-    TreeNode_t *newRoot = SingleRightRotation (rootNode->right);
-    rootNode->right = newRoot;
-    newRoot = SingleLeftRotation (rootNode);
-    return newRoot;
-}
-
-static TreeNode_t *SingleRightRotation (TreeNode_t *rootNode) {
-    TreeNode_t *newRoot = NULL;
-    newRoot = rootNode->left;
-    rootNode->left = newRoot->right;
-    newRoot->right = rootNode;
-    return newRoot;
-}
-
-static TreeNode_t *SingleLeftRotation (TreeNode_t *rootNode) {
-    TreeNode_t *newRoot = NULL;
-    newRoot = rootNode->right;
-    rootNode->right = newRoot->left;
-    newRoot->left = rootNode;
     return newRoot;
 }
 
@@ -518,4 +299,3 @@ static TreeNode_t * _avl_subtree_insert (TreeNode_t * n, int val) {
     return _avl_balance (n);
 
 }
-

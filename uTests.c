@@ -68,10 +68,21 @@ int unitTest (void) {
     bool res = false;
     int ret = 0;
 
+    res = test_reverse ();
+    if (false == res) {
+        return REV_STR_ERROR;
+    }
+
+    res = test_lengthOfLongestSubstring ();
+    if (false == res) {
+        return DIF_SUB_STR_ERROR;
+    }
+#if DEPLOY_TEST_AVL_TREE
     res = test_avl_tree ();
     if (false == res) {
         return AVL_TREE_ERROR;
     }
+#endif
 
     ret = test_heap_api ();
     if (ret) {
@@ -501,6 +512,7 @@ bool test_parse_bin_tree_init_array (void) {
 }
 #endif
 
+#if 0
 bool test_bin_tree_init_array (void) {
     bool res = false;
     TreeNode_t * root = NULL;
@@ -538,6 +550,7 @@ bool test_bin_tree_init_array (void) {
     res = print_tree_to_file (root, "array_tree.txt");
     return res;
 }
+#endif
 
 bool test_bin_tree (void) {
     TreeNode_t * root = NULL;
@@ -2874,3 +2887,22 @@ bool test_sliding_window_max (void) {
     return res;
 }
 
+void assemble_tree_from_array (TreeNode_t ** root, int *arr, int arraySize) {
+    printf ("\n arraySize: %d\n", arraySize);
+    for (int index = 0; index < arraySize; index++) {
+        bst_insert (root, arr [index]);
+    }
+}
+
+// Creates a binary search tree
+void create_binary_search_tree (TreeNode_t ** root, int how_many_elements) {
+    int number = 0, counter = 0;
+    time_t t;
+    srand ((unsigned) time (&t));
+    for (counter = 1; counter <= how_many_elements; counter++) {
+        number = rand () / 100;
+        bst_insert (root, number);
+    }
+    printf ("\nThe binary search tree is: \n");
+    print_inorder_traversal (*root);
+}

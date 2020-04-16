@@ -1,6 +1,7 @@
 #include "utils.h"
 
 #include "algorithms.h"
+
 #include "arrays.h"
 #include "bin_heap_array.h"
 #include "linked_list.h"

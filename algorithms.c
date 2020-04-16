@@ -86,7 +86,7 @@ float min3f (float val1, float val2, float val3) {
 
 /* Function to swap values at two pointers */
 void swap_char (char * const x, char * const y) {
-    if (x != y) {
+    if ((x != y) && (*x != *y)) {
         char temp;
         temp = *x;
         *x = *y;
@@ -150,4 +150,14 @@ short compare (int leftVal, int rightVal) {
     else if (leftVal < rightVal)
         return -1;
     return 0;
+}
+
+int update_max (int curMax, int newVal) {
+    int newMax = 0;
+    if (curMax < newVal) {
+        newMax = newVal;
+    } else {
+        newMax = curMax;
+    }
+    return newMax;
 }

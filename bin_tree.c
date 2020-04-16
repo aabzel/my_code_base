@@ -11,6 +11,56 @@ int g_maxDepthVal = 0;
 static void find_max_depth (struct xTreeNode_t * tree, int level);
 static int find_size_ll (TreeNode_t * tree);
 
+/* Given a binary tree, print its nodes in inorder*/
+void print_inorder (TreeNode_t* node) {
+    if (node == NULL) {
+        return;
+    }
+
+    /* first recur on left child */
+    print_inorder (node->left);
+
+    /* then print the data of node */
+    printf ("%d ", node->val);
+
+    /* now recur on right child */
+    print_inorder (node->right);
+}
+
+#if 0
+void print_pre_order (TreeNode_t* node) {
+    if (node == NULL)
+        return;
+
+    /* first print data of node */
+    printf ("%d ", node->val);
+
+    /* then recur on left sutree */
+    printPreorder (node->left);
+
+    /* now recur on right subtree */
+    printPreorder (node->right);
+}
+#endif
+
+#if 0
+/* Given a binary tree, print its nodes according to the
+ "bottom-up" postorder traversal. */
+void print_post_order (TreeNode_t* node) {
+    if (node == NULL)
+        return;
+
+    // first recur on left subtree
+    printPostorder (node->left);
+
+    // then recur on right subtree
+    printPostorder (node->right);
+
+    // now deal with the node
+    printf ("%d ", node->val);
+}
+#endif
+
 bool is_node_has_vacant (TreeNode_t * root) {
     bool res = false;
     if (root) {

@@ -47,6 +47,7 @@ bool test_avl_tree_insert (void) {
             break;
         }
 
+
 #if DRAW_AVL_TREE
         res = print_tree_to_file (root, "AVL_tree.dot");
         if (true == res) {
@@ -54,6 +55,7 @@ bool test_avl_tree_insert (void) {
         }
 #endif
     }
+    print_inorder (root);
 
     return res;
 }
@@ -99,10 +101,6 @@ bool test_avl_tree_delete (void) {
         }
         res = is_balanced (root);
         if (false == res) {
-            //res = print_tree_to_file (root, "AVL_tree.dot");
-            //if (true == res) {
-            //    system ("draw.bat");
-           // }
             printf ("\n not balanced after del %d\n",i);
             break;
         }

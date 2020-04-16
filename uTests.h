@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 #include "utils.h"
+#include "bin_search_tree.h"
 
 #define TEST_STR_STR 0
 #define TEST_UNIQ_DIAG_PATH_TASK 0
@@ -15,6 +16,7 @@
 #define TEST_HEAP_CON 0
 #define TEST_HEAP_SAME 0
 #define BIN_HEAP_RAND_ADD 0
+#define DEPLOY_TEST_AVL_TREE 0
 
 typedef enum {
     FINE = 0,
@@ -59,6 +61,8 @@ typedef enum {
     ARR_MIN_BIN_HEAP_DELETE_VAL_ERROR = 43,
     SLIDING_WINDOW_MAX_ERROR = 45,
     AVL_TREE_ERROR = 46,
+    DIF_SUB_STR_ERROR = 47,
+    REV_STR_ERROR = 48,
     NUM_ERROR
 } error_t;
 
@@ -111,5 +115,8 @@ bool test_min_bin_heap_delete_val (void);
 bool test_bin_heap_remove (void);
 bool test_bin_heap_delete_val (void);
 bool fill_up_heap_continuous_vals (BinaryHeap_t *binHeap, int maxVal, bool isMaxHeap);
+
+void assemble_tree_from_array (TreeNode_t ** root, int *arr, int arraySize);
+void create_binary_search_tree (TreeNode_t ** root, int how_many_elements);
 
 #endif /* __UTESTS_H */

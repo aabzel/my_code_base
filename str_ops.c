@@ -1,5 +1,6 @@
 #include "str_ops.h"
 
+#include "algorithms.h"
 #include "custom_type.h"
 
 #include <math.h>
@@ -8,6 +9,14 @@
 #include <stdint.h>
 #include <string.h>
 #include <ctype.h>
+
+static int findIndOfFirstDiffFromStart (char *oldStr, char *newStr);
+static int findIndOfFirstDiffFromEnd (char *oldStr, char *newStr);
+static bool hash_table_char_put (char character, int indexInArray);
+static bool hash_table_char_remove (char character);
+static void init_hash_table (void);
+static bool clear_all_left_chars (char *str, int index);
+static int hash_table_char_check (char character);
 
 //output: pointer address to the array of pointers
 int split (char *source, char *delim, char ***outStrArr) {
@@ -352,5 +361,297 @@ bool try_dec_char_to_u8 (uint8_t dec_char, uint8_t * dec_char_to_u8_value) {
 
     *dec_char_to_u8_value = dec_char_to_u8_result;
     return dec_char_to_u8_success;
+}
+
+static int gHashSize = 0;
+static int gCharHashTable [512] =
+    { 0 };
+
+static bool hash_table_char_put (char character, int indexInArray) {
+    bool res = false;
+    if (0 <= gCharHashTable [(int) character]) {
+#if DEBUG_HASH_TABLE
+        printf ("\nCollision\n");
+#endif
+    } else {
+#if DEBUG_HASH_TABLE
+        printf ("new in table [%c] %d", character, indexInArray);
+#endif
+        gCharHashTable [(int) character] = indexInArray;
+        gHashSize++;
+        res = true;
+    }
+    return res;
+}
+
+static int hash_table_char_check (char character) {
+    if (0 <= gCharHashTable [(int) character]) {
+        return gCharHashTable [(int) character];
+    } else {
+        return -1;
+    }
+}
+static bool hash_table_char_remove (char character) {
+    if (0 < character) {
+        if (0 <= gCharHashTable [(int) character]) {
+            gCharHashTable [(int) character] = -1;
+            gHashSize--;
+            return true;
+        } else {
+#if DEBUG_HASH_TABLE
+            printf ("\nUnable to remove absent char [%c]\n", character);
+#endif
+            return false;
+        }
+    } else {
+        printf ("\nOut of bound [%d]!\n", (int) character);
+        return false;
+    }
+}
+
+static void init_hash_table (void) {
+    gHashSize = 0;
+    int sizeOfArray = sizeof(gCharHashTable) / sizeof(gCharHashTable [0]);
+    for (int i = 0; i < sizeOfArray; i++) {
+        gCharHashTable [i] = -1;
+    }
+}
+//bpfbhmipx 1
+static bool clear_all_left_chars (char *str, int index) {
+#if DEBUG_HASH_TABLE
+    printf (" discard all left from ind: %d inclusive", index);
+    printf (" {");
+    for (int i = 0; i <= index; i++) {
+        printf ("%c", str [i]);
+    }
+    printf ("}");
+
+#endif
+    bool res;
+    //for (int i = 0; i <= index; i++) {
+    if (0 <= hash_table_char_check (str [index])) {
+        res = hash_table_char_remove (str [index]);
+    }
+    //}
+    return res;
+}
+
+static void full_str_with (char *s, char pattern, int size) {
+    for (int i = 0; i < size; i++) {
+        s [i] = pattern;
+    }
+}
+//abcabcbb 7
+//pwwkew
+int lengthOfLongestSubstring (char * s) {
+    int maxNumUnicChars = 0;
+
+#if DEBUG_LENGTHOFLONGESTSUBSTRING
+    printf ("\n str: %s ", s);
+#endif
+    init_hash_table ();
+    if (s) {
+        int strLen = strlen (s);
+        char *locStr = (char *) malloc (sizeof(char) * strLen + 1);
+        if (!locStr) {
+            return 0;
+        } else {
+            full_str_with (locStr, '_', strLen);
+            locStr [strLen] = '\0';
+        }
+        int winEnd = 0;
+        int lastIndexOfChar = 0;
+        while (winEnd < strLen) {
+#if DEBUG_LENGTHOFLONGESTSUBSTRING
+            printf ("\n:%d <%d>", winEnd, gHashSize);
+#endif
+            lastIndexOfChar = hash_table_char_check (s [winEnd]);
+            if (lastIndexOfChar < 0) {
+                /*new val*/
+#if DEBUG_LENGTHOFLONGESTSUBSTRING
+                printf ("new %c ", s [winEnd]);
+#endif
+                hash_table_char_put (s [winEnd], winEnd);
+                locStr [winEnd] = s [winEnd];
+
+            } else {
+                // same val
+#if DEBUG_LENGTHOFLONGESTSUBSTRING
+                printf ("old %c %d", s [winEnd], lastIndexOfChar);
+#endif
+                clear_all_left_chars (s, lastIndexOfChar);
+                locStr [lastIndexOfChar] = '_';
+                hash_table_char_put (s [winEnd], winEnd);
+                locStr [winEnd] = s [winEnd];
+
+            }
+#if DEBUG_LENGTHOFLONGESTSUBSTRING
+            printf (":gHashSize <%d>", gHashSize);
+#endif
+            maxNumUnicChars = update_max (maxNumUnicChars, gHashSize);
+            winEnd++;
+        }
+        printf ("\n\n (%s)\n", locStr);
+
+    }
+    return maxNumUnicChars;
+}
+
+bool test_lengthOfLongestSubstring (void) {
+    int val;
+
+    val = lengthOfLongestSubstring ("pwwkew");
+    if (3 != val) {
+        printf ("\npwwkew val:%d \n", val);
+        return false;
+    }
+
+    val = lengthOfLongestSubstring ("bpfbhmipx");
+    if (7 != val) {
+        printf ("\nbpfbhmipx val:%d \n", val);
+        return false;
+    }
+
+    val = lengthOfLongestSubstring ("aab");
+    if (2 != val) {
+        printf ("\naab val:%d \n", val);
+        return false;
+    }
+
+    val = lengthOfLongestSubstring ("abcabcbb");
+    if (3 != val) {
+        printf ("\nabcabcbb val:%d \n", val);
+        return false;
+    }
+
+    val = lengthOfLongestSubstring ("bbbbb");
+    if (1 != val) {
+        printf ("\nbbbbb val:%d \n", val);
+        return false;
+    }
+
+    return true;
+}
+
+bool test_detect_change (void) {
+    char* change;
+    int subStringLen;
+    int cmpRes = 0;
+    // "aaabb"
+    // "aaa11bb"
+    change = detect_change ("aaabb", "aaa11bb", &subStringLen, (char *) NULL, (char *) NULL);
+    if (2 != subStringLen) {
+        return false;
+    }
+    cmpRes = strncmp (change, "11", 2);
+    if (cmpRes) {
+        return false;
+    }
+
+    change = detect_change ("aaa11bb", "aaabb", &subStringLen, (char *) NULL, (char *) NULL);
+    if (2 != subStringLen) {
+        return false;
+    }
+    cmpRes = strncmp (change, "11", 2);
+    if (cmpRes) {
+        return false;
+    }
+
+    change = detect_change ("aa111bb", "aa22bb", &subStringLen, (char *) NULL, (char *) NULL);
+    if (2 != subStringLen) {
+        return false;
+    }
+    cmpRes = strncmp (change, "11", 2);
+    if (cmpRes) {
+        return false;
+    }
+    return false;
+}
+
+//Examples:
+//"aaabb", "aaa11bb"     < "11" inserted at index 3
+//"aa111bb", "aa22bb"     < "11" inserted at index 3
+char* detect_change (char *oldStr, char *newStr, int *subStringLen, char *oldSubStr, char *newSubStr) {
+    (void) *oldSubStr;
+    (void) *newSubStr;
+    int oldStrLen = strlen (oldStr);
+    int newStrLen = strlen (newStr);
+    //relatively larger size string
+    int indexOfFirstDiffLeft = findIndOfFirstDiffFromStart (oldStr, newStr);
+    int indexOfFirstDiffRigt = findIndOfFirstDiffFromEnd (oldStr, newStr);
+
+    if (oldStrLen == newStrLen) {
+        if (indexOfFirstDiffLeft < indexOfFirstDiffRigt) {
+            *subStringLen = indexOfFirstDiffRigt - indexOfFirstDiffLeft;
+            return &oldStr [indexOfFirstDiffLeft];
+        } else {
+            *subStringLen = 0;
+            return NULL;
+        }
+    } else if (newStrLen < oldStrLen) {
+        if (indexOfFirstDiffLeft < indexOfFirstDiffRigt) {
+            *subStringLen = indexOfFirstDiffRigt - indexOfFirstDiffLeft;
+            return &oldStr [indexOfFirstDiffLeft];
+        } else {
+            *subStringLen = 0;
+            return NULL;
+        }
+    } else if (oldStrLen < newStrLen) {
+        if (indexOfFirstDiffLeft < indexOfFirstDiffRigt) {
+            *subStringLen = indexOfFirstDiffRigt - indexOfFirstDiffLeft;
+            return &newStr [indexOfFirstDiffLeft];
+        } else {
+            *subStringLen = 0;
+            return NULL;
+        }
+    } else {
+        printf ("\nUnreachable branch\n");
+    }
+    return NULL;
+}
+
+static int findIndOfFirstDiffFromStart (char *oldStr, char *newStr) {
+    if (oldStr && newStr) {
+        int oldStrLen = strlen (oldStr);
+        int newStrLen = strlen (newStr);
+        for (int i = 0; i < min (oldStrLen, newStrLen); i++) {
+            if (oldStr [i] != newStr [i]) {
+                return i;
+            }
+        }
+    }
+    return -1;
+}
+
+static int findIndOfFirstDiffFromEnd (char *oldStr, char *newStr) {
+    if (oldStr && newStr) {
+        int oldStrLen = strlen (oldStr);
+        int newStrLen = strlen (newStr);
+        char *replicaOld = strdup (oldStr);
+        char *replicaNew = strdup (newStr);
+        reverseString (replicaOld, oldStrLen);
+        reverseString (replicaNew, newStrLen);
+    }
+    return -1;
+}
+
+void reverseString (char *inOutStr, int length) {
+    for (int i = 0; i < (length / 2); i++) {
+        swap_char (&inOutStr [i], &inOutStr [(length-1) - i]);
+    }
+}
+
+bool test_reverse (void) {
+    int cmpRes = 0;
+    char tempStr [100];
+    strcpy(tempStr,"12345");
+    reverseString (tempStr, 5);
+    cmpRes = strcmp (tempStr, "54321");
+    if (0 != cmpRes) {
+        printf("\ntempStr [%s]\n",tempStr);
+        return false;
+    }
+
+    return true;
 }
 
