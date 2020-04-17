@@ -6,6 +6,7 @@
 #include "utils.h"
 #include "bin_search_tree.h"
 
+#define DEPLOY_DIF_SUB_STR_ERROR 1
 #define TEST_STR_STR 0
 #define TEST_UNIQ_DIAG_PATH_TASK 0
 #define TEST_MIN_PATH_DIAG 0
@@ -63,6 +64,7 @@ typedef enum {
     AVL_TREE_ERROR = 46,
     DIF_SUB_STR_ERROR = 47,
     REV_STR_ERROR = 48,
+    DETECT_CHANGE_ERROR = 49,
     NUM_ERROR
 } error_t;
 

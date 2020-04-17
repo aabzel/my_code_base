@@ -72,11 +72,18 @@ int unitTest (void) {
     if (false == res) {
         return REV_STR_ERROR;
     }
+    res = test_detect_change ( );
+    if (false == res) {
+        return DETECT_CHANGE_ERROR;
+    }
 
+#if DEPLOY_DIF_SUB_STR_ERROR
     res = test_lengthOfLongestSubstring ();
     if (false == res) {
         return DIF_SUB_STR_ERROR;
     }
+#endif
+
 #if DEPLOY_TEST_AVL_TREE
     res = test_avl_tree ();
     if (false == res) {

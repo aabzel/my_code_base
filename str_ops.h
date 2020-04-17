@@ -7,7 +7,7 @@
 #include <string.h>
 #include <math.h>
 
-#define DEBUG_HASH_TABLE 1
+#define DEBUG_HASH_TABLE 0
 #define DEBUG_LENGTHOFLONGESTSUBSTRING 1
 
 #define DBL_MIN_10_EXP  (-307)
@@ -16,8 +16,10 @@
 #define FLT_MIN         (1.175494350822287508e-38f)
 
 // time complexity O(T*P)
+int find_max_sec (char * string, char sripChar);
 bool test_lengthOfLongestSubstring (void);
 int lengthOfLongestSubstring (char * s);
+void reverse_string (char *inOutStr);
 char *select_sub_string (char *text, char *tail);
 const char *str_case_str (const char * const text, const char * const pattern);
 char *removeCharFromString (char *str, uint32_t delIndex);
@@ -28,9 +30,19 @@ bool is_float_number (const char float_str []);
 int count_amount_of_item (char *source, char *delin);
 int split (char *source, char *delim, char ***outStrArr);
 
+void print_str_head (char *inStr, uint32_t len);
+bool is_diff_chars (char *inStr, uint32_t len);
 bool test_reverse (void);
 void reverseString (char *s, int length);
-bool test_detect_change (void) ;
-char* detect_change (char *oldStr, char *newStr, int *subStringLen, char *oldSubStr, char *newSubStr);
-
+bool test_detect_change (void);
+void detect_change (char *oldStr, char *newStr, char **oldSubStr, int *oldSubStringLen, char **newSubStr, int *newSubStringLen);
+void find_diff (
+    char* oldStr,
+    int oldLen,
+    char* newStr,
+    int newLen,
+    int *outOldSubStringLen,
+    int *outNewSubStringLen,
+    char **oldSubStr,
+    char **newSubStr);
 #endif /* __STRING_OPS_H */

@@ -10,12 +10,15 @@
 #include <string.h>
 #include <ctype.h>
 
+#if 0
 static int findIndOfFirstDiffFromStart (char *oldStr, char *newStr);
 static int findIndOfFirstDiffFromEnd (char *oldStr, char *newStr);
+#endif
+
 static bool hash_table_char_put (char character, int indexInArray);
-static bool hash_table_char_remove (char character);
+//static bool hash_table_char_remove (char character);
 static void init_hash_table (void);
-static bool clear_all_left_chars (char *str, int index);
+
 static int hash_table_char_check (char character);
 
 //output: pointer address to the array of pointers
@@ -391,6 +394,7 @@ static int hash_table_char_check (char character) {
         return -1;
     }
 }
+#if 0
 static bool hash_table_char_remove (char character) {
     if (0 < character) {
         if (0 <= gCharHashTable [(int) character]) {
@@ -408,7 +412,7 @@ static bool hash_table_char_remove (char character) {
         return false;
     }
 }
-
+#endif
 static void init_hash_table (void) {
     gHashSize = 0;
     int sizeOfArray = sizeof(gCharHashTable) / sizeof(gCharHashTable [0]);
@@ -417,88 +421,68 @@ static void init_hash_table (void) {
     }
 }
 //bpfbhmipx 1
-static bool clear_all_left_chars (char *str, int index) {
-#if DEBUG_HASH_TABLE
-    printf (" discard all left from ind: %d inclusive", index);
-    printf (" {");
-    for (int i = 0; i <= index; i++) {
-        printf ("%c", str [i]);
-    }
-    printf ("}");
 
-#endif
-    bool res;
-    //for (int i = 0; i <= index; i++) {
-    if (0 <= hash_table_char_check (str [index])) {
-        res = hash_table_char_remove (str [index]);
-    }
-    //}
-    return res;
-}
 
+#if 0
 static void full_str_with (char *s, char pattern, int size) {
     for (int i = 0; i < size; i++) {
         s [i] = pattern;
     }
 }
-//abcabcbb 7
+#endif
+//abcabcbb 8
 //pwwkew
-int lengthOfLongestSubstring (char * s) {
+int lengthOfLongestSubstring (char * inStr) {
     int maxNumUnicChars = 0;
-
+    bool res;
+    uint32_t i, j;
+    int amountOfChars = 0;
 #if DEBUG_LENGTHOFLONGESTSUBSTRING
-    printf ("\n str: %s ", s);
+    printf ("\n str: %s ", inStr);
 #endif
-    init_hash_table ();
-    if (s) {
-        int strLen = strlen (s);
-        char *locStr = (char *) malloc (sizeof(char) * strLen + 1);
-        if (!locStr) {
-            return 0;
-        } else {
-            full_str_with (locStr, '_', strLen);
-            locStr [strLen] = '\0';
-        }
-        int winEnd = 0;
-        int lastIndexOfChar = 0;
-        while (winEnd < strLen) {
-#if DEBUG_LENGTHOFLONGESTSUBSTRING
-            printf ("\n:%d <%d>", winEnd, gHashSize);
-#endif
-            lastIndexOfChar = hash_table_char_check (s [winEnd]);
-            if (lastIndexOfChar < 0) {
-                /*new val*/
-#if DEBUG_LENGTHOFLONGESTSUBSTRING
-                printf ("new %c ", s [winEnd]);
-#endif
-                hash_table_char_put (s [winEnd], winEnd);
-                locStr [winEnd] = s [winEnd];
-
-            } else {
-                // same val
-#if DEBUG_LENGTHOFLONGESTSUBSTRING
-                printf ("old %c %d", s [winEnd], lastIndexOfChar);
-#endif
-                clear_all_left_chars (s, lastIndexOfChar);
-                locStr [lastIndexOfChar] = '_';
-                hash_table_char_put (s [winEnd], winEnd);
-                locStr [winEnd] = s [winEnd];
-
+    if (inStr) {
+        uint32_t strLen = strlen (inStr);
+        for (i = 0; i < strLen; i++) {
+            for (j = 1; j <= (strLen-i); j++) {
+                amountOfChars = j;
+                res = is_diff_chars (&inStr [i], amountOfChars);
+                if (true == res) {
+                    maxNumUnicChars = update_max (maxNumUnicChars, amountOfChars);
+                }
             }
-#if DEBUG_LENGTHOFLONGESTSUBSTRING
-            printf (":gHashSize <%d>", gHashSize);
-#endif
-            maxNumUnicChars = update_max (maxNumUnicChars, gHashSize);
-            winEnd++;
         }
-        printf ("\n\n (%s)\n", locStr);
-
     }
+
     return maxNumUnicChars;
+}
+
+int find_max_sec (char * string, char sripChar) {
+    int maxCnt = 0;
+    int curCnt = 0;
+    int strLen = strlen (string);
+    for (int i = 0; i < strLen; i++) {
+        if (sripChar != string [i]) {
+            curCnt++;
+        } else {
+            curCnt = 0;
+        }
+        maxCnt = update_max (maxCnt, curCnt);
+    }
+    return maxCnt;
 }
 
 bool test_lengthOfLongestSubstring (void) {
     int val;
+    bool res;
+    res = is_diff_chars ("12345", 5);
+    if (false == res) {
+        return false;
+    }
+
+    res = is_diff_chars ("1214", 4);
+    if (true == res) {
+        return false;
+    }
 
     val = lengthOfLongestSubstring ("pwwkew");
     if (3 != val) {
@@ -534,82 +518,87 @@ bool test_lengthOfLongestSubstring (void) {
 }
 
 bool test_detect_change (void) {
-    char* change;
-    int subStringLen;
+    char* oldSubString;
+    char* newSubString;
+    int oldSubStringLen = -1;
+    int newSubStringLen = -1;
     int cmpRes = 0;
-    // "aaabb"
-    // "aaa11bb"
-    change = detect_change ("aaabb", "aaa11bb", &subStringLen, (char *) NULL, (char *) NULL);
-    if (2 != subStringLen) {
+// "aaabb"
+// "aaa11bb"
+    detect_change ("aaabb", "aaa11bb", &oldSubString, &oldSubStringLen, &newSubString, &newSubStringLen);
+    if (0 != oldSubStringLen) {
+        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
         return false;
     }
-    cmpRes = strncmp (change, "11", 2);
-    if (cmpRes) {
+    if (2 != newSubStringLen) {
+        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
         return false;
     }
-
-    change = detect_change ("aaa11bb", "aaabb", &subStringLen, (char *) NULL, (char *) NULL);
-    if (2 != subStringLen) {
-        return false;
-    }
-    cmpRes = strncmp (change, "11", 2);
-    if (cmpRes) {
+    cmpRes = strncmp (newSubString, "11", 2);
+    if (0 != cmpRes) {
+        printf ("\n%s %d %s", __FUNCTION__, __COUNTER__, newSubString);
         return false;
     }
 
-    change = detect_change ("aa111bb", "aa22bb", &subStringLen, (char *) NULL, (char *) NULL);
-    if (2 != subStringLen) {
+    detect_change ("aaa11bb", "aaabb", &oldSubString, &oldSubStringLen, &newSubString, &newSubStringLen);
+    if (2 != oldSubStringLen) {
+        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
         return false;
     }
-    cmpRes = strncmp (change, "11", 2);
-    if (cmpRes) {
+    if (0 != newSubStringLen) {
+        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
         return false;
     }
-    return false;
+    cmpRes = strncmp (oldSubString, "11", 2);
+    if (0 != cmpRes) {
+        printf ("\n%s %d %s", __FUNCTION__, __COUNTER__, oldSubString);
+        return false;
+    }
+
+    detect_change ("aa111bb", "aa22bb", &oldSubString, &oldSubStringLen, &newSubString, &newSubStringLen);
+    if (3 != oldSubStringLen) {
+        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+    if (2 != newSubStringLen) {
+        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+    cmpRes = strncmp (oldSubString, "111", 3);
+    if (0 != cmpRes) {
+        printf ("\n%s %d %s", __FUNCTION__, __COUNTER__, oldSubString);
+        return false;
+    }
+    cmpRes = strncmp (newSubString, "22", 2);
+    if (0 != cmpRes) {
+        printf ("\n%s %d %s", __FUNCTION__, __COUNTER__, newSubString);
+        return false;
+    }
+
+    return true;
 }
+
+//"aaabb"5,   "aaa11bb"7  oldSub""0    newSub"11"2
+//"aabb"5,   "aa11bb"7  oldSub""0    newSub"11"2
+//"abb"5,   "a11bb"7  oldSub""0    newSub"11"2
+//"bb"5,   "11bb"7  oldSub""0    newSub"11"2
+//"b"5,   "11b"7  oldSub""0    newSub"11"2
+//""0,   "11"2  oldSub""0    newSub"11"2
 
 //Examples:
-//"aaabb", "aaa11bb"     < "11" inserted at index 3
-//"aa111bb", "aa22bb"     < "11" inserted at index 3
-char* detect_change (char *oldStr, char *newStr, int *subStringLen, char *oldSubStr, char *newSubStr) {
+//"aaabb"5,   "aaa11bb"7  oldSub""0    newSub"11"2    < "11" inserted at index 3  oldSubStringLen 0  newSubStringLen: 2
+//"aa111bb"7, "aa22bb"6   oldSub"111"3 newSub"22"2    < "11" inserted at index 3  oldSubStringLen 3  newSubStringLen: 2
+void detect_change (char *oldStr, char *newStr, char **oldSubStr, int *oldSubStringLen, char **newSubStr, int *newSubStringLen) {
     (void) *oldSubStr;
     (void) *newSubStr;
+    *oldSubStringLen = 0;
+    *newSubStringLen = 0;
     int oldStrLen = strlen (oldStr);
     int newStrLen = strlen (newStr);
-    //relatively larger size string
-    int indexOfFirstDiffLeft = findIndOfFirstDiffFromStart (oldStr, newStr);
-    int indexOfFirstDiffRigt = findIndOfFirstDiffFromEnd (oldStr, newStr);
-
-    if (oldStrLen == newStrLen) {
-        if (indexOfFirstDiffLeft < indexOfFirstDiffRigt) {
-            *subStringLen = indexOfFirstDiffRigt - indexOfFirstDiffLeft;
-            return &oldStr [indexOfFirstDiffLeft];
-        } else {
-            *subStringLen = 0;
-            return NULL;
-        }
-    } else if (newStrLen < oldStrLen) {
-        if (indexOfFirstDiffLeft < indexOfFirstDiffRigt) {
-            *subStringLen = indexOfFirstDiffRigt - indexOfFirstDiffLeft;
-            return &oldStr [indexOfFirstDiffLeft];
-        } else {
-            *subStringLen = 0;
-            return NULL;
-        }
-    } else if (oldStrLen < newStrLen) {
-        if (indexOfFirstDiffLeft < indexOfFirstDiffRigt) {
-            *subStringLen = indexOfFirstDiffRigt - indexOfFirstDiffLeft;
-            return &newStr [indexOfFirstDiffLeft];
-        } else {
-            *subStringLen = 0;
-            return NULL;
-        }
-    } else {
-        printf ("\nUnreachable branch\n");
-    }
-    return NULL;
+    find_diff (oldStr, oldStrLen, newStr, newStrLen, oldSubStringLen, newSubStringLen, oldSubStr, newSubStr);
 }
 
+#if 0
 static int findIndOfFirstDiffFromStart (char *oldStr, char *newStr) {
     if (oldStr && newStr) {
         int oldStrLen = strlen (oldStr);
@@ -622,36 +611,136 @@ static int findIndOfFirstDiffFromStart (char *oldStr, char *newStr) {
     }
     return -1;
 }
-
 static int findIndOfFirstDiffFromEnd (char *oldStr, char *newStr) {
+    int val = -1;
     if (oldStr && newStr) {
-        int oldStrLen = strlen (oldStr);
-        int newStrLen = strlen (newStr);
         char *replicaOld = strdup (oldStr);
         char *replicaNew = strdup (newStr);
-        reverseString (replicaOld, oldStrLen);
-        reverseString (replicaNew, newStrLen);
+        if (replicaOld && replicaNew) {
+            int oldStrLen = strlen (oldStr);
+            int newStrLen = strlen (newStr);
+            printf ("\nreplicaOld [%s]", replicaOld);
+            printf ("\nreplicaNew [%s]", replicaNew);
+            reverse_string (replicaOld);
+            reverse_string (replicaNew);
+            val = findIndOfFirstDiffFromStart (replicaOld, replicaNew);
+            val = max (newStrLen, oldStrLen) - val - 1;
+            free (replicaOld);
+            free (replicaNew);
+        } else {
+            printf ("\nError\n");
+        }
     }
-    return -1;
+    return val;
+}
+#endif
+
+void reverse_string (char *inOutStr) {
+    int oldStrLen = strlen (inOutStr);
+    reverseString (inOutStr, oldStrLen);
 }
 
 void reverseString (char *inOutStr, int length) {
     for (int i = 0; i < (length / 2); i++) {
-        swap_char (&inOutStr [i], &inOutStr [(length-1) - i]);
+        swap_char (&inOutStr [i], &inOutStr [(length - 1) - i]);
     }
 }
 
 bool test_reverse (void) {
     int cmpRes = 0;
     char tempStr [100];
-    strcpy(tempStr,"12345");
+    strcpy (tempStr, "12345");
     reverseString (tempStr, 5);
     cmpRes = strcmp (tempStr, "54321");
     if (0 != cmpRes) {
-        printf("\ntempStr [%s]\n",tempStr);
+        printf ("\ntempStr [%s]\n", tempStr);
         return false;
     }
 
     return true;
 }
 
+void find_diff (
+    char* oldStr,
+    int oldLen,
+    char* newStr,
+    int newLen,
+    int *outOldSubStringLen,
+    int *outNewSubStringLen,
+    char **oldSubStr,
+    char **newSubStr) {
+//printf ("\n");
+//print_str_head (oldStr, oldLen);
+//printf (" ");
+//print_str_head (newStr, newLen);
+    if ((0 < oldLen) && (0 < newLen)) {
+        if (oldStr [0] == newStr [0]) {
+            find_diff (&oldStr [1], oldLen - 1, &newStr [1], newLen - 1, outOldSubStringLen, outNewSubStringLen, oldSubStr, newSubStr);
+        } else {
+            if (oldStr [oldLen - 1] == newStr [newLen - 1]) {
+                //oldStr [oldLen - 1] = '\0';
+                //newStr [newLen - 1] = '\0';
+                find_diff (oldStr, oldLen - 1, newStr, newLen - 1, outOldSubStringLen, outNewSubStringLen, oldSubStr, newSubStr);
+            } else {
+                *outOldSubStringLen = oldLen;
+                *outNewSubStringLen = newLen;
+                *oldSubStr = oldStr;
+                *newSubStr = newStr;
+                printf ("\n");
+                print_str_head (oldStr, oldLen);
+                printf ("\n");
+                print_str_head (newStr, newLen);
+            }
+        }
+    } else {
+        *outOldSubStringLen = oldLen;
+        *outNewSubStringLen = newLen;
+        *oldSubStr = oldStr;
+        *newSubStr = newStr;
+        printf ("\n");
+        print_str_head (oldStr, oldLen);
+        printf ("\n");
+        print_str_head (newStr, newLen);
+    }
+}
+
+void print_str_head (char *inStr, uint32_t len) {
+#if 0
+    printf ("\n %s len %d\n ",inStr,len);
+#endif
+    printf ("[");
+    if ((uint32_t) len < (uint32_t) strlen (inStr)) {
+        for (uint32_t i = 0; i < len; i++) {
+            printf ("%c", inStr [i]);
+        }
+    }
+    printf ("]");
+}
+
+//
+//
+//O(N)
+bool is_diff_chars (char *inStr, uint32_t len) {
+    init_hash_table ();
+    bool res=true;
+    if (inStr && 0 < len) {
+        uint32_t strLen = strlen (inStr);
+        if (len <= strLen) {
+            for (uint32_t i = 0; i < len; i++) {
+                if (hash_table_char_check (inStr [i]) < 0) {
+                    bool res = hash_table_char_put (inStr [i], i);
+                    if (false == res) {
+                        printf ("\n Error\n");
+                    }
+                } else {
+                    return false;
+                }
+            }
+        }else{
+            res=false;
+        }
+    }else{
+        res=false;
+    }
+    return res;
+}
