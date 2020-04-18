@@ -65,6 +65,7 @@ typedef enum {
     DIF_SUB_STR_ERROR = 47,
     REV_STR_ERROR = 48,
     DETECT_CHANGE_ERROR = 49,
+    FIFO_CAHR_ERROR = 50,
     NUM_ERROR
 } error_t;
 

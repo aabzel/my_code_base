@@ -12,6 +12,7 @@
 #include "combinations.h"
 #include "min_path.h"
 #include "permutations.h"
+#include "test_fifo_char.h"
 #include "bin_heap.h"
 #include "test_avl_tree.h"
 #include "str_ops.h"
@@ -30,6 +31,11 @@
 
 int test_heap_api (void) {
     bool res = false;
+
+    res = test_fifo_char ();
+    if (false == res) {
+        return FIFO_CAHR_ERROR;
+    }
 
     res = test_bin_heap_par_ind_arr ();
     if (false == res) {
