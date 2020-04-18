@@ -436,6 +436,37 @@ int lengthOfLongestSubstring (char * inStr) {
     int maxNumUnicChars = 0;
     bool res;
     uint32_t i, j;
+
+#if DEBUG_LENGTHOFLONGESTSUBSTRING
+    printf ("\n str: %s ", inStr);
+#endif
+    if (inStr) {
+        uint32_t strLen = strlen (inStr);
+        for (i = 0; i < strLen; i++) {
+            init_hash_table ();
+            for (j = 1; j <= (strLen-i); j++) {
+                if (hash_table_char_check (inStr [i+j-1]) < 0) {
+                    res = hash_table_char_put (inStr [i+j-1], i);
+                    if (false == res) {
+                        printf ("\n Error\n");
+                    }
+                    maxNumUnicChars = update_max (maxNumUnicChars, j);
+                } else {
+                    break;
+                }
+
+            }
+        }
+    }
+
+    return maxNumUnicChars;
+}
+
+#if 0
+int lengthOfLongestSubstring_slow (char * inStr) {
+    int maxNumUnicChars = 0;
+    bool res;
+    uint32_t i, j;
     int amountOfChars = 0;
 #if DEBUG_LENGTHOFLONGESTSUBSTRING
     printf ("\n str: %s ", inStr);
@@ -448,6 +479,8 @@ int lengthOfLongestSubstring (char * inStr) {
                 res = is_diff_chars (&inStr [i], amountOfChars);
                 if (true == res) {
                     maxNumUnicChars = update_max (maxNumUnicChars, amountOfChars);
+                }else{
+                    break;
                 }
             }
         }
@@ -455,6 +488,7 @@ int lengthOfLongestSubstring (char * inStr) {
 
     return maxNumUnicChars;
 }
+#endif
 
 int find_max_sec (char * string, char sripChar) {
     int maxCnt = 0;
