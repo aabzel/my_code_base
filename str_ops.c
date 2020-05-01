@@ -2,26 +2,37 @@
 
 #include "algorithms.h"
 #include "custom_type.h"
+#include "lifo_char.h"
+#include "uTests.h"
 
-#include <math.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
 #include <ctype.h>
+#include <math.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #if 0
 static int findIndOfFirstDiffFromStart (char *oldStr, char *newStr);
 static int findIndOfFirstDiffFromEnd (char *oldStr, char *newStr);
 #endif
 
+#if 0
+static bool get_oparand (char *expression, int i);
+#endif
+
+static int parse_num_operands (char *expression);
+static bool parse_single_char (char *expression);
+static bool parse_or (char *expression);
+static bool parse_and (char *expression);
+static bool parse_not (char *expression);
 static bool hash_table_char_put (char character, int indexInArray);
-//static bool hash_table_char_remove (char character);
+// static bool hash_table_char_remove (char character);
 static void init_hash_table (void);
 
 static int hash_table_char_check (char character);
 
-//output: pointer address to the array of pointers
+// output: pointer address to the array of pointers
 int split (char *source, char *delim, char ***outStrArr) {
     printf ("\n text  [%s] pattern [%s]\n", source, delim);
     *outStrArr = NULL;
@@ -31,7 +42,7 @@ int split (char *source, char *delim, char ***outStrArr) {
     int srcLen = strlen (source);
     int delimLen = strlen (delim);
     numItemInStr = count_amount_of_item (source, delim);
-    char** arrStrings = malloc ((1 + numItem) * sizeof(char*));
+    char **arrStrings = malloc ((1 + numItem) * sizeof(char *));
     for (int k = 0; k < numItemInStr; k++) {
         printf ("\n address of ptrs: arrStrings[p]: [%p]", arrStrings [k]);
     }
@@ -40,29 +51,29 @@ int split (char *source, char *delim, char ***outStrArr) {
         for (int i = 0; i <= (srcLen - delimLen); i++) {
             int cmpRes = strncmp (delim, &source [i], delimLen);
             if (0 == cmpRes) {
-                //printf ("\nSpot pattern\n");
+                // printf ("\nSpot pattern\n");
                 if (0 == i) {
-                    //pattern in the first
+                    // pattern in the first
                     numItem++;
                     isFirst = false;
                     char *str = select_sub_string (&source [i + delimLen], delim);
                     printf (" [%s] ", str);
-                    arrStrings [j++] = (char*) str;
+                    arrStrings [j++] = (char *) str;
                 } else if ((srcLen - delimLen) == i) {
-                    //pattern in the end
+                    // pattern in the end
                     if (0 == numItem) {
                         char *str = select_sub_string (&source [0], delim);
                         printf (" [%s] ", str);
-                        arrStrings [j++] = (char*) str;
+                        arrStrings [j++] = (char *) str;
                         numItem = 1;
                     }
                 } else {
-                    //pattern in the middle
+                    // pattern in the middle
                     if (true == isFirst) {
                         char *str = select_sub_string (&source [0], delim);
                         if (str) {
                             printf (" [%s] ", str);
-                            arrStrings [j++] = (char*) str;
+                            arrStrings [j++] = (char *) str;
 
                         } else {
                             printf ("\n malloc Error! \n");
@@ -74,7 +85,7 @@ int split (char *source, char *delim, char ***outStrArr) {
                     }
                     char *str = select_sub_string (&source [i + delimLen], delim);
                     printf (" [%s] ", str);
-                    arrStrings [j++] = (char*) str;
+                    arrStrings [j++] = (char *) str;
                 }
             }
         }
@@ -126,7 +137,7 @@ char *select_sub_string (char *text, char *tail) {
     return outStr;
 }
 
-//strstr
+// strstr
 int count_amount_of_item (char *source, char *delim) {
     int numItem = 0;
     bool isFirst = true;
@@ -136,19 +147,19 @@ int count_amount_of_item (char *source, char *delim) {
         for (int i = 0; i <= (srcLen - delimLen); i++) {
             int cmpRes = strncmp (delim, &source [i], delimLen);
             if (0 == cmpRes) {
-                //printf ("\nSpot pattern\n");
+                // printf ("\nSpot pattern\n");
                 if (0 == i) {
-                    //pattern in the first
+                    // pattern in the first
                     isFirst = false;
                     numItem++;
                 } else if ((srcLen - delimLen) == i) {
-                    //pattern in the end
+                    // pattern in the end
                     if (0 == numItem) {
                         numItem = 1;
                     }
 
                 } else {
-                    //pattern in the middle
+                    // pattern in the middle
                     if (true == isFirst) {
                         numItem += 2;
                         isFirst = false;
@@ -158,7 +169,6 @@ int count_amount_of_item (char *source, char *delim) {
                 }
             }
         }
-
     }
     return numItem;
 }
@@ -211,10 +221,10 @@ char *removeCharFromString (char *str, uint32_t delIndex) {
     return NULL;
 }
 
-bool isNumber (char * s) {
+bool isNumber (char *s) {
     bool res = false;
     res = is_float_number (s);
-    //printf ("\n instr [%s]", s);
+    // printf ("\n instr [%s]", s);
     return res;
 }
 
@@ -266,7 +276,7 @@ bool is_real_number (const char str []) {
     }
 
     if (0 == isdigit ((int32_t) (str [str_index]))) {
-        //strtod_success = false;
+        // strtod_success = false;
         number = 0.0;
     } else {
         /* Process string of digits */
@@ -350,7 +360,7 @@ bool is_real_number (const char str []) {
     return strtod_success;
 }
 
-bool try_dec_char_to_u8 (uint8_t dec_char, uint8_t * dec_char_to_u8_value) {
+bool try_dec_char_to_u8 (uint8_t dec_char, uint8_t *dec_char_to_u8_value) {
     uint8_t dec_char_to_u8_result = 0U;
     bool dec_char_to_u8_success = true;
 
@@ -420,8 +430,7 @@ static void init_hash_table (void) {
         gCharHashTable [i] = -1;
     }
 }
-//bpfbhmipx 1
-
+// bpfbhmipx 1
 
 #if 0
 static void full_str_with (char *s, char pattern, int size) {
@@ -430,9 +439,9 @@ static void full_str_with (char *s, char pattern, int size) {
     }
 }
 #endif
-//abcabcbb 8
-//pwwkew
-int lengthOfLongestSubstring (char * inStr) {
+// abcabcbb 8
+// pwwkew
+int lengthOfLongestSubstring (char *inStr) {
     int maxNumUnicChars = 0;
     bool res;
     uint32_t i, j;
@@ -444,9 +453,9 @@ int lengthOfLongestSubstring (char * inStr) {
         uint32_t strLen = strlen (inStr);
         for (i = 0; i < strLen; i++) {
             init_hash_table ();
-            for (j = 1; j <= (strLen-i); j++) {
-                if (hash_table_char_check (inStr [i+j-1]) < 0) {
-                    res = hash_table_char_put (inStr [i+j-1], i);
+            for (j = 1; j <= (strLen - i); j++) {
+                if (hash_table_char_check (inStr [i + j - 1]) < 0) {
+                    res = hash_table_char_put (inStr [i + j - 1], i);
                     if (false == res) {
                         printf ("\n Error\n");
                     }
@@ -454,7 +463,6 @@ int lengthOfLongestSubstring (char * inStr) {
                 } else {
                     break;
                 }
-
             }
         }
     }
@@ -490,7 +498,7 @@ int lengthOfLongestSubstring_slow (char * inStr) {
 }
 #endif
 
-int find_max_sec (char * string, char sripChar) {
+int find_max_sec (char *string, char sripChar) {
     int maxCnt = 0;
     int curCnt = 0;
     int strLen = strlen (string);
@@ -552,13 +560,13 @@ bool test_lengthOfLongestSubstring (void) {
 }
 
 bool test_detect_change (void) {
-    char* oldSubString;
-    char* newSubString;
+    char *oldSubString;
+    char *newSubString;
     int oldSubStringLen = -1;
     int newSubStringLen = -1;
     int cmpRes = 0;
-// "aaabb"
-// "aaa11bb"
+    // "aaabb"
+    // "aaa11bb"
     detect_change ("aaabb", "aaa11bb", &oldSubString, &oldSubStringLen, &newSubString, &newSubStringLen);
     if (0 != oldSubStringLen) {
         printf ("\n%s %d", __FUNCTION__, __COUNTER__);
@@ -619,7 +627,7 @@ bool test_detect_change (void) {
 //"b"5,   "11b"7  oldSub""0    newSub"11"2
 //""0,   "11"2  oldSub""0    newSub"11"2
 
-//Examples:
+// Examples:
 //"aaabb"5,   "aaa11bb"7  oldSub""0    newSub"11"2    < "11" inserted at index 3  oldSubStringLen 0  newSubStringLen: 2
 //"aa111bb"7, "aa22bb"6   oldSub"111"3 newSub"22"2    < "11" inserted at index 3  oldSubStringLen 3  newSubStringLen: 2
 void detect_change (char *oldStr, char *newStr, char **oldSubStr, int *oldSubStringLen, char **newSubStr, int *newSubStringLen) {
@@ -695,25 +703,25 @@ bool test_reverse (void) {
 }
 
 void find_diff (
-    char* oldStr,
+    char *oldStr,
     int oldLen,
-    char* newStr,
+    char *newStr,
     int newLen,
     int *outOldSubStringLen,
     int *outNewSubStringLen,
     char **oldSubStr,
     char **newSubStr) {
-//printf ("\n");
-//print_str_head (oldStr, oldLen);
-//printf (" ");
-//print_str_head (newStr, newLen);
+    // printf ("\n");
+    // print_str_head (oldStr, oldLen);
+    // printf (" ");
+    // print_str_head (newStr, newLen);
     if ((0 < oldLen) && (0 < newLen)) {
         if (oldStr [0] == newStr [0]) {
             find_diff (&oldStr [1], oldLen - 1, &newStr [1], newLen - 1, outOldSubStringLen, outNewSubStringLen, oldSubStr, newSubStr);
         } else {
             if (oldStr [oldLen - 1] == newStr [newLen - 1]) {
-                //oldStr [oldLen - 1] = '\0';
-                //newStr [newLen - 1] = '\0';
+                // oldStr [oldLen - 1] = '\0';
+                // newStr [newLen - 1] = '\0';
                 find_diff (oldStr, oldLen - 1, newStr, newLen - 1, outOldSubStringLen, outNewSubStringLen, oldSubStr, newSubStr);
             } else {
                 *outOldSubStringLen = oldLen;
@@ -753,10 +761,10 @@ void print_str_head (char *inStr, uint32_t len) {
 
 //
 //
-//O(N)
+// O(N)
 bool is_diff_chars (char *inStr, uint32_t len) {
     init_hash_table ();
-    bool res=true;
+    bool res = true;
     if (inStr && 0 < len) {
         uint32_t strLen = strlen (inStr);
         if (len <= strLen) {
@@ -770,11 +778,574 @@ bool is_diff_chars (char *inStr, uint32_t len) {
                     return false;
                 }
             }
-        }else{
-            res=false;
+        } else {
+            res = false;
         }
-    }else{
-        res=false;
+    } else {
+        res = false;
     }
     return res;
 }
+
+int myAtoi (char *str) {
+    int val = 0;
+    bool res;
+    res = try_strl2int32_dec (str, strlen (str), &val);
+    if (false == res) {
+        printf ("\nError!\n");
+    }
+    return val;
+}
+
+bool test_myAtoi (void) {
+    int val;
+    char inStr [40];
+
+    strcpy (inStr, "20000000000000000000");
+    val = myAtoi (inStr);
+    if (INT32_MAX != val) {
+        printf ("\n%s %d [%s] val %d", __FUNCTION__, __COUNTER__, inStr, val);
+        return false;
+    }
+    if (val != atoi (inStr)) {
+        printf ("\n%s %d [%s] val %d exp val %d", __FUNCTION__, __COUNTER__, inStr, val, atoi (inStr));
+        return false;
+    }
+
+    strcpy (inStr, "+1");
+    val = myAtoi (inStr);
+    if (1 != val) {
+        printf ("\n%s %d [%s] val %d", __FUNCTION__, __COUNTER__, inStr, val);
+        return false;
+    }
+    if (val != atoi (inStr)) {
+        printf ("\n%s %d [%s] val %d exp val %d", __FUNCTION__, __COUNTER__, inStr, val, atoi (inStr));
+        return false;
+    }
+
+    strcpy (inStr, "-91283472332");
+    val = myAtoi (inStr);
+    if (INT32_MIN != val) {
+        printf ("\n%s %d [%s] val %d", __FUNCTION__, __COUNTER__, inStr, val);
+        return false;
+    }
+    if (val != atoi (inStr)) {
+        printf ("\n%s %d [%s] val %d exp val %d", __FUNCTION__, __COUNTER__, inStr, val, atoi (inStr));
+        return false;
+    }
+
+    strcpy (inStr, "4193 with words");
+    val = myAtoi (inStr);
+    if (4193 != val) {
+        printf ("\n%s %d [%s] outVal [%d]", __FUNCTION__, __COUNTER__, inStr, val);
+        return false;
+    }
+    if (val != atoi (inStr)) {
+        printf ("\n%s %d [%s] val %d exp val %d", __FUNCTION__, __COUNTER__, inStr, val, atoi (inStr));
+        return false;
+    }
+
+    strcpy (inStr, "-42");
+    val = myAtoi (inStr);
+    if (-42 != val) {
+        printf ("\n%s %d val %d exp(%d)", __FUNCTION__, __COUNTER__, val, -42);
+        return false;
+    }
+    if (val != atoi (inStr)) {
+        printf ("\n%s %d [%s] val %d exp val %d", __FUNCTION__, __COUNTER__, inStr, val, atoi (inStr));
+        return false;
+    }
+
+    strcpy (inStr, "   -42");
+    val = myAtoi (inStr);
+    if (-42 != val) {
+        printf ("\n%s %d [%s] val %d exp(%d)", __FUNCTION__, __COUNTER__, inStr, val, -42);
+        return false;
+    }
+    if (val != atoi (inStr)) {
+        printf ("\n%s %d [%s] val %d exp val %d", __FUNCTION__, __COUNTER__, inStr, val, atoi (inStr));
+    }
+
+    strcpy (inStr, "words and 987");
+    val = myAtoi (inStr);
+    if (0 != val) {
+        printf ("\n%s %d [%s] val %d", __FUNCTION__, __COUNTER__, inStr, val);
+        return false;
+    }
+    if (val != atoi (inStr)) {
+        printf ("\n%s %d [%s] val %d exp val %d", __FUNCTION__, __COUNTER__, inStr, val, atoi (inStr));
+        return false;
+    }
+
+    strcpy (inStr, "21");
+    val = myAtoi (inStr);
+    if (21 != val) {
+        printf ("\n%s %d [%s] val %d", __FUNCTION__, __COUNTER__, inStr, val);
+        return false;
+    }
+    if (val != atoi (inStr)) {
+        printf ("\n%s %d [%s] val %d exp val %d", __FUNCTION__, __COUNTER__, inStr, val, atoi (inStr));
+        return false;
+    }
+    return true;
+}
+
+bool try_strl2int32_dec (const char s32_dec_str [], int32_t s32_dec_str_len, int32_t * const s32_dec_value) {
+    int64_t s32l_dec_result = 0;
+    int32_t i = 0;
+    while ((' ' == s32_dec_str [i]) && (i < s32_dec_str_len)) {
+        i++;
+    }
+    bool s32l_dec_success = try_strl2int64_dec ((s32_dec_str + i), s32_dec_str_len - i, &s32l_dec_result);
+
+    if (true == s32l_dec_success) {
+        if ((INT32_MAX < s32l_dec_result)) {
+            *s32_dec_value = INT32_MAX;
+        } else {
+            if (s32l_dec_result < INT32_MIN) {
+                *s32_dec_value = INT32_MIN;
+            } else {
+                *s32_dec_value = (int32_t) s32l_dec_result;
+            }
+        }
+    } else {
+        s32l_dec_success = false;
+        *s32_dec_value = 0;
+    }
+
+    return s32l_dec_success;
+}
+
+bool try_strl2int64_dec (const char s64_dec_str [], int32_t s64_dec_str_len, int64_t *s64_dec_value) {
+    bool s64l_dec_success = true;
+    bool s64l_dec_signed = false;
+    bool signePresent = false;
+    int64_t s64l_dec_result = 0;
+
+    int32_t s64l_dec_str_index;
+
+    signePresent = is_signe (s64_dec_str [0]);
+    if (true == signePresent) {
+        s64l_dec_signed = is_signed (s64_dec_str [0]);
+    }
+
+    if ((s64l_dec_signed == true) && (s64_dec_str_len < 2)) {
+        s64l_dec_success = false;
+    }
+
+    if (s64l_dec_success == true) {
+        if (true == signePresent) {
+            s64l_dec_str_index = 1;
+        } else {
+            s64l_dec_str_index = 0;
+        }
+
+        for (; s64l_dec_str_index < s64_dec_str_len; s64l_dec_str_index++) {
+            uint8_t s64_dec_str_char = (uint8_t) s64_dec_str [s64l_dec_str_index];
+            uint8_t s64_dec_str_number = 0U;
+            int64_t s64_dec_temp_value = 0;
+
+            s64l_dec_success = try_dec_char_to_u8 (s64_dec_str_char, &s64_dec_str_number);
+            if (s64l_dec_success == true) {
+                if (s64l_dec_result < (INT64_MAX / 10)) {
+                    s64_dec_temp_value = (s64l_dec_result * 10) + (int64_t) s64_dec_str_number;
+                } else {
+#ifdef DEBUG_ITOA
+                    printf ("\n stop overflow may happen [%lld]\n", (long long int) s64l_dec_result);
+#endif
+                    s64_dec_temp_value = INT64_MAX;
+                }
+
+            } else {
+                s64l_dec_success = true;
+                break;
+            }
+
+            if (s64l_dec_result <= s64_dec_temp_value) {
+                s64l_dec_result = s64_dec_temp_value;
+            } else {
+                /*crash! int64_t overflow detected*/
+                s64l_dec_result = INT64_MAX;
+#ifdef DEBUG_ITOA
+                printf ("\n type overflow [%lld] [%lld]\n", (long long int) s64l_dec_result, (long long int) s64_dec_temp_value);
+#endif
+            }
+        }
+    }
+
+    if (s64l_dec_signed == true) {
+        *s64_dec_value = -s64l_dec_result;
+    } else {
+        *s64_dec_value = s64l_dec_result;
+    }
+
+    return s64l_dec_success;
+}
+
+bool is_signe (const char first_str_char) {
+    bool signePresent = false;
+    if (('-' == first_str_char) || ('+' == first_str_char)) {
+        signePresent = true;
+    }
+
+    return signePresent;
+}
+
+bool is_signed (const char first_str_char) {
+    bool negative = false;
+    if (first_str_char == '-') {
+        negative = true;
+    }
+    return negative;
+}
+
+bool test_num_to_bin_str (void) {
+    int cmpRes = 0;
+    cmpRes = strcmp ("1010_1010_1010_1010_1010_1010_1010_1010", uint32_to_bin_str (0xAAAAAAAA));
+    if (0 != cmpRes) {
+        return false;
+    }
+    cmpRes = strcmp ("0101_0101_0101_0101_0101_0101_0101_0101", uint32_to_bin_str (0x55555555));
+    if (0 != cmpRes) {
+        return false;
+    }
+    cmpRes = strcmp ("0000_0000_0000_0000_0000_0000_0000_0000", uint32_to_bin_str (0x00000000));
+    if (0 != cmpRes) {
+        return false;
+    }
+    cmpRes = strcmp ("1111_1111_1111_1111_1111_1111_1111_1111", uint32_to_bin_str (0xFFFFFFFF));
+    if (0 != cmpRes) {
+        return false;
+    }
+    return true;
+}
+//
+// 1111_1111_1111_1111_1111_1111_1111_1111
+char *uint32_to_bin_str (uint32_t const inVal32bit) {
+    static char outBitStr [40] = "";
+    int8_t rBit = 0;
+    uint8_t cell = 0u, bitCnt = 0u;
+    uint32_t mask = 0u;
+    for (rBit = 31; 0 <= rBit; rBit--) {
+        if (cell < sizeof(outBitStr)) {
+            if (4u == bitCnt) {
+                outBitStr [cell] = '_';
+                bitCnt = 0u;
+                cell++;
+            }
+            mask = (uint32_t) (((uint32_t) 1u) << ((uint32_t) rBit));
+            bitCnt++;
+            if (0u != (inVal32bit & mask)) {
+                outBitStr [cell] = '1';
+            } else {
+                outBitStr [cell] = '0';
+            }
+        }
+        cell++;
+    }
+    return outBitStr;
+}
+
+// "&(t,f)"
+// "|(f,t)"
+// "|(&(t,f,t),!(t))"
+// "!(f)"
+
+bool parseBoolExpr (char *expression) {
+    bool res = false;
+    if (expression) {
+        int inStrlen = strlen (expression);
+        if (1 == inStrlen) {
+            return parse_single_char (expression);
+        }
+        if (0 < inStrlen) {
+            switch (expression [0]) {
+                case '(': {
+                }
+                    break;
+                case '|': {
+                    res = parse_or (&expression [1]);
+                }
+                    break;
+                case '!': {
+                    res = parse_not (&expression [1]);
+                }
+                    break;
+                case '&': {
+                    res = parse_and (&expression [1]);
+                }
+                    break;
+                default: {
+                    printf ("\n\r error\n\r");
+                }
+                    break;
+            }
+        }
+    }
+    return res;
+}
+
+static bool parse_single_char (char *expression) {
+    switch (expression [0]) {
+        case 't': {
+            return true;
+        }
+            break;
+        case 'f': {
+            return false;
+        }
+
+        default: {
+            printf ("error");
+        }
+            break;
+    }
+    return false;
+}
+
+//   "(f,t)"
+//   "(&(t,f,t),!(t))"
+static bool parse_or (char *expression) {
+    bool res = false;
+    if (expression) {
+        int inStrLen = strlen (expression);
+        if (0 < inStrLen) {
+            int amountOfoperand = parse_num_operands (expression);
+            res = false;
+            for (int i = 0; i < amountOfoperand; i++) {
+                // res |= get_oparand (expression, i);
+            }
+        }
+    }
+    return res;
+}
+
+// "(t,f,t)"          3
+// "(t,f)"            2
+// "(f,t)"            2
+// "(&(t,f,t),!(t))"  2
+// "(&(t,&(f,t),t),!(t))"  2
+static bool parse_and (char *expression) {
+    bool res = false;
+    if (expression) {
+        int inStrLen = strlen (expression);
+        if (0 < inStrLen) {
+            int amountOfoperand = parse_num_operands (expression);
+            res = true;
+            for (int i = 0; i < amountOfoperand; i++) {
+                // res &= get_oparand (expression, i);
+            }
+        }
+    }
+    return res;
+}
+//                               level of nesting
+// "(t,f,t)"               3     1
+// "(t,f)"                 2     1
+// "(&(t,f,t),!(t))"       2     2
+// "(&(t,&(f,t),t),!(t))"  2     3
+static int parse_num_operands (char *expression) {
+    int numOfOperands = 0;
+    if (expression) {
+        Lifo_array_t lifoObj;
+        int inStrLen = strlen (expression);
+        if (0 < inStrLen) {
+            char *array = malloc (inStrLen);
+            if (array) {
+                lifo_init (&lifoObj, inStrLen, array);
+                for (int i = 0; i < inStrLen; i++) {
+                    char outChar = 'a';
+                    if (is_bracket (expression [i])) {
+                        lifo_peek (&lifoObj, &outChar);
+                        if (true == brackets_same_type (outChar, expression [i])) {
+                            lifo_pull (&lifoObj, &outChar);
+                        } else {
+                            lifo_push (&lifoObj, expression [i]);
+                        }
+
+                    } else {
+                        if (',' == expression [i]) {
+                            if (1 == lifoObj.lifoStat.len) {
+                                numOfOperands++;
+                            }
+                        }
+                    }
+                }
+            numOfOperands++;
+            }
+        }
+    }
+    return numOfOperands;
+}
+
+bool test_parse_num_operands (void) {
+    EXPECT_EQ(3, parse_num_operands ("(t,f,t)"));
+    EXPECT_EQ(2, parse_num_operands ("(t,f)"));
+    EXPECT_EQ(2, parse_num_operands ("(&(t,f,t),!(t))"));
+    EXPECT_EQ(2, parse_num_operands ("(&(t,&(f,t),t),!(t))"));
+    return true;
+}
+
+//(f)
+static bool parse_not (char *expression) {
+    bool res = false;
+    if (expression) {
+        int inStrLen = strlen (expression);
+        if (1 == inStrLen) {
+            return !parse_single_char (expression);
+        } else {
+            res = !parseBoolExpr (expression);
+        }
+    }
+    return res;
+}
+
+bool test_parseBoolExpr (void) {
+    bool res = false;
+    res = parseBoolExpr ("!(f)");
+    if (false == res) {
+        return false;
+    }
+    res = parseBoolExpr ("|(&(t,f,t),!(t))");
+    if (true == res) {
+        return false;
+    }
+
+    res = parseBoolExpr ("|(f,t)");
+    if (false == res) {
+        return false;
+    }
+    res = parseBoolExpr ("&(t,f)");
+    if (true == res) {
+        return false;
+    }
+    return true;
+}
+
+//                               level of nesting
+// "(t,f,t)"                    1
+// "(t,f)"                      1
+// "(&(t,f,t),!(t))"            2
+// "(&(t,&(f,t),t),!(t))"       3
+int calc_paratasis_nesting (char *s, int * const amountOfPairs) {
+    bool res;
+    int nestDepth = -1;
+    (*amountOfPairs) = 0u;
+    res = is_valid_parentheses (s);
+    if (res) {
+        nestDepth = 0;
+        int strLen = strlen (s);
+        char *array = malloc (strLen);
+        if (array) {
+            Lifo_array_t lifoObj;
+            lifo_init (&lifoObj, strLen, array);
+            for (int i = 0; i < strLen; i++) {
+                char outChar = 'a';
+                if (is_bracket (s [i])) {
+                    lifo_peek (&lifoObj, &outChar);
+                    if (true == brackets_same_type (outChar, s [i])) {
+                        lifo_pull (&lifoObj, &outChar);
+                        (*amountOfPairs)++;
+                    } else {
+                        lifo_push (&lifoObj, s [i]);
+                        nestDepth = max (lifoObj.lifoStat.len, nestDepth);
+                    }
+                }
+            }
+            free (array);
+        }
+    }
+    return nestDepth;
+}
+
+bool test_calc_paratasis_nesting (void) {
+    int amountOfPairs = 0;
+    EXPECT_EQ(1, calc_paratasis_nesting ("(t,f,t)", &amountOfPairs));
+    EXPECT_EQ(1, amountOfPairs);
+
+    EXPECT_EQ(1, calc_paratasis_nesting ("(t,f)", &amountOfPairs));
+    EXPECT_EQ(1, amountOfPairs);
+
+    EXPECT_EQ(2, calc_paratasis_nesting ("(&(t,f,t),!(t))", &amountOfPairs));
+    EXPECT_EQ(3, amountOfPairs);
+
+    EXPECT_EQ(3, calc_paratasis_nesting ("(&(t,&(f,t),t),!(t))", &amountOfPairs));
+    EXPECT_EQ(4, amountOfPairs);
+
+    return true;
+}
+
+bool is_valid_parentheses (char *s) {
+    bool res = false;
+    Lifo_array_t lifoObj;
+    int strLen = strlen (s);
+    char *array = malloc (strLen);
+    if (array) {
+        lifo_init (&lifoObj, strLen, array);
+        char outChar = 'a';
+        for (int i = 0; i < strLen; i++) {
+            outChar = 'a';
+            if (is_bracket (s [i])) {
+                lifo_peek (&lifoObj, &outChar);
+                if (true == brackets_same_type (outChar, s [i])) {
+                    lifo_pull (&lifoObj, &outChar);
+                } else {
+                    lifo_push (&lifoObj, s [i]);
+                }
+
+            }
+        }
+        if (0 == lifoObj.lifoStat.len) {
+            res = true;
+        }
+        free (array);
+    }
+    return res;
+}
+
+bool test_Valid_Parentheses (void) {
+    EXPECT_TRUE(is_valid_parentheses ("()[]{}"));
+    EXPECT_TRUE(is_valid_parentheses ("(t,f,t)"));
+    EXPECT_TRUE(is_valid_parentheses ("(&(t,&(f,t),t),!(t))"));
+    return true;
+}
+
+bool is_bracket (char ch) {
+    bool res = false;
+    switch (ch) {
+        case '}':
+        case '{':
+        case '[':
+        case ']':
+        case '(':
+        case ')':
+        case '>':
+        case '<':
+            res = true;
+            break;
+        default:
+            res = false;
+            break;
+    }
+    return res;
+}
+
+bool brackets_same_type (char open, char close) {
+    if (('(' == open) && (')' == close)) {
+        return true;
+    }
+    if (('[' == open) && (']' == close)) {
+        return true;
+    }
+    if (('{' == open) && ('}' == close)) {
+        return true;
+    }
+    if (('<' == open) && ('>' == close)) {
+        return true;
+    }
+    return false;
+}
+
+#if 0
+static bool get_oparand (char *expression, int i) { return false; }
+#endif

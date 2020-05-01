@@ -3,6 +3,7 @@
 #include "algorithms.h"
 
 #include "arrays.h"
+#include "str_ops.h"
 #include "bin_heap_array.h"
 #include "linked_list.h"
 
@@ -196,7 +197,7 @@ uint8_t hamming_weight (uint32_t n) {
     }
     return sum;
 }
-
+#if 0
 char *uint32_to_bin_str (uint32_t const inVal32bit) {
     static char outBitStr [33] = "";
     int8_t rBit = 0;
@@ -215,6 +216,7 @@ char *uint32_to_bin_str (uint32_t const inVal32bit) {
     }
     return outBitStr;
 }
+#endif
 
 int **list_of_arr_to_arr_of_arr (list_node_t * const listOfArrays, int * const amountOfArrays, int** returnColumnSizes) {
     int numElem = list_num_of_elements (listOfArrays);

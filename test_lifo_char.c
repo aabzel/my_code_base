@@ -1,30 +1,32 @@
-#include "test_fifo_char.h"
+#include "test_lifo_char.h"
 
-#include "fifo_char.h"
+#include "lifo_char.h"
 
 #include <string.h>
 #include <stdio.h>
-//#include <stdint.h>
-Fifo_array_t fifiObj;
+#include <stdint.h>
+
+Lifo_array_t lifiObj;
 char array [5];
 
 #define STRING19 "123456789"
-bool test_fifo_array1_char (void) {
+Lifo_array_t lifiObj2;
+bool test_lifo_array1_char (void) {
     bool res = false;
-    Fifo_array_t fifiObj1;
     char array1 [6];
     char outArray [100];
     uint16_t outLen = 0;
     int cmpRes = -1;
 
-    fifo_init (&fifiObj, sizeof(array1), array1);
+    lifo_init (&lifiObj2, sizeof(array1), array1);
 
-    res = fifo_push_array (&fifiObj1, STRING19, strlen (STRING19));
+    res = lifo_push_array (&lifiObj2, STRING19, strlen (STRING19));
     if (true == res) {
         printf ("\n%s %d", __FUNCTION__, __COUNTER__);
         return false;
     }
-    res = fifo_pull_array (&fifiObj1, outArray, &outLen);
+
+    res = lifo_peek_array (&lifiObj2, outArray, &outLen);
     if (false == res) {
         printf ("\n%s %d", __FUNCTION__, __COUNTER__);
         return false;
@@ -33,7 +35,22 @@ bool test_fifo_array1_char (void) {
         return false;
     }
 
-    cmpRes = strcmp ("123456", outArray);
+    cmpRes = strcmp ("654321", outArray);
+    if (0 != cmpRes) {
+        return false;
+    }
+
+    strncpy(outArray,"",strlen(outArray));
+    res = lifo_pull_array (&lifiObj2, outArray, &outLen);
+    if (false == res) {
+        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+    if (6 != outLen) {
+        return false;
+    }
+
+    cmpRes = strcmp ("654321", outArray);
     if (0 != cmpRes) {
         return false;
     }
@@ -41,22 +58,37 @@ bool test_fifo_array1_char (void) {
     return true;
 }
 
-bool test_fifo_array_char (void) {
+Lifo_array_t lifiObj1;
+bool test_lifo_array_char (void) {
     bool res = false;
-    Fifo_array_t fifiObj1;
     char array1 [10];
     char outArray [100];
     uint16_t outLen = 0;
     int cmpRes = -1;
 
-    fifo_init (&fifiObj, sizeof(array1), array1);
+    lifo_init (&lifiObj1, sizeof(array1), array1);
 
-    res = fifo_push_array (&fifiObj1, "12345", 5);
+    res = lifo_push_array (&lifiObj1, "12345", 5);
     if (false == res) {
         printf ("\n%s %d", __FUNCTION__, __COUNTER__);
         return false;
     }
-    res = fifo_pull_array (&fifiObj1, outArray, &outLen);
+    strncpy(outArray,"",strlen(outArray));
+    res = lifo_peek_array (&lifiObj1, outArray, &outLen);
+    if (false == res) {
+        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+    if (5 != outLen) {
+        return false;
+    }
+    cmpRes = strcmp ("54321", outArray);
+    if (0 != cmpRes) {
+        return false;
+    }
+
+    strncpy(outArray,"",strlen(outArray));
+    res = lifo_pull_array (&lifiObj1, outArray, &outLen);
     if (false == res) {
         printf ("\n%s %d", __FUNCTION__, __COUNTER__);
         return false;
@@ -65,86 +97,74 @@ bool test_fifo_array_char (void) {
         return false;
     }
 
-    cmpRes = strcmp ("12345", outArray);
+    cmpRes = strcmp ("54321", outArray);
     if (0 != cmpRes) {
         return false;
     }
 
     return true;
 }
-bool test_fifo_char (void) {
+bool test_lifo (void) {
     bool res = false;
-    char outChar;
-    fifo_init (&fifiObj, sizeof(array), array);
 
-    res = fifo_push (&fifiObj, '1');
+    res = test_lifo_char ();
     if (false == res) {
         printf ("\n%s %d", __FUNCTION__, __COUNTER__);
         return false;
     }
-    res = fifo_push (&fifiObj, '2');
+
+    res = test_lifo_array_char ();
     if (false == res) {
         printf ("\n%s %d", __FUNCTION__, __COUNTER__);
         return false;
     }
-    res = fifo_push (&fifiObj, '3');
+
+    res = test_lifo_array1_char ();
     if (false == res) {
         printf ("\n%s %d", __FUNCTION__, __COUNTER__);
         return false;
     }
-    res = fifo_push (&fifiObj, '4');
+
+    return true;
+}
+
+bool test_lifo_char (void) {
+    char outChar;
+    bool res;
+    lifo_init (&lifiObj, sizeof(array), array);
+
+    res = lifo_push (&lifiObj, '1');
     if (false == res) {
         printf ("\n%s %d", __FUNCTION__, __COUNTER__);
         return false;
     }
-    res = fifo_push (&fifiObj, '5');
+    res = lifo_push (&lifiObj, '2');
     if (false == res) {
         printf ("\n%s %d", __FUNCTION__, __COUNTER__);
         return false;
     }
-    res = fifo_push (&fifiObj, '6');
+    res = lifo_push (&lifiObj, '3');
+    if (false == res) {
+        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+    res = lifo_push (&lifiObj, '4');
+    if (false == res) {
+        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+    res = lifo_push (&lifiObj, '5');
+    if (false == res) {
+        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+    res = lifo_push (&lifiObj, '6');
     if (true == res) {
         printf ("\n%s %d", __FUNCTION__, __COUNTER__);
         return false;
     }
 
-    res = fifo_pull (&fifiObj, &outChar);
-    if (false == res) {
-        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
-        return false;
-    }
-    if ('1' != outChar) {
-        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
-        return false;
-    }
-    res = fifo_pull (&fifiObj, &outChar);
-    if (false == res) {
-        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
-        return false;
-    }
-    if ('2' != outChar) {
-        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
-        return false;
-    }
-    res = fifo_pull (&fifiObj, &outChar);
-    if (false == res) {
-        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
-        return false;
-    }
-    if ('3' != outChar) {
-        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
-        return false;
-    }
-    res = fifo_pull (&fifiObj, &outChar);
-    if (false == res) {
-        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
-        return false;
-    }
-    if ('4' != outChar) {
-        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
-        return false;
-    }
-    res = fifo_pull (&fifiObj, &outChar);
+    res = lifo_pull (&lifiObj, &outChar);
     if (false == res) {
         printf ("\n%s %d", __FUNCTION__, __COUNTER__);
         return false;
@@ -153,23 +173,46 @@ bool test_fifo_char (void) {
         printf ("\n%s %d", __FUNCTION__, __COUNTER__);
         return false;
     }
-    res = fifo_pull (&fifiObj, &outChar);
+    res = lifo_pull (&lifiObj, &outChar);
+    if (false == res) {
+        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+    if ('4' != outChar) {
+        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+    res = lifo_pull (&lifiObj, &outChar);
+    if (false == res) {
+        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+    if ('3' != outChar) {
+        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+    res = lifo_pull (&lifiObj, &outChar);
+    if (false == res) {
+        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+    if ('2' != outChar) {
+        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+    res = lifo_pull (&lifiObj, &outChar);
+    if (false == res) {
+        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+    if ('1' != outChar) {
+        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
+        return false;
+    }
+    res = lifo_pull (&lifiObj, &outChar);
     if (true == res) {
         printf ("\n%s %d", __FUNCTION__, __COUNTER__);
         return false;
     }
-
-    res = test_fifo_array_char ();
-    if (true == res) {
-        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
-        return false;
-    }
-
-    res = test_fifo_array1_char ();
-    if (true == res) {
-        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
-        return false;
-    }
-
     return true;
 }
