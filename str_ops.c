@@ -23,9 +23,9 @@ static bool get_oparand (char *expression, int i);
 
 static int parse_num_operands (char *expression);
 static bool parse_single_char (char *expression);
-static bool parse_or (char *expression);
-static bool parse_and (char *expression);
-static bool parse_not (char *expression);
+static bool parse_or (char *expression, int inStrlen);
+static bool parse_and (char *expression, int inStrlen);
+static bool parse_not (char *expression, int inStrlen);
 static bool hash_table_char_put (char character, int indexInArray);
 // static bool hash_table_char_remove (char character);
 static void init_hash_table (void);
@@ -1050,33 +1050,59 @@ char *uint32_to_bin_str (uint32_t const inVal32bit) {
 // "|(f,t)"
 // "|(&(t,f,t),!(t))"
 // "!(f)"
+// "(f)"
 
 bool parseBoolExpr (char *expression) {
     bool res = false;
     if (expression) {
         int inStrlen = strlen (expression);
+        if (0 < inStrlen) {
+            res = parse_bool_expr (&expression [0], inStrlen);
+        }
+    }
+    return res;
+}
+
+// "&(t,f)"
+// "|(f,t)"
+// "|(&(t,f,t),!(t))"
+// "!(f)"
+// "(f)"
+bool parse_bool_expr (char *expression, int inStrlen) {
+#if DEBUG_PARSE_EXPRESS
+    printf (NEW_LINE"%s", expression);
+#endif
+    bool res = false;
+    if (expression) {
         if (1 == inStrlen) {
             return parse_single_char (expression);
         }
         if (0 < inStrlen) {
             switch (expression [0]) {
                 case '(': {
+                    if (((char) 0x29) == expression [inStrlen - 1]) {
+                        res = parse_bool_expr (&expression [1], inStrlen - 2);
+                    } else {
+                        printf (NEW_LINE" error [%c] "NEW_LINE, expression [inStrlen - 1]);
+                    }
                 }
                     break;
                 case '|': {
-                    res = parse_or (&expression [1]);
+                    //"(&(t,f,t),!(t))"
+                    res = parse_or (&expression [1], inStrlen - 1);
                 }
                     break;
                 case '!': {
-                    res = parse_not (&expression [1]);
+                    res = parse_not (&expression [1], inStrlen - 1);
                 }
                     break;
                 case '&': {
-                    res = parse_and (&expression [1]);
+                    res = parse_and (&expression [1], inStrlen - 1);
                 }
                     break;
                 default: {
-                    printf ("\n\r error\n\r");
+                    printf (NEW_LINE" error [%c] inStrlen: %d", expression [0], inStrlen);
+                    printf (NEW_LINE" error [%s] : %d"NEW_LINE, &expression [0], inStrlen);
                 }
                     break;
             }
@@ -1105,36 +1131,81 @@ static bool parse_single_char (char *expression) {
 
 //   "(f,t)"
 //   "(&(t,f,t),!(t))"
-static bool parse_or (char *expression) {
+static bool parse_or (char *expression, int inStrLen) {
     bool res = false;
+
     if (expression) {
-        int inStrLen = strlen (expression);
+#if DEBUG_PARSE_OR
+        printf ("\n\r parse OR [");
+        print_sub_str (expression, inStrLen);
+        printf ("]");
+#endif
         if (0 < inStrLen) {
             int amountOfoperand = parse_num_operands (expression);
             res = false;
-            for (int i = 0; i < amountOfoperand; i++) {
-                // res |= get_oparand (expression, i);
+            int index;
+            int lenOfOperand = 0;
+            printf (NEW_LINE);
+            for (int operand = 0; operand < amountOfoperand; operand++) {
+                index = get_index_in_string (expression, inStrLen, operand, &lenOfOperand);
+                printf ("OR operand %d: ", operand);
+                print_sub_str (&expression [index], lenOfOperand);
+                res |= parse_bool_expr (&expression [index], lenOfOperand);
             }
         }
     }
     return res;
 }
 
+bool test_operand_extract (void) {
+    int operLen = -1;
+    EXPECT_EQ(1, get_index_in_string ("(f,t)", 5, 0, &operLen));
+    EXPECT_EQ(1, operLen);
+    operLen = -1;
+    EXPECT_EQ(3, get_index_in_string ("(f,t)", 5, 1, &operLen));
+    EXPECT_EQ(1, operLen);
+    operLen = -1;
+    EXPECT_EQ(1, get_index_in_string ("(&(t,f,t),!(t))", 15, 0, &operLen));
+    EXPECT_EQ(8, operLen);
+    operLen = -1;
+    EXPECT_EQ(10, get_index_in_string ("(&(t,f,t),!(t))", 15, 1, &operLen));
+    EXPECT_EQ(4, operLen);
+    return true;
+}
+
+bool test_parse_and (void) {
+    EXPECT_TRUE(parse_and ("(t,t,t)", 7));
+    EXPECT_FALSE(parse_and ("(t,f,t)", 7));
+    EXPECT_FALSE(parse_and ("(t,&(f,t),t)", 12));
+    return true;
+}
 // "(t,f,t)"          3
 // "(t,f)"            2
 // "(f,t)"            2
 // "(&(t,f,t),!(t))"  2
 // "(&(t,&(f,t),t),!(t))"  2
-static bool parse_and (char *expression) {
+static bool parse_and (char *expression, int inStrLen) {
     bool res = false;
+#if DEBUG_PARSE_AND
+    printf (" parse AND [");
+    print_sub_str (expression, inStrLen);
+    printf ("]");
+#endif
+
     if (expression) {
-        int inStrLen = strlen (expression);
         if (0 < inStrLen) {
             int amountOfoperand = parse_num_operands (expression);
             res = true;
-            for (int i = 0; i < amountOfoperand; i++) {
-                // res &= get_oparand (expression, i);
+            int index;
+            int lenOfOperand = 0;
+            printf (NEW_LINE);
+            for (int operand = 0; operand < amountOfoperand; operand++) {
+                index = get_index_in_string (expression,inStrLen, operand, &lenOfOperand);
+                printf (" AND:%d: ", operand);
+                print_sub_str (&expression [index], lenOfOperand);
+                res &= parse_bool_expr (&expression [index], lenOfOperand);
             }
+            printf (NEW_LINE);
         }
     }
     return res;
@@ -1144,6 +1215,8 @@ static bool parse_and (char *expression) {
 // "(t,f)"                 2     1
 // "(&(t,f,t),!(t))"       2     2
 // "(&(t,&(f,t),t),!(t))"  2     3
+// "(f,t)"                2
+// "(&(t,f,t),!(t))"    2
 static int parse_num_operands (char *expression) {
     int numOfOperands = 0;
     if (expression) {
@@ -1171,14 +1244,104 @@ static int parse_num_operands (char *expression) {
                         }
                     }
                 }
-            numOfOperands++;
+                numOfOperands++;
             }
         }
     }
     return numOfOperands;
 }
 
+//"(f,t)"
+//"(f,t)"
+//"(&(t,f,t),!(t))"
+//"(&(t,f,t),!(t))"
+int get_index_in_string (char *expression, int inStrLen, int operandNum, int* const operandLen) {
+    int indOfoperand = -1;
+    bool match = false;
+    if (expression) {
+#if DEBUG_EXSTRACT_OPERAND
+        printf (NEW_LINE"operand [%s]", expression);
+#endif
+        int i = 0;
+        Lifo_array_t lifoObj;
+        if (0 < inStrLen) {
+            char *array = malloc (inStrLen);
+            if (array) {
+                indOfoperand = 0;
+                if (0 == operandNum) {
+                    match = true;
+                    indOfoperand = 1;
+                }
+                lifo_init (&lifoObj, inStrLen, array);
+                for (i = 0; i < inStrLen; i++) {
+                    char outChar = 'a';
+                    if (is_bracket (expression [i])) {
+                        lifo_peek (&lifoObj, &outChar);
+                        if (true == brackets_same_type (outChar, expression [i])) {
+                            lifo_pull (&lifoObj, &outChar);
+                        } else {
+                            lifo_push (&lifoObj, expression [i]);
+                        }
+
+                    } else {
+                        if (',' == expression [i]) {
+                            if (1 == lifoObj.lifoStat.len) {
+                                if (true == match) {
+                                    (*operandLen) = (i) - indOfoperand;
+                                    free (array);
+                                    return indOfoperand;
+                                } else {
+                                    indOfoperand++;
+                                }
+                                if (indOfoperand == operandNum) {
+                                    match = true;
+                                    indOfoperand = i + 1;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (true == match) {
+                    (*operandLen) = (i - 1) - indOfoperand;
+                    free (array);
+                    return indOfoperand;
+                }
+                free (array);
+            }
+        }
+    }
+    return indOfoperand;
+}
+
+//(f)
+static bool parse_not (char *expression, int inStrLen) {
+    bool res = false;
+#if DEBUG_PARSE_NOT
+    printf (" parse NOT [");
+    print_sub_str (expression, inStrLen);
+    printf ("]");
+#endif
+    if (expression) {
+        if (1 == inStrLen) {
+            return !parse_single_char (expression);
+        } else {
+            res = !parse_bool_expr (expression,inStrLen);
+        }
+    }
+    return res;
+}
+
+bool test_parse_not (void) {
+    EXPECT_TRUE(parse_not ("(f)", 3));
+    EXPECT_TRUE(parse_not ("!(t)", 4));
+    EXPECT_FALSE(parse_not ("!(f)", 4));
+    EXPECT_FALSE(parse_not ("(t)", 3));
+    EXPECT_FALSE(parse_not ("!(f)", 4));
+    return true;
+}
+
 bool test_parse_num_operands (void) {
+    EXPECT_EQ(4, parse_num_operands ("(t,f,t,t)"));
     EXPECT_EQ(3, parse_num_operands ("(t,f,t)"));
     EXPECT_EQ(2, parse_num_operands ("(t,f)"));
     EXPECT_EQ(2, parse_num_operands ("(&(t,f,t),!(t))"));
@@ -1186,39 +1349,13 @@ bool test_parse_num_operands (void) {
     return true;
 }
 
-//(f)
-static bool parse_not (char *expression) {
-    bool res = false;
-    if (expression) {
-        int inStrLen = strlen (expression);
-        if (1 == inStrLen) {
-            return !parse_single_char (expression);
-        } else {
-            res = !parseBoolExpr (expression);
-        }
-    }
-    return res;
-}
-
 bool test_parseBoolExpr (void) {
-    bool res = false;
-    res = parseBoolExpr ("!(f)");
-    if (false == res) {
-        return false;
-    }
-    res = parseBoolExpr ("|(&(t,f,t),!(t))");
-    if (true == res) {
-        return false;
-    }
-
-    res = parseBoolExpr ("|(f,t)");
-    if (false == res) {
-        return false;
-    }
-    res = parseBoolExpr ("&(t,f)");
-    if (true == res) {
-        return false;
-    }
+    EXPECT_TRUE(parseBoolExpr ("(t)"));
+    EXPECT_FALSE(parseBoolExpr ("(f)"));
+    EXPECT_TRUE(parseBoolExpr ("!(f)"));
+    EXPECT_FALSE(parseBoolExpr ("|(&(t,f,t),!(t))"));
+    EXPECT_TRUE(parseBoolExpr ("|(f,t)"));
+    EXPECT_FALSE(parseBoolExpr ("&(t,f)"));
     return true;
 }
 
@@ -1346,6 +1483,3 @@ bool brackets_same_type (char open, char close) {
     return false;
 }
 
-#if 0
-static bool get_oparand (char *expression, int i) { return false; }
-#endif

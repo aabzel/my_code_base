@@ -7,6 +7,10 @@
 #include <stdint.h>
 #include <string.h>
 
+#define DEBUG_PARSE_NOT 1
+#define DEBUG_PARSE_AND 1
+#define DEBUG_PARSE_OR 1
+
 #define DEBUG_ITOA
 
 #define DEBUG_HASH_TABLE 0
@@ -17,8 +21,15 @@
 #define FLT_MAX (3.40282347e+38f)
 #define FLT_MIN (1.175494350822287508e-38f)
 
+#define NEW_LINE "\n\r"
+
+bool test_parse_not(void);
+bool test_parse_and(void);
 // time complexity O(T*P)
 bool is_bracket (char ch);
+int get_index_in_string (char *expression, int inStrLen, int operandNum, int* const operandLen);
+bool test_operand_extract (void);
+bool parse_bool_expr (char *expression, int inStrlen);
 bool is_valid_parentheses (char *s);
 bool test_calc_paratasis_nesting (void);
 bool test_parse_num_operands (void);

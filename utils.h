@@ -34,6 +34,7 @@ void init_file_name (void);
 // cur date string
 double calc_median_naiv (int * const inArr, int sizeOfArr);
 char *generate_num_string (int n);
+void print_sub_str (char * const str, int len);
 void print_array (int *alphabet, int sizeOfAlphabet, int k);
 void print_curr_array (int *alphabet, int sizeOfAlphabet);
 void print_mem (uint8_t *memPtr, uint32_t sizeOfAlphabet);

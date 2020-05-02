@@ -296,9 +296,6 @@ double calc_average (int const * const inArr, int sizeOfArr) {
     return median;
 }
 
-
-
-
 bool is_double_arr_equal (double *arr1, double *arr2, int arrSize) {
     for (int i = 0; i < arrSize; i++) {
         if (!is_floats_equal (arr1 [i], arr2 [i])) {
@@ -308,3 +305,11 @@ bool is_double_arr_equal (double *arr1, double *arr2, int arrSize) {
     return true;
 }
 
+void print_sub_str (char * const str, int len) {
+    if (str) {
+        int i = 0;
+        for (i = 0; i < len; i++) {
+            printf ("%c", str [i]);
+        }
+    }
+}

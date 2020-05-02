@@ -73,6 +73,9 @@ typedef enum {
     VALID_PARENTHESES_ERROR = 55,
     PARSE_NUM_OPE_ERROR = 56,
     PARSE_NUM_PAR_NEST_ERROR = 57,
+    EXTRACT_OPE_ERROR = 58,
+    PARSE_NOT_ERROR=59,
+    PARSE_AND_ERROR = 60,
     NUM_ERROR
 } error_t;
 
@@ -129,18 +132,23 @@ bool fill_up_heap_continuous_vals (BinaryHeap_t *binHeap, int maxVal, bool isMax
 void assemble_tree_from_array (TreeNode_t ** root, int *arr, int arraySize);
 void create_binary_search_tree (TreeNode_t ** root, int how_many_elements);
 
-
 #define EXPECT_EQ(val1,val2) do {\
                              if(val1!=val2){\
-                                 printf ("\n%s %d in val1: %d val2: %d ", __FUNCTION__, __COUNTER__, val1, val2);\
+                                 printf ("\n%s:L%d %d in val1: %d val2: %d ", __FUNCTION__,__LINE__, __COUNTER__, val1, val2);\
                                  return false;\
                              }\
                          } while(0);
 
-
 #define EXPECT_TRUE(val) do {\
                              if(true!=val){\
-                                 printf ("\n%s %d in val %d ", __FUNCTION__, __COUNTER__, val);\
+                                 printf ("\n%s:L%d %d in val %d ", __FUNCTION__,__LINE__, __COUNTER__, val);\
+                                 return false;\
+                             }\
+                         } while(0);
+
+#define EXPECT_FALSE(val) do {\
+                             if(false!=val){\
+                                 printf ("\n%s:L%d %d in val %d ", __FUNCTION__,__LINE__, __COUNTER__, val);\
                                  return false;\
                              }\
                          } while(0);

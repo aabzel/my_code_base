@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="training" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Option extended_obj_names="1" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/training" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/training" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="algorithms.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="algorithms.h" />
+		<Unit filename="amount_of_uio_states.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="amount_of_uio_states.h" />
+		<Unit filename="arrays.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="arrays.h" />
+		<Unit filename="avl_tree.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="avl_tree.h" />
+		<Unit filename="bin_heap.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="bin_heap.h" />
+		<Unit filename="bin_heap_array.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="bin_heap_array.h" />
+		<Unit filename="bin_search_tree.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="bin_search_tree.h" />
+		<Unit filename="bin_tree.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="bin_tree.h" />
+		<Unit filename="bin_tree_draw.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="bin_tree_draw.h" />
+		<Unit filename="combinations.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="combinations.h" />
+		<Unit filename="fifo_char.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="fifo_char.h" />
+		<Unit filename="linked_list.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="linked_list.h" />
+		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="min_path.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="min_path.h" />
+		<Unit filename="min_path_diag_scale.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="min_path_diag_scale.h" />
+		<Unit filename="parse_keepass.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="parse_keepass.h" />
+		<Unit filename="permutations.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="permutations.h" />
+		<Unit filename="slidingWindowMax.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="slidingWindowMax.h" />
+		<Unit filename="slidingWindowMid.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="slidingWindowMid.h" />
+		<Unit filename="str_ops.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="str_ops.h" />
+		<Unit filename="test_avl_tree.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="test_avl_tree.h" />
+		<Unit filename="test_fifo_char.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="test_fifo_char.h" />
+		<Unit filename="uTests.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="uTests.h" />
+		<Unit filename="utils.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="utils.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
