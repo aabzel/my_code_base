@@ -7,6 +7,7 @@
 #include <stdint.h>
 #include <string.h>
 
+#define DEBUG_PARSE_EXPRESS 1
 #define DEBUG_PARSE_NOT 1
 #define DEBUG_PARSE_AND 1
 #define DEBUG_PARSE_OR 1
