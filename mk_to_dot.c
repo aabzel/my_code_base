@@ -1,0 +1,148 @@
+#include "mk_to_dot.h"
+
+#include "str_ops.h"
+#include "fifo_char.h"
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdint.h>
+#include <string.h>
+//#include <regex.h>
+
+bool proc_mk_file (char *fileName) {
+    FILE *filePrt;
+    bool res = false;
+    char childMkFile [500];
+    char rootMkFile [500];
+    char curFileStr [500];
+    char rootMknodeName [500];
+
+    res = parse_mk (fileName, rootMkFile, sizeof(rootMkFile));
+    if (false == res) {
+        return false;
+    }
+    strncpy(rootMknodeName,rootMkFile,sizeof(rootMknodeName));
+    replace_char (rootMknodeName, '.', '_');
+
+    printf("\n %s [ label = \"%s\"];",rootMknodeName, rootMkFile);
+
+    filePrt = fopen (fileName, "r");
+    if (filePrt) {
+        int line = 0;
+        while (NULL != fgets (curFileStr, sizeof(curFileStr), filePrt)) {
+            /* writing content to stdout */
+            //puts (fileStr);
+            memset (childMkFile, 0x00, sizeof(childMkFile));
+
+            res = parse_mk (curFileStr, childMkFile, sizeof(childMkFile));
+            if (true == res) {
+                replace_char (childMkFile, '.', '_');
+                printf ("\n%s->%s", rootMknodeName, childMkFile);
+            } else {
+                //printf ("\nUnable to parse line: %d %s ", line, curFileStr);
+                line++;
+            }
+        }
+
+        //strncpy (tempStr, "", sizeof(tempStr));
+        //parse_c (fileStr, tempStr,sizeof(tempStr));
+        //printf ("\n %s", tempStr);
+
+        res = true;
+        fclose (filePrt);
+    } else {
+        printf ("Error");
+    }
+    return res;
+}
+
+bool parse_mk (char *fileStr, char *tempStr, int outStrLen) {
+    bool res = false;
+    uint16_t fileNameLen = 0;
+    char fifoArray [1000];
+    if (fileStr) {
+        int inStrLen = strlen (fileStr);
+        if (0 < inStrLen) {
+            if (NULL != strstr (fileStr, "mk")) {
+                Fifo_array_t outfilefifo;
+                fifo_init (&outfilefifo, sizeof(fifoArray), fifoArray);
+                for (int i = 0; i < inStrLen; i++) {
+                    if (true == is_allowed_char_file (fileStr [i])) {
+                        if ('\n' != fileStr [i]) {
+                            fifo_push (&outfilefifo, fileStr [i]);
+
+                        }
+                    } else {
+                        fifo_reset (&outfilefifo);
+                    }
+                }
+                fifo_peek_array (&outfilefifo, tempStr, &fileNameLen);
+                if (0 < fileNameLen) {
+                    if (NULL != strstr (tempStr, "mk")) {
+                        //printf ("\n mk file: [%s]", tempStr);
+                        res = true;
+                    } else {
+                        fifo_reset (&outfilefifo);
+                        memset (tempStr, 0x00, outStrLen);
+                    }
+                }
+            }
+        }
+    }
+    return res;
+}
+
+// grep "    include $(ROOT)/components/toolboxes/io_toolbox/io_toolbox.mk" -E "\w+.mk"
+bool test_parse_mk (void) {
+    int cmpRes;
+    char tempStr [1000];
+    strncpy (tempStr, "", sizeof(tempStr));
+    parse_mk ("    include $(ROOT)//components//toolboxes//io_toolbox//io_toolbox.mk\n", tempStr, sizeof(tempStr));
+    cmpRes = strcmp ("io_toolbox.mk", tempStr);
+    if (0 != cmpRes) {
+        return false;
+    }
+
+    strncpy (tempStr, "", sizeof(tempStr));
+    parse_mk ("include $(ROOT)/components/lib/spc58_mcan/spc58_mcan.mk", tempStr, sizeof(tempStr));
+    cmpRes = strcmp ("spc58_mcan.mk", tempStr);
+    if (0 != cmpRes) {
+        return false;
+    }
+    return true;
+}
+
+bool is_allowed_char_file (char ch) {
+    if ('/' == ch) {
+        return false;
+    }
+    if ('\\' == ch) {
+        return false;
+    }
+    if ('$' == ch) {
+        return false;
+    }
+    if ('(' == ch) {
+        return false;
+    }
+    if (')' == ch) {
+        return false;
+    }
+    return true;
+}
+
+bool is_char_of_file (char ch) {
+    if ('a' <= ch && (ch <= 'z')) {
+        return true;
+    }
+    if ('A' <= ch && (ch <= 'Z')) {
+        return true;
+    }
+    if ('_' == ch) {
+        return true;
+    }
+    if ('.' == ch) {
+        return true;
+    }
+    return false;
+}

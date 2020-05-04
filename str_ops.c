@@ -1507,3 +1507,24 @@ bool brackets_same_type (char open, char close) {
     return false;
 }
 
+int replace_char (char *str, char orig, char rep) {
+    char *ix = str;
+    int n = 0;
+    while ((ix = strchr (ix, orig)) != NULL) {
+        *ix++ = rep;
+        n++;
+    }
+    return n;
+}
+
+bool test_str_char_replace (void) {
+    char fileName [100];
+    int cmpRes = 0;
+    strncpy (fileName, "spc58_pass.mk", sizeof(fileName));
+    replace_char (fileName, '.', '_');
+    cmpRes = strcmp (fileName, "spc58_pass_mk");
+    if (0 == cmpRes) {
+        return true;
+    }
+    return false;
+}

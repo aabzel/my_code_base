@@ -76,6 +76,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="fifo_char.h" />
+		<Unit filename="lifo_char.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="lifo_char.h" />
 		<Unit filename="linked_list.c">
 			<Option compilerVar="CC" />
 			<Option target="Debug" />
@@ -120,6 +124,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="test_fifo_char.h" />
+		<Unit filename="test_lifo_char.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="test_lifo_char.h" />
 		<Unit filename="uTests.c">
 			<Option compilerVar="CC" />
 		</Unit>

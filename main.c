@@ -4,14 +4,15 @@
 #include "permutations.h"
 #include "utils.h"
 #include "uTests.h"
+#include "mk_to_dot.h"
 
 #include <string.h>
 #include <stdio.h>
 #include <stdint.h>
 
-int main (void);
+int main (int argc, char* argv []);
 //int main (int argc, char **argv)
-int main (void) {
+int main (int argc, char* argv []) {
 #if 1
     init_file_name ();
 
@@ -25,6 +26,14 @@ int main (void) {
 #endif
     }
 #endif
+    if (2 == argc) {
+        printf ("\n\narg 0  [%s]\n",argv[0]);
+        printf ("\n\nFile [%s]\n",argv[1]);
+        bool res = proc_mk_file (argv [1]);
+        if (false == res) {
+            printf ("\n\nError\n");
+        }
+    }
 
     //permute (alphabet);
 
@@ -37,10 +46,8 @@ int main (void) {
     }
 #endif
 
-    printf ("Done!\n\n");
+    printf ("\n\n Done!\n\n");
 //    getchar ();
     return 0;
 }
-
-
 

@@ -3,12 +3,74 @@
 #include "algorithms.h"
 #include "array_type.h"
 #include "utils.h"
+#include "str_ops.h"
+
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
 
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* singleNumber (int* nums, int numsSize, int* const returnSize) {
+    int code = 0, a = 0, b = 0;
+    int *arr = NULL;
+    int i;
+    for (
+         i = 0; i < numsSize; i++) {
+        code ^= nums [i];
+    }
+#if 0
+    printf ("\n  code    %08x %d   0b_%s", code, code,uint32_to_bin_str (code));
+    printf ("\n -code    %08x %d  0b_%s", -code, -code,uint32_to_bin_str (-code));
+#endif
+    code = code & (-code);
+#if 0
+    printf ("\n new code %08x %d   0b_%s", code, code,uint32_to_bin_str (code));
+#endif
+    // find a different bits
+    for (i = 0; i < numsSize; i++) {
+        if (0 != (nums [i] & code)) {
+            a ^= nums [i];
+        } else {
+            b ^= nums [i];
+        }
+    }
+
+    arr = malloc (4 * 2);
+    if (arr) {
+        printf("\n a=%d b=%d \n",a,b);
+        arr [0] = a;
+        arr [1] = b;
+        (*returnSize) = 2;
+    }
+    return arr;
+}
+
+bool test_single_number (void) {
+    int arr [] =
+        { 1, 2, 1, 3, 2, 5 };
+    int returnSize = 0;
+    int sizeOfnum = sizeof(arr) / sizeof(arr [0]);
+    int *outArr;
+    outArr = singleNumber (arr, sizeOfnum, &returnSize);
+    if (3 == outArr [0]) {
+        if (5 == outArr [1]) {
+            free (outArr);
+            return true;
+        }
+    }
+    if (5 == outArr [0]) {
+        if (3 == outArr [1]) {
+            free (outArr);
+            return true;
+        }
+    }
+
+    return false;
+}
 
 //{1,1,1,1,1,1,1,1}
 //{0,0,0,1,1,1,1,1}
@@ -139,8 +201,6 @@ int findMaxConsecutiveOnesFlip1 (int* nums, int length) {
     return maxConOne;
 }
 
-
-
 // O(n)
 int findMaxConOnesDel1 (int * const array, int length) {
     int maxConOne = 0, prevOneCnt = 0, oneCnt = 0;
@@ -155,8 +215,6 @@ int findMaxConOnesDel1 (int * const array, int length) {
     }
     return maxConOne;
 }
-
-
 
 void* memdup (const void* mem, size_t sizeByte) {
     void* out = NULL;

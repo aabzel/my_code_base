@@ -11,6 +11,7 @@
 #include "combinations.h"
 #include "linked_list.h"
 #include "min_path.h"
+#include "mk_to_dot.h"
 #include "min_path_diag_scale.h"
 #include "parse_keepass.h"
 #include "permutations.h"
@@ -30,6 +31,26 @@
 
 int unitTest (void) {
     bool res = false;
+
+    res = test_str_char_replace ();
+    if (false == res) {
+        return CHAR_REP_ERROR;
+    }
+
+    res = test_fifo_char ();
+    if (false == res) {
+        return FIFO_CAHR_ERROR;
+    }
+
+    res = test_parse_mk ();
+    if (false == res) {
+        return EXTRACK_MK_FILE_ERROR;
+    }
+
+    res = test_single_number ();
+    if (false == res) {
+        return SINGLE_NUMBER_ERROR;
+    }
 
     res = test_lifo ();
     if (false == res) {
@@ -55,7 +76,7 @@ int unitTest (void) {
     if (false == res) {
         return EXTRACT_OPE_ERROR;
     }
-    res = test_parse_and();
+    res = test_parse_and ();
     if (false == res) {
         return PARSE_AND_ERROR;
     }
@@ -70,10 +91,6 @@ int unitTest (void) {
         return PARSE_BOOL_EXPRES_ERROR;
     }
 #endif
-    res = test_fifo_char ();
-    if (false == res) {
-        return FIFO_CAHR_ERROR;
-    }
     res = test_num_to_bin_str ();
     if (false == res) {
         return NUM_TO_BIN_STR_ERROR;

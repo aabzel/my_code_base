@@ -11,6 +11,8 @@ extern "C" {
 #include <stdint.h>
 #include <string.h>
 
+int* singleNumber (int* nums, int numsSize, int* const returnSize) ;
+
 bool is_single_zero (int * const arr, int sizeOfArr, int indexToArr);
 int findMaxConsecutiveOnes (int* nums, int numsSize);
 int findMaxConsecutiveOnesFlip1 (int* nums, int length);
@@ -25,6 +27,7 @@ void print_curr_array (int *alphabet, int sizeOfAlphabet);
 int *generate_num_array (int n);
 void print_array_of_diff_arrays (int **arrOfArr, int amountOfLine, int *colSizes);
 void print_array_of_arrays (int **arrOfArr, int amountOfLine, int amountOfCol);
+bool test_single_number (void) ;
 
 #ifdef __cplusplus
 }

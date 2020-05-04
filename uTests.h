@@ -76,6 +76,9 @@ typedef enum {
     EXTRACT_OPE_ERROR = 58,
     PARSE_NOT_ERROR=59,
     PARSE_AND_ERROR = 60,
+    SINGLE_NUMBER_ERROR = 61,
+    EXTRACK_MK_FILE_ERROR= 62,
+    CHAR_REP_ERROR = 63,
     NUM_ERROR
 } error_t;
 
