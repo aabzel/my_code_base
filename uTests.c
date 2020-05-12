@@ -11,12 +11,13 @@
 #include "combinations.h"
 #include "linked_list.h"
 #include "min_path.h"
-#include "mk_to_dot.h"
 #include "min_path_diag_scale.h"
+#include "mk_to_dot.h"
 #include "parse_keepass.h"
 #include "permutations.h"
 #include "slidingWindowMax.h"
 #include "slidingWindowMid.h"
+#include "sort_linked_list.h"
 #include "str_ops.h"
 #include "test_avl_tree.h"
 #include "test_fifo_char.h"
@@ -31,6 +32,16 @@
 
 int unitTest (void) {
     bool res = false;
+
+    res = test_my_printf ();
+
+#if TEST_LIST_SORT
+    res = test_list_sort ();
+    if (false == res) {
+        return LIST_SORT_ERROR;
+    }
+#endif
+
 
     res = test_str_char_replace ();
     if (false == res) {
@@ -47,16 +58,18 @@ int unitTest (void) {
         return EXTRACK_MK_FILE_ERROR;
     }
 
+#if DEPLOY_TEST_SINGLE_NUMBER
     res = test_single_number ();
     if (false == res) {
         return SINGLE_NUMBER_ERROR;
     }
+#endif
 
+#if DEPLOY_TEST_BOOL_EXPRESS
     res = test_lifo ();
     if (false == res) {
         return LIFO_CAHR_ERROR;
     }
-
     res = test_Valid_Parentheses ();
     if (false == res) {
         return VALID_PARENTHESES_ERROR;
@@ -85,16 +98,18 @@ int unitTest (void) {
     if (false == res) {
         return PARSE_NOT_ERROR;
     }
-#if 1
     res = test_parseBoolExpr ();
     if (false == res) {
         return PARSE_BOOL_EXPRES_ERROR;
     }
 #endif
+
+#if DEPLOY_TEST_NUM_STRING
     res = test_num_to_bin_str ();
     if (false == res) {
         return NUM_TO_BIN_STR_ERROR;
     }
+#endif
     // int ret = 0;
 #if TEST_ATOI
     res = test_myAtoi ();
@@ -546,14 +561,13 @@ bool test_grey_conversation (void) {
     return res;
 }
 
+#if TEST_LIST
 bool test_linked_list (void) {
     bool res = true;
     list_node_t *llHead = NULL;
     int numOfElen = 0;
-    int array1 [] =
-        { 1, 2, 3, 4 };
-    int array2 [] =
-        { 1, 2, 3, 4, 5, 6 };
+    int array1[] = {1, 2, 3, 4};
+    int array2[] = {1, 2, 3, 4, 5, 6};
     res = linked_list_add_array (&llHead, array1, 4);
     if (true == res) {
         numOfElen = list_num_of_elements (llHead);
@@ -586,6 +600,8 @@ bool test_linked_list (void) {
 
     return res;
 }
+
+#endif
 #if 0
 bool test_parse_bin_tree_init_array (void) {
     bool res = true;
@@ -652,7 +668,7 @@ bool test_bin_tree (void) {
     }
     return res;
 }
-
+#if TEST_LIST
 bool test_reverse_list (void) {
     bool res = false;
     ListNode *head = NULL;
@@ -679,6 +695,7 @@ bool test_reverse_list (void) {
 
     return res;
 }
+#endif
 
 bool test_uniq_path (void) {
     int numPath;
@@ -822,11 +839,11 @@ bool test_ya_task (void) {
     return res;
 }
 
+#if 1 == COMBINATION
 bool test_array_combinations (void) {
     bool res = false;
-    int arr [] =
-        { 1, 2, 3 };
-    int arrSize = sizeof(arr) / sizeof(arr [0]);
+    int arr[] = {1, 2, 3};
+    int arrSize = sizeof (arr) / sizeof (arr[0]);
     int returnSize = 0;
     int *returnColumnSizes = NULL;
     int **arrayOfArr = NULL;
@@ -838,6 +855,7 @@ bool test_array_combinations (void) {
 
     return res;
 }
+#endif
 
 void print_bytes (uint32_t byte) {
     float kByte = 4;
@@ -867,10 +885,6 @@ bool test_heap (void) {
     print_bytes (byte);
 
     return true;
-}
-
-void test_combine (void) {
-    // combine (4, 2);
 }
 
 bool test_algo (void) {

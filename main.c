@@ -1,5 +1,6 @@
 #include "algorithms.h"
 #include "combinations.h"
+#include "hash_table.h"
 #include "linked_list.h"
 #include "permutations.h"
 #include "utils.h"
@@ -9,10 +10,30 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
+
+#define PRINT_ENV 0
+extern char **environ;
+
+#if PRINT_ENV
+static bool print_ent (void) {
+    char **ep;
+    for (ep = environ; *ep != NULL; ep++) {
+        puts (*ep);
+    }
+    return true;
+}
+#endif
+
 
 int main (int argc, char* argv []);
 //int main (int argc, char **argv)
 int main (int argc, char* argv []) {
+
+#if PRINT_ENV
+    print_ent();
+#endif
+
 #if 1
     init_file_name ();
 
@@ -20,16 +41,18 @@ int main (int argc, char* argv []) {
     if (0 != ret) {
         printf ("\n\nUnit Test Error: %d\n", ret);
     } else {
-        printf ("\n\nUnit Test fine\n");
+        //printf ("\n\nUnit Test fine\n");
 #if 0
         test_combine ();
 #endif
     }
 #endif
-    if (2 == argc) {
-        printf ("\n\narg 0  [%s]\n",argv[0]);
-        printf ("\n\nFile [%s]\n",argv[1]);
-        bool res = proc_mk_file (argv [1]);
+    //perform_exper ();
+    if (3 == argc) {
+        //printf ("\n\narg 0  [%s]\n",argv[0]);
+        printf ("\nin file [%s]",argv[1]);
+        //printf ("\n\nout file [%s]",argv[2]);
+        bool res = proc_mk_file (argv [1],argv [2]);
         if (false == res) {
             printf ("\n\nError\n");
         }

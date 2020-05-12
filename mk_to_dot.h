@@ -10,8 +10,8 @@ extern "C" {
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
- 
-bool proc_mk_file (char *fileName);
+
+bool proc_mk_file (char *fileName, char *outFileName);
 bool test_parse_mk (void);
 bool parse_mk (char *fileStr, char *tempStr, int outStrLen);
 int match (const char *string, char *pattern);

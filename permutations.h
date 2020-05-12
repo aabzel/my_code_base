@@ -1,6 +1,10 @@
 #ifndef __PERMUTATIONS_H
 #define __PERMUTATIONS_H
 
+#define DEPLOY_PERMUTATIONS 0
+
+#if 1==DEPLOY_PERMUTATIONS
+
 #include "linked_list.h"
 #include "utils.h"
 
@@ -22,6 +26,8 @@ char *generate_num_string (int n);
 void assemble_from_alph (int *inAlphabet, int sizeOfAlphabet, int k, int *curArr, int curArrSize);
 bool is_permutation (int *arr1, int *arr2, int sizeOfArr);
 bool is_permutated_element_in_list (list_node_t *pHead, int *inArr, int arrSize);
+
+#endif
 
 //function to check permutations
 #endif /* __PERMUTATIONS_H */

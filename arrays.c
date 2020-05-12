@@ -5,7 +5,6 @@
 #include "utils.h"
 #include "str_ops.h"
 
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
@@ -18,8 +17,7 @@ int* singleNumber (int* nums, int numsSize, int* const returnSize) {
     int code = 0, a = 0, b = 0;
     int *arr = NULL;
     int i;
-    for (
-         i = 0; i < numsSize; i++) {
+    for (i = 0; i < numsSize; i++) {
         code ^= nums [i];
     }
 #if 0
@@ -41,7 +39,7 @@ int* singleNumber (int* nums, int numsSize, int* const returnSize) {
 
     arr = malloc (4 * 2);
     if (arr) {
-        printf("\n a=%d b=%d \n",a,b);
+        printf ("\n a=%d b=%d \n", a, b);
         arr [0] = a;
         arr [1] = b;
         (*returnSize) = 2;
@@ -323,4 +321,21 @@ void print_array_to_filename (char *filename, int *array, int size) {
         }
         fprintf (filePointer, "\n");
     }
+}
+
+uint64_t sum_arr (uint32_t *arr, uint32_t size) {
+    uint64_t sum = 0;
+    for (uint32_t i = 0; i < size; i++) {
+        sum += arr [i];
+    }
+    return sum;
+}
+
+float calc_avarage (uint32_t *arr, uint32_t size) {
+    float avarage = 0.0;
+    if (0 < size) {
+        uint64_t sum = sum_arr (arr, size);
+        avarage = (float) sum / (float) size;
+    }
+    return avarage;
 }

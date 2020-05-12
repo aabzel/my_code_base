@@ -5,9 +5,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#if 0
 static void reverse_util (ListNode* curr, ListNode* prev, ListNode** head);
 
-#if 0
 list_node_t *pHead;
 
 list_node_t Node1;
@@ -65,6 +65,34 @@ void list_print_fwd (void) {
 }
 #endif
 
+/* Function to insert a node at the beginging of the linked list */
+bool push_val (list_node_t **pInHead, int newVal) {
+    bool res = false;
+    /* allocate node */
+    list_node_t* newNodePtr = (list_node_t*) malloc (sizeof(list_node_t));
+    if (newNodePtr) {
+        newNodePtr->data = newVal;
+        newNodePtr->nextNode = (*pInHead) ;
+        (*pInHead)  = newNodePtr;
+        res = true;
+    }
+    return res;
+}
+
+
+/* Function to print linked list */
+void show_list (list_node_t* headNode) {
+    list_node_t* curNode = headNode;
+    printf ("\n Start of list\n");
+    while (curNode != NULL) {
+        printf ("%d  ", curNode->data);
+        curNode = curNode->nextNode;
+    }
+    printf ("\n End of list\n");
+}
+
+
+#if 0
 void save_list_to_file (list_node_t *pInHead, char *filename) {
     FILE * fp;
     printf ("\nSave to file: %s\n", filename);
@@ -224,16 +252,6 @@ void list_add_node_front (ListNode** headNode, int new_data) {
     }
 }
 
-/* Function to print linked list */
-void show_list (ListNode* headNode) {
-    ListNode* curNode = headNode;
-    printf ("\n Start of list\n");
-    while (curNode != NULL) {
-        printf ("%d  ", curNode->val);
-        curNode = curNode->next;
-    }
-    printf ("\n End of list\n");
-}
 
 ListNode* reverseList (ListNode* head) {
     ListNode* prevNode = NULL;
@@ -310,9 +328,8 @@ bool delete_node (ListNode* node) {
     }
 }
 
-#if 0
-void list_print_rev (void) {
 
-}
+
+
+
 #endif
-

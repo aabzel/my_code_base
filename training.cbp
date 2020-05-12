@@ -12,6 +12,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option parameters="C:\Job\IO_V4\1_FW\controllers_abarunin_io_040\common\utils_spc58\utils.mk mk_dot.txt" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -76,6 +77,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="fifo_char.h" />
+		<Unit filename="fifo_index.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="fifo_index.h" />
 		<Unit filename="lifo_char.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -96,6 +101,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="min_path_diag_scale.h" />
+		<Unit filename="mk_to_dot.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="mk_to_dot.h" />
 		<Unit filename="parse_keepass.c">
 			<Option compilerVar="CC" />
 		</Unit>

@@ -9,10 +9,12 @@
 #include <string.h>
 //#include <regex.h>
 
-bool proc_mk_file (char *fileName) {
-    FILE *filePrt;
+bool proc_mk_file (char *fileName, char *outFileName) {
+    FILE *filePrt = NULL;
+    FILE *outFilePrt = NULL;
     bool res = false;
     char childMkFile [500];
+    char childMkNode [500];
     char rootMkFile [500];
     char curFileStr [500];
     char rootMknodeName [500];
@@ -21,23 +23,29 @@ bool proc_mk_file (char *fileName) {
     if (false == res) {
         return false;
     }
-    strncpy(rootMknodeName,rootMkFile,sizeof(rootMknodeName));
+    strncpy (rootMknodeName, rootMkFile, sizeof(rootMknodeName));
     replace_char (rootMknodeName, '.', '_');
 
-    printf("\n %s [ label = \"%s\"];",rootMknodeName, rootMkFile);
+    outFilePrt = fopen (outFileName, "a");
+    if (NULL == outFilePrt) {
+        return false;
+    }
+    fprintf (outFilePrt, "\n\n%s [ label = \"%s\"];", rootMknodeName, rootMkFile);
 
     filePrt = fopen (fileName, "r");
     if (filePrt) {
         int line = 0;
         while (NULL != fgets (curFileStr, sizeof(curFileStr), filePrt)) {
-            /* writing content to stdout */
-            //puts (fileStr);
+
             memset (childMkFile, 0x00, sizeof(childMkFile));
+            memset (childMkNode, 0x00, sizeof(childMkNode));
 
             res = parse_mk (curFileStr, childMkFile, sizeof(childMkFile));
             if (true == res) {
-                replace_char (childMkFile, '.', '_');
-                printf ("\n%s->%s", rootMknodeName, childMkFile);
+                strncpy (childMkNode, childMkFile, sizeof(childMkNode));
+                replace_char (childMkNode, '.', '_');
+                fprintf (outFilePrt, "\n%s [ label = \"%s\"];", childMkNode, childMkFile);
+                fprintf (outFilePrt, "\n%s->%s", rootMknodeName, childMkNode);
             } else {
                 //printf ("\nUnable to parse line: %d %s ", line, curFileStr);
                 line++;
@@ -52,6 +60,9 @@ bool proc_mk_file (char *fileName) {
         fclose (filePrt);
     } else {
         printf ("Error");
+    }
+    if (outFilePrt) {
+        fclose (outFilePrt);
     }
     return res;
 }
@@ -68,9 +79,12 @@ bool parse_mk (char *fileStr, char *tempStr, int outStrLen) {
                 fifo_init (&outfilefifo, sizeof(fifoArray), fifoArray);
                 for (int i = 0; i < inStrLen; i++) {
                     if (true == is_allowed_char_file (fileStr [i])) {
-                        if ('\n' != fileStr [i]) {
+                        if ('#' == fileStr [i]) {
+                            i = inStrLen;
+                            break;
+                        }
+                        if (('\n' != fileStr [i]) && ('\r' != fileStr [i]) && (' ' != fileStr [i])) {
                             fifo_push (&outfilefifo, fileStr [i]);
-
                         }
                     } else {
                         fifo_reset (&outfilefifo);

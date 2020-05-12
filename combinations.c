@@ -1,5 +1,7 @@
 #include "combinations.h"
 
+#if 1==COMBINATION
+
 #include "arrays.h"
 #include "algorithms.h"
 #include "permutations.h"
@@ -146,6 +148,8 @@ int** subsets (int* nums, int numsSize, int* returnSize, int** returnColumnSizes
     return arrOfArrys;
 }
 
+
+#endif
 /**
  * Return an array of arrays of size *returnSize.
  * The sizes of the arrays are returned as *returnColumnSizes array.

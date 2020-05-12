@@ -23,8 +23,12 @@ extern "C" {
 extern char pemutationFile [100];
 extern char kitFile [100];
 
+bool test_my_printf(void);
+int my_printf ( char* format, ...) ;
+
+unsigned summ (unsigned char num, unsigned first, ...);
 void init_double_array (double * ptrArray, int size);
-uint32_t reverseBits (uint32_t num);
+uint32_t reverseBits32 (uint32_t num);
 uint8_t hamming_weight (uint32_t n);
 unsigned int GrayToBinary32 (unsigned int num);
 unsigned int GrayToBinary (unsigned int num);

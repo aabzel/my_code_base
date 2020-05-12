@@ -139,7 +139,6 @@ bool lifo_peek_array (Lifo_array_t *instance, char *outArr, uint16_t *const outL
     if (NULL != instance) {
         if ((NULL != outArr) && (NULL != outLen)) {
             (*outLen) = 0u;
-
             if (true == instance->initDone) {
                 if (0u < instance->lifoStat.len) {
                     int32_t i = 0u;

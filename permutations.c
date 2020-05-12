@@ -1,5 +1,7 @@
 #include "permutations.h"
 
+#if 1==DEPLOY_PERMUTATIONS
+
 #include "algorithms.h"
 #include "utils.h"
 #include "arrays.h"
@@ -197,3 +199,6 @@ void test_permut (void) {
     resArray = permute_array (inArray, numsSize, &returnSize, &returnColumnSizes);
     print_array_of_arrays (resArray, returnSize, numsSize);
 }
+
+
+#endif

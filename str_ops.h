@@ -7,12 +7,12 @@
 #include <stdint.h>
 #include <string.h>
 
-#define DEBUG_PARSE_EXPRESS 1
-#define DEBUG_PARSE_NOT 1
-#define DEBUG_PARSE_AND 1
-#define DEBUG_PARSE_OR 1
+#define DEBUG_PARSE_EXPRESS 0
+#define DEBUG_PARSE_NOT 0
+#define DEBUG_PARSE_AND 0
+#define DEBUG_PARSE_OR 0
 
-#define DEBUG_ITOA
+// #define DEBUG_ITOA
 
 #define DEBUG_HASH_TABLE 0
 #define DEBUG_LENGTHOFLONGESTSUBSTRING 0
@@ -28,13 +28,13 @@ bool is_bracket (char ch);
 bool parseBoolExpr (char *expression);
 bool parse_bool_expr (char *expression, int inStrlen);
 bool is_valid_parentheses (char *s);
-int get_index_in_string (char *expression, int inStrLen, int operandNum, int* const operandLen);
+int get_index_in_string (char *expression, int inStrLen, int operandNum, int *const operandLen);
 bool brackets_same_type (char open, char close);
 int calc_paratasis_nesting (char *s, int *const amountOfPairs);
 
 bool compare_strings (char *stra, char *strb);
 int myAtoi (char *str);
-int replace_char(char *str, char orig, char rep) ;
+int replace_char (char *str, char orig, char rep);
 bool try_strl2int64_dec (const char s64_dec_str[], int32_t s64_dec_str_len, int64_t *s64_dec_value);
 bool try_strl2int32_dec (const char s32_dec_str[], int32_t s32_dec_str_len, int32_t *const s32_dec_value);
 int find_max_sec (char *string, char sripChar);
@@ -64,8 +64,8 @@ bool test_lengthOfLongestSubstring (void);
 bool test_detect_change (void);
 bool test_num_to_bin_str (void);
 bool test_myAtoi (void);
-bool test_parse_not(void);
-bool test_parse_and(void);
+bool test_parse_not (void);
+bool test_parse_and (void);
 bool test_operand_extract (void);
 bool test_calc_paratasis_nesting (void);
 bool test_parse_num_operands (void);

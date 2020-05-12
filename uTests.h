@@ -79,6 +79,7 @@ typedef enum {
     SINGLE_NUMBER_ERROR = 61,
     EXTRACK_MK_FILE_ERROR= 62,
     CHAR_REP_ERROR = 63,
+    LIST_SORT_ERROR = 64,
     NUM_ERROR
 } error_t;
 

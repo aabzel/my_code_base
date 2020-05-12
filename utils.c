@@ -7,6 +7,7 @@
 #include "bin_heap_array.h"
 #include "linked_list.h"
 
+#include <stdarg.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
@@ -170,8 +171,8 @@ int* grayCode (int n, int* returnSize) {
     return outArr;
 }
 
-uint32_t reverseBits (uint32_t num) {
-    uint32_t numOfbit = 4 * 8u;
+uint32_t reverseBits32 (uint32_t num) {
+    uint32_t numOfbit = 4u * 8u;
     uint32_t reverseNum = 0u;
     uint32_t i;
     uint32_t temp;
@@ -218,6 +219,7 @@ char *uint32_to_bin_str (uint32_t const inVal32bit) {
 }
 #endif
 
+#if 0
 int **list_of_arr_to_arr_of_arr (list_node_t * const listOfArrays, int * const amountOfArrays, int** returnColumnSizes) {
     int numElem = list_num_of_elements (listOfArrays);
     int **arrayOfPtr;
@@ -241,6 +243,7 @@ int **list_of_arr_to_arr_of_arr (list_node_t * const listOfArrays, int * const a
     return arrayOfPtr;
 
 }
+#endif
 
 void print_bit_representation (float val) {
     union union_type {
@@ -312,4 +315,63 @@ void print_sub_str (char * const str, int len) {
             printf ("%c", str [i]);
         }
     }
+}
+
+#define UNSIGNED_OVERFLOW -4
+unsigned summ (unsigned char num, unsigned first, ...) {
+    unsigned sum = 0;
+    unsigned testsum = 0;
+    unsigned *p = &first;
+    while (num--) {
+        testsum += *p;
+        if (testsum >= sum) {
+            sum = testsum;
+        } else {
+            exit (UNSIGNED_OVERFLOW);
+        }
+        p++;
+    }
+    return sum;
+}
+
+//https://learnc.info/c/vararg_functions.html
+int my_printf (char* format, ...) {
+    va_list ap;
+    va_start (ap, format);
+    char *ptr;
+    char *s;
+    int val;
+    for (ptr = format; *ptr != '\0'; ptr++) {
+        if ((*ptr) == '%') {
+            ptr++;
+            switch (*ptr) {
+                case 's':
+                    s = va_arg(ap, char *);
+                    fputs (s, stdout);
+                    break;
+                case 'd':
+                    val = va_arg(ap, int);
+                    printf ("%d", val);
+                    break;
+                case '%':
+                    putchar ('%');
+                    break;
+            }
+        } else {
+            putchar (*ptr);
+
+        }
+    }
+
+    va_end (ap);
+    return 0;
+}
+
+bool test_my_printf (void) {
+    char *home = "home";
+    int from = 30;
+    int to = 3;
+    int fine = 5000;
+    my_printf ("Stay at %s from %d to %d or you will be fined %d RUB!\n", home, from, to, fine);
+    return true;
 }
