@@ -256,15 +256,6 @@ void print_bit_representation (float val) {
     printf ("\n %f %d \n%s\n", cnvt.val, cnvt.vali, uint32_to_bin_str (cnvt.vali));
 }
 
-void print_mem (uint8_t *memPtr, uint32_t sizeOfAlphabet) {
-    printf ("\n");
-    uint32_t i;
-    for (i = 0; i < sizeOfAlphabet; i++) {
-        printf ("%02X", memPtr [i]);
-    }
-    printf ("\n");
-}
-
 long long summ_array (int const* const inArr, int sizeOfArr) {
     long long int sum = 0;
     if (inArr) {
@@ -334,26 +325,56 @@ unsigned summ (unsigned char num, unsigned first, ...) {
     return sum;
 }
 
+#define DEBUG_STRING 0
+
 //https://learnc.info/c/vararg_functions.html
-int my_printf (char* format, ...) {
-    va_list ap;
-    va_start (ap, format);
+bool my_printf (char* formatStr, ...) {
+    void *argPtr = &formatStr;
+    int curArgNum = 0;
+    int numOfArfgs = parse_num_of_args (formatStr);
+#if DEBUG_ARGS
+    printf ("\n numOfArfgs %d", numOfArfgs);
+    print_mem_horisonal ((uint8_t *) &formatStr, 4 * 5 + 1);
+    print_mem_horisonal ((uint8_t *) argPtr, 4 * 5 + 1);
+#endif
+
     char *ptr;
-    char *s;
-    int val;
-    for (ptr = format; *ptr != '\0'; ptr++) {
+    for (ptr = formatStr; *ptr != '\0'; ptr++) {
         if ((*ptr) == '%') {
             ptr++;
+            argPtr += 4;
+
+            curArgNum++;
             switch (*ptr) {
                 case 's':
-                    s = va_arg(ap, char *);
-                    fputs (s, stdout);
+#if DEBUG_STRING
+                    print_mem_horisonal ((uint8_t *) argPtr, 4);
+#endif
+                    if (curArgNum <= numOfArfgs) {
+                        char **textPrt;
+                        textPrt = argPtr;
+                        //argPtr is a pointer to a pointer to the address in text
+                        printf ("%s", (*textPrt));
+                    } else {
+                        return false;
+                    }
+
                     break;
                 case 'd':
-                    val = va_arg(ap, int);
-                    printf ("%d", val);
+#if DEBUG_D
+                    print_mem_horisonal ((uint8_t *) argPtr, 4);
+#endif
+                    if (curArgNum <= numOfArfgs) {
+                        int *valT;
+                        valT = (int *) argPtr;
+                        printf ("%d", *valT);
+                    } else {
+                        return false;
+                    }
+
                     break;
                 case '%':
+                    curArgNum--;
                     putchar ('%');
                     break;
             }
@@ -363,15 +384,107 @@ int my_printf (char* format, ...) {
         }
     }
 
-    va_end (ap);
-    return 0;
+    return true;
 }
 
 bool test_my_printf (void) {
+    bool res = false;
     char *home = "home";
-    int from = 30;
-    int to = 3;
-    int fine = 5000;
-    my_printf ("Stay at %s from %d to %d or you will be fined %d RUB!\n", home, from, to, fine);
-    return true;
+    void *voidPtr;
+    int *intPtr;
+    int argNum = 0;
+    char *format = "Stay at %s from %d to %d or you will be fined %d RUB!\n";
+#if DEBUG_ADDRESS
+    printf ("\n format ptr address: [%p] addr of format prt [%p]", format, &format);
+#endif
+    int voidPtrSize, intPtrSize;
+#if DEBUG_ADDRESS
+    printf ("\n home ptr address: [%p] addr of home prt [%p]", home, &home);
+#endif
+    int from = 30; //
+#if DEBUG_ADDRESS
+    printf ("\n from in hex: [%x] addr of from[%p]", from, &from);
+#endif
+    int to = 3; //
+#if DEBUG_ADDRESS
+    printf ("\n to in hex: [%x] addr of to[%p]", to, &to);
+#endif
+    int fine = 5000; //
+#if DEBUG_ADDRESS
+    printf ("\n fine in hex: [%x] addr of fine[%p]", fine, &fine);
+#endif
+    voidPtrSize = sizeof(voidPtr);
+    if (4 != voidPtrSize) {
+        printf ("\n voidPtrSize: [%d] ", voidPtrSize);
+        return false;
+    }
+    intPtrSize = sizeof(intPtr);
+    if (4 != intPtrSize) {
+        printf ("\n intPtrSize: [%d] ", intPtrSize);
+        return false;
+    }
+    argNum = parse_num_of_args (format);
+    if (4 != argNum) {
+        return false;
+    }
+    res = my_printf (format, home, from, to, fine);
+
+    return res;
+}
+
+bool print_mem_vertical (uint8_t *memPtr, uint32_t numByte, bool printChars) {
+    bool res = false;
+    //printf ("\nPrint mem:");
+    printf ("\n[");
+    if (NULL != memPtr) {
+        uint32_t i = 0;
+        for (i = 0; i < numByte; i++) {
+            if (0 == (i % 4)) {
+                printf ("\n");
+            }
+            printf ("\n%p: %02X", &memPtr [i], memPtr [i]);
+        }
+        printf ("]\n");
+        if (true == printChars) {
+            printf ("[");
+            for (i = 0; i < numByte; i++) {
+                printf ("%c", memPtr [i]);
+            }
+            printf ("]");
+        }
+        printf ("\nPrint mem end\n");
+
+    }
+    return res;
+}
+
+bool print_mem_horisonal (uint8_t *memPtr, uint32_t numByte) {
+    bool res = false;
+    printf ("\n\nval : ");
+    if (NULL != memPtr) {
+        uint32_t i = 0;
+        for (i = 0; i < numByte; i++) {
+            if (0 == (i % 4) && (0 != i)) {
+                printf (" ");
+            }
+            printf ("%02X", memPtr [i]);
+        }
+        printf ("\nadr : ");
+        for (i = 0; i < numByte; i += 4) {
+            printf ("%p", &memPtr [i]);
+            printf (" ");
+        }
+    }
+    return res;
+}
+
+int parse_num_of_args (char *format) {
+    char *ptr;
+    int numOfArgs = 0;
+    for (ptr = format; *ptr != '\0'; ptr++) {
+        if ('%' == (*ptr)) {
+            numOfArgs++;
+        }
+    }
+    return numOfArgs;
 }

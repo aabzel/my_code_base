@@ -27,9 +27,9 @@ void print_curr_array (int *alphabet, int sizeOfAlphabet);
 int *generate_num_array (int n);
 void print_array_of_diff_arrays (int **arrOfArr, int amountOfLine, int *colSizes);
 void print_array_of_arrays (int **arrOfArr, int amountOfLine, int amountOfCol);
-bool test_single_number (void);
 uint64_t sum_arr (uint32_t *arr, uint32_t size);
 float calc_avarage (uint32_t *arr, uint32_t size);
+bool test_single_number (void);
 
 #ifdef __cplusplus
 }

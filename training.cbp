@@ -121,6 +121,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="slidingWindowMid.h" />
+		<Unit filename="sort_linked_list.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="sort_linked_list.h" />
 		<Unit filename="str_ops.c">
 			<Option compilerVar="CC" />
 		</Unit>

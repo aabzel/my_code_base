@@ -24,7 +24,7 @@ extern char pemutationFile [100];
 extern char kitFile [100];
 
 bool test_my_printf(void);
-int my_printf ( char* format, ...) ;
+bool my_printf ( char* format, ...) ;
 
 unsigned summ (unsigned char num, unsigned first, ...);
 void init_double_array (double * ptrArray, int size);
@@ -41,7 +41,8 @@ char *generate_num_string (int n);
 void print_sub_str (char * const str, int len);
 void print_array (int *alphabet, int sizeOfAlphabet, int k);
 void print_curr_array (int *alphabet, int sizeOfAlphabet);
-void print_mem (uint8_t *memPtr, uint32_t sizeOfAlphabet);
+bool print_mem_vertical (uint8_t *memPtr, uint32_t numByte, bool printChars);
+bool print_mem_horisonal (uint8_t *memPtr, uint32_t numByte) ;
 double avrage_two (int val1, int val2);
 uint32_t max_val (uint32_t amountofbit);
 int* grayCode (int n, int* returnSize);
@@ -55,6 +56,7 @@ void print_array_double (double *alphabet, int sizeOfAlphabet);
 bool is_odd (int val);
 double calc_average (int const * const inArr, int sizeOfArr);
 void print_bytes (uint32_t byte);
+int parse_num_of_args (char *format);
 
 bool is_double_arr_equal (double *arr1, double *arr2, int arrSize);
 

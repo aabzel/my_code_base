@@ -84,7 +84,7 @@ bool parse_header (FILE *filePtr) {
         if (dataPtr) {
             numItems = fread (dataPtr, DataLen, 1, filePtr);
             if (1 == numItems) {
-                print_mem (dataPtr, DataLen);
+                //print_mem (dataPtr, DataLen);
                 free(dataPtr);
             }
 
