@@ -13,6 +13,20 @@
 #include <math.h>
 #include <string.h>
 
+
+int factorial (int n) {
+    int factor = 1;
+    int i = 0;
+    if (0 < n) {
+        for (i = n; 0 < i; i--) {
+            factor *= i;
+        }
+    } else {
+        factor = 1;
+    }
+    return factor;
+}
+
 bool is_floats_equal (float valA, float valB) {
     return is_float_equal (valA, valB, (float) F_EPSILON);
 }

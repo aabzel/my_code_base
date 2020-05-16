@@ -12,6 +12,100 @@
 #include <stdint.h>
 #include <string.h>
 
+static int permutationNumber = 0;
+
+bool print_permutations_ll (
+    int *inCurrentArray,
+    int inCurrSize,
+    int *inIndexArrayRemain,
+    int remainSize,
+    int totalSize,
+    int targetPermutIndex,
+    int *outArray) {
+    bool res = false;
+    int *indexArrayTemp;
+    int *indexArrayNew;
+    if (remainSize < 0) {
+        printf ("Error \n");
+        return false;
+    }
+    if (inCurrSize < 0) {
+        printf ("Error \n");
+        return false;
+    }
+    if (NULL == inCurrentArray) {
+        printf ("Error \n");
+        return false;
+    }
+    if (NULL == inIndexArrayRemain) {
+        printf ("Error \n");
+        return false;
+    }
+    if (inCurrSize == totalSize) {
+        permutationNumber++;
+        //printf ("\n number %d", permutationNumber);
+#if DEBUG_ARRAY
+        print_curr_array (inCurrentArray, inCurrSize);
+#endif
+        if ((NULL != outArray) && (targetPermutIndex == permutationNumber)) {
+            memcpy (outArray, inCurrentArray, inCurrSize * sizeof(int));
+            return true;
+        }
+        res = true;
+
+    }
+    for (int i = 0; i < remainSize; i++) {
+        indexArrayTemp = (int *) memdup ((void *) inIndexArrayRemain, remainSize * sizeof(int));
+        if (indexArrayTemp) {
+            int *currentArray = add_val_to_end_array (inCurrentArray, inCurrSize, indexArrayTemp [i]);
+            if (currentArray) {
+                indexArrayNew = remove_int_from_arr (indexArrayTemp, remainSize, i);
+                if (indexArrayNew) {
+                    print_permutations_ll (currentArray, inCurrSize + 1, indexArrayNew, remainSize - 1, totalSize, targetPermutIndex, outArray);
+                    free (indexArrayNew);
+                    res = true;
+                }
+            }
+        }
+    }
+    return res;
+}
+
+
+
+bool get_i_permutation_of_n (int maxNumOfElement, int permutIndex, int *array) {
+    bool res = false;
+    permutationNumber = 0;
+    if (permutIndex <= factorial (maxNumOfElement)) {
+        int *indexArray;
+        int *indexArrayNew;
+        for (int i = 0; i < maxNumOfElement; i++) {
+            indexArray = generate_num_array (maxNumOfElement);
+            if (indexArray) {
+                int *currentArray = add_val_to_end_array (NULL, 0, indexArray [i]);
+                indexArrayNew = remove_int_from_arr (indexArray, maxNumOfElement, i);
+                if (indexArrayNew) {
+                    res = print_permutations_ll (currentArray, 1, indexArrayNew, maxNumOfElement - 1, maxNumOfElement, permutIndex, array);
+                    free (indexArrayNew);
+                }
+            }
+        }
+    } else {
+        printf ("there is no such permutation %d", permutIndex);
+    }
+    return res;
+}
+
+
+// given number N
+// print all permutations for (1,2,..,N)
+bool print_permutations (int N) {
+    bool res = false;
+    res = get_i_permutation_of_n (N, 0, NULL);
+    return res;
+}
+
+
 list_node_t *permutllHead = NULL;
 
 /* Function to print permutations of string
@@ -62,6 +156,7 @@ void permutation (int n) {
  *
  * */
 /* k - amount of letters*/
+#if 0
 void assemble_from_alph (int *inAlphabet, int sizeOfAlphabet, int k, int *curArr, int curArrSize) {
     if (0 == k) {
 #if DEBUG_ASSEMBLE
@@ -105,6 +200,7 @@ void assemble_from_alph (int *inAlphabet, int sizeOfAlphabet, int k, int *curArr
 
     }
 }
+#endif
 
 #define DEBUG_IS_PERMUTATED 0
 bool is_permutation (int *arr1, int *arr2, int sizeOfArr) {
@@ -147,6 +243,7 @@ bool is_permutation (int *arr1, int *arr2, int sizeOfArr) {
     return res;
 }
 
+#if 0
 bool is_permutated_element_in_list (list_node_t *pHead, int *inArr, int arrSize) {
 #if DEBUG_PERMUT_ELEN_IN_LIST
     int static cnt = 0;
@@ -174,12 +271,13 @@ bool is_permutated_element_in_list (list_node_t *pHead, int *inArr, int arrSize)
     }
     return res;
 }
-
+#endif
 /**
  * Return an array of arrays of size *returnSize.
  * The sizes of the arrays are returned as *returnColumnSizes array.
  * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
  */
+#if 0
 int** permute_array (int* array, int numsSize, int* returnSize, int** returnColumnSizes) {
     int **arrayOfPtr;
     //clean list permutllHead
@@ -188,7 +286,9 @@ int** permute_array (int* array, int numsSize, int* returnSize, int** returnColu
     arrayOfPtr = list_of_arr_to_arr_of_arr (permutllHead, returnSize, returnColumnSizes);
     return arrayOfPtr;
 }
+#endif
 
+#if 0
 void test_permut (void) {
     int** resArray;
     int* returnColumnSizes = NULL;
@@ -199,6 +299,6 @@ void test_permut (void) {
     resArray = permute_array (inArray, numsSize, &returnSize, &returnColumnSizes);
     print_array_of_arrays (resArray, returnSize, numsSize);
 }
-
+#endif
 
 #endif

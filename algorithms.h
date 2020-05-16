@@ -12,6 +12,7 @@
 #define F_EPSILON 0.0005f
 
 bool swap_int (int * const x, int * const y);
+int factorial (int n);
 
 int update_max (int curMax, int newVal);
 int qselect (int *v, int len, int k);

@@ -113,6 +113,14 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="permutations.h" />
+		<Unit filename="russian_doll_envelopes.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="russian_doll_envelopes.h" />
+		<Unit filename="russian_doll_envelopes_test.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="russian_doll_envelopes_test.h" />
 		<Unit filename="slidingWindowMax.c">
 			<Option compilerVar="CC" />
 		</Unit>

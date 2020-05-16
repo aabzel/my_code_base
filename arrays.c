@@ -280,10 +280,10 @@ int *generate_num_array (int n) {
 void print_curr_array (int *alphabet, int sizeOfAlphabet) {
     if (alphabet) {
         if (0 < sizeOfAlphabet) {
+            //printf ("\n");
             for (int i = 0; i < sizeOfAlphabet; i++) {
-                printf ("%d", alphabet [i]);
+                printf ("%d ", alphabet [i]);
             }
-            printf ("\n");
         }
     }
 }
