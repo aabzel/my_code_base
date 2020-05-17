@@ -12,6 +12,8 @@
 #include <stdint.h>
 
 #define DEBUG_ARG 0
+#define DEBUG_IND_RANGE 1
+#define DEBUG_CURR_ARRAY 1
 
 
 extern list_node_t *permutllHead;
@@ -27,6 +29,7 @@ int *generate_num_array (int n);
 char *generate_num_string (int n);
 //void assemble_from_alph (int *inAlphabet, int sizeOfAlphabet, int k, int *curArr, int curArrSize);
 bool get_i_permutation_of_n (int maxNumOfElement, int permutIndex, int *array);
+
 bool print_permutations_ll (
     int *inCurrentArray,
     int inCurrSize,
@@ -34,6 +37,8 @@ bool print_permutations_ll (
     int remainSize,
     int totalSize,
     int targetPermutIndex,
+    int startIndex,
+    int endIndex,
     int *outArray);
 
 bool is_permutation (int *arr1, int *arr2, int sizeOfArr);

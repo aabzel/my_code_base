@@ -12,23 +12,38 @@
 #include <stdint.h>
 #include <string.h>
 
-static int curPermutationNumber = 0;
+//static int curPermutationNumber = 0;
 /*inCurrentArray will be freed in here*/
 /*inIndexArrayRemain will be freed outside */
-bool print_permutations_ll (
-    int *inCurrentArray,
-    int inCurrSize,
-    int *inIndexArrayRemain,
-    int remainSize,
-    int totalSize,
+bool print_permutations_ll (int *inCurrentArray, int inCurrSize, int *inIndexArrayRemain, int remainSize, int totalSize, // amount of item in permutation
     int targetPermutIndex,
+    int startIndex,
+    int endIndex,
     int *outArray) {
+
+#if DEBUG_CURR_ARRAY
+    printf ("\n cur array: ");
+    print_curr_array (inCurrentArray, inCurrSize);
+    printf ("\n");
+#endif
     bool res = false;
     int *indexArrayTemp;
     int *indexArrayNew;
     if (remainSize < 0) {
         printf ("%s Error %d\n", __FUNCTION__, 3);
         return false;
+    }
+    int range = endIndex - startIndex + 1;
+    if (2 == range) {
+        printf ("%s Debug range %d\n", __FUNCTION__, range);
+    }
+    if (false == is_in_range (targetPermutIndex, startIndex, endIndex)) {
+        free (inCurrentArray);
+        return false;
+    } else {
+#if DEBUG_IND_RANGE
+        printf (" -> [%d<=%d<=%d] range %d", startIndex, targetPermutIndex, endIndex, range);
+#endif
     }
     if (0 == remainSize) {
         //printf ("remainSize 0 \n");
@@ -44,28 +59,74 @@ bool print_permutations_ll (
     }
 
     if (inCurrSize == totalSize) {
-        curPermutationNumber++;
 #if DEBUG_ARRAY
         printf ("\n number %d", curPermutationNumber);
         print_curr_array (inCurrentArray, inCurrSize);
 #endif
-        if ((NULL != outArray) && (targetPermutIndex == curPermutationNumber)) {
+
+        if ((NULL != outArray) && (targetPermutIndex == startIndex)) {
+            printf ("\n ");
             memcpy (outArray, inCurrentArray, inCurrSize * sizeof(int));
             free (inCurrentArray);
             free (inIndexArrayRemain);
             return true;
         }
-
     }
+    int stepInd = 0;
+
+    if (0 < remainSize) {
+        if (remainSize <= range) {
+            //is divided?
+            if (0 == (range % remainSize)) {
+                if ((1 == range) && (range == remainSize)) {
+                    stepInd = 0;
+                } else {
+                    stepInd = range / remainSize;
+                }
+            } else {
+                printf ("\n remainSize %d range %d startInd %d endInd %d target %d", remainSize, range, startIndex, endIndex, targetPermutIndex);
+                return false;
+            }
+        } else {
+            printf ("\n remainSize %d range %d", remainSize, range);
+            return false;
+        }
+    } else {
+        return true;
+    }
+    printf ("\n range %d remainSize %d stepInd %d", range, remainSize, stepInd);
+
     for (int i = 0; i < remainSize; i++) {
         indexArrayTemp = (int *) memdup ((void *) inIndexArrayRemain, remainSize * sizeof(int));
         if (indexArrayTemp) {
             int *currentArray = add_val_to_end_array (inCurrentArray, inCurrSize, indexArrayTemp [i]);
-            free (inCurrentArray);
             if (currentArray) {
+                printf ("\n");
+                print_curr_array (currentArray, inCurrSize + 1);
+                printf ("\n");
                 indexArrayNew = remove_int_from_arr (indexArrayTemp, remainSize, i);
                 //indexArrayNew will be freed in print_permutations_ll
-                res = print_permutations_ll (currentArray, inCurrSize + 1, indexArrayNew, remainSize - 1, totalSize, targetPermutIndex, outArray);
+                int startInd = startIndex;
+                int endInd = startIndex;
+                if (0 < stepInd) {
+                    startInd = startIndex + (i * stepInd);        //0
+                    endInd = startIndex + (i * stepInd) + stepInd - 1;        //
+                }
+                if (true == is_in_range (targetPermutIndex, startInd, endInd)) {
+                    res = print_permutations_ll (
+                        currentArray,
+                        inCurrSize + 1,
+                        indexArrayNew,
+                        remainSize - 1,
+                        totalSize,
+                        targetPermutIndex,
+                        startInd,
+                        endInd,
+                        outArray);
+                }else{
+                    free(currentArray);
+                }
+
                 if (indexArrayNew) {
                     free (indexArrayNew);
                 }
@@ -75,14 +136,16 @@ bool print_permutations_ll (
             }
         }
     }
+    free(inCurrentArray);
     return res;
 }
-
+//4: 1....24     6    (1 7 13 19)
+//5: 1....120    24   (1 25 49 73 97 )
 bool get_i_permutation_of_n (int maxNumOfElement, int permutIndex, int *array) {
     bool res = false;
-    curPermutationNumber = 0;
     int amountOfpermutations = factorial (maxNumOfElement);
-    if (permutIndex <= amountOfpermutations) {
+    int indexStep = amountOfpermutations / maxNumOfElement;        //24/4 = 6
+    if (permutIndex < amountOfpermutations) {
         int *indexArray;
         int *indexArrayNew;
         for (int i = 0; i < maxNumOfElement; i++) {
@@ -93,7 +156,22 @@ bool get_i_permutation_of_n (int maxNumOfElement, int permutIndex, int *array) {
                 indexArrayNew = remove_int_from_arr (indexArray, maxNumOfElement, i);
                 if (indexArrayNew) {
                     //currentArray will be freed in print_permutations_ll
-                    res = print_permutations_ll (currentArray, 1, indexArrayNew, maxNumOfElement - 1, maxNumOfElement, permutIndex, array);
+                    int indexStart = i * indexStep;        //0
+                    int indexEnd = i * indexStep + indexStep - 1;        //5
+                    if (true == is_in_range (permutIndex, indexStart, indexEnd)) {
+                        res = print_permutations_ll (
+                            currentArray,
+                            1,
+                            indexArrayNew,
+                            maxNumOfElement - 1,
+                            maxNumOfElement,
+                            permutIndex,
+                            indexStart,
+                            indexEnd,
+                            array);
+
+                    }
+
                     free (indexArrayNew);
                     if (true == res) {
                         return true;

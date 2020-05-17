@@ -235,18 +235,26 @@ void* memdup (const void* mem, size_t sizeByte) {
 
 int *add_val_to_end_array (int *inArr, int arrSize, int val) {
     int *newArr = NULL;
+    printf("\n %s start",__FUNCTION__);
     newArr = malloc (sizeof(int) * (arrSize + 1));
     if (newArr) {
         if ((NULL != inArr)) {
             if (0 < arrSize) {
+                printf ("\n");
+                print_curr_array (inArr, arrSize);
+                printf ("\n");
                 memcpy (newArr, inArr, sizeof(int) * (arrSize));
             }
         }
         newArr [arrSize] = val;
+        printf ("\n");
+        print_curr_array (newArr, arrSize+1);
+        printf ("\n");
     } else {
         printf ("\n Unable to accoc [%d] byte", arrSize);
         newArr = NULL;
     }
+    printf("\n %s end",__FUNCTION__);
     return newArr;
 }
 //[inArr 1 0]
@@ -287,6 +295,22 @@ int *generate_num_array_malloc (int n) {
         }
     }
     return outArray;
+}
+
+bool is_correct_permutation (int *arraOfIndex, int n, int maxVal) {
+    bool res = false;
+    if (arraOfIndex) {
+        int cnt = 0;
+        for (int i = 0; i < n; i++) {
+            if (arraOfIndex [i] < maxVal) {
+                cnt++;
+            }
+        }
+        if (n == cnt) {
+            res = true;
+        }
+    }
+    return res;
 }
 
 void print_curr_array (int *alphabet, int sizeOfAlphabet) {

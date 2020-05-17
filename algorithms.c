@@ -13,6 +13,19 @@
 #include <math.h>
 #include <string.h>
 
+bool is_in_range (int val, int lowBound, int upBound) {
+    bool res = false;
+    if (lowBound <= upBound) {
+        if (lowBound <= val) {
+            if (val <= upBound) {
+                res = true;
+            }
+        }
+    } else {
+        printf ("\n%s %d %d %d\n", __FUNCTION__,val,lowBound,upBound);
+    }
+    return res;
+}
 
 int factorial (int n) {
     int factor = 1;

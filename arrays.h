@@ -14,7 +14,7 @@ extern "C" {
 void* memdup (const void* mem, size_t sizeByte);
 int *generate_num_array_malloc (int n);
 int* singleNumber (int* nums, int numsSize, int* const returnSize);
-
+bool is_correct_permutation (int *arraOfIndex, int n, int maxVal);
 bool is_single_zero (int * const arr, int sizeOfArr, int indexToArr);
 int findMaxConsecutiveOnes (int* nums, int numsSize);
 int findMaxConsecutiveOnesFlip1 (int* nums, int length);

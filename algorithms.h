@@ -13,7 +13,7 @@
 
 bool swap_int (int * const x, int * const y);
 int factorial (int n);
-
+bool is_in_range (int val, int lowBound, int upBound);
 int update_max (int curMax, int newVal);
 int qselect (int *v, int len, int k);
 bool is_power_of_two (int x);
