@@ -11,6 +11,8 @@ extern "C" {
 #include <stdint.h>
 #include <string.h>
 
+void* memdup (const void* mem, size_t sizeByte);
+int *generate_num_array_malloc (int n);
 int* singleNumber (int* nums, int numsSize, int* const returnSize);
 
 bool is_single_zero (int * const arr, int sizeOfArr, int indexToArr);
@@ -20,11 +22,9 @@ int findMaxConOnesDel1 (int * const array, int length);
 void print_array_to_file_pointer (FILE * filePointer, int *array, int size);
 void print_array_to_filename (char *filename, int *array, int size);
 int count_max_amout_of_one_after_del (int *arr, int sizeOfArr);
-void* memdup (const void* mem, size_t sizeByte);
 int *remove_int_from_arr (int *inArr, int arrSize, int delIndex);
 int *add_val_to_end_array (int *inArr, int arrSize, int val);
 void print_curr_array (int *alphabet, int sizeOfAlphabet);
-int *generate_num_array (int n);
 void print_array_of_diff_arrays (int **arrOfArr, int amountOfLine, int *colSizes);
 void print_array_of_arrays (int **arrOfArr, int amountOfLine, int amountOfCol);
 uint64_t sum_arr (uint32_t *arr, uint32_t size);

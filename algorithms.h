@@ -19,6 +19,7 @@ int qselect (int *v, int len, int k);
 bool is_power_of_two (int x);
 void swap_char (char * const x, char * const y);
 
+int factorial (int n) ;
 short compare (int Data1, int Data2);
 int max (int val1, int val2);
 int min (int val1, int val2);

@@ -12,8 +12,9 @@
 #include <stdint.h>
 #include <string.h>
 
-static int permutationNumber = 0;
-
+static int curPermutationNumber = 0;
+/*inCurrentArray will be freed in here*/
+/*inIndexArrayRemain will be freed outside */
 bool print_permutations_ll (
     int *inCurrentArray,
     int inCurrSize,
@@ -26,44 +27,50 @@ bool print_permutations_ll (
     int *indexArrayTemp;
     int *indexArrayNew;
     if (remainSize < 0) {
-        printf ("Error \n");
+        printf ("%s Error %d\n", __FUNCTION__, 3);
         return false;
+    }
+    if (0 == remainSize) {
+        //printf ("remainSize 0 \n");
+        //free(inIndexArrayRemain);
     }
     if (inCurrSize < 0) {
-        printf ("Error \n");
+        printf ("%s Error %d\n", __FUNCTION__, 1);
         return false;
     }
-    if (NULL == inCurrentArray) {
-        printf ("Error \n");
+    if ((NULL == inCurrentArray)) {
+        printf ("%s Error %d\n", __FUNCTION__, 2);
         return false;
     }
-    if (NULL == inIndexArrayRemain) {
-        printf ("Error \n");
-        return false;
-    }
+
     if (inCurrSize == totalSize) {
-        permutationNumber++;
-        //printf ("\n number %d", permutationNumber);
+        curPermutationNumber++;
 #if DEBUG_ARRAY
+        printf ("\n number %d", curPermutationNumber);
         print_curr_array (inCurrentArray, inCurrSize);
 #endif
-        if ((NULL != outArray) && (targetPermutIndex == permutationNumber)) {
+        if ((NULL != outArray) && (targetPermutIndex == curPermutationNumber)) {
             memcpy (outArray, inCurrentArray, inCurrSize * sizeof(int));
+            free (inCurrentArray);
+            free (inIndexArrayRemain);
             return true;
         }
-        res = true;
 
     }
     for (int i = 0; i < remainSize; i++) {
         indexArrayTemp = (int *) memdup ((void *) inIndexArrayRemain, remainSize * sizeof(int));
         if (indexArrayTemp) {
             int *currentArray = add_val_to_end_array (inCurrentArray, inCurrSize, indexArrayTemp [i]);
+            free (inCurrentArray);
             if (currentArray) {
                 indexArrayNew = remove_int_from_arr (indexArrayTemp, remainSize, i);
+                //indexArrayNew will be freed in print_permutations_ll
+                res = print_permutations_ll (currentArray, inCurrSize + 1, indexArrayNew, remainSize - 1, totalSize, targetPermutIndex, outArray);
                 if (indexArrayNew) {
-                    print_permutations_ll (currentArray, inCurrSize + 1, indexArrayNew, remainSize - 1, totalSize, targetPermutIndex, outArray);
                     free (indexArrayNew);
-                    res = true;
+                }
+                if (true == res) {
+                    return true;
                 }
             }
         }
@@ -71,22 +78,26 @@ bool print_permutations_ll (
     return res;
 }
 
-
-
 bool get_i_permutation_of_n (int maxNumOfElement, int permutIndex, int *array) {
     bool res = false;
-    permutationNumber = 0;
-    if (permutIndex <= factorial (maxNumOfElement)) {
+    curPermutationNumber = 0;
+    int amountOfpermutations = factorial (maxNumOfElement);
+    if (permutIndex <= amountOfpermutations) {
         int *indexArray;
         int *indexArrayNew;
         for (int i = 0; i < maxNumOfElement; i++) {
-            indexArray = generate_num_array (maxNumOfElement);
+            indexArray = generate_num_array_malloc (maxNumOfElement);
             if (indexArray) {
                 int *currentArray = add_val_to_end_array (NULL, 0, indexArray [i]);
+                //indexArray will be freed in remove_int_from_arr
                 indexArrayNew = remove_int_from_arr (indexArray, maxNumOfElement, i);
                 if (indexArrayNew) {
+                    //currentArray will be freed in print_permutations_ll
                     res = print_permutations_ll (currentArray, 1, indexArrayNew, maxNumOfElement - 1, maxNumOfElement, permutIndex, array);
                     free (indexArrayNew);
+                    if (true == res) {
+                        return true;
+                    }
                 }
             }
         }
@@ -96,7 +107,6 @@ bool get_i_permutation_of_n (int maxNumOfElement, int permutIndex, int *array) {
     return res;
 }
 
-
 // given number N
 // print all permutations for (1,2,..,N)
 bool print_permutations (int N) {
@@ -104,7 +114,6 @@ bool print_permutations (int N) {
     res = get_i_permutation_of_n (N, 0, NULL);
     return res;
 }
-
 
 list_node_t *permutllHead = NULL;
 
