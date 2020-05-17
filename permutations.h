@@ -12,8 +12,8 @@
 #include <stdint.h>
 
 #define DEBUG_ARG 0
-#define DEBUG_IND_RANGE 1
-#define DEBUG_CURR_ARRAY 1
+#define DEBUG_IND_RANGE 0
+#define DEBUG_CURR_ARRAY 0
 
 
 extern list_node_t *permutllHead;

@@ -235,26 +235,36 @@ void* memdup (const void* mem, size_t sizeByte) {
 
 int *add_val_to_end_array (int *inArr, int arrSize, int val) {
     int *newArr = NULL;
+#if DEBUG_ADD_VAL_TO_END_ARRAY
     printf("\n %s start",__FUNCTION__);
+#endif
     newArr = malloc (sizeof(int) * (arrSize + 1));
     if (newArr) {
         if ((NULL != inArr)) {
             if (0 < arrSize) {
+#if DEBUG_ADD_VAL_TO_END_ARRAY
                 printf ("\n");
                 print_curr_array (inArr, arrSize);
                 printf ("\n");
+#endif
                 memcpy (newArr, inArr, sizeof(int) * (arrSize));
             }
         }
         newArr [arrSize] = val;
+#if DEBUG_ADD_VAL_TO_END_ARRAY
         printf ("\n");
         print_curr_array (newArr, arrSize+1);
         printf ("\n");
+#endif
     } else {
+#if DEBUG_ADD_VAL_TO_END_ARRAY
         printf ("\n Unable to accoc [%d] byte", arrSize);
+#endif
         newArr = NULL;
     }
+#if DEBUG_ADD_VAL_TO_END_ARRAY
     printf("\n %s end",__FUNCTION__);
+#endif
     return newArr;
 }
 //[inArr 1 0]
