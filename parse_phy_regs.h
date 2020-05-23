@@ -68,6 +68,30 @@
 #define RECEIVE_ERR_4  (1<<4)
 #define TRANSMIT_ERR_3  (1<<3)
 
+#define MASTER_SLAVE_15  (1<<15)
+#define FWDPHYLOC_14  (1<<14 )
+#define REMWUPHY_11  (1<<11 )
+#define LOCWUPHY_10  (1<<10 )
+#define MII_DRIVER_7  (1<<7 )
+#define SLEEP_CONFIRM_6  (1<<6 )
+#define LPS_WUR_DIS_5  (1<<5 )
+#define SLEEP_ACK_4  (1<<4 )
+#define FWDPHYREM_2  (1<<2 )
+#define AUTO_PWD_1  (1<<1 )
+#define LPS_ACTIVE_0  (1<<0 )
+
+/*External status register (register 25)*/
+#define UV_VDDD_3V3_15  (1<<15)
+#define UV_VDDA_3V3_14  (1<<14)
+#define UV_VDDD_1V8_13  (1<<13)
+#define UD_VDDIO_11  (1<<11)
+#define TEMP_HIGH_10  (1<<10)
+#define TEMP_WARN_9  (1<<9)
+#define SHORT_DETECT_8  (1<<8)
+#define OPEN_DETECT_7  (1<<7)
+#define POLARITY_DETECT_6  (1<<6)
+#define INTERLEAVE_DETECT_5  (1<<5)
+
 bool parse_phy_regs_file (char *inFileName, char *outFileName);
 bool parse_reg (uint8_t regAddr, uint16_t regVal, FILE *outFilePrt);
 
@@ -95,5 +119,6 @@ bool parse_loopback_mode (uint8_t regVal, FILE *outFilePrt);
 bool parse_test_mode (uint8_t regVal, FILE *outFilePrt);
 bool parse_phy_state (uint8_t phyState, FILE *outFilePrt);
 bool parse_sqi (uint8_t sqi, FILE *outFilePrt);
+bool parse_mii_mode (uint8_t mii_mode, FILE *outFilePrt);
 
 #endif /* PARSE_PHY_REGS_H */
