@@ -18,6 +18,7 @@
 
 extern list_node_t *permutllHead;
 
+bool get_i_permutation_of_n (int maxNumOfElement, uint32_t permutIndex, int *array);
 // given number N
 // print all permutations for (1,2,..,N)
 void test_permut (void);
@@ -28,7 +29,6 @@ void permute (char *string);
 int *generate_num_array (int n);
 char *generate_num_string (int n);
 //void assemble_from_alph (int *inAlphabet, int sizeOfAlphabet, int k, int *curArr, int curArrSize);
-bool get_i_permutation_of_n (int maxNumOfElement, int permutIndex, int *array);
 
 bool print_permutations_ll (
     int *inCurrentArray,

@@ -6,6 +6,7 @@ LDFLAGS=
 SOURCES = arrays.c  
 SOURCES += permutations.c 
 SOURCES += utils.c  
+SOURCES += parse_phy_regs.c
 SOURCES += russian_doll_envelopes_test.c
 SOURCES += russian_doll_envelopes.c
 SOURCES += bin_tree_draw.c   

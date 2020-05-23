@@ -9,9 +9,62 @@
 #include <stdio.h>
 #include <string.h>
 
-//[[1,2],[2,3],[3,4],[4,5],[5,6],[5,5],[6,7],[7,8]]
+//[7,8]]
 
-//[  [5,5]   [7,8]>[6,7]>[5,6]>[4,5]>[3,4]>[2,3]>[1,2]]
+bool maxEnvelopes_test9 (void) {
+    int amount;
+    bool res = true;
+
+    amount = factorial (9);
+    if (362880 != amount) {
+        return false;
+    }
+
+    int arr [8];
+    res = get_i_permutation_of_n (9, 1, arr);
+    if (false == res) {
+        return false;
+    }
+
+    int envelopesColSize = 0;
+    int invelop1_9 [2] =
+        { 1, 2 };
+    int invelop2_9 [2] =
+        { 2, 3 };
+    int invelop3_9 [2] =
+        { 3, 4 };
+    int invelop4_9 [2] =
+        { 3, 5 };
+    int invelop5_9 [2] =
+        { 4, 5 };
+    int invelop6_9 [2] =
+        { 5, 5 };
+    int invelop7_9 [2] =
+        { 5, 6 };
+    int invelop8_9 [2] =
+        { 6, 7 };
+
+    int invelop9_9 [2] =
+        { 7, 8 };
+    int *listOfEnvelop9 [9];
+
+    listOfEnvelop9 [0] = invelop1_9;
+    listOfEnvelop9 [1] = invelop2_9;
+    listOfEnvelop9 [2] = invelop3_9;
+    listOfEnvelop9 [3] = invelop4_9;
+    listOfEnvelop9 [4] = invelop5_9;
+    listOfEnvelop9 [5] = invelop6_9;
+    listOfEnvelop9 [6] = invelop7_9;
+    listOfEnvelop9 [7] = invelop8_9;
+    listOfEnvelop9 [8] = invelop9_9;
+    amount = maxEnvelopes (listOfEnvelop9, 9, &envelopesColSize);
+    if (7 != amount) {
+        printf ("\n nesting %d ", amount);
+        return false;
+    }
+    return res;
+}
+
 bool maxEnvelopes_test8 (void) {
     int amount;
     bool res = true;
@@ -56,6 +109,41 @@ bool maxEnvelopes_test8 (void) {
     listOfEnvelop8 [7] = invelop8_8;
     amount = maxEnvelopes (listOfEnvelop8, 8, &envelopesColSize);
     if (7 != amount) {
+        printf ("\n nesting %d ", amount);
+        return false;
+    }
+    return res;
+}
+
+//[[1,2],[2,3],[3,4],[3,5],[4,5],[5,5],[5,6],[6,7],[7,8]]
+//[[1,2],[2,3],[3,4],[4,5],[5,6],[5,5],[6,7],[7,8]]
+
+//[  [5,5]   [7,8]>[6,7]>[5,6]>[4,5]>[3,4]>[2,3]>[1,2]]
+bool maxEnvelopes_test1 (void) {
+    int amount;
+    bool res = true;
+
+    amount = factorial (1);
+    if (1 != amount) {
+        return false;
+    }
+
+    int arr [1];
+    res = get_i_permutation_of_n (1, 0, arr);
+    if (false == res) {
+        return false;
+    }
+
+    int envelopesColSize = 0;
+    int invelop1_1 [2] =
+        { 1, 1 };
+
+    int *listOfEnvelop1 [1];
+
+    listOfEnvelop1 [0] = invelop1_1;
+
+    amount = maxEnvelopes (listOfEnvelop1, 1, &envelopesColSize);
+    if (1 != amount) {
         printf ("\n nesting %d ", amount);
         return false;
     }
@@ -134,6 +222,11 @@ bool maxEnvelopes_test (void) {
         return false;
     }
 
+    res = maxEnvelopes_test1 ();
+    if (false == res) {
+        return false;
+    }
+
     res = maxEnvelopes_test4 ();
     if (false == res) {
         return false;
@@ -145,6 +238,11 @@ bool maxEnvelopes_test (void) {
     }
 
     res = maxEnvelopes_test8 ();
+    if (false == res) {
+        return false;
+    }
+
+    res = maxEnvelopes_test9 ();
     if (false == res) {
         return false;
     }
@@ -242,8 +340,8 @@ bool test_i_permutation (int N) {
                         free (arraOfIndex);
                         printf ("\n i: incorrect permutation  %d/%d", i, amountOfCombinations);
                         return false;
-                    }else{
-                        uint64_t summ = sum_arr ((uint32_t *) arraOfIndex, (uint32_t)N);
+                    } else {
+                        uint64_t summ = sum_arr ((uint32_t *) arraOfIndex, (uint32_t) N);
                         if (!(0 < summ)) {
                             res = false;
                             print_curr_array (arraOfIndex, N);
@@ -298,7 +396,7 @@ bool test_permutation_i (int N, int i) {
 #endif
                     return false;
                 } else {
-                    uint64_t summ = sum_arr ((uint32_t *) arraOfIndex, (uint32_t)N);
+                    uint64_t summ = sum_arr ((uint32_t *) arraOfIndex, (uint32_t) N);
                     if (!(0 < summ)) {
                         res = false;
                         print_curr_array (arraOfIndex, N);

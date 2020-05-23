@@ -1015,9 +1015,32 @@ bool test_num_to_bin_str (void) {
     }
     return true;
 }
+
+const char* utoa_bin16 (uint16_t u16_bin_data) {
+    uint8_t cell16 = 0u;
+    uint16_t mask16 = 0x8000U;
+    static char outBitStr16 [sizeof("0000_0000_0000_0000") + 1U] = "0000_0000_0000_0000";
+    while (mask16 != 0U) {
+        if (outBitStr16 [cell16] == '_') {
+            cell16++;
+        }
+        if (0u != (u16_bin_data & mask16)) {
+            outBitStr16 [cell16] = '1';
+        } else {
+            outBitStr16 [cell16] = '0';
+        }
+        mask16 >>= 1U;
+        cell16++;
+    }
+    outBitStr16 [sizeof(outBitStr16) - 1u] = '\0';
+    return outBitStr16;
+}
+
+
+
 //
 // 1111_1111_1111_1111_1111_1111_1111_1111
-char *uint32_to_bin_str (uint32_t const inVal32bit) {
+char *uint32_to_bin_str (uint32_t inVal32bit) {
     static char outBitStr[40] = "";
     int8_t rBit = 0;
     uint8_t cell = 0u, bitCnt = 0u;

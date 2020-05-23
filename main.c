@@ -2,6 +2,7 @@
 #include "combinations.h"
 #include "hash_table.h"
 #include "linked_list.h"
+#include "parse_phy_regs.h"
 #include "permutations.h"
 #include "utils.h"
 #include "uTests.h"
@@ -25,7 +26,6 @@ static bool print_ent (void) {
 }
 #endif
 
-
 int main (int argc, char* argv []);
 //int main (int argc, char **argv)
 int main (int argc, char* argv []) {
@@ -47,12 +47,16 @@ int main (int argc, char* argv []) {
 #endif
     }
 #endif
+    bool res = parse_phy_regs_file ("tja1101_reg_map_blob.txt", "tja1101_config.txt");
+    if(false==res){
+        printf ("\nError\n");
+    }
     //perform_exper ();
     if (3 == argc) {
         //printf ("\n\narg 0  [%s]\n",argv[0]);
-        printf ("\nin file [%s]",argv[1]);
+        printf ("\nin file [%s]", argv [1]);
         //printf ("\n\nout file [%s]",argv[2]);
-        bool res = proc_mk_file (argv [1],argv [2]);
+        bool res = proc_mk_file (argv [1], argv [2]);
         if (false == res) {
             printf ("\n\nError\n");
         }

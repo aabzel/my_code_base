@@ -151,9 +151,13 @@ bool print_permutations_ll (int *inCurrentArray, int inCurrSize, int *inIndexArr
 }
 //4: 1....24     6    (1 7 13 19)
 //5: 1....120    24   (1 25 49 73 97 )
-bool get_i_permutation_of_n (int maxNumOfElement, int permutIndex, int *array) {
+bool get_i_permutation_of_n (int maxNumOfElement, uint32_t permutIndex, int *array) {
     bool res = false;
-    int amountOfpermutations = factorial (maxNumOfElement);
+    if(1==maxNumOfElement){
+        (*array)=0;
+        return true;
+    }
+    uint32_t amountOfpermutations = factorial (maxNumOfElement);
     int indexStep = amountOfpermutations / maxNumOfElement;        //24/4 = 6
     if (permutIndex < amountOfpermutations) {
         int *indexArray;

@@ -17,6 +17,9 @@
 char pemutationFile [100];
 char kitFile [100];
 
+static char a2i (char ch, const char** src, int32_t* nump);
+static int8_t a2d (char ch);
+
 void init_file_name (void) {
     time_t rawtime;
     struct tm * timeinfo;
@@ -189,10 +192,12 @@ uint32_t reverseBits32 (uint32_t num) {
 uint8_t hamming_weight (uint32_t n) {
     uint8_t sum = 0;
     while (n != 0) {
+#if DEBUG_HAMMING_WEIGHT
         printf ("\nn      :%s", uint32_to_bin_str (n));
         printf ("\n n-1   :%s", uint32_to_bin_str (n - 1));
         printf ("\nn&(n-1):%s", uint32_to_bin_str (n & (n - 1)));
         printf ("\n");
+#endif
         sum++;
         n &= (n - 1);
     }
@@ -327,8 +332,16 @@ unsigned summ (unsigned char num, unsigned first, ...) {
 
 #define DEBUG_STRING 0
 
+bool is_digit (char ch) {
+    bool res = false;
+    if (('0' <= ch) && (ch <= '9')) {
+        res = true;
+    }
+    return res;
+}
+
 //https://learnc.info/c/vararg_functions.html
-bool my_printf (char* formatStr, ...) {
+bool my_printf (const char* formatStr, ...) {
     void *argPtr = &formatStr;
     int curArgNum = 0;
     int numOfArfgs = parse_num_of_args (formatStr);
@@ -338,14 +351,41 @@ bool my_printf (char* formatStr, ...) {
     print_mem_horisonal ((uint8_t *) argPtr, 4 * 5 + 1);
 #endif
 
-    char *ptr;
-    for (ptr = formatStr; *ptr != '\0'; ptr++) {
-        if ((*ptr) == '%') {
-            ptr++;
+    //char *ptr;
+    while ('\0' != (*formatStr)) {
+        char ch = *formatStr;
+        formatStr++;
+
+        if (ch == '%') {
+            ch = *formatStr;
+            formatStr++;
+            int32_t width = 0;
+            if ( true == is_digit (ch)) {
+                ch = a2i (ch, &formatStr, &width);
+                //printf("\n width %d\n",width);
+            }
             argPtr += 4;
 
             curArgNum++;
-            switch (*ptr) {
+            switch (ch) {
+                case 'b': {
+                    if (curArgNum <= numOfArfgs) {
+                        if (16 == width) {
+                            uint16_t *valT;
+                            valT = (uint16_t *) argPtr;
+                            printf ("%s", utoa_bin16 (*valT));
+                        }
+                        if (32 == width) {
+                            uint32_t *valT;
+                            valT = (uint32_t *) argPtr;
+                            printf ("%s", uint32_to_bin_str (*valT));
+                        }
+
+                    } else {
+                        return false;
+                    }
+                }
+                    break;
                 case 's':
 #if DEBUG_STRING
                     print_mem_horisonal ((uint8_t *) argPtr, 4);
@@ -379,7 +419,7 @@ bool my_printf (char* formatStr, ...) {
                     break;
             }
         } else {
-            putchar (*ptr);
+            putchar (ch);
 
         }
     }
@@ -428,6 +468,12 @@ bool test_my_printf (void) {
         return false;
     }
     res = my_printf (format, home, from, to, fine);
+
+    printf ("\n   ");
+    res = my_printf ("reg val %32b", 0x25);
+
+    printf ("\n   ");
+    res = my_printf ("reg val %16b", 0x25);
 
     return res;
 }
@@ -478,8 +524,8 @@ bool print_mem_horisonal (uint8_t *memPtr, uint32_t numByte) {
     return res;
 }
 
-int parse_num_of_args (char *format) {
-    char *ptr;
+int parse_num_of_args (const char *format) {
+    const char *ptr;
     int numOfArgs = 0;
     for (ptr = format; *ptr != '\0'; ptr++) {
         if ('%' == (*ptr)) {
@@ -487,4 +533,46 @@ int parse_num_of_args (char *format) {
         }
     }
     return numOfArgs;
+}
+
+static char a2i (char ch, const char** src, int32_t* nump) {
+    const char* p = *src;
+    int32_t num = 0, digit = a2d (ch);
+    while (digit >= 0) {
+        num = num * 10 + digit;
+        ch = *p;
+        p++;
+        digit = a2d (ch);
+    }
+    *src = p;
+    *nump = num;
+    return ch;
+}
+static int8_t a2d (char ch) {
+    if (ch >= '0' && ch <= '9') {
+        return ch - '0';
+    } else {
+        return -1;
+    }
+}
+//15 10
+uint16_t extract_subval_from_16bit (uint16_t inVal, uint8_t maxBit, uint8_t minBit) {
+    uint16_t outVal = 0;
+    if ((minBit < maxBit) && (maxBit <= 15) && (minBit <= 15)) {
+        uint16_t mask = generate_16bit_left_mask (maxBit - minBit+1);
+        outVal = (inVal >> minBit);
+        outVal = outVal & mask;
+    }
+    return outVal;
+}
+
+uint16_t generate_16bit_left_mask (uint8_t bitlen) {
+    uint16_t mask = 0x0000;
+    if (bitlen <= 16) {
+        uint16_t i=0;
+        for (i = 0; i < bitlen; i++) {
+            mask |= (1 << i);
+        }
+    }
+    return mask;
 }

@@ -109,6 +109,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="parse_keepass.h" />
+		<Unit filename="parse_phy_regs.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="parse_phy_regs.h" />
 		<Unit filename="permutations.c">
 			<Option compilerVar="CC" />
 		</Unit>

@@ -11,7 +11,7 @@
 #include <string.h>
 
 int maxEnvelopes (int** envelopes, int envelopesSize, int* envelopesColSize) {
-    int amount = 0;
+    int amount = 1;
     if (envelopes) {
         if (0 < envelopesSize) {
             int amountOfCombinations;
@@ -23,7 +23,7 @@ int maxEnvelopes (int** envelopes, int envelopesSize, int* envelopesColSize) {
             printf ("\n %d", amountOfCombinations);
 #endif
             // how many ways to list envelops
-            printf ("\n Progress %d\n", amountOfCombinations);
+            //printf ("\n Progress %d\n", amountOfCombinations);
             int spotPermutCnt = 0;
             for (int i = 0; i < amountOfCombinations; i++) {
                 //get array of indeces

@@ -18,6 +18,7 @@
 #define TEST_HEAP_SAME 0
 #define BIN_HEAP_RAND_ADD 0
 #define DEPLOY_TEST_AVL_TREE 0
+#define TEST_BIT_UTILS 1
 
 typedef enum {
     FINE = 0,
@@ -82,6 +83,8 @@ typedef enum {
     LIST_SORT_ERROR = 64,
     NUM_OF_ARGS_ERROR = 65,
     MAX_ENVELOPES_TEST_ERROR = 66,
+    GENERATE_BIT_MASK_ERROR = 67,
+    EXTRACT_BITS_ERROR= 68,
     NUM_ERROR
 } error_t;
 

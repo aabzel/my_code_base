@@ -57,7 +57,9 @@ bool is_diff_chars (char *inStr, uint32_t len);
 void reverseString (char *s, int length);
 void detect_change (char *oldStr, char *newStr, char **oldSubStr, int *oldSubStringLen, char **newSubStr,
                     int *newSubStringLen);
-char *uint32_to_bin_str (uint32_t const inVal32bit);
+char *uint32_to_bin_str (uint32_t inVal32bit);
+const char* utoa_bin16 (uint16_t u16_bin_data);
+
 void find_diff (char *oldStr, int oldLen, char *newStr, int newLen, int *outOldSubStringLen, int *outNewSubStringLen,
                 char **oldSubStr, char **newSubStr);
 bool test_lengthOfLongestSubstring (void);

@@ -27,9 +27,9 @@ bool is_in_range (int val, int lowBound, int upBound) {
     return res;
 }
 
-int factorial (int n) {
-    int factor = 1;
-    int i = 0;
+uint32_t factorial (uint32_t n) {
+    uint32_t factor = 1;
+    uint32_t i = 0;
     if (0 < n) {
         for (i = n; 0 < i; i--) {
             factor *= i;
