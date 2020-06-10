@@ -23,6 +23,11 @@ extern "C" {
 extern char pemutationFile [100];
 extern char kitFile [100];
 
+void print_biggest_mantissa (void) ;
+
+float power_of (uint32_t base, int32_t exponent);
+char *portNumToStr (uint8_t port);
+void print_pad_nums (void);
 bool test_my_printf (void);
 bool my_printf (const char* format, ...);
 bool is_digit (char ch);
@@ -59,9 +64,14 @@ void print_bytes (uint32_t byte);
 int parse_num_of_args (const char *format);
 uint16_t extract_subval_from_16bit (uint16_t inVal, uint8_t maxBit, uint8_t minBit);
 uint16_t generate_16bit_left_mask (uint8_t bitlen);
+uint32_t generate_32bit_left_mask (uint8_t bitlen);
 
 bool is_double_arr_equal (double *arr1, double *arr2, int arrSize);
-
+uint32_t extract_subval_from_32bit (uint32_t inVal, uint8_t maxBit, uint8_t minBit);
+uint16_t float_to_uint16 (float val);
+double fraction (uint32_t mantissa);
+float construct_32bit_float (uint32_t integer, uint32_t fractional);
+double fraction_sim (uint32_t mantissa);
 #ifdef __cplusplus
 }
 #endif

@@ -12,7 +12,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="C:\Job\IO_V4\1_FW\controllers_abarunin_io_040\common\utils_spc58\utils.mk mk_dot.txt" />
+				<Option parameters='tic12400_reg_map_blob.txt &quot;tic12400_config.txt&quot;' />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -109,10 +109,18 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="parse_keepass.h" />
-		<Unit filename="parse_phy_regs.c">
+		<Unit filename="parse_phy_regs.h" />
+		<Unit filename="parse_regs.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="parse_phy_regs.h" />
+		<Unit filename="parse_regs.h" />
+		<Unit filename="parse_tic12400_regs.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="parse_tic12400_regs.h" />
+		<Unit filename="parse_tja1101_regs.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="permutations.c">
 			<Option compilerVar="CC" />
 		</Unit>

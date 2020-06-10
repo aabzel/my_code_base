@@ -20,6 +20,89 @@ char kitFile [100];
 static char a2i (char ch, const char** src, int32_t* nump);
 static int8_t a2d (char ch);
 
+#define PORT_A          0U
+#define PORT_B          1U
+#define PORT_C          2U
+#define PORT_D          3U
+#define PORT_E          4U
+#define PORT_F          5U
+#define PORT_G          6U
+#define PORT_H          7U
+#define PORT_I          8U
+#define PORT_J          9U
+#define PORT_K          10U
+#define PORT_L          11U
+#define PORT_M          12U
+#define PORT_N          13U
+#define PORT_O          14U
+#define PORT_P          15U
+
+char *portNumToStr (uint8_t port) {
+    static char * outStrNone = "NONE";
+    switch (port) {
+        case PORT_A:
+            outStrNone = "PA";
+            break;
+        case PORT_B:
+            outStrNone = "PB";
+            break;
+        case PORT_C:
+            outStrNone = "PC";
+            break;
+        case PORT_D:
+            outStrNone = "PD";
+            break;
+        case PORT_E:
+            outStrNone = "PE";
+            break;
+        case PORT_F:
+            outStrNone = "PF";
+            break;
+        case PORT_G:
+            outStrNone = "PG";
+            break;
+        case PORT_H:
+            outStrNone = "PH";
+            break;
+        case PORT_I:
+            outStrNone = "PI";
+            break;
+        case PORT_J:
+            outStrNone = "PJ";
+            break;
+        case PORT_K:
+            outStrNone = "PK";
+            break;
+        case PORT_L:
+            outStrNone = "PL";
+            break;
+        case PORT_M:
+            outStrNone = "PM";
+            break;
+        case PORT_N:
+            outStrNone = "PN";
+            break;
+        case PORT_O:
+            outStrNone = "PO";
+            break;
+        case PORT_P:
+            outStrNone = "PP";
+            break;
+    }
+    return outStrNone;
+}
+
+void print_pad_nums (void) {
+    FILE *fileOut = fopen ("Gpio.txt", "w");
+    for (uint8_t port = 0U; port <= PORT_P; port++) {
+        for (uint8_t pin = 0U; pin <= 15U; pin++) {
+            uint8_t padNul = ((port << 4U) | pin);
+            fprintf (fileOut, "\n%s%d=%d", portNumToStr (port), pin, padNul);
+        }
+    }
+    fclose (fileOut);
+}
+
 void init_file_name (void) {
     time_t rawtime;
     struct tm * timeinfo;
@@ -555,24 +638,131 @@ static int8_t a2d (char ch) {
         return -1;
     }
 }
-//15 10
-uint16_t extract_subval_from_16bit (uint16_t inVal, uint8_t maxBit, uint8_t minBit) {
-    uint16_t outVal = 0;
-    if ((minBit < maxBit) && (maxBit <= 15) && (minBit <= 15)) {
-        uint16_t mask = generate_16bit_left_mask (maxBit - minBit+1);
+
+uint32_t extract_subval_from_32bit (uint32_t inVal, uint8_t maxBit, uint8_t minBit) {
+    uint32_t outVal = 0;
+    if ((minBit <= maxBit) && (maxBit <= 31) && (minBit <= 31)) {
+        uint32_t mask = generate_32bit_left_mask (maxBit - minBit + 1);
         outVal = (inVal >> minBit);
         outVal = outVal & mask;
     }
     return outVal;
 }
 
+//15 10
+uint16_t extract_subval_from_16bit (uint16_t inVal, uint8_t maxBit, uint8_t minBit) {
+    uint16_t outVal = 0;
+    if ((minBit < maxBit) && (maxBit <= 15) && (minBit <= 15)) {
+        uint16_t mask = generate_16bit_left_mask (maxBit - minBit + 1);
+        outVal = (inVal >> minBit);
+        outVal = outVal & mask;
+    }
+    return outVal;
+}
+
+uint32_t generate_32bit_left_mask (uint8_t bitlen) {
+    uint32_t mask = 0x00000000U;
+    if (bitlen <= 32) {
+        uint32_t i = 0U;
+        for (i = 0U; i < bitlen; i++) {
+            mask |= (1 << i);
+        }
+    }
+    return mask;
+}
+
 uint16_t generate_16bit_left_mask (uint8_t bitlen) {
     uint16_t mask = 0x0000;
     if (bitlen <= 16) {
-        uint16_t i=0;
+        uint16_t i = 0;
         for (i = 0; i < bitlen; i++) {
             mask |= (1 << i);
         }
     }
     return mask;
 }
+
+union sharedmem {
+    uint32_t bitVal;
+    float realVal;
+};
+
+float power_of (uint32_t base, int32_t exponent) {
+    float result = 1.0f;
+    int32_t numberOfTimes;
+    if (0 <= exponent) {
+        for (numberOfTimes = 0; numberOfTimes < exponent; numberOfTimes++) {
+            result *= base;
+        }
+    } else {
+        for (numberOfTimes = 0; numberOfTimes < -exponent; numberOfTimes++) {
+            result /= base;
+        }
+    }
+    return result;
+}
+
+double fraction (uint32_t mantissa) {
+    double value = 1.0f;
+    int32_t bitCnt = 0U;
+    int32_t bit = 1U;
+    for (bit = 0; bit <= 23; bit++) {
+        if ((1U << bit) == (mantissa & (1U << bit))) {
+            bitCnt++;
+            //printf ("\n bit %d", bit);
+            value = value + (1.0f / pow ((double) 2.0f, (double) 23U - bit));
+        }
+    }
+//printf ("\nbitCnt %d", bitCnt);
+    return value;
+}
+
+void print_biggest_mantissa (void) {
+    uint32_t mantissa = 0xFFFFFFFF;
+    double fractiona;
+    fractiona = fraction (mantissa);
+    printf ("\n fractiona %f", fractiona);
+    mantissa = 0x00000000;
+    fractiona = fraction (mantissa);
+    printf ("\n fractiona %f", fractiona);
+}
+
+#define BIAS 127
+uint16_t float_to_uint16 (float inVal) {
+    uint16_t outVal = 0;
+    float multiplierright;
+    union sharedmem uni;
+    uni.realVal = inVal;
+    uint32_t mantissa;
+    printf ("\n %x %d %f", uni.bitVal, uni.bitVal, uni.realVal);
+    printf ("\n num      %s", uint32_to_bin_str (uni.bitVal));
+    mantissa = extract_subval_from_32bit (uni.bitVal, 22, 0);
+    printf ("\n\r mantissa %d ", mantissa);
+    printf ("\n mantissa %s", uint32_to_bin_str (mantissa));
+    uint32_t exponent;
+    exponent = extract_subval_from_32bit (uni.bitVal, 30, 23);
+    printf ("\n\r exponent %d ", exponent);
+    printf ("\n exponent %s", uint32_to_bin_str (exponent));
+
+// power of two
+    uint32_t exponentVal = exponent - BIAS;
+    printf ("\n\r exponentVal %d ", exponentVal);
+    multiplierright = power_of (2U, exponentVal);
+    printf ("\n\r multiplierright %f ", multiplierright);
+
+    uint32_t sign;
+    sign = extract_subval_from_32bit (uni.bitVal, 31, 31);
+    printf ("\n\r sign %d ", sign);
+    printf ("\n\r sign %d %s", sign, (sign) ? "neg" : "pos");
+
+    double fractiona, result;
+
+    fractiona = fraction (mantissa);
+    printf ("\n\r fractiona %f", fractiona);
+
+    result = fractiona * multiplierright;
+    printf ("\n\r result %f", result);
+
+    return outVal;
+}
+

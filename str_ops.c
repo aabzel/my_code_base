@@ -42,38 +42,38 @@ int split (char *source, char *delim, char ***outStrArr) {
     int srcLen = strlen (source);
     int delimLen = strlen (delim);
     numItemInStr = count_amount_of_item (source, delim);
-    char **arrStrings = malloc ((1 + numItem) * sizeof (char *));
+    char **arrStrings = malloc ((1 + numItem) * sizeof(char *));
     for (int k = 0; k < numItemInStr; k++) {
         // printf ("\n address of ptrs: arrStrings[p]: [%p]", arrStrings [k]);
     }
     // printf ("\n");
     if (*arrStrings) {
         for (int i = 0; i <= (srcLen - delimLen); i++) {
-            int cmpRes = strncmp (delim, &source[i], delimLen);
+            int cmpRes = strncmp (delim, &source [i], delimLen);
             if (0 == cmpRes) {
                 // //printf ("\nSpot pattern\n");
                 if (0 == i) {
                     // pattern in the first
                     numItem++;
                     isFirst = false;
-                    char *str = select_sub_string (&source[i + delimLen], delim);
+                    char *str = select_sub_string (&source [i + delimLen], delim);
                     // printf (" [%s] ", str);
-                    arrStrings[j++] = (char *)str;
+                    arrStrings [j++] = (char *) str;
                 } else if ((srcLen - delimLen) == i) {
                     // pattern in the end
                     if (0 == numItem) {
-                        char *str = select_sub_string (&source[0], delim);
+                        char *str = select_sub_string (&source [0], delim);
                         // printf (" [%s] ", str);
-                        arrStrings[j++] = (char *)str;
+                        arrStrings [j++] = (char *) str;
                         numItem = 1;
                     }
                 } else {
                     // pattern in the middle
                     if (true == isFirst) {
-                        char *str = select_sub_string (&source[0], delim);
+                        char *str = select_sub_string (&source [0], delim);
                         if (str) {
                             // printf (" [%s] ", str);
-                            arrStrings[j++] = (char *)str;
+                            arrStrings [j++] = (char *) str;
 
                         } else {
                             // printf ("\n malloc Error! \n");
@@ -83,9 +83,9 @@ int split (char *source, char *delim, char ***outStrArr) {
                     } else {
                         numItem++;
                     }
-                    char *str = select_sub_string (&source[i + delimLen], delim);
+                    char *str = select_sub_string (&source [i + delimLen], delim);
                     // printf (" [%s] ", str);
-                    arrStrings[j++] = (char *)str;
+                    arrStrings [j++] = (char *) str;
                 }
             }
         }
@@ -108,14 +108,14 @@ char *select_sub_string (char *text, char *tail) {
         int lenTail = strlen (tail);
         if (lenTail < lenText) {
             for (int i = 0; i <= (lenText - lenTail); i++) {
-                int cmpRes = strncmp (&text[i], tail, lenTail);
+                int cmpRes = strncmp (&text [i], tail, lenTail);
                 if (0 == cmpRes) {
                     isPatternSpot = true;
                     if (0 < i) {
-                        outStr = malloc (sizeof (char) * i + 1);
+                        outStr = malloc (sizeof(char) * i + 1);
                         if (outStr) {
-                            memset (outStr, 0x00, sizeof (char) * (i + 1));
-                            memcpy (outStr, text, sizeof (char) * i);
+                            memset (outStr, 0x00, sizeof(char) * (i + 1));
+                            memcpy (outStr, text, sizeof(char) * i);
                             return outStr;
                         }
                     } else {
@@ -145,7 +145,7 @@ int count_amount_of_item (char *source, char *delim) {
     int delimLen = strlen (delim);
     if (delimLen < srcLen) {
         for (int i = 0; i <= (srcLen - delimLen); i++) {
-            int cmpRes = strncmp (delim, &source[i], delimLen);
+            int cmpRes = strncmp (delim, &source [i], delimLen);
             if (0 == cmpRes) {
                 // printf ("\nSpot pattern\n");
                 if (0 == i) {
@@ -176,23 +176,23 @@ int count_amount_of_item (char *source, char *delim) {
 /*
  * Find the first occurrence of pattern in text, ignore case.
  */
-bool is_real_number (const char str[]);
+bool is_real_number (const char str []);
 
 // time complexity O(T*P)
-const char *str_case_str (const char *const text, const char *const pattern) {
+const char *str_case_str (const char * const text, const char * const pattern) {
     const char *retPtr = NULL;
     if ((NULL != text) && (NULL != pattern)) {
         int i = 0;
         if ('\0' == (*pattern)) {
-            retPtr = &text[0];
+            retPtr = &text [0];
         } else {
-            for (; '\0' != text[i]; ++i) {
+            for (; '\0' != text [i]; ++i) {
                 int j = 0;
-                while (('\0' != text[i + j]) && ((tolower ((int)text[i + j]) == tolower ((int)pattern[j])))) {
+                while (('\0' != text [i + j]) && ((tolower ((int) text [i + j]) == tolower ((int) pattern [j])))) {
                     ++j;
                 }
-                if ('\0' == (pattern[j])) {
-                    retPtr = &text[i];
+                if ('\0' == (pattern [j])) {
+                    retPtr = &text [i];
                     break;
                 }
             }
@@ -209,10 +209,10 @@ char *removeCharFromString (char *str, uint32_t delIndex) {
         uint32_t index = 0;
         if (delIndex < (alphabetLength + 1)) {
             for (index = delIndex; index < (alphabetLength - 1); index++) {
-                tempArray[index] = tempArray[index + 1];
+                tempArray [index] = tempArray [index + 1];
             }
         }
-        tempArray[alphabetLength - 1] = '\0';
+        tempArray [alphabetLength - 1] = '\0';
         return tempArray;
     } else {
         printf ("Malloc error");
@@ -228,7 +228,7 @@ bool isNumber (char *s) {
     return res;
 }
 
-bool is_float_number (const char inStr[]) {
+bool is_float_number (const char inStr []) {
     bool float_success = is_real_number (inStr);
     return float_success;
 }
@@ -241,19 +241,19 @@ static bool is_space (const char character) {
     return res;
 }
 
-static bool is_spaces (const char str[]) {
+static bool is_spaces (const char str []) {
     bool res = true;
     uint32_t strLen = strlen (str);
     uint32_t strIndex = 0u;
     for (strIndex = 0; strIndex < strLen; strIndex++) {
-        if (false == is_space ((char)(str[strIndex]))) {
+        if (false == is_space ((char) (str [strIndex]))) {
             res = false;
         }
     }
     return res;
 }
 
-bool is_real_number (const char str[]) {
+bool is_real_number (const char str []) {
     bool strtod_success = true;
     double_t number = 0.0;
     uint32_t str_index = 0U;
@@ -264,25 +264,25 @@ bool is_real_number (const char str[]) {
     uint32_t strLen = strlen (str);
 
     /* Skip leading whitespace */
-    while (isspace ((int32_t) (str[str_index])) > 0) {
+    while (isspace ((int32_t) (str [str_index])) > 0) {
         str_index++;
     }
 
     /* Handle optional sign */
-    if (('-' == str[str_index]) || ('+' == str[str_index])) {
-        if ('-' == str[str_index]) {
+    if (('-' == str [str_index]) || ('+' == str [str_index])) {
+        if ('-' == str [str_index]) {
         }
         str_index++;
     }
 
-    if (0 == isdigit ((int32_t) (str[str_index]))) {
+    if (0 == isdigit ((int32_t) (str [str_index]))) {
         // strtod_success = false;
         number = 0.0;
     } else {
         /* Process string of digits */
-        while (0 < isdigit ((int32_t) (str[str_index]))) {
-            (void)try_dec_char_to_u8 ((uint8_t)str[str_index], &temp_value);
-            number = (number * 10.0) + (double_t)temp_value;
+        while (0 < isdigit ((int32_t) (str [str_index]))) {
+            (void) try_dec_char_to_u8 ((uint8_t) str [str_index], &temp_value);
+            number = (number * 10.0) + (double_t) temp_value;
             str_index++;
             num_digits++;
         }
@@ -290,28 +290,28 @@ bool is_real_number (const char str[]) {
 
     if (true == strtod_success) {
         /* Process decimal part  */
-        if (str[str_index] == '.') {
+        if (str [str_index] == '.') {
             str_index++;
-            if (0 < isdigit ((int32_t) (str[str_index]))) {
-                while (0 < isdigit ((int32_t) (str[str_index]))) {
-                    (void)try_dec_char_to_u8 ((uint8_t)str[str_index], &temp_value);
-                    number = (number * 10.0) + (double_t)temp_value;
+            if (0 < isdigit ((int32_t) (str [str_index]))) {
+                while (0 < isdigit ((int32_t) (str [str_index]))) {
+                    (void) try_dec_char_to_u8 ((uint8_t) str [str_index], &temp_value);
+                    number = (number * 10.0) + (double_t) temp_value;
                     str_index++;
                     num_digits++;
                     num_decimals++;
                 }
                 /*12.4545[]*/
-                if (' ' != str[str_index] && '\0' != str[str_index] && 'e' != str[str_index] && 'E' != str[str_index]) {
+                if (' ' != str [str_index] && '\0' != str [str_index] && 'e' != str [str_index] && 'E' != str [str_index]) {
                     strtod_success = false;
                 }
 
             } else {
-                if (' ' != str[str_index] && '\0' != str[str_index] && 'e' != str[str_index] && 'E' != str[str_index]) {
+                if (' ' != str [str_index] && '\0' != str [str_index] && 'e' != str [str_index] && 'E' != str [str_index]) {
                     strtod_success = false;
                 }
             }
         } else {
-            if ('\0' != str[str_index] && ' ' != str[str_index] && 'E' != str[str_index] && 'e' != str[str_index]) {
+            if ('\0' != str [str_index] && ' ' != str [str_index] && 'E' != str [str_index] && 'e' != str [str_index]) {
                 strtod_success = false;
             }
         }
@@ -326,26 +326,26 @@ bool is_real_number (const char str[]) {
         /* Correct for sign */
 
         /* Process an exponent string */
-        if ((str[str_index] == 'e') || (str[str_index] == 'E')) {
+        if ((str [str_index] == 'e') || (str [str_index] == 'E')) {
             /* Handle optional sign */
 
             str_index++;
 
-            if (('-' == str[str_index]) || ('+' == str[str_index])) {
+            if (('-' == str [str_index]) || ('+' == str [str_index])) {
                 str_index++;
             }
-            if (false == isdigit ((int32_t) (str[str_index]))) {
+            if (false == isdigit ((int32_t) (str [str_index]))) {
                 /* in case of "0e" */
                 strtod_success = false;
             } else {
                 /* Process string of digits */
                 s32_number = 0;
-                while (isdigit ((int32_t) (str[str_index])) > 0) {
-                    (void)try_dec_char_to_u8 ((uint8_t)str[str_index], &temp_value);
-                    s32_number = (s32_number * 10) + (int32_t)temp_value;
+                while (isdigit ((int32_t) (str [str_index])) > 0) {
+                    (void) try_dec_char_to_u8 ((uint8_t) str [str_index], &temp_value);
+                    s32_number = (s32_number * 10) + (int32_t) temp_value;
                     str_index++;
                 }
-                if (' ' != str[str_index] && ('\0' != str[str_index])) {
+                if (' ' != str [str_index] && ('\0' != str [str_index])) {
                     strtod_success = false;
                 }
             }
@@ -354,7 +354,7 @@ bool is_real_number (const char str[]) {
     if (true == strtod_success) {
         if (str_index < (strLen - 1)) {
             /* "1 4" */
-            strtod_success = is_spaces (&str[str_index]);
+            strtod_success = is_spaces (&str [str_index]);
         }
     }
     return strtod_success;
@@ -364,12 +364,12 @@ bool try_dec_char_to_u8 (uint8_t dec_char, uint8_t *dec_char_to_u8_value) {
     uint8_t dec_char_to_u8_result = 0U;
     bool dec_char_to_u8_success = true;
 
-    if ((dec_char < (uint8_t)'0') || (dec_char > (uint8_t)'9')) {
+    if ((dec_char < (uint8_t) '0') || (dec_char > (uint8_t) '9')) {
         dec_char_to_u8_success = false;
     }
 
     if (dec_char_to_u8_success == true) {
-        dec_char_to_u8_result = dec_char - (uint8_t)'0';
+        dec_char_to_u8_result = dec_char - (uint8_t) '0';
     }
 
     *dec_char_to_u8_value = dec_char_to_u8_result;
@@ -377,11 +377,12 @@ bool try_dec_char_to_u8 (uint8_t dec_char, uint8_t *dec_char_to_u8_value) {
 }
 
 static int gHashSize = 0;
-static int gCharHashTable[512] = {0};
+static int gCharHashTable [512] =
+    { 0 };
 
 static bool hash_table_char_put (char character, int indexInArray) {
     bool res = false;
-    if (0 <= gCharHashTable[(int)character]) {
+    if (0 <= gCharHashTable [(int) character]) {
 #if DEBUG_HASH_TABLE
         printf ("\nCollision\n");
 #endif
@@ -389,7 +390,7 @@ static bool hash_table_char_put (char character, int indexInArray) {
 #if DEBUG_HASH_TABLE
         printf ("new in table [%c] %d", character, indexInArray);
 #endif
-        gCharHashTable[(int)character] = indexInArray;
+        gCharHashTable [(int) character] = indexInArray;
         gHashSize++;
         res = true;
     }
@@ -397,8 +398,8 @@ static bool hash_table_char_put (char character, int indexInArray) {
 }
 
 static int hash_table_char_check (char character) {
-    if (0 <= gCharHashTable[(int)character]) {
-        return gCharHashTable[(int)character];
+    if (0 <= gCharHashTable [(int) character]) {
+        return gCharHashTable [(int) character];
     } else {
         return -1;
     }
@@ -424,9 +425,9 @@ static bool hash_table_char_remove (char character) {
 #endif
 static void init_hash_table (void) {
     gHashSize = 0;
-    int sizeOfArray = sizeof (gCharHashTable) / sizeof (gCharHashTable[0]);
+    int sizeOfArray = sizeof(gCharHashTable) / sizeof(gCharHashTable [0]);
     for (int i = 0; i < sizeOfArray; i++) {
-        gCharHashTable[i] = -1;
+        gCharHashTable [i] = -1;
     }
 }
 // bpfbhmipx 1
@@ -453,8 +454,8 @@ int lengthOfLongestSubstring (char *inStr) {
         for (i = 0; i < strLen; i++) {
             init_hash_table ();
             for (j = 1; j <= (strLen - i); j++) {
-                if (hash_table_char_check (inStr[i + j - 1]) < 0) {
-                    res = hash_table_char_put (inStr[i + j - 1], i);
+                if (hash_table_char_check (inStr [i + j - 1]) < 0) {
+                    res = hash_table_char_put (inStr [i + j - 1], i);
                     if (false == res) {
                         printf ("\n Error\n");
                     }
@@ -502,7 +503,7 @@ int find_max_sec (char *string, char sripChar) {
     int curCnt = 0;
     int strLen = strlen (string);
     for (int i = 0; i < strLen; i++) {
-        if (sripChar != string[i]) {
+        if (sripChar != string [i]) {
             curCnt++;
         } else {
             curCnt = 0;
@@ -629,10 +630,9 @@ bool test_detect_change (void) {
 // Examples:
 //"aaabb"5,   "aaa11bb"7  oldSub""0    newSub"11"2    < "11" inserted at index 3  oldSubStringLen 0  newSubStringLen: 2
 //"aa111bb"7, "aa22bb"6   oldSub"111"3 newSub"22"2    < "11" inserted at index 3  oldSubStringLen 3  newSubStringLen: 2
-void detect_change (char *oldStr, char *newStr, char **oldSubStr, int *oldSubStringLen, char **newSubStr,
-                    int *newSubStringLen) {
-    (void)*oldSubStr;
-    (void)*newSubStr;
+void detect_change (char *oldStr, char *newStr, char **oldSubStr, int *oldSubStringLen, char **newSubStr, int *newSubStringLen) {
+    (void) *oldSubStr;
+    (void) *newSubStr;
     *oldSubStringLen = 0;
     *newSubStringLen = 0;
     int oldStrLen = strlen (oldStr);
@@ -684,13 +684,13 @@ void reverse_string (char *inOutStr) {
 
 void reverseString (char *inOutStr, int length) {
     for (int i = 0; i < (length / 2); i++) {
-        swap_char (&inOutStr[i], &inOutStr[(length - 1) - i]);
+        swap_char (&inOutStr [i], &inOutStr [(length - 1) - i]);
     }
 }
 
 bool test_reverse (void) {
     int cmpRes = 0;
-    char tempStr[100];
+    char tempStr [100];
     strcpy (tempStr, "12345");
     reverseString (tempStr, 5);
     cmpRes = strcmp (tempStr, "54321");
@@ -702,22 +702,27 @@ bool test_reverse (void) {
     return true;
 }
 
-void find_diff (char *oldStr, int oldLen, char *newStr, int newLen, int *outOldSubStringLen, int *outNewSubStringLen,
-                char **oldSubStr, char **newSubStr) {
+void find_diff (
+    char *oldStr,
+    int oldLen,
+    char *newStr,
+    int newLen,
+    int *outOldSubStringLen,
+    int *outNewSubStringLen,
+    char **oldSubStr,
+    char **newSubStr) {
     // printf ("\n");
     // print_str_head (oldStr, oldLen);
     // printf (" ");
     // print_str_head (newStr, newLen);
     if ((0 < oldLen) && (0 < newLen)) {
-        if (oldStr[0] == newStr[0]) {
-            find_diff (&oldStr[1], oldLen - 1, &newStr[1], newLen - 1, outOldSubStringLen, outNewSubStringLen,
-                       oldSubStr, newSubStr);
+        if (oldStr [0] == newStr [0]) {
+            find_diff (&oldStr [1], oldLen - 1, &newStr [1], newLen - 1, outOldSubStringLen, outNewSubStringLen, oldSubStr, newSubStr);
         } else {
-            if (oldStr[oldLen - 1] == newStr[newLen - 1]) {
+            if (oldStr [oldLen - 1] == newStr [newLen - 1]) {
                 // oldStr [oldLen - 1] = '\0';
                 // newStr [newLen - 1] = '\0';
-                find_diff (oldStr, oldLen - 1, newStr, newLen - 1, outOldSubStringLen, outNewSubStringLen, oldSubStr,
-                           newSubStr);
+                find_diff (oldStr, oldLen - 1, newStr, newLen - 1, outOldSubStringLen, outNewSubStringLen, oldSubStr, newSubStr);
             } else {
                 *outOldSubStringLen = oldLen;
                 *outNewSubStringLen = newLen;
@@ -746,9 +751,9 @@ void print_str_head (char *inStr, uint32_t len) {
     printf ("\n %s len %d\n ",inStr,len);
 #endif
     printf ("[");
-    if ((uint32_t)len < (uint32_t)strlen (inStr)) {
+    if ((uint32_t) len < (uint32_t) strlen (inStr)) {
         for (uint32_t i = 0; i < len; i++) {
-            printf ("%c", inStr[i]);
+            printf ("%c", inStr [i]);
         }
     }
     printf ("]");
@@ -764,8 +769,8 @@ bool is_diff_chars (char *inStr, uint32_t len) {
         uint32_t strLen = strlen (inStr);
         if (len <= strLen) {
             for (uint32_t i = 0; i < len; i++) {
-                if (hash_table_char_check (inStr[i]) < 0) {
-                    bool res = hash_table_char_put (inStr[i], i);
+                if (hash_table_char_check (inStr [i]) < 0) {
+                    bool res = hash_table_char_put (inStr [i], i);
                     if (false == res) {
                         printf ("\n Error\n");
                     }
@@ -794,7 +799,7 @@ int myAtoi (char *str) {
 
 bool test_myAtoi (void) {
     int val;
-    char inStr[40];
+    char inStr [40];
 
     strcpy (inStr, "20000000000000000000");
     val = myAtoi (inStr);
@@ -885,10 +890,10 @@ bool test_myAtoi (void) {
     return true;
 }
 
-bool try_strl2int32_dec (const char s32_dec_str[], int32_t s32_dec_str_len, int32_t *const s32_dec_value) {
+bool try_strl2int32_dec (const char s32_dec_str [], int32_t s32_dec_str_len, int32_t * const s32_dec_value) {
     int64_t s32l_dec_result = 0;
     int32_t i = 0;
-    while ((' ' == s32_dec_str[i]) && (i < s32_dec_str_len)) {
+    while ((' ' == s32_dec_str [i]) && (i < s32_dec_str_len)) {
         i++;
     }
     bool s32l_dec_success = try_strl2int64_dec ((s32_dec_str + i), s32_dec_str_len - i, &s32l_dec_result);
@@ -900,7 +905,7 @@ bool try_strl2int32_dec (const char s32_dec_str[], int32_t s32_dec_str_len, int3
             if (s32l_dec_result < INT32_MIN) {
                 *s32_dec_value = INT32_MIN;
             } else {
-                *s32_dec_value = (int32_t)s32l_dec_result;
+                *s32_dec_value = (int32_t) s32l_dec_result;
             }
         }
     } else {
@@ -911,7 +916,7 @@ bool try_strl2int32_dec (const char s32_dec_str[], int32_t s32_dec_str_len, int3
     return s32l_dec_success;
 }
 
-bool try_strl2int64_dec (const char s64_dec_str[], int32_t s64_dec_str_len, int64_t *s64_dec_value) {
+bool try_strl2int64_dec (const char s64_dec_str [], int32_t s64_dec_str_len, int64_t *s64_dec_value) {
     bool s64l_dec_success = true;
     bool s64l_dec_signed = false;
     bool signePresent = false;
@@ -919,9 +924,9 @@ bool try_strl2int64_dec (const char s64_dec_str[], int32_t s64_dec_str_len, int6
 
     int32_t s64l_dec_str_index;
 
-    signePresent = is_signe (s64_dec_str[0]);
+    signePresent = is_signe (s64_dec_str [0]);
     if (true == signePresent) {
-        s64l_dec_signed = is_signed (s64_dec_str[0]);
+        s64l_dec_signed = is_signed (s64_dec_str [0]);
     }
 
     if ((s64l_dec_signed == true) && (s64_dec_str_len < 2)) {
@@ -936,14 +941,14 @@ bool try_strl2int64_dec (const char s64_dec_str[], int32_t s64_dec_str_len, int6
         }
 
         for (; s64l_dec_str_index < s64_dec_str_len; s64l_dec_str_index++) {
-            uint8_t s64_dec_str_char = (uint8_t)s64_dec_str[s64l_dec_str_index];
+            uint8_t s64_dec_str_char = (uint8_t) s64_dec_str [s64l_dec_str_index];
             uint8_t s64_dec_str_number = 0U;
             int64_t s64_dec_temp_value = 0;
 
             s64l_dec_success = try_dec_char_to_u8 (s64_dec_str_char, &s64_dec_str_number);
             if (s64l_dec_success == true) {
                 if (s64l_dec_result < (INT64_MAX / 10)) {
-                    s64_dec_temp_value = (s64l_dec_result * 10) + (int64_t)s64_dec_str_number;
+                    s64_dec_temp_value = (s64l_dec_result * 10) + (int64_t) s64_dec_str_number;
                 } else {
 #ifdef DEBUG_ITOA
                     printf ("\n stop overflow may happen [%lld]\n", (long long int)s64l_dec_result);
@@ -1036,28 +1041,26 @@ const char* utoa_bin16 (uint16_t u16_bin_data) {
     return outBitStr16;
 }
 
-
-
 //
 // 1111_1111_1111_1111_1111_1111_1111_1111
 char *uint32_to_bin_str (uint32_t inVal32bit) {
-    static char outBitStr[40] = "";
+    static char outBitStr [40] = "";
     int8_t rBit = 0;
     uint8_t cell = 0u, bitCnt = 0u;
     uint32_t mask = 0u;
     for (rBit = 31; 0 <= rBit; rBit--) {
-        if (cell < sizeof (outBitStr)) {
+        if (cell < sizeof(outBitStr)) {
             if (4u == bitCnt) {
-                outBitStr[cell] = '_';
+                outBitStr [cell] = '_';
                 bitCnt = 0u;
                 cell++;
             }
-            mask = (uint32_t) (((uint32_t)1u) << ((uint32_t)rBit));
+            mask = (uint32_t) (((uint32_t) 1u) << ((uint32_t) rBit));
             bitCnt++;
             if (0u != (inVal32bit & mask)) {
-                outBitStr[cell] = '1';
+                outBitStr [cell] = '1';
             } else {
-                outBitStr[cell] = '0';
+                outBitStr [cell] = '0';
             }
         }
         cell++;
@@ -1076,7 +1079,7 @@ bool parseBoolExpr (char *expression) {
     if (expression) {
         int inStrlen = strlen (expression);
         if (0 < inStrlen) {
-            res = parse_bool_expr (&expression[0], inStrlen);
+            res = parse_bool_expr (&expression [0], inStrlen);
         }
     }
     return res;
@@ -1099,31 +1102,36 @@ bool parse_bool_expr (char *expression, int inStrLen) {
             return parse_single_char (expression);
         }
         if (0 < inStrLen) {
-            switch (expression[0]) {
-            case '(': {
-                if (((char)0x29) == expression[inStrLen - 1]) {
-                    res = parse_bool_expr (&expression[1], inStrLen - 2);
-                } else {
-                    printf (NEW_LINE " error [%c] " NEW_LINE, expression[inStrLen - 1]);
+            switch (expression [0]) {
+                case '(': {
+                    if (((char) 0x29) == expression [inStrLen - 1]) {
+                        res = parse_bool_expr (&expression [1], inStrLen - 2);
+                    } else {
+                        printf (NEW_LINE " error [%c] " NEW_LINE, expression [inStrLen - 1]);
+                    }
                 }
-            } break;
+                    break;
 
-            case '|': {
-                //"(&(t,f,t),!(t))"
-                res = parse_or (&expression[1], inStrLen - 1);
-            } break;
-            case '!': {
-                //"!( &( !(&(f)), &(t), |(f,f,t) ) )"
-                res = parse_not (&expression[1], inStrLen - 1);
-            } break;
-            case '&': {
-                res = parse_and (&expression[1], inStrLen - 1);
-            } break;
-            default: {
-                printf (NEW_LINE " error <");
-                print_sub_str (expression, inStrLen);
-                printf ("> len: %d" NEW_LINE, inStrLen);
-            } break;
+                case '|': {
+                    //"(&(t,f,t),!(t))"
+                    res = parse_or (&expression [1], inStrLen - 1);
+                }
+                    break;
+                case '!': {
+                    //"!( &( !(&(f)), &(t), |(f,f,t) ) )"
+                    res = parse_not (&expression [1], inStrLen - 1);
+                }
+                    break;
+                case '&': {
+                    res = parse_and (&expression [1], inStrLen - 1);
+                }
+                    break;
+                default: {
+                    printf (NEW_LINE " error <");
+                    print_sub_str (expression, inStrLen);
+                    printf ("> len: %d" NEW_LINE, inStrLen);
+                }
+                    break;
             }
         }
     }
@@ -1131,17 +1139,19 @@ bool parse_bool_expr (char *expression, int inStrLen) {
 }
 
 static bool parse_single_char (char *expression) {
-    switch (expression[0]) {
-    case 't': {
-        return true;
-    } break;
-    case 'f': {
-        return false;
-    }
+    switch (expression [0]) {
+        case 't': {
+            return true;
+        }
+            break;
+        case 'f': {
+            return false;
+        }
 
-    default: {
-        printf ("error");
-    } break;
+        default: {
+            printf ("error");
+        }
+            break;
     }
     return false;
 }
@@ -1166,8 +1176,8 @@ static bool parse_or (char *expression, int inStrLen) {
             for (int operand = 0; operand < amountOfoperand; operand++) {
                 index = get_index_in_string (expression, inStrLen, operand, &lenOfOperand);
                 // printf ("OR operand %d: ", operand);
-                print_sub_str (&expression[index], lenOfOperand);
-                res |= parse_bool_expr (&expression[index], lenOfOperand);
+                print_sub_str (&expression [index], lenOfOperand);
+                res |= parse_bool_expr (&expression [index], lenOfOperand);
             }
         }
     }
@@ -1176,24 +1186,24 @@ static bool parse_or (char *expression, int inStrLen) {
 
 bool test_operand_extract (void) {
     int operLen = -1;
-    EXPECT_EQ (1, get_index_in_string ("(f,t)", 5, 0, &operLen));
-    EXPECT_EQ (1, operLen);
+    EXPECT_EQ(1, get_index_in_string ("(f,t)", 5, 0, &operLen));
+    EXPECT_EQ(1, operLen);
     operLen = -1;
-    EXPECT_EQ (3, get_index_in_string ("(f,t)", 5, 1, &operLen));
-    EXPECT_EQ (1, operLen);
+    EXPECT_EQ(3, get_index_in_string ("(f,t)", 5, 1, &operLen));
+    EXPECT_EQ(1, operLen);
     operLen = -1;
-    EXPECT_EQ (1, get_index_in_string ("(&(t,f,t),!(t))", 15, 0, &operLen));
-    EXPECT_EQ (8, operLen);
+    EXPECT_EQ(1, get_index_in_string ("(&(t,f,t),!(t))", 15, 0, &operLen));
+    EXPECT_EQ(8, operLen);
     operLen = -1;
-    EXPECT_EQ (10, get_index_in_string ("(&(t,f,t),!(t))", 15, 1, &operLen));
-    EXPECT_EQ (4, operLen);
+    EXPECT_EQ(10, get_index_in_string ("(&(t,f,t),!(t))", 15, 1, &operLen));
+    EXPECT_EQ(4, operLen);
     return true;
 }
 
 bool test_parse_and (void) {
-    EXPECT_TRUE (parse_and ("(t,t,t)", 7));
-    EXPECT_FALSE (parse_and ("(t,f,t)", 7));
-    EXPECT_FALSE (parse_and ("(t,&(f,t),t)", 12));
+    EXPECT_TRUE(parse_and ("(t,t,t)", 7));
+    EXPECT_FALSE(parse_and ("(t,f,t)", 7));
+    EXPECT_FALSE(parse_and ("(t,&(f,t),t)", 12));
     return true;
 }
 // "(t,f,t)"          3
@@ -1219,8 +1229,8 @@ static bool parse_and (char *expression, int inStrLen) {
             for (int operand = 0; operand < amountOfoperand; operand++) {
                 index = get_index_in_string (expression, inStrLen, operand, &lenOfOperand);
                 // printf (" AND:%d: ", operand);
-                print_sub_str (&expression[index], lenOfOperand);
-                res &= parse_bool_expr (&expression[index], lenOfOperand);
+                print_sub_str (&expression [index], lenOfOperand);
+                res &= parse_bool_expr (&expression [index], lenOfOperand);
             }
             // printf (NEW_LINE);
         }
@@ -1245,16 +1255,16 @@ static int parse_num_operands (char *expression, int inStrLen) {
                 lifo_init (&lifoObj, inStrLen, array);
                 for (int i = 0; i < inStrLen; i++) {
                     char outChar = 'a';
-                    if (is_bracket (expression[i])) {
+                    if (is_bracket (expression [i])) {
                         lifo_peek (&lifoObj, &outChar);
-                        if (true == brackets_same_type (outChar, expression[i])) {
+                        if (true == brackets_same_type (outChar, expression [i])) {
                             lifo_pull (&lifoObj, &outChar);
                         } else {
-                            lifo_push (&lifoObj, expression[i]);
+                            lifo_push (&lifoObj, expression [i]);
                         }
 
                     } else {
-                        if (',' == expression[i]) {
+                        if (',' == expression [i]) {
                             if (1 == lifoObj.lifoStat.len) {
                                 numOfOperands++;
                             }
@@ -1272,7 +1282,7 @@ static int parse_num_operands (char *expression, int inStrLen) {
 //"(f,t)"
 //"(&(t,f,t),!(t))"
 //"(&(t,f,t),!(t))"
-int get_index_in_string (char *expression, int inStrLen, int operandNum, int *const operandLen) {
+int get_index_in_string (char *expression, int inStrLen, int operandNum, int * const operandLen) {
     int indOfoperand = -1;
     bool match = false;
     if (expression) {
@@ -1292,19 +1302,19 @@ int get_index_in_string (char *expression, int inStrLen, int operandNum, int *co
                 lifo_init (&lifoObj, inStrLen, array);
                 for (i = 0; i < inStrLen; i++) {
                     char outChar = 'a';
-                    if (is_bracket (expression[i])) {
+                    if (is_bracket (expression [i])) {
                         lifo_peek (&lifoObj, &outChar);
-                        if (true == brackets_same_type (outChar, expression[i])) {
+                        if (true == brackets_same_type (outChar, expression [i])) {
                             lifo_pull (&lifoObj, &outChar);
                         } else {
-                            lifo_push (&lifoObj, expression[i]);
+                            lifo_push (&lifoObj, expression [i]);
                         }
 
                     } else {
-                        if (',' == expression[i]) {
+                        if (',' == expression [i]) {
                             if (1 == lifoObj.lifoStat.len) {
                                 if (true == match) {
-                                    (*operandLen) = (i)-indOfoperand;
+                                    (*operandLen) = (i) - indOfoperand;
                                     free (array);
                                     return indOfoperand;
                                 } else {
@@ -1342,17 +1352,18 @@ static bool parse_not (char *expression, int inStrLen) {
         if (1 == inStrLen) {
             return !parse_single_char (expression);
         } else {
-            switch (expression[0]) {
-            case '(': {
-                if (((char)0x29) == expression[inStrLen - 1]) {
-                    res = !parse_bool_expr (&expression[1], inStrLen - 2);
-                } else {
-                    printf (NEW_LINE " error [%c] " NEW_LINE, expression[inStrLen - 1]);
+            switch (expression [0]) {
+                case '(': {
+                    if (((char) 0x29) == expression [inStrLen - 1]) {
+                        res = !parse_bool_expr (&expression [1], inStrLen - 2);
+                    } else {
+                        printf (NEW_LINE " error [%c] " NEW_LINE, expression [inStrLen - 1]);
+                    }
                 }
-            } break;
-            default:
-                res = !parse_bool_expr (expression, inStrLen);
-                break;
+                    break;
+                default:
+                    res = !parse_bool_expr (expression, inStrLen);
+                    break;
             }
         }
     }
@@ -1360,36 +1371,36 @@ static bool parse_not (char *expression, int inStrLen) {
 }
 
 bool test_parse_not (void) {
-    EXPECT_TRUE (parse_not ("(f)", 3));
-    EXPECT_TRUE (parse_not ("!(t)", 4));
-    EXPECT_FALSE (parse_not ("!(f)", 4));
-    EXPECT_FALSE (parse_not ("(t)", 3));
-    EXPECT_FALSE (parse_not ("!(f)", 4));
+    EXPECT_TRUE(parse_not ("(f)", 3));
+    EXPECT_TRUE(parse_not ("!(t)", 4));
+    EXPECT_FALSE(parse_not ("!(f)", 4));
+    EXPECT_FALSE(parse_not ("(t)", 3));
+    EXPECT_FALSE(parse_not ("!(f)", 4));
     return true;
 }
 
 bool test_parse_num_operands (void) {
-    EXPECT_EQ (1, parse_num_operands ("(f)", 3));
-    EXPECT_EQ (1, parse_num_operands ("(t)", 3));
-    EXPECT_EQ (4, parse_num_operands ("(t,f,t,t)", 9));
-    EXPECT_EQ (3, parse_num_operands ("(t,f,t)", 7));
-    EXPECT_EQ (2, parse_num_operands ("(t,f)", 5));
-    EXPECT_EQ (2, parse_num_operands ("(&(t,f,t),!(t))", 15));
-    EXPECT_EQ (2, parse_num_operands ("(&(t,&(f,t),t),!(t))", 20));
+    EXPECT_EQ(1, parse_num_operands ("(f)", 3));
+    EXPECT_EQ(1, parse_num_operands ("(t)", 3));
+    EXPECT_EQ(4, parse_num_operands ("(t,f,t,t)", 9));
+    EXPECT_EQ(3, parse_num_operands ("(t,f,t)", 7));
+    EXPECT_EQ(2, parse_num_operands ("(t,f)", 5));
+    EXPECT_EQ(2, parse_num_operands ("(&(t,f,t),!(t))", 15));
+    EXPECT_EQ(2, parse_num_operands ("(&(t,&(f,t),t),!(t))", 20));
     return true;
 }
 
 bool test_parseBoolExpr (void) {
-    EXPECT_TRUE (parseBoolExpr ("!(&(f))"));
-    EXPECT_FALSE (parseBoolExpr ("&(f)"));
-    EXPECT_TRUE (parseBoolExpr ("&(t)"));
-    EXPECT_FALSE (parseBoolExpr ("!(&(!(&(f)),&(t),|(f,f,t)))"));
-    EXPECT_TRUE (parseBoolExpr ("(t)"));
-    EXPECT_FALSE (parseBoolExpr ("(f)"));
-    EXPECT_TRUE (parseBoolExpr ("!(f)"));
-    EXPECT_FALSE (parseBoolExpr ("|(&(t,f,t),!(t))"));
-    EXPECT_TRUE (parseBoolExpr ("|(f,t)"));
-    EXPECT_FALSE (parseBoolExpr ("&(t,f)"));
+    EXPECT_TRUE(parseBoolExpr ("!(&(f))"));
+    EXPECT_FALSE(parseBoolExpr ("&(f)"));
+    EXPECT_TRUE(parseBoolExpr ("&(t)"));
+    EXPECT_FALSE(parseBoolExpr ("!(&(!(&(f)),&(t),|(f,f,t)))"));
+    EXPECT_TRUE(parseBoolExpr ("(t)"));
+    EXPECT_FALSE(parseBoolExpr ("(f)"));
+    EXPECT_TRUE(parseBoolExpr ("!(f)"));
+    EXPECT_FALSE(parseBoolExpr ("|(&(t,f,t),!(t))"));
+    EXPECT_TRUE(parseBoolExpr ("|(f,t)"));
+    EXPECT_FALSE(parseBoolExpr ("&(t,f)"));
     return true;
 }
 
@@ -1398,7 +1409,7 @@ bool test_parseBoolExpr (void) {
 // "(t,f)"                      1
 // "(&(t,f,t),!(t))"            2
 // "(&(t,&(f,t),t),!(t))"       3
-int calc_paratasis_nesting (char *s, int *const amountOfPairs) {
+int calc_paratasis_nesting (char *s, int * const amountOfPairs) {
     bool res;
     int nestDepth = -1;
     (*amountOfPairs) = 0u;
@@ -1412,13 +1423,13 @@ int calc_paratasis_nesting (char *s, int *const amountOfPairs) {
             lifo_init (&lifoObj, strLen, array);
             for (int i = 0; i < strLen; i++) {
                 char outChar = 'a';
-                if (is_bracket (s[i])) {
+                if (is_bracket (s [i])) {
                     lifo_peek (&lifoObj, &outChar);
-                    if (true == brackets_same_type (outChar, s[i])) {
+                    if (true == brackets_same_type (outChar, s [i])) {
                         lifo_pull (&lifoObj, &outChar);
                         (*amountOfPairs)++;
                     } else {
-                        lifo_push (&lifoObj, s[i]);
+                        lifo_push (&lifoObj, s [i]);
                         nestDepth = max (lifoObj.lifoStat.len, nestDepth);
                     }
                 }
@@ -1431,17 +1442,17 @@ int calc_paratasis_nesting (char *s, int *const amountOfPairs) {
 
 bool test_calc_paratasis_nesting (void) {
     int amountOfPairs = 0;
-    EXPECT_EQ (1, calc_paratasis_nesting ("(t,f,t)", &amountOfPairs));
-    EXPECT_EQ (1, amountOfPairs);
+    EXPECT_EQ(1, calc_paratasis_nesting ("(t,f,t)", &amountOfPairs));
+    EXPECT_EQ(1, amountOfPairs);
 
-    EXPECT_EQ (1, calc_paratasis_nesting ("(t,f)", &amountOfPairs));
-    EXPECT_EQ (1, amountOfPairs);
+    EXPECT_EQ(1, calc_paratasis_nesting ("(t,f)", &amountOfPairs));
+    EXPECT_EQ(1, amountOfPairs);
 
-    EXPECT_EQ (2, calc_paratasis_nesting ("(&(t,f,t),!(t))", &amountOfPairs));
-    EXPECT_EQ (3, amountOfPairs);
+    EXPECT_EQ(2, calc_paratasis_nesting ("(&(t,f,t),!(t))", &amountOfPairs));
+    EXPECT_EQ(3, amountOfPairs);
 
-    EXPECT_EQ (3, calc_paratasis_nesting ("(&(t,&(f,t),t),!(t))", &amountOfPairs));
-    EXPECT_EQ (4, amountOfPairs);
+    EXPECT_EQ(3, calc_paratasis_nesting ("(&(t,&(f,t),t),!(t))", &amountOfPairs));
+    EXPECT_EQ(4, amountOfPairs);
 
     return true;
 }
@@ -1456,12 +1467,12 @@ bool is_valid_parentheses (char *s) {
         char outChar = 'a';
         for (int i = 0; i < strLen; i++) {
             outChar = 'a';
-            if (is_bracket (s[i])) {
+            if (is_bracket (s [i])) {
                 lifo_peek (&lifoObj, &outChar);
-                if (true == brackets_same_type (outChar, s[i])) {
+                if (true == brackets_same_type (outChar, s [i])) {
                     lifo_pull (&lifoObj, &outChar);
                 } else {
-                    lifo_push (&lifoObj, s[i]);
+                    lifo_push (&lifoObj, s [i]);
                 }
             }
         }
@@ -1474,28 +1485,28 @@ bool is_valid_parentheses (char *s) {
 }
 
 bool test_Valid_Parentheses (void) {
-    EXPECT_TRUE (is_valid_parentheses ("()[]{}"));
-    EXPECT_TRUE (is_valid_parentheses ("(t,f,t)"));
-    EXPECT_TRUE (is_valid_parentheses ("(&(t,&(f,t),t),!(t))"));
+    EXPECT_TRUE(is_valid_parentheses ("()[]{}"));
+    EXPECT_TRUE(is_valid_parentheses ("(t,f,t)"));
+    EXPECT_TRUE(is_valid_parentheses ("(&(t,&(f,t),t),!(t))"));
     return true;
 }
 
 bool is_bracket (char ch) {
     bool res = false;
     switch (ch) {
-    case '}':
-    case '{':
-    case '[':
-    case ']':
-    case '(':
-    case ')':
-    case '>':
-    case '<':
-        res = true;
-        break;
-    default:
-        res = false;
-        break;
+        case '}':
+        case '{':
+        case '[':
+        case ']':
+        case '(':
+        case ')':
+        case '>':
+        case '<':
+            res = true;
+            break;
+        default:
+            res = false;
+            break;
     }
     return res;
 }
@@ -1526,10 +1537,66 @@ int replace_char (char *str, char orig, char rep) {
     return n;
 }
 
-bool test_str_char_replace (void) {
-    char fileName[100];
+// qwertyuioo  "rty", "ZXC"
+// qwe***uioo
+// cut
+// qwe uioo
+// insetr
+// qwe ZXC uioo
+// concatenate
+// qweZXCuioo
+bool reblace_substring (char *inOutStr, char *orig, char *rep) {
+    bool res = false;
+    int textLen = strlen (inOutStr);
+    int pattLen = strlen (orig);
+    int repLen = strlen (rep);
+    char *curPtr = strstr (inOutStr, orig);
+    char *part3;
+    if (NULL != curPtr) {
+        for (int i = 0; i < pattLen; i++) {
+            curPtr [i] = '\0';
+        }
+        part3 = &curPtr [pattLen];
+        char *tempStr = malloc (textLen - pattLen + repLen);
+        if (tempStr) {
+            strcpy (tempStr, inOutStr);
+            printf("\n tempStr %s",tempStr);
+            strcat (tempStr, rep);
+            printf("\n tempStr %s",tempStr);
+            strcat (tempStr, part3);
+            printf("\n tempStr %s",tempStr);
+            strcpy (inOutStr, tempStr);
+            printf("\n tempStr %s",tempStr);
+            free (tempStr);
+            res = true;
+        }
+    }
+
+    return res;
+}
+
+bool test_replace_substr (void) {
+    char fileName [100];
     int cmpRes = 0;
-    strncpy (fileName, "spc58_pass.mk", sizeof (fileName));
+    bool res;
+    strncpy (fileName, "qwertyuioo", sizeof(fileName));
+
+    res = reblace_substring (fileName, "rty", "ZXC");
+    if(false==res){
+        return false;
+    }
+
+    cmpRes = strcmp (fileName, "qweZXCuioo");
+    if (0 == cmpRes) {
+        return true;
+    }
+    return false;
+}
+
+bool test_str_char_replace (void) {
+    char fileName [100];
+    int cmpRes = 0;
+    strncpy (fileName, "spc58_pass.mk", sizeof(fileName));
     replace_char (fileName, '.', '_');
     cmpRes = strcmp (fileName, "spc58_pass_mk");
     if (0 == cmpRes) {

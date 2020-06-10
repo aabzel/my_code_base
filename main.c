@@ -1,8 +1,10 @@
+#include "code_config.h"
+
 #include "algorithms.h"
 #include "combinations.h"
 #include "hash_table.h"
 #include "linked_list.h"
-#include "parse_phy_regs.h"
+#include "parse_regs.h"
 #include "permutations.h"
 #include "utils.h"
 #include "uTests.h"
@@ -13,7 +15,6 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#define PRINT_ENV 0
 extern char **environ;
 
 #if PRINT_ENV
@@ -29,29 +30,39 @@ static bool print_ent (void) {
 int main (int argc, char* argv []);
 //int main (int argc, char **argv)
 int main (int argc, char* argv []) {
-
+    (void) argc;
+    (void) argv;
 #if PRINT_ENV
     print_ent();
 #endif
 
-#if 1
-    init_file_name ();
-
+#if DEPLOY_UTESTS
     int ret = unitTest ();
     if (0 != ret) {
         printf ("\n\nUnit Test Error: %d\n", ret);
     } else {
-        //printf ("\n\nUnit Test fine\n");
-#if 0
-        test_combine ();
-#endif
+        printf ("\n\nUnit Test fine\n");
     }
 #endif
-    bool res = parse_phy_regs_file ("tja1101_reg_map_blob.txt", "tja1101_config.txt");
-    if(false==res){
-        printf ("\nError\n");
+
+#if DEPLOY_PARSE_REG
+    if (3 == argc) {
+        bool res;
+        res = parse_regs_file (argv [1], argv [2]);
+        if (false == res) {
+            printf ("\nError in parsing PHY regs\n");
+        }
+    } else {
+        char inFileName [100];
+        strncpy (inFileName, "tja1101_reg_map_blob.txt", sizeof(inFileName));
+        bool res = parse_regs_file (inFileName, "tja1101_config.txt");
+        if (false == res) {
+            printf ("\nError in parsing PHY registers from file [%s]\n", inFileName);
+        }
     }
+#endif
     //perform_exper ();
+#if PARSE_MK
     if (3 == argc) {
         //printf ("\n\narg 0  [%s]\n",argv[0]);
         printf ("\nin file [%s]", argv [1]);
@@ -61,7 +72,7 @@ int main (int argc, char* argv []) {
             printf ("\n\nError\n");
         }
     }
-
+#endif
     //permute (alphabet);
 
 #if 0

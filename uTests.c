@@ -33,10 +33,49 @@
 
 int unitTest (void) {
     bool res = false;
+
+    res = test_replace_substr ();
+    if (false == res) {
+        return SUB_STR_REPL_ERROR;
+    }
+
+    print_biggest_mantissa ();
+    uint16_t sample16bit;
+    sample16bit = float_to_uint16 (0.2f);
+    if (0U != sample16bit) {
+        return FLOAR_TO_SAMPLE_ERROR;
+    }
+    float val1;
+    float val2;
+    float val3;
+    float epsilon = 1e-6;
+    val1 = 0.2;
+    val2 = 0.2 + epsilon;
+    val3 = val2 - val1;
+    printf ("\n val3 %f \n", val3);
+    printf ("\n val3 %e \n", val3);
+    //samval1;ple16bit = float_to_uint16 (23234.2f);
+    //if (23234U != sample16bit) {
+    //return FLOAR_TO_SAMPLE_ERROR;
+    //}
+
+    //sample16bit = float_to_uint16 (-23234.2f);
+    //if (0U != sample16bit) {
+    //return FLOAR_TO_SAMPLE_ERROR;
+    //}
+
+#if 0
+    init_file_name ();
+    print_pad_nums ();
+#endif
+
+#if TEST_MY_PRINTF
     res = test_my_printf ();
     if (false == res) {
         return NUM_OF_ARGS_ERROR;
     }
+#endif
+
 #if TEST_MAX_ENFELOP
     res = maxEnvelopes_test ();
     if (false == res) {

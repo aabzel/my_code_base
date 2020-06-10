@@ -1,16 +1,18 @@
-#include "parse_phy_regs.h"
+#include "parse_tic12400_regs.h"
+#include "tic12400_bits_offsets.h"
+#include "utils.h"
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
 
-bool parse_phy_regs_file (char *inFileName, char *outFileName) {
-    (void) *outFileName;
+bool parse_tic12400_regs_file (char *inFileName, char *outFileName) {
     char curFileStr [500];
     bool res = false;
     FILE *inFilePrt = NULL;
     FILE *outFilePrt = NULL;
+    printf ("\n>In file: [%s]", inFileName);
     inFilePrt = fopen (inFileName, "r");
     outFilePrt = fopen (outFileName, "w");
     if (inFilePrt && outFilePrt) {
@@ -18,10 +20,10 @@ bool parse_phy_regs_file (char *inFileName, char *outFileName) {
         while (NULL != fgets (curFileStr, sizeof(curFileStr), inFilePrt)) {
             unsigned int regAddr;
             unsigned int regVal;
-            //printf ("\n>[%s]", curFileStr);
+            printf ("\n>[%s]", curFileStr);
             sscanf (curFileStr, "%x %x", (unsigned int *) &regAddr, (unsigned int *) &regVal);
-            parse_reg (regAddr, regVal, outFilePrt);
-            //printf ("\n[%x] [%x]", regAddr, regVal);
+            parse_tic12400_reg (regAddr, regVal, outFilePrt);
+            printf ("\n[%x] [%x]", regAddr, regVal);
             line++;
         }
         fclose (inFilePrt);
@@ -29,189 +31,252 @@ bool parse_phy_regs_file (char *inFileName, char *outFileName) {
         res = true;
     }
     return res;
-
 }
 
-bool parse_reg (uint8_t regAddr, uint16_t regVal, FILE *outFilePrt) {
+char *tic12400_reg_2_name [51] =
+    { "REG_RESERVED_00H", //0
+        "REG_DEVICE_ID",
+        "REG_INT_STAT",
+        "REG_CRC",
+        "REG_IN_STAT_MISC",
+        "REG_IN_STAT_COMP",
+        "REG_IN_STAT_ADC0",
+        "REG_IN_STAT_ADC1",
+        "REG_IN_STAT_MATRIX0",
+        "REG_IN_STAT_MATRIX1",
+        "REG_ANA_STAT0", //10
+        "REG_ANA_STAT1",
+        "REG_ANA_STAT2",
+        "REG_ANA_STAT3",
+        "REG_ANA_STAT4",
+        "REG_ANA_STAT5",
+        "REG_ANA_STAT6",
+        "REG_ANA_STAT7",
+        "REG_ANA_STAT8",
+        "REG_ANA_STAT9",
+        "REG_ANA_STAT10", //20
+        "REG_ANA_STAT11",
+        "REG_ANA_STAT12",
+        "REG_RESERVED_17H",
+        "REG_RESERVED_18H",
+        "REG_RESERVED_19H",
+        "REG_CONFIG",
+        "REG_IN_EN",
+        "REG_CS_SELECT",
+        "REG_WC_CFG0",
+        "REG_WC_CFG1", //30
+        "REG_CCP_CFG0",
+        "REG_CCP_CFG1",
+        "REG_THRES_COMP",
+        "REG_INT_EN_COMP1",
+        "REG_INT_EN_COMP2",
+        "REG_INT_EN_CFG0",
+        "REG_INT_EN_CFG1",
+        "REG_INT_EN_CFG2",
+        "REG_INT_EN_CFG3",
+        "REG_INT_EN_CFG4", //40
+        "REG_THRES_CFG0",
+        "REG_THRES_CFG1",
+        "REG_THRES_CFG2",
+        "REG_THRES_CFG3",
+        "REG_THRES_CFG4",
+        "REG_THRESMAP_CFG0",
+        "REG_THRESMAP_CFG1",
+        "REG_THRESMAP_CFG2",
+        "REG_MATRIX",
+        "REG_MODE" //50
+        };
+
+bool parse_tic12400_reg (uint8_t regAddr, uint32_t regVal, FILE *outFilePrt) {
     bool res = false;
     switch (regAddr) {
-        case 0: {
-            fprintf (outFilePrt, "\nBasic control register 0h");
-            res = parse_basic_control_register (regVal, outFilePrt);
-        }
-            break;
-        case 1: {
-            fprintf (outFilePrt, "\nBasic status register 1h");
-            res = parse_basic_status_register (regVal, outFilePrt);
-        }
+        case REG_CONFIG:
+            fprintf (outFilePrt, "\nreg %s addr 0x%x val 0x%x", tic12400_reg_2_name [regAddr], regAddr, regVal);
+            res = parse_tic12400_config_register (regAddr, outFilePrt);
             break;
         default:
+#if DPLOY_LACK
+            fprintf (outFilePrt, "\n Lack of parser for reg %s addr 0x%x val 0x%x", tic12400_reg_2_name [regAddr], regAddr, regVal);
+#endif
             break;
     }
     return res;
 }
 
-#define LOOPBACK (1<<14)
-
-bool parse_basic_control_register (uint16_t regVal, FILE *outFilePrt) {
-    bool res = false;
-    if (regVal & RESET_BIT_15) {
-        fprintf (outFilePrt, "\n bit 15: PHY reset");
+bool parse_tic12400_config_register (uint32_t regVal, FILE *outFilePrt) {
+    bool res = true;
+    if (regVal & RESET_0) {
+        fprintf (outFilePrt, "\n  bit 0: Trigger software reset of the device.");
     } else {
-        printf ("\n bit 15: normal operation");
-    }
-    if (regVal & LOOPBACK_14) {
-        fprintf (outFilePrt, "\n bit 14: PHY reset");
-    } else {
-        fprintf (outFilePrt, "\n bit 14: normal operation");
+        fprintf (outFilePrt, "\n  bit 0: No reset");
     }
 
-    if (regVal & SPEED_SELECT_13) {
-        fprintf (outFilePrt, "\n bit 13: 100 Mbit/s if SPEED_SELECT (MSB) = 0 reserved if SPEED_SELECT (MSB) = 1");
+    if (regVal & VS_RATIO_23) {
+        fprintf (outFilePrt, "\n  bit 23: RW Use voltage divider factor of 10 for the VS measurement");
     } else {
-        fprintf (outFilePrt, "\n bit 13: 10 Mbit/s if SPEED_SELECT (MSB) = 0 1000 Mbit/s if SPEED_SELECT (MSB) = 1");
+        fprintf (outFilePrt, "\n  bit 23: RW Use voltage divider factor of 3 for the VS measurement");
     }
 
-    if (regVal & AUTONEG_EN_12) {
-        fprintf (outFilePrt, "\n bit 12: Error");
+    if (regVal & ADC_DIAG_T_22) {
+        fprintf (outFilePrt, "\n  bit 22: RW Enable ADC self-diagnostic feature");
     } else {
-        fprintf (outFilePrt, "\n bit 12: Auto negotiation not supported; always 0; a write access is ignored ");
+        fprintf (outFilePrt, "\n  bit 22: RW Disable ADC self-diagnostic feature");
     }
 
-    if (regVal & POWER_DOWN_11) {
+
+    if (regVal & VS_MEAS_EN_17) {
+        fprintf (outFilePrt, "\n  bit 17: Enable VS measurement at the end of every polling cycle");
+    } else {
+        fprintf (outFilePrt, "\n  bit 17: Disable VS measurement at the end of every polling cycle");
+    }
+
+    if (regVal & TW_CUR_DIS_CSI_16) {
         fprintf (
             outFilePrt,
-            "\n bit 11: power down and switch to Standby mode (provided ISOLATE = 0; ignored if ISOLATE = 1 and CONTROL_ERR interrupt generated) ");
+            "\n  bit 16: Disable wetting current reduction (to 2 mA) for 10mA and 15mA settings upon TW event for all inputs enabled with CSI.");
     } else {
         fprintf (
             outFilePrt,
-            "\n bit 11: normal operation (clearing this bit automatically triggers a transition to Normal mode, provided control bits POWER_MODE are set to 0011 Normal mode, see Table 18) ");
+            "\n  bit 16: Enable wetting current reduction (to 2 mA) for 10mA and 15mA settings upon TW event for all inputs enabled with CSI");
     }
 
-    if (regVal & ISOLATE_10) {
+    if (regVal & TW_CUR_DIS_CSO_13) {
         fprintf (
             outFilePrt,
-            "\n bit 10: isolate PHY from MII/RMII (provided POWER_DOWN = 0; ignored if POWER_DOWN = 1 and CONTROL_ERR interrupt generated) ");
+            "\n  bit 13: RW  Disable wetting current reduction (to 2mA) for 10mA and 15mA settings upon TW event for all inputs enabled with CSO");
     } else {
-        fprintf (outFilePrt, "\n bit 10: normal operation ");
+        fprintf (
+            outFilePrt,
+            "\n  bit 13: RW  Enable wetting current reduction (to 2mA) for 10mA and 15mA settings upon TW event for all inputs enabled with CSO");
     }
 
-    if (regVal & RE_AUTONEG_9) {
-        fprintf (outFilePrt, "\n bit 9: Error ");
+    if (regVal & INT_CONFIG_12) {
+        fprintf (outFilePrt, "\n  bit 12: RW  INT pin assertion scheme set to dynamic");
     } else {
-        fprintf (outFilePrt, "\n bit 9:  Auto negotiation not supported; always 0; a write access is ignored.");
+        fprintf (outFilePrt, "\n  bit 12: RW  INT pin assertion scheme set to static");
     }
 
-    if (regVal & DUPLEX_MODE_8) {
-        fprintf (outFilePrt, "\n bit 8: only full duplex supported; always 1; a write access is ignored ");
+    if (regVal & TRIGGER_11) {
+        fprintf (outFilePrt, "\n  bit 11: RW Trigger TIC12400-Q1 normal operation");
     } else {
-        fprintf (outFilePrt, "\n bit 8: Error ");
+        fprintf (outFilePrt, "\n  bit 11: RW Stop TIC12400-Q1 from normal operation");
     }
 
-    if (regVal & COLLISION_TEST_7) {
-        fprintf (outFilePrt, "\n bit 7: error! ");
+    if (regVal & POLL_EN_10) {
+        fprintf (outFilePrt, "\n  bit 10: RW Polling enabled and the device operates in one of the polling modes");
     } else {
-        fprintf (outFilePrt, "\n bit 7: COL signal test not supported; always 0; a write access is ignored ");
+        fprintf (outFilePrt, "\n  bit 10: RW Polling disabled. Device operates in continuous mode");
     }
 
-    if (regVal & SPEED_SELECT_6) {
-        fprintf (outFilePrt, "\n bit 6: 1000 Mbit/s if SPEED_SELECT (LSB) = 0 reserved if SPEED_SELECT (LSB) = 1");
+    if (regVal & CRC_T_9) {
+        fprintf (outFilePrt, "\n  bit 9: RW trigger CRC calculation");
     } else {
-        fprintf (outFilePrt, "\n bit 6: 10 Mbit/s if SPEED_SELECT (LSB) = 0 100 Mbit/s if SPEED_SELECT (LSB) = 1 ");
+        fprintf (outFilePrt, "\n  bit 9: RW no CRC calculation triggered");
     }
-    if (regVal & UNIDIRECT_EN_5) {
-        fprintf (outFilePrt, "\n bit 5: enable transmit from MII regardless of whether the PHY has determined that a valid link has been established");
-    } else {
-        fprintf (outFilePrt, "\n bit 5: enable transmit from MII only when the PHY has determined that a valid link has been established ");
-    }
-    fprintf (outFilePrt, "\n");
+
+    uint8_t pollActTime = extract_subval_from_32bit (regVal, 8, 5);
+    parse_poll_act_time_val (pollActTime, outFilePrt);
+
+    uint8_t pollTime = extract_subval_from_32bit (regVal, 4, 1);
+    parse_poll_time_val (pollTime, outFilePrt);
     return res;
-
 }
 
-bool parse_basic_status_register (uint16_t regVal, FILE *outFilePrt) {
-    bool res = false;
-    if (regVal & S100BASE_T4_15) {
-        fprintf (outFilePrt, "\n bit 15: PHY able to perform 100BASE-T4 ");
-    } else {
-        fprintf (outFilePrt, "\n bit 15: PHY not able to perform 100BASE-T4 ");
+bool parse_poll_act_time_val (uint8_t pollTime, FILE *outFilePrt) {
+    bool res = true;
+    switch (pollTime) {
+        case 0x0:
+            fprintf (outFilePrt, "\n  bit 8-5: Poll Act time 64us");
+            break;
+        case 0x1:
+            fprintf (outFilePrt, "\n  bit 8-5: Poll Act time 128us");
+            break;
+        case 0x2:
+            fprintf (outFilePrt, "\n  bit 8-5: Poll Act time 192us");
+            break;
+        case 0x3:
+            fprintf (outFilePrt, "\n  bit 8-5: Poll Act time 256us");
+            break;
+        case 0x4:
+            fprintf (outFilePrt, "\n  bit 8-5: Poll Act time 320us");
+            break;
+        case 0x5:
+            fprintf (outFilePrt, "\n  bit 8-5: Poll Act time 384us");
+            break;
+        case 0x6:
+            fprintf (outFilePrt, "\n  bit 8-5: Poll Act time 448us");
+            break;
+        case 0x7:
+            fprintf (outFilePrt, "\n  bit 8-5: Poll Act time 512us");
+            break;
+        case 0x8:
+            fprintf (outFilePrt, "\n  bit 8-5: Poll Act time 640us");
+            break;
+        case 0x9:
+            fprintf (outFilePrt, "\n  bit 8-5: Poll Act time 768us");
+            break;
+        case 0xA:
+            fprintf (outFilePrt, "\n  bit 8-5: Poll Act time 896us");
+            break;
+        case 0xB:
+            fprintf (outFilePrt, "\n  bit 8-5: Poll Act time 1024us");
+            break;
+        case 0xC:
+            fprintf (outFilePrt, "\n  bit 8-5: Poll Act time 2048us");
+            break;
+        default:
+            fprintf (outFilePrt, "\n  bit 8-5: Poll Act time 512us ");
+            break;
     }
-    if (regVal & S100BASE_X_FD_14) {
-        fprintf (outFilePrt, "\n bit 14: PHY able to perform 100BASE-X full-duplex ");
-    } else {
-        fprintf (outFilePrt, "\n bit 14: PHY not able to perform 100BASE-X full-duplex");
+    return res;
+}
+
+bool parse_poll_time_val (uint8_t pollTime, FILE *outFilePrt) {
+    bool res = true;
+    switch (pollTime) {
+        case 0x0:
+            fprintf (outFilePrt, "\n  bit 4-1: Poll time 2ms");
+            break;
+        case 0x1:
+            fprintf (outFilePrt, "\n  bit 4-1: Poll time 4ms");
+            break;
+        case 0x2:
+            fprintf (outFilePrt, "\n  bit 4-1: Poll time 8ms");
+            break;
+        case 0x3:
+            fprintf (outFilePrt, "\n  bit 4-1: Poll time 16ms");
+            break;
+        case 0x4:
+            fprintf (outFilePrt, "\n  bit 4-1: Poll time 32ms");
+            break;
+        case 0x5:
+            fprintf (outFilePrt, "\n  bit 4-1: Poll time 48ms");
+            break;
+        case 0x6:
+            fprintf (outFilePrt, "\n  bit 4-1: Poll time 64ms");
+            break;
+        case 0x7:
+            fprintf (outFilePrt, "\n  bit 4-1: Poll time 128ms");
+            break;
+        case 0x8:
+            fprintf (outFilePrt, "\n  bit 4-1: Poll time 256ms");
+            break;
+        case 0x9:
+            fprintf (outFilePrt, "\n  bit 4-1: Poll time 512ms");
+            break;
+        case 0xA:
+            fprintf (outFilePrt, "\n  bit 4-1: Poll time 1024ms");
+            break;
+        case 0xB:
+            fprintf (outFilePrt, "\n  bit 4-1: Poll time 2048ms");
+            break;
+        case 0xC:
+            fprintf (outFilePrt, "\n  bit 4-1: Poll time 4096ms");
+            break;
+        default:
+            fprintf (outFilePrt, "\n  bit 4-1: Poll time 2ms");
+            break;
     }
-    if (regVal & S100BASE_X_HD_13) {
-        fprintf (outFilePrt, "\n bit 13: PHY able to perform 100BASE-X half-duplex ");
-    } else {
-        fprintf (outFilePrt, "\n bit 13: PHY not able to perform 100BASE-X half-duplex ");
-    }
-    if (regVal & S10Mbps_FD_12) {
-        fprintf (outFilePrt, "\n bit 12: PHY able to perform 10 Mbit/s full-duplex ");
-    } else {
-        fprintf (outFilePrt, "\n bit 12: PHY not able to perform 10 Mbit/s full-duplex ");
-    }
-    if (regVal & S10Mbps_HD_11) {
-        fprintf (outFilePrt, "\n bit 11: PHY able to perform 10 Mbit/s half-duplex ");
-    } else {
-        fprintf (outFilePrt, "\n bit 11: PHY not able to perform 10 Mbit/s half-duplex ");
-    }
-    if (regVal & S100BASE_T2_FD_10) {
-        fprintf (outFilePrt, "\n bit 10: PHY able to perform 100BASE-T2 full-duplex");
-    } else {
-        fprintf (outFilePrt, "\n bit 10: PHY not able to perform 100BASE-T2 full-duplex");
-    }
-    if (regVal & S100BASE_T2_HD_9) {
-        fprintf (outFilePrt, "\n bit 9: PHY able to perform 100BASE-T2 half-duplex");
-    } else {
-        fprintf (outFilePrt, "\n bit 9: PHY not able to perform 100BASE-T2 half-duplex");
-    }
-    if (regVal & EXTENDED_STATUS_8) {
-        fprintf (outFilePrt, "\n bit 8: extended status information in register 15h");
-    } else {
-        fprintf (outFilePrt, "\n bit 8: no extended status information in register 15h");
-    }
-    if (regVal & UNIDIRECT_ABILITY_7) {
-        fprintf (outFilePrt, "\n bit 7: PHY able to transmit from MII regardless of whether the PHY has determined that a valid link has been established");
-    } else {
-        fprintf (outFilePrt, "\n bit 7: PHY able to transmit from MII only when the PHY has determined that a valid link has been established");
-    }
-    if (regVal & MF_PREAMBLE_SUPPRESSION_6) {
-        fprintf (outFilePrt, "\n bit 6: PHY will accept management frames with preamble suppressed");
-    } else {
-        fprintf (outFilePrt, "\n bit 6: PHY will not accept management frames with preamble suppressed");
-    }
-    if (regVal & AUTONEG_COMPLETE_5) {
-        fprintf (outFilePrt, "\n bit 5: Autonegotiation process completed");
-    } else {
-        fprintf (outFilePrt, "\n bit 5: Autonegotiation process not completed");
-    }
-    if (regVal & REMOTE_FAULT_4) {
-        fprintf (outFilePrt, "\n bit 4: remote fault condition detected");
-    } else {
-        fprintf (outFilePrt, "\n bit 4: no remote fault condition detected");
-    }
-    if (regVal & AUTONEG_ABILITY_3) {
-        fprintf (outFilePrt, "\n bit 3: PHY able to perform Autonegotiation");
-    } else {
-        fprintf (outFilePrt, "\n bit 3: PHY not able to perform Autonegotiation");
-    }
-    if (regVal & LINK_STATUS_2) {
-        fprintf (outFilePrt, "\n bit 2: link is up");
-    } else {
-        fprintf (outFilePrt, "\n bit 2: link is down");
-    }
-    if (regVal & JABBER_DETECT_1) {
-        fprintf (outFilePrt, "\n bit 1: jabber condition detected");
-    } else {
-        fprintf (outFilePrt, "\n bit 1: no jabber condition detected");
-    }
-    if (regVal & EXTENDED_CAPABILITY_0) {
-        fprintf (outFilePrt, "\n bit 0: extended register capabilities");
-    } else {
-        fprintf (outFilePrt, "\n bit 0: basic register set capabilities only");
-    }
-    fprintf (outFilePrt, "\n");
     return res;
 }
 

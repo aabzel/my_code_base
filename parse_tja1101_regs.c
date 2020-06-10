@@ -1,3 +1,5 @@
+#include "parse_tja1101_regs.h"
+
 #include "str_ops.h"
 #include "tja1101_bits_offsets.h"
 #include "utils.h"
@@ -6,7 +8,6 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
-#include "parse_tja1101_regs.h"
 
 bool parse_tja1101_regs_file (char *inFileName, char *outFileName) {
     (void) *outFileName;
@@ -23,7 +24,7 @@ bool parse_tja1101_regs_file (char *inFileName, char *outFileName) {
             unsigned int regVal;
             //printf ("\n>[%s]", curFileStr);
             sscanf (curFileStr, "%x %x", (unsigned int *) &regAddr, (unsigned int *) &regVal);
-            parse_reg (regAddr, regVal, outFilePrt);
+            parse_tja1101_reg (regAddr, regVal, outFilePrt);
             //printf ("\n[%x] [%x]", regAddr, regVal);
             line++;
         }
@@ -134,8 +135,6 @@ bool parse_tja1101_reg (uint8_t regAddr, uint16_t regVal, FILE *outFilePrt) {
     }
     return res;
 }
-
-#define LOOPBACK (1<<14)
 
 bool parse_basic_control_register (uint16_t regVal, FILE *outFilePrt) {
     bool res = false;
@@ -673,12 +672,12 @@ bool parse_interrupt_status_register (uint16_t regVal, FILE *outFilePrt) {
         fprintf (outFilePrt, "\n  bit 11: R no PHY initialization error detected");
     }
     if (regVal & LINK_STATUS_FAIL_10) {
-        fprintf (outFilePrt, "\n  bit 10: R link status bit LINK_UP changed from ‘link OK’ to ‘link fail’");
+        fprintf (outFilePrt, "\n  bit 10: R link status bit LINK_UP changed from вЂ�link OKвЂ™ to вЂ�link failвЂ™");
     } else {
         fprintf (outFilePrt, "\n  bit 10: R link status not changed");
     }
     if (regVal & LINK_STATUS_UP_9) {
-        fprintf (outFilePrt, "\n  bit 9: R link status bit LINK_UP changed from ‘link fail’ to ‘link OK’");
+        fprintf (outFilePrt, "\n  bit 9: R link status bit LINK_UP changed from вЂ�link failвЂ™ to вЂ�link OKвЂ™");
     } else {
         fprintf (outFilePrt, "\n  bit 9: R link status not changed");
     }
