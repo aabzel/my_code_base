@@ -59,6 +59,8 @@ void reverseString (char *s, int length);
 void detect_change (char *oldStr, char *newStr, char **oldSubStr, int *oldSubStringLen, char **newSubStr, int *newSubStringLen);
 char *uint32_to_bin_str (uint32_t inVal32bit);
 const char* utoa_bin16 (uint16_t u16_bin_data);
+const char* utoa_bin24 (uint32_t u32_bin_data);
+const char* utoa_bin32 (uint32_t u32_bin_data);
 
 void find_diff (
     char *oldStr,

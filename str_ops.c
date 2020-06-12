@@ -1021,6 +1021,47 @@ bool test_num_to_bin_str (void) {
     return true;
 }
 
+const char* utoa_bin24 (uint32_t u32_bin_data) {
+    uint8_t cell24 = 0u;
+    uint32_t mask24 = 0x800000U;
+    static char outBitStr24 [sizeof("0000_0000_0000_0000_0000_0000") + 1U] = "0000_0000_0000_0000_0000_0000";
+    while (mask24 != 0U) {
+        if (outBitStr24 [cell24] == '_') {
+            cell24++;
+        }
+        if (0u != (u32_bin_data & mask24)) {
+            outBitStr24 [cell24] = '1';
+        } else {
+            outBitStr24 [cell24] = '0';
+        }
+        mask24 >>= 1U;
+        cell24++;
+    }
+    outBitStr24 [sizeof(outBitStr24) - 1u] = '\0';
+    return outBitStr24;
+}
+
+
+const char* utoa_bin32 (uint32_t u32_bin_data) {
+    uint8_t cell32 = 0u;
+    uint32_t mask32 = 0x80000000U;
+    static char outBitStr32 [sizeof("0000_0000_0000_0000_0000_0000_0000_0000") + 1U] = "0000_0000_0000_0000_0000_0000_0000_0000";
+    while (mask32 != 0U) {
+        if (outBitStr32 [cell32] == '_') {
+            cell32++;
+        }
+        if (0u != (u32_bin_data & mask32)) {
+            outBitStr32 [cell32] = '1';
+        } else {
+            outBitStr32 [cell32] = '0';
+        }
+        mask32 >>= 1U;
+        cell32++;
+    }
+    outBitStr32 [sizeof(outBitStr32) - 1u] = '\0';
+    return outBitStr32;
+}
+
 const char* utoa_bin16 (uint16_t u16_bin_data) {
     uint8_t cell16 = 0u;
     uint16_t mask16 = 0x8000U;
@@ -1560,13 +1601,21 @@ bool reblace_substring (char *inOutStr, char *orig, char *rep) {
         char *tempStr = malloc (textLen - pattLen + repLen);
         if (tempStr) {
             strcpy (tempStr, inOutStr);
-            printf("\n tempStr %s",tempStr);
+#if DEBUG_REP_STR
+            printf ("\n tempStr [%s]", tempStr);
+#endif
             strcat (tempStr, rep);
-            printf("\n tempStr %s",tempStr);
+#if DEBUG_REP_STR
+            printf ("\n tempStr [%s]", tempStr);
+#endif
             strcat (tempStr, part3);
-            printf("\n tempStr %s",tempStr);
+#if DEBUG_REP_STR
+            printf ("\n tempStr [%s]", tempStr);
+#endif
             strcpy (inOutStr, tempStr);
-            printf("\n tempStr %s",tempStr);
+#if DEBUG_REP_STR
+            printf ("\n tempStr [%s]", tempStr);
+#endif
             free (tempStr);
             res = true;
         }
@@ -1576,21 +1625,63 @@ bool reblace_substring (char *inOutStr, char *orig, char *rep) {
 }
 
 bool test_replace_substr (void) {
-    char fileName [100];
+    char text [100];
     int cmpRes = 0;
-    bool res;
-    strncpy (fileName, "qwertyuioo", sizeof(fileName));
+    bool res = false;
 
-    res = reblace_substring (fileName, "rty", "ZXC");
-    if(false==res){
+    strncpy (text, "aabzelaabzel", sizeof(text));
+    res = reblace_substring (text, "bz", "MOS");
+    if (true == res) {
+        printf ("\n %s", text);
+        return false;
+    }
+    cmpRes = strcmp (text, "aaMOSelaaMOSel");
+    if (0 != cmpRes) {
+        printf ("\n %s", text);
         return false;
     }
 
-    cmpRes = strcmp (fileName, "qweZXCuioo");
-    if (0 == cmpRes) {
-        return true;
+    strncpy (text, "aabzel", sizeof(text));
+    res = reblace_substring (text, "spb", "mos");
+    if (true == res) {
+        return false;
     }
-    return false;
+    cmpRes = strcmp (text, "aabzel");
+    if (0 != cmpRes) {
+        return false;
+    }
+
+    strncpy (text, "qwertyuioo", sizeof(text));
+    res = reblace_substring (text, "rty", "ZXC");
+    if (false == res) {
+        return false;
+    }
+    cmpRes = strcmp (text, "qweZXCuioo");
+    if (0 != cmpRes) {
+        return false;
+    }
+
+    strncpy (text, "qwertyuiop", sizeof(text));
+    res = reblace_substring (text, "qwe", "ASD");
+    if (false == res) {
+        return false;
+    }
+    cmpRes = strcmp (text, "ASDrtyuiop");
+    if (0 != cmpRes) {
+        return false;
+    }
+
+    strncpy (text, "asdfghjkl", sizeof(text));
+    res = reblace_substring (text, "jkl", "BNM");
+    if (false == res) {
+        return false;
+    }
+    cmpRes = strcmp (text, "asdfghBNM");
+    if (0 != cmpRes) {
+        return false;
+    }
+
+    return true;
 }
 
 bool test_str_char_replace (void) {
