@@ -84,11 +84,16 @@ typedef enum {
     NUM_OF_ARGS_ERROR = 65,
     MAX_ENVELOPES_TEST_ERROR = 66,
     GENERATE_BIT_MASK_ERROR = 67,
-    EXTRACT_BITS_ERROR= 68,
+    EXTRACT_BITS_ERROR = 68,
     FLOAR_TO_SAMPLE_ERROR = 69,
     SUB_STR_REPL_ERROR = 70,
-    NUM_ERROR
-} error_t;
+    SUB_STR_CNT_ERROR = 71,
+    CLEAN_TEXT_ERROR = 72,
+    PARSE_UINT8_ERROR = 73,
+    PARSE_UINT16_ERROR = 74,
+    PARSE_UINT32_ERROR = 75,
+    NUM_ERROR =  76
+} utError_t;
 
 int unitTest (void);
 
@@ -143,23 +148,37 @@ bool fill_up_heap_continuous_vals (BinaryHeap_t *binHeap, int maxVal, bool isMax
 void assemble_tree_from_array (TreeNode_t ** root, int *arr, int arraySize);
 void create_binary_search_tree (TreeNode_t ** root, int how_many_elements);
 
+#define EXPECT_EQ_STR(strL,strR) do {\
+                                     if ( 0 != strcmp (strL,strR) ) {\
+                                         printf ("\n%s:Line: %d %d in strL: %s strR: %s ", __FUNCTION__,__LINE__, __COUNTER__, strL, strR);\
+                                         return false;\
+                                     }\
+                                 } while(0);
+
 #define EXPECT_EQ(val1,val2) do {\
                              if(val1!=val2){\
-                                 printf ("\n%s:L%d %d in val1: %d val2: %d ", __FUNCTION__,__LINE__, __COUNTER__, val1, val2);\
+                                 printf ("\n%s:Line: %d %d in val1: %d val2: %d ", __FUNCTION__,__LINE__, __COUNTER__, val1, val2);\
+                                 return false;\
+                             }\
+                         } while(0);
+
+#define EXPECT_HEX_EQ(val1,val2) do {\
+                             if(val1!=val2){\
+                                 printf ("\n%s:Line: %d %d in val1: %x val2: %x ", __FUNCTION__,__LINE__, __COUNTER__, val1, val2);\
                                  return false;\
                              }\
                          } while(0);
 
 #define EXPECT_TRUE(val) do {\
-                             if(true!=val){\
-                                 printf ("\n%s:L%d %d in val %d ", __FUNCTION__,__LINE__, __COUNTER__, val);\
+                             if(true != val){\
+                                 printf ("\n%s:Line: %d %d in val %d ", __FUNCTION__,__LINE__, __COUNTER__, val);\
                                  return false;\
                              }\
                          } while(0);
 
 #define EXPECT_FALSE(val) do {\
                              if(false!=val){\
-                                 printf ("\n%s:L%d %d in val %d ", __FUNCTION__,__LINE__, __COUNTER__, val);\
+                                 printf ("\n%s:Line: %d %d in val %d ", __FUNCTION__,__LINE__, __COUNTER__, val);\
                                  return false;\
                              }\
                          } while(0);

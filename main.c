@@ -9,6 +9,8 @@
 #include "utils.h"
 #include "uTests.h"
 #include "mk_to_dot.h"
+#include "simulate_rocket_2d.h"
+
 
 #include <string.h>
 #include <stdio.h>
@@ -31,6 +33,7 @@ int main (int argc, char* argv []);
 //int main (int argc, char **argv)
 int main (int argc, char* argv []) {
     (void) argc;
+
     (void) argv;
 #if PRINT_ENV
     print_ent();
@@ -84,8 +87,15 @@ int main (int argc, char* argv []) {
     }
 #endif
 
+#if DEPLOY_ROCKET_SIM
+    bool res=false;
+    res = simulate_roket (20.0f);
+    if (false == res) {
+        printf ("\nUnable to simulate rocket\n\n");
+    }
+#endif
+
     printf ("\n\n Done!\n\n");
-//    getchar ();
     return 0;
 }
 

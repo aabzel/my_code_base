@@ -2,6 +2,7 @@
 
 #include "algorithms.h"
 #include "arrays.h"
+#include "float_utils.h"
 
 #include <stdlib.h>
 #include <math.h>

@@ -9,6 +9,7 @@
 #include "bin_tree.h"
 #include "bin_tree_draw.h"
 #include "combinations.h"
+#include "float_utils.h"
 #include "linked_list.h"
 #include "min_path.h"
 #include "min_path_diag_scale.h"
@@ -20,6 +21,7 @@
 #include "slidingWindowMid.h"
 #include "sort_linked_list.h"
 #include "str_ops.h"
+#include "test_str_ops.h"
 #include "test_avl_tree.h"
 #include "test_fifo_char.h"
 #include "test_lifo_char.h"
@@ -33,6 +35,69 @@
 
 int unitTest (void) {
     bool res = false;
+    uint8_t regAddr = 0x00;
+    uint16_t regVal = 0x0000;
+    uint16_t sample16bit;
+    float a = 20000.0f;
+    float b = 0.5f;
+    float c = a + b;
+
+    char inStr [100];
+    char outStr [100];
+    char expStr [100];
+    strncpy (expStr, "0x04 0x0000", sizeof(outStr));
+    strncpy (inStr, "reg addr: 0x04 reg val: 0xABCD Ob_0000_0000_0000_0000", sizeof(inStr));
+
+    res = try_canch_hex_uint8 (inStr, strlen (inStr), &regAddr);
+    if ((0x04 != regAddr) && (true == res)) {
+        return PARSE_UINT8_ERROR;
+    }
+
+    res = try_canch_hex_uint16 (inStr, strlen (inStr), &regVal);
+    if ((0xABCD != regVal) && (true == res)) {
+        return PARSE_UINT16_ERROR;
+    }
+
+
+    strncpy (inStr, "         CONFIG[0x1a]: 0x00832800 0b_0000_0000_1000_0011_0010_1000_0000_0000", sizeof(inStr));
+    res = try_canch_hex_uint8 (inStr, strlen (inStr), &regAddr);
+    if ((0x1a != regAddr) && (true == res)) {
+        return PARSE_UINT32_ERROR;
+    }
+
+    uint32_t reg32Val;
+    strncpy (inStr, "         CONFIG[0x1a]: 0x00832800 0b_0000_0000_1000_0011_0010_1000_0000_0000", sizeof(inStr));
+    res = try_canch_hex_uint32 (inStr, strlen (inStr), &reg32Val);
+    if ( true == res) {
+        if(0x00832800!=reg32Val){
+            printf("\n reg32Val %x exp 0x00832800",reg32Val);
+            return PARSE_UINT32_ERROR;
+        }
+
+    }else{
+        printf("try_canch_hex_uint32 failed");
+        return PARSE_UINT32_ERROR;
+    }
+
+
+    //res = extract_numbers (inStr, strlen (inStr));
+    //int cmpRes = strcmp (expStr, outStr);
+    //if (0 != cmpRes) {
+    //    return CLEAN_TEXT_ERROR;
+    //}
+
+#if TEST_FLOART
+    printf ("a %f b %f a+b %f", a, b, c);
+    sample16bit = float_to_uint16 (c);
+    if (20000U != sample16bit) {
+        return FLOAR_TO_SAMPLE_ERROR;
+    }
+#endif
+
+    res = test_count_substring ();
+    if (false == res) {
+        return SUB_STR_CNT_ERROR;
+    }
 
     res = test_replace_substr ();
     if (false == res) {
@@ -40,8 +105,7 @@ int unitTest (void) {
     }
 
     print_biggest_mantissa ();
-    uint16_t sample16bit;
-    sample16bit = float_to_uint16 (0.2f);
+    sample16bit = float_to_uint16 (c);
     if (0U != sample16bit) {
         return FLOAR_TO_SAMPLE_ERROR;
     }
@@ -2694,7 +2758,7 @@ bool test_split (void) {
     int resCmp = 0;
 
     char **ArrOfStrings;
-    printf ("\n sizeof(char *) %ld \n", sizeof(char *));
+    //printf ("\n sizeof(char *) %ld \n", sizeof(char *));
     amountOfval = split ("Hello world", "wo", &ArrOfStrings);
     if (2 != amountOfval) {
         printf ("\n%s: %d\n", __FUNCTION__, amountOfval);

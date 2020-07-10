@@ -1,6 +1,10 @@
 #ifndef LIFO_CHAR_H
 #define LIFO_CHAR_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "custom_type.h"
 
 typedef struct xLifo_index_t {
@@ -24,8 +28,13 @@ bool lifo_pull (Lifo_array_t* const instance, char *const outChar);
 bool lifo_peek (Lifo_array_t* const instance, char *const outChar);
 bool has_lifo_valid_data (Lifo_array_t* const instance);
 
+
 bool lifo_push_array (Lifo_array_t* const instance, char *const inArr, uint16_t arrLen);
 bool lifo_pull_array (Lifo_array_t* const instance, char *const outArr, uint16_t *const outLen);
 bool lifo_peek_array (Lifo_array_t* const instance, char *const outArr, uint16_t *const outLen);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* LIFO_CHAR_H */

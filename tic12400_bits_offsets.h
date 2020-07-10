@@ -1,6 +1,8 @@
 #ifndef TIC12400_BIT_OFFSETS_H
 #define TIC12400_BIT_OFFSETS_H
 
+#define CHANNEL_AMOUNT (24U)
+
 typedef enum {
     REG_RESERVED_00H = 0x00U, /* Reserved Register address*/
     REG_DEVICE_ID = 0x01U, /* Device ID Register */
@@ -57,7 +59,7 @@ typedef enum {
     REG_AMOUNT = 0x33U
 } tic12400_reg_t;
 
-#define VS_RATIO_23  (1<<23)
+#define CONFIG_VS_RATIO_23  (1<<23)
 #define ADC_DIAG_T_22 (1<<22)
 #define WET_D_IN3_EN_21 (1<<21)
 #define WET_D_IN2_EN_20 (1<<20)
@@ -73,12 +75,35 @@ typedef enum {
 #define RESET_0 (1<<0)
 
 
-#define SSC_3 (1<<3)
-#define SPI_FAIL_1 (1<<1)
-#define POR_0 (1<<0)
+#define INT_STAT_CHK_FAIL_13 (1<<13)
+#define INT_STAT_ADC_DIAG_12 (1<<12)
+#define INT_STAT_WET_DIAG_11 (1<<11)
+#define INT_STAT_VS1_10 (1<<10)
+#define INT_STAT_VS0_9 (1<<9)
+#define INT_STAT_CRC_CALC_8  (1<<8)
+#define INT_STAT_UV_7 (1<<7)
+#define INT_STAT_OV_6 (1<<6)
+#define INT_STAT_TW_5 (1<<5)
+#define INT_STAT_TSD_4 (1<<4)
+#define INT_STAT_SSC_3 (1<<3)
+#define INT_STAT_PRTY_FAIL_2 (1<<2)
+#define INT_STAT_SPI_FAIL_1 (1<<1)
+#define INT_STAT_POR_0 (1<<0)
+
+#define IN_STAT_MISC_ADC_D_12 (1<<12)
+#define IN_STAT_MISC_IN3_D_11 (1<<11)
+#define IN_STAT_MISC_IN2_D_10 (1<<10)
+#define IN_STAT_MISC_IN1_D_9 (1<<9)
+#define IN_STAT_MISC_IN0_D_8 (1<<8)
+#define IN_STAT_MISC_UV_STAT_3 (1<<3)
+#define IN_STAT_MISC_OV_STAT_2 (1<<2)
+#define IN_STAT_MISC_TW_STAT_1 (1<<1)
+#define IN_STAT_MISC_TSD_STAT_0 (1<<0)
 
 
 #define AUTO_SCALE_DIS_CSI_22 (1<<22)
 #define AUTO_SCALE_DIS_CSO_21 (1<<21)
 
+#define WC_CFG1_AUTO_SCALE_DIS_CSI_22 (1<<22)
+#define WC_CFG1_AUTO_SCALE_DIS_CSO_21 (1<<21)
 #endif /* TIC12400_BIT_OFFSETS_H */

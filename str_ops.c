@@ -1,9 +1,9 @@
 #include "str_ops.h"
 
+#include "convert.h"
 #include "algorithms.h"
 #include "custom_type.h"
 #include "lifo_char.h"
-#include "uTests.h"
 
 #include <ctype.h>
 #include <math.h>
@@ -21,11 +21,7 @@ static int findIndOfFirstDiffFromEnd (char *oldStr, char *newStr);
 static bool get_oparand (char *expression, int i);
 #endif
 
-static int parse_num_operands (char *expression, int strLen);
 static bool parse_single_char (char *expression);
-static bool parse_or (char *expression, int inStrlen);
-static bool parse_and (char *expression, int inStrlen);
-static bool parse_not (char *expression, int inStrlen);
 static bool hash_table_char_put (char character, int indexInArray);
 // static bool hash_table_char_remove (char character);
 static void init_hash_table (void);
@@ -513,113 +509,6 @@ int find_max_sec (char *string, char sripChar) {
     return maxCnt;
 }
 
-bool test_lengthOfLongestSubstring (void) {
-    int val;
-    bool res;
-    res = is_diff_chars ("12345", 5);
-    if (false == res) {
-        return false;
-    }
-
-    res = is_diff_chars ("1214", 4);
-    if (true == res) {
-        return false;
-    }
-
-    val = lengthOfLongestSubstring ("pwwkew");
-    if (3 != val) {
-        // printf ("\npwwkew val:%d \n", val);
-        return false;
-    }
-
-    val = lengthOfLongestSubstring ("bpfbhmipx");
-    if (7 != val) {
-        // printf ("\nbpfbhmipx val:%d \n", val);
-        return false;
-    }
-
-    val = lengthOfLongestSubstring ("aab");
-    if (2 != val) {
-        printf ("\naab val:%d \n", val);
-        return false;
-    }
-
-    val = lengthOfLongestSubstring ("abcabcbb");
-    if (3 != val) {
-        printf ("\nabcabcbb val:%d \n", val);
-        return false;
-    }
-
-    val = lengthOfLongestSubstring ("bbbbb");
-    if (1 != val) {
-        printf ("\nbbbbb val:%d \n", val);
-        return false;
-    }
-
-    return true;
-}
-
-bool test_detect_change (void) {
-    char *oldSubString;
-    char *newSubString;
-    int oldSubStringLen = -1;
-    int newSubStringLen = -1;
-    int cmpRes = 0;
-    // "aaabb"
-    // "aaa11bb"
-    detect_change ("aaabb", "aaa11bb", &oldSubString, &oldSubStringLen, &newSubString, &newSubStringLen);
-    if (0 != oldSubStringLen) {
-        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
-        return false;
-    }
-    if (2 != newSubStringLen) {
-        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
-        return false;
-    }
-    cmpRes = strncmp (newSubString, "11", 2);
-    if (0 != cmpRes) {
-        printf ("\n%s %d %s", __FUNCTION__, __COUNTER__, newSubString);
-        return false;
-    }
-
-    detect_change ("aaa11bb", "aaabb", &oldSubString, &oldSubStringLen, &newSubString, &newSubStringLen);
-    if (2 != oldSubStringLen) {
-        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
-        return false;
-    }
-    if (0 != newSubStringLen) {
-        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
-        return false;
-    }
-    cmpRes = strncmp (oldSubString, "11", 2);
-    if (0 != cmpRes) {
-        printf ("\n%s %d %s", __FUNCTION__, __COUNTER__, oldSubString);
-        return false;
-    }
-
-    detect_change ("aa111bb", "aa22bb", &oldSubString, &oldSubStringLen, &newSubString, &newSubStringLen);
-    if (3 != oldSubStringLen) {
-        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
-        return false;
-    }
-    if (2 != newSubStringLen) {
-        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
-        return false;
-    }
-    cmpRes = strncmp (oldSubString, "111", 3);
-    if (0 != cmpRes) {
-        printf ("\n%s %d %s", __FUNCTION__, __COUNTER__, oldSubString);
-        return false;
-    }
-    cmpRes = strncmp (newSubString, "22", 2);
-    if (0 != cmpRes) {
-        printf ("\n%s %d %s", __FUNCTION__, __COUNTER__, newSubString);
-        return false;
-    }
-
-    return true;
-}
-
 //"aaabb"5,   "aaa11bb"7  oldSub""0    newSub"11"2
 //"aabb"5,   "aa11bb"7  oldSub""0    newSub"11"2
 //"abb"5,   "a11bb"7  oldSub""0    newSub"11"2
@@ -686,20 +575,6 @@ void reverseString (char *inOutStr, int length) {
     for (int i = 0; i < (length / 2); i++) {
         swap_char (&inOutStr [i], &inOutStr [(length - 1) - i]);
     }
-}
-
-bool test_reverse (void) {
-    int cmpRes = 0;
-    char tempStr [100];
-    strcpy (tempStr, "12345");
-    reverseString (tempStr, 5);
-    cmpRes = strcmp (tempStr, "54321");
-    if (0 != cmpRes) {
-        printf ("\ntempStr [%s]\n", tempStr);
-        return false;
-    }
-
-    return true;
 }
 
 void find_diff (
@@ -796,100 +671,7 @@ int myAtoi (char *str) {
     }
     return val;
 }
-
-bool test_myAtoi (void) {
-    int val;
-    char inStr [40];
-
-    strcpy (inStr, "20000000000000000000");
-    val = myAtoi (inStr);
-    if (INT32_MAX != val) {
-        printf ("\n%s %d [%s] val %d", __FUNCTION__, __COUNTER__, inStr, val);
-        return false;
-    }
-    if (val != atoi (inStr)) {
-        printf ("\n%s %d [%s] val %d exp val %d", __FUNCTION__, __COUNTER__, inStr, val, atoi (inStr));
-        return false;
-    }
-
-    strcpy (inStr, "+1");
-    val = myAtoi (inStr);
-    if (1 != val) {
-        printf ("\n%s %d [%s] val %d", __FUNCTION__, __COUNTER__, inStr, val);
-        return false;
-    }
-    if (val != atoi (inStr)) {
-        printf ("\n%s %d [%s] val %d exp val %d", __FUNCTION__, __COUNTER__, inStr, val, atoi (inStr));
-        return false;
-    }
-
-    strcpy (inStr, "-91283472332");
-    val = myAtoi (inStr);
-    if (INT32_MIN != val) {
-        printf ("\n%s %d [%s] val %d", __FUNCTION__, __COUNTER__, inStr, val);
-        return false;
-    }
-    if (val != atoi (inStr)) {
-        printf ("\n%s %d [%s] val %d exp val %d", __FUNCTION__, __COUNTER__, inStr, val, atoi (inStr));
-        return false;
-    }
-
-    strcpy (inStr, "4193 with words");
-    val = myAtoi (inStr);
-    if (4193 != val) {
-        printf ("\n%s %d [%s] outVal [%d]", __FUNCTION__, __COUNTER__, inStr, val);
-        return false;
-    }
-    if (val != atoi (inStr)) {
-        printf ("\n%s %d [%s] val %d exp val %d", __FUNCTION__, __COUNTER__, inStr, val, atoi (inStr));
-        return false;
-    }
-
-    strcpy (inStr, "-42");
-    val = myAtoi (inStr);
-    if (-42 != val) {
-        printf ("\n%s %d val %d exp(%d)", __FUNCTION__, __COUNTER__, val, -42);
-        return false;
-    }
-    if (val != atoi (inStr)) {
-        printf ("\n%s %d [%s] val %d exp val %d", __FUNCTION__, __COUNTER__, inStr, val, atoi (inStr));
-        return false;
-    }
-
-    strcpy (inStr, "   -42");
-    val = myAtoi (inStr);
-    if (-42 != val) {
-        printf ("\n%s %d [%s] val %d exp(%d)", __FUNCTION__, __COUNTER__, inStr, val, -42);
-        return false;
-    }
-    if (val != atoi (inStr)) {
-        printf ("\n%s %d [%s] val %d exp val %d", __FUNCTION__, __COUNTER__, inStr, val, atoi (inStr));
-    }
-
-    strcpy (inStr, "words and 987");
-    val = myAtoi (inStr);
-    if (0 != val) {
-        printf ("\n%s %d [%s] val %d", __FUNCTION__, __COUNTER__, inStr, val);
-        return false;
-    }
-    if (val != atoi (inStr)) {
-        printf ("\n%s %d [%s] val %d exp val %d", __FUNCTION__, __COUNTER__, inStr, val, atoi (inStr));
-        return false;
-    }
-
-    strcpy (inStr, "21");
-    val = myAtoi (inStr);
-    if (21 != val) {
-        printf ("\n%s %d [%s] val %d", __FUNCTION__, __COUNTER__, inStr, val);
-        return false;
-    }
-    if (val != atoi (inStr)) {
-        printf ("\n%s %d [%s] val %d exp val %d", __FUNCTION__, __COUNTER__, inStr, val, atoi (inStr));
-        return false;
-    }
-    return true;
-}
-
+#if 0
 bool try_strl2int32_dec (const char s32_dec_str [], int32_t s32_dec_str_len, int32_t * const s32_dec_value) {
     int64_t s32l_dec_result = 0;
     int32_t i = 0;
@@ -915,7 +697,7 @@ bool try_strl2int32_dec (const char s32_dec_str [], int32_t s32_dec_str_len, int
 
     return s32l_dec_success;
 }
-
+#if 0
 bool try_strl2int64_dec (const char s64_dec_str [], int32_t s64_dec_str_len, int64_t *s64_dec_value) {
     bool s64l_dec_success = true;
     bool s64l_dec_signed = false;
@@ -982,7 +764,7 @@ bool try_strl2int64_dec (const char s64_dec_str [], int32_t s64_dec_str_len, int
 
     return s64l_dec_success;
 }
-
+#endif
 bool is_signe (const char first_str_char) {
     bool signePresent = false;
     if (('-' == first_str_char) || ('+' == first_str_char)) {
@@ -991,6 +773,7 @@ bool is_signe (const char first_str_char) {
 
     return signePresent;
 }
+#endif
 
 bool is_signed (const char first_str_char) {
     bool negative = false;
@@ -998,88 +781,6 @@ bool is_signed (const char first_str_char) {
         negative = true;
     }
     return negative;
-}
-
-bool test_num_to_bin_str (void) {
-    int cmpRes = 0;
-    cmpRes = strcmp ("1010_1010_1010_1010_1010_1010_1010_1010", uint32_to_bin_str (0xAAAAAAAA));
-    if (0 != cmpRes) {
-        return false;
-    }
-    cmpRes = strcmp ("0101_0101_0101_0101_0101_0101_0101_0101", uint32_to_bin_str (0x55555555));
-    if (0 != cmpRes) {
-        return false;
-    }
-    cmpRes = strcmp ("0000_0000_0000_0000_0000_0000_0000_0000", uint32_to_bin_str (0x00000000));
-    if (0 != cmpRes) {
-        return false;
-    }
-    cmpRes = strcmp ("1111_1111_1111_1111_1111_1111_1111_1111", uint32_to_bin_str (0xFFFFFFFF));
-    if (0 != cmpRes) {
-        return false;
-    }
-    return true;
-}
-
-const char* utoa_bin24 (uint32_t u32_bin_data) {
-    uint8_t cell24 = 0u;
-    uint32_t mask24 = 0x800000U;
-    static char outBitStr24 [sizeof("0000_0000_0000_0000_0000_0000") + 1U] = "0000_0000_0000_0000_0000_0000";
-    while (mask24 != 0U) {
-        if (outBitStr24 [cell24] == '_') {
-            cell24++;
-        }
-        if (0u != (u32_bin_data & mask24)) {
-            outBitStr24 [cell24] = '1';
-        } else {
-            outBitStr24 [cell24] = '0';
-        }
-        mask24 >>= 1U;
-        cell24++;
-    }
-    outBitStr24 [sizeof(outBitStr24) - 1u] = '\0';
-    return outBitStr24;
-}
-
-
-const char* utoa_bin32 (uint32_t u32_bin_data) {
-    uint8_t cell32 = 0u;
-    uint32_t mask32 = 0x80000000U;
-    static char outBitStr32 [sizeof("0000_0000_0000_0000_0000_0000_0000_0000") + 1U] = "0000_0000_0000_0000_0000_0000_0000_0000";
-    while (mask32 != 0U) {
-        if (outBitStr32 [cell32] == '_') {
-            cell32++;
-        }
-        if (0u != (u32_bin_data & mask32)) {
-            outBitStr32 [cell32] = '1';
-        } else {
-            outBitStr32 [cell32] = '0';
-        }
-        mask32 >>= 1U;
-        cell32++;
-    }
-    outBitStr32 [sizeof(outBitStr32) - 1u] = '\0';
-    return outBitStr32;
-}
-
-const char* utoa_bin16 (uint16_t u16_bin_data) {
-    uint8_t cell16 = 0u;
-    uint16_t mask16 = 0x8000U;
-    static char outBitStr16 [sizeof("0000_0000_0000_0000") + 1U] = "0000_0000_0000_0000";
-    while (mask16 != 0U) {
-        if (outBitStr16 [cell16] == '_') {
-            cell16++;
-        }
-        if (0u != (u16_bin_data & mask16)) {
-            outBitStr16 [cell16] = '1';
-        } else {
-            outBitStr16 [cell16] = '0';
-        }
-        mask16 >>= 1U;
-        cell16++;
-    }
-    outBitStr16 [sizeof(outBitStr16) - 1u] = '\0';
-    return outBitStr16;
 }
 
 //
@@ -1199,7 +900,7 @@ static bool parse_single_char (char *expression) {
 
 //   "(f,t)"
 //   "(&(t,f,t),!(t))"
-static bool parse_or (char *expression, int inStrLen) {
+bool parse_or (char *expression, int inStrLen) {
     bool res = false;
 
     if (expression) {
@@ -1225,34 +926,12 @@ static bool parse_or (char *expression, int inStrLen) {
     return res;
 }
 
-bool test_operand_extract (void) {
-    int operLen = -1;
-    EXPECT_EQ(1, get_index_in_string ("(f,t)", 5, 0, &operLen));
-    EXPECT_EQ(1, operLen);
-    operLen = -1;
-    EXPECT_EQ(3, get_index_in_string ("(f,t)", 5, 1, &operLen));
-    EXPECT_EQ(1, operLen);
-    operLen = -1;
-    EXPECT_EQ(1, get_index_in_string ("(&(t,f,t),!(t))", 15, 0, &operLen));
-    EXPECT_EQ(8, operLen);
-    operLen = -1;
-    EXPECT_EQ(10, get_index_in_string ("(&(t,f,t),!(t))", 15, 1, &operLen));
-    EXPECT_EQ(4, operLen);
-    return true;
-}
-
-bool test_parse_and (void) {
-    EXPECT_TRUE(parse_and ("(t,t,t)", 7));
-    EXPECT_FALSE(parse_and ("(t,f,t)", 7));
-    EXPECT_FALSE(parse_and ("(t,&(f,t),t)", 12));
-    return true;
-}
 // "(t,f,t)"          3
 // "(t,f)"            2
 // "(f,t)"            2
 // "(&(t,f,t),!(t))"  2
 // "(&(t,&(f,t),t),!(t))"  2
-static bool parse_and (char *expression, int inStrLen) {
+bool parse_and (char *expression, int inStrLen) {
     bool res = false;
 #if DEBUG_PARSE_AND
     printf (" parse AND [");
@@ -1286,7 +965,7 @@ static bool parse_and (char *expression, int inStrLen) {
 // "(&(t,&(f,t),t),!(t))"  2     3
 // "(f,t)"                2
 // "(&(t,f,t),!(t))"    2
-static int parse_num_operands (char *expression, int inStrLen) {
+int parse_num_operands (char *expression, int inStrLen) {
     int numOfOperands = 0;
     if (expression) {
         Lifo_array_t lifoObj;
@@ -1382,7 +1061,7 @@ int get_index_in_string (char *expression, int inStrLen, int operandNum, int * c
 }
 
 //(f)
-static bool parse_not (char *expression, int inStrLen) {
+bool parse_not (char *expression, int inStrLen) {
     bool res = false;
 #if DEBUG_PARSE_NOT
     printf (" parse NOT <");
@@ -1409,40 +1088,6 @@ static bool parse_not (char *expression, int inStrLen) {
         }
     }
     return res;
-}
-
-bool test_parse_not (void) {
-    EXPECT_TRUE(parse_not ("(f)", 3));
-    EXPECT_TRUE(parse_not ("!(t)", 4));
-    EXPECT_FALSE(parse_not ("!(f)", 4));
-    EXPECT_FALSE(parse_not ("(t)", 3));
-    EXPECT_FALSE(parse_not ("!(f)", 4));
-    return true;
-}
-
-bool test_parse_num_operands (void) {
-    EXPECT_EQ(1, parse_num_operands ("(f)", 3));
-    EXPECT_EQ(1, parse_num_operands ("(t)", 3));
-    EXPECT_EQ(4, parse_num_operands ("(t,f,t,t)", 9));
-    EXPECT_EQ(3, parse_num_operands ("(t,f,t)", 7));
-    EXPECT_EQ(2, parse_num_operands ("(t,f)", 5));
-    EXPECT_EQ(2, parse_num_operands ("(&(t,f,t),!(t))", 15));
-    EXPECT_EQ(2, parse_num_operands ("(&(t,&(f,t),t),!(t))", 20));
-    return true;
-}
-
-bool test_parseBoolExpr (void) {
-    EXPECT_TRUE(parseBoolExpr ("!(&(f))"));
-    EXPECT_FALSE(parseBoolExpr ("&(f)"));
-    EXPECT_TRUE(parseBoolExpr ("&(t)"));
-    EXPECT_FALSE(parseBoolExpr ("!(&(!(&(f)),&(t),|(f,f,t)))"));
-    EXPECT_TRUE(parseBoolExpr ("(t)"));
-    EXPECT_FALSE(parseBoolExpr ("(f)"));
-    EXPECT_TRUE(parseBoolExpr ("!(f)"));
-    EXPECT_FALSE(parseBoolExpr ("|(&(t,f,t),!(t))"));
-    EXPECT_TRUE(parseBoolExpr ("|(f,t)"));
-    EXPECT_FALSE(parseBoolExpr ("&(t,f)"));
-    return true;
 }
 
 //                               level of nesting
@@ -1481,23 +1126,6 @@ int calc_paratasis_nesting (char *s, int * const amountOfPairs) {
     return nestDepth;
 }
 
-bool test_calc_paratasis_nesting (void) {
-    int amountOfPairs = 0;
-    EXPECT_EQ(1, calc_paratasis_nesting ("(t,f,t)", &amountOfPairs));
-    EXPECT_EQ(1, amountOfPairs);
-
-    EXPECT_EQ(1, calc_paratasis_nesting ("(t,f)", &amountOfPairs));
-    EXPECT_EQ(1, amountOfPairs);
-
-    EXPECT_EQ(2, calc_paratasis_nesting ("(&(t,f,t),!(t))", &amountOfPairs));
-    EXPECT_EQ(3, amountOfPairs);
-
-    EXPECT_EQ(3, calc_paratasis_nesting ("(&(t,&(f,t),t),!(t))", &amountOfPairs));
-    EXPECT_EQ(4, amountOfPairs);
-
-    return true;
-}
-
 bool is_valid_parentheses (char *s) {
     bool res = false;
     Lifo_array_t lifoObj;
@@ -1523,13 +1151,6 @@ bool is_valid_parentheses (char *s) {
         free (array);
     }
     return res;
-}
-
-bool test_Valid_Parentheses (void) {
-    EXPECT_TRUE(is_valid_parentheses ("()[]{}"));
-    EXPECT_TRUE(is_valid_parentheses ("(t,f,t)"));
-    EXPECT_TRUE(is_valid_parentheses ("(&(t,&(f,t),t),!(t))"));
-    return true;
 }
 
 bool is_bracket (char ch) {
@@ -1591,107 +1212,264 @@ bool reblace_substring (char *inOutStr, char *orig, char *rep) {
     int textLen = strlen (inOutStr);
     int pattLen = strlen (orig);
     int repLen = strlen (rep);
-    char *curPtr = strstr (inOutStr, orig);
-    char *part3;
-    if (NULL != curPtr) {
-        for (int i = 0; i < pattLen; i++) {
-            curPtr [i] = '\0';
-        }
-        part3 = &curPtr [pattLen];
-        char *tempStr = malloc (textLen - pattLen + repLen);
-        if (tempStr) {
-            strcpy (tempStr, inOutStr);
+    while (0 < count_substring (inOutStr, orig)) {
+        char *curPtr = strstr (inOutStr, orig);
+        char *part3;
+        if (NULL != curPtr) {
+            for (int i = 0; i < pattLen; i++) {
+                curPtr [i] = '\0';
+            }
+            part3 = &curPtr [pattLen];
+            char *tempStr = malloc (textLen - pattLen + repLen);
+            if (tempStr) {
+                strcpy (tempStr, inOutStr);
 #if DEBUG_REP_STR
             printf ("\n tempStr [%s]", tempStr);
 #endif
-            strcat (tempStr, rep);
+                strcat (tempStr, rep);
 #if DEBUG_REP_STR
             printf ("\n tempStr [%s]", tempStr);
 #endif
-            strcat (tempStr, part3);
+                strcat (tempStr, part3);
 #if DEBUG_REP_STR
             printf ("\n tempStr [%s]", tempStr);
 #endif
-            strcpy (inOutStr, tempStr);
+                strcpy (inOutStr, tempStr);
 #if DEBUG_REP_STR
             printf ("\n tempStr [%s]", tempStr);
 #endif
-            free (tempStr);
-            res = true;
+                free (tempStr);
+                tempStr = NULL;
+                res = true;
+            }
         }
     }
 
     return res;
 }
 
-bool test_replace_substr (void) {
-    char text [100];
-    int cmpRes = 0;
-    bool res = false;
-
-    strncpy (text, "aabzelaabzel", sizeof(text));
-    res = reblace_substring (text, "bz", "MOS");
-    if (true == res) {
-        printf ("\n %s", text);
-        return false;
-    }
-    cmpRes = strcmp (text, "aaMOSelaaMOSel");
-    if (0 != cmpRes) {
-        printf ("\n %s", text);
-        return false;
+uint16_t count_substring (char *inStr, char *substr) {
+    uint16_t matchCnt = 0u;
+    int inStrLen = strlen (inStr);
+    if (0 < inStrLen) {
+        int subStrLen = strlen (substr);
+        char *curPtr = strstr (inStr, substr);
+        while (NULL != curPtr) {
+            matchCnt++;
+            curPtr = strstr (&curPtr [subStrLen], substr);
+        }
     }
 
-    strncpy (text, "aabzel", sizeof(text));
-    res = reblace_substring (text, "spb", "mos");
-    if (true == res) {
-        return false;
-    }
-    cmpRes = strcmp (text, "aabzel");
-    if (0 != cmpRes) {
-        return false;
-    }
-
-    strncpy (text, "qwertyuioo", sizeof(text));
-    res = reblace_substring (text, "rty", "ZXC");
-    if (false == res) {
-        return false;
-    }
-    cmpRes = strcmp (text, "qweZXCuioo");
-    if (0 != cmpRes) {
-        return false;
-    }
-
-    strncpy (text, "qwertyuiop", sizeof(text));
-    res = reblace_substring (text, "qwe", "ASD");
-    if (false == res) {
-        return false;
-    }
-    cmpRes = strcmp (text, "ASDrtyuiop");
-    if (0 != cmpRes) {
-        return false;
-    }
-
-    strncpy (text, "asdfghjkl", sizeof(text));
-    res = reblace_substring (text, "jkl", "BNM");
-    if (false == res) {
-        return false;
-    }
-    cmpRes = strcmp (text, "asdfghBNM");
-    if (0 != cmpRes) {
-        return false;
-    }
-
-    return true;
+    return matchCnt;
 }
 
-bool test_str_char_replace (void) {
-    char fileName [100];
-    int cmpRes = 0;
-    strncpy (fileName, "spc58_pass.mk", sizeof(fileName));
-    replace_char (fileName, '.', '_');
-    cmpRes = strcmp (fileName, "spc58_pass_mk");
-    if (0 == cmpRes) {
-        return true;
+bool extract_numbers (char *inOutStr, int length) {
+    int curIndex = 0;
+    bool res = false;
+    int curLen = length;
+    for (curIndex = 0; curIndex < curLen; curIndex++) {
+        if (false == is_hex_number (inOutStr [curIndex])) {
+            res = delete_char (inOutStr, curIndex);
+            if (true == res) {
+                if (0 < curLen) {
+                    curLen--;
+                }
+            }
+        }
     }
-    return false;
+    return res;
+}
+
+bool is_hex_number (char letter) {
+    bool res = false;
+    switch (letter) {
+        case '0':
+            res = true;
+            break;
+        case '1':
+            res = true;
+            break;
+        case '2':
+            res = true;
+            break;
+        case '3':
+            res = true;
+            break;
+        case '4':
+            res = true;
+            break;
+        case '5':
+            res = true;
+            break;
+        case '6':
+            res = true;
+            break;
+        case '7':
+            res = true;
+            break;
+        case '8':
+            res = true;
+            break;
+        case '9':
+            res = true;
+            break;
+        case 'a':
+            res = true;
+            break;
+        case 'b':
+            res = true;
+            break;
+        case 'c':
+            res = true;
+            break;
+        case 'd':
+            res = true;
+            break;
+        case 'e':
+            res = true;
+            break;
+        case 'f':
+            res = true;
+            break;
+    }
+    return res;
+
+}
+
+///reg addr: 0x04 reg val: 0x0000 Ob_0000_0000_0000_0000
+bool try_canch_hex_uint8 (char *inStr, int strLen, uint8_t * val8b) {
+    int i = 0;
+    int startIndex = 0;
+    bool res = false;
+    int catch = 0;
+    int hexValCnt = 0;
+    int valLen = 0;
+    for (i = 0; i < strLen; i++) {
+        if (0 == catch) {
+            if ('0' == inStr [i]) {
+                valLen = 1;
+                catch = 1;
+                startIndex = i;
+            }
+        } else {
+            if (1 == valLen) {
+                if ('x' != inStr [i]) {
+                    catch = 0;
+                    valLen = 0;
+                }
+                valLen++;
+            } else {
+                if (true == is_hex_number (inStr [i])) {
+                    valLen++;
+                } else {
+                    if ((' ' == inStr [i]) || (']' == inStr [i])) {
+                        hexValCnt++;
+
+                        if (4 == valLen) {
+                            res = try_strl2uint8_hex (&inStr [startIndex + 2], 2, val8b);
+                            return res;
+                        }
+                        catch = 0;
+                        valLen = 0;
+                    }
+                }
+            }
+        }
+    }
+    return res;
+}
+
+///reg addr: 0x04 reg val: 0x0000 Ob_0000_0000_0000_0000
+bool try_canch_hex_uint16 (char *inStr, int strLen, uint16_t * val16b) {
+    int i = 0;
+    (void) val16b;
+    bool res = false;
+    int catch = 0;
+    int startIndex = 0;
+    int hexValCnt = 0;
+    int valLen = 0;
+    for (i = 0; i < strLen; i++) {
+        if (0 == catch) {
+            if ('0' == inStr [i]) {
+                valLen = 1;
+                catch = 1;
+                startIndex = i;
+            }
+        } else {
+            if (1 == valLen) {
+                if ('x' != inStr [i]) {
+                    catch = 0;
+                    valLen = 0;
+                }
+                valLen++;
+            } else {
+                if (true == is_hex_number (inStr [i])) {
+                    valLen++;
+                } else {
+                    if (' ' == inStr [i]) {
+                        hexValCnt++;
+                        if (6 == valLen) {
+                            res = try_strl2uint16_hex (&inStr [startIndex + 2], 4, val16b);
+                            return res;
+                        }
+                        catch = 0;
+                        valLen = 0;
+                    }
+                }
+            }
+        }
+    }
+    return res;
+}
+
+///      DEVICE_ID[0x01]: 0x00000020 0b_0000_0000_0000_0000_0000_0000_0010_0000
+bool try_canch_hex_uint32 (char *inStr, int strLen, uint32_t * val32b) {
+    int i = 0;
+    (void) val32b;
+    bool res = false;
+    int catch = 0;
+    int startIndex = 0;
+    int hexValCnt = 0;
+    int valLen = 0;
+    for (i = 0; i < strLen; i++) {
+        if (0 == catch) {
+            if ('0' == inStr [i]) {
+                valLen = 1;
+                catch = 1;
+                startIndex = i;
+            }
+        } else {
+            if (1 == valLen) {
+                if ('x' != inStr [i]) {
+                    catch = 0;
+                    valLen = 0;
+                }
+                valLen++;
+            } else {
+                if (true == is_hex_number (inStr [i])) {
+                    valLen++;
+                } else {
+                    if (' ' == inStr [i]) {
+                        hexValCnt++;
+                        if (10 == valLen) {
+                            res = try_strl2uint32_hex (&inStr [startIndex + 2], 8, val32b);
+                            return res;
+                        }
+                        catch = 0;
+                        valLen = 0;
+                    }
+                }
+            }
+        }
+    }
+    return res;
+}
+
+
+
+bool delete_char (char * inOutStr, int curIndex) {
+    bool res = false;
+    (void) inOutStr;
+    (void) curIndex;
+    return res;
 }

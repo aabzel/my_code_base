@@ -1,5 +1,5 @@
-#ifndef CUSTOM_TYPE_H
-#define CUSTOM_TYPE_H
+#ifndef STD_BOOL_H
+#define STD_BOOL_H
 
 #include <stdbool.h>
 #include <windows.h>
@@ -14,8 +14,7 @@ extern "C" {
 //#define true (1u)
 //#define false (0u)
 
-//typedef _Bool bool;
-//#define bool uint8_t
+
 //typedef uint8_t bool;
 
 #if 0
@@ -27,4 +26,4 @@ typedef double double_t;
 }
 #endif
 
-#endif /* CUSTOM_TYPE_H */
+#endif /* STD_BOOL_H */

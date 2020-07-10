@@ -1,10 +1,11 @@
 #include "algorithms.h"
 
+#include "arrays.h"
+#include "float_utils.h"
+#include "linked_list.h"
 #include "permutations.h"
 #include "str_ops.h"
 #include "utils.h"
-#include "arrays.h"
-#include "linked_list.h"
 
 #include <stdlib.h>
 #include <limits.h>
@@ -40,9 +41,11 @@ uint32_t factorial (uint32_t n) {
     return factor;
 }
 
+#if 0
 bool is_floats_equal (float valA, float valB) {
     return is_float_equal (valA, valB, (float) F_EPSILON);
 }
+#endif
 
 /*
  *
@@ -57,7 +60,7 @@ bool is_float_equal (float a__fife, float b__fife, float epsilon__fife) {
     return retval__fife;
 }
 
-int max (int val1, int val2) {
+int max_int (int val1, int val2) {
     int outVal = val1;
     if (val1 < val2) {
         outVal = val2;
@@ -65,7 +68,7 @@ int max (int val1, int val2) {
     return outVal;
 }
 
-int min (int val1, int val2) {
+int min_int (int val1, int val2) {
     int outVal = val2;
     if (val1 < val2) {
         outVal = val1;

@@ -8,32 +8,6 @@
 #include <string.h>
 #include "parse_tja1101_regs.h"
 
-bool parse_tja1101_regs_file (char *inFileName, char *outFileName) {
-    (void) *outFileName;
-    char curFileStr [500];
-    bool res = false;
-    FILE *inFilePrt = NULL;
-    FILE *outFilePrt = NULL;
-    inFilePrt = fopen (inFileName, "r");
-    outFilePrt = fopen (outFileName, "w");
-    if (inFilePrt && outFilePrt) {
-        int line = 0;
-        while (NULL != fgets (curFileStr, sizeof(curFileStr), inFilePrt)) {
-            unsigned int regAddr;
-            unsigned int regVal;
-            //printf ("\n>[%s]", curFileStr);
-            sscanf (curFileStr, "%x %x", (unsigned int *) &regAddr, (unsigned int *) &regVal);
-            parse_reg (regAddr, regVal, outFilePrt);
-            //printf ("\n[%x] [%x]", regAddr, regVal);
-            line++;
-        }
-        fclose (inFilePrt);
-        fclose (outFilePrt);
-        res = true;
-    }
-    return res;
-
-}
 
 bool parse_tja1101_reg (uint8_t regAddr, uint16_t regVal, FILE *outFilePrt) {
     bool res = false;

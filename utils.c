@@ -6,6 +6,7 @@
 #include "str_ops.h"
 #include "bin_heap_array.h"
 #include "linked_list.h"
+#include "float_utils.h"
 
 #include <stdarg.h>
 #include <stdlib.h>

@@ -24,6 +24,11 @@
 
 #define NEW_LINE "\n\r"
 
+bool parse_not (char *expression, int inStrLen);
+bool parse_or (char *expression, int inStrLen);
+bool parse_and (char *expression, int inStrLen);
+int parse_num_operands (char *expression, int inStrLen);
+
 bool is_bracket (char ch);
 bool parseBoolExpr (char *expression);
 bool parse_bool_expr (char *expression, int inStrlen);
@@ -40,6 +45,9 @@ bool try_strl2int32_dec (const char s32_dec_str [], int32_t s32_dec_str_len, int
 int find_max_sec (char *string, char sripChar);
 int lengthOfLongestSubstring (char *s);
 int replace_char (char *str, char orig, char rep);
+
+uint16_t count_substring (char *inStr, char *substr);
+
 bool reblace_substring (char *inOutStr, char *orig, char *rep);
 void reverse_string (char *inOutStr);
 char *select_sub_string (char *text, char *tail);
@@ -55,6 +63,7 @@ bool is_signed (const char first_str_char);
 bool is_signe (const char first_str_char);
 void print_str_head (char *inStr, uint32_t len);
 bool is_diff_chars (char *inStr, uint32_t len);
+bool is_number(char letter);
 void reverseString (char *s, int length);
 void detect_change (char *oldStr, char *newStr, char **oldSubStr, int *oldSubStringLen, char **newSubStr, int *newSubStringLen);
 char *uint32_to_bin_str (uint32_t inVal32bit);
@@ -62,6 +71,14 @@ const char* utoa_bin16 (uint16_t u16_bin_data);
 const char* utoa_bin24 (uint32_t u32_bin_data);
 const char* utoa_bin32 (uint32_t u32_bin_data);
 
+bool try_canch_hex_uint8 (char *inStr, int strLen, uint8_t * val8b);
+bool try_canch_hex_uint16 (char *inStr, int strLen, uint16_t * val16b);
+bool try_canch_hex_uint32 (char *inStr, int strLen, uint32_t * val32b);
+
+bool is_hex_number (char letter) ;
+bool delete_char (char * inOutStr, int curIndex);
+
+bool extract_numbers (char *s, int length);
 void find_diff (
     char *oldStr,
     int oldLen,
@@ -71,19 +88,5 @@ void find_diff (
     int *outNewSubStringLen,
     char **oldSubStr,
     char **newSubStr);
-bool test_lengthOfLongestSubstring (void);
-bool test_detect_change (void);
-bool test_num_to_bin_str (void);
-bool test_myAtoi (void);
-bool test_parse_not (void);
-bool test_parse_and (void);
-bool test_operand_extract (void);
-bool test_calc_paratasis_nesting (void);
-bool test_parse_num_operands (void);
-bool test_Valid_Parentheses (void);
-bool test_parseBoolExpr (void);
-bool test_reverse (void);
-bool test_str_char_replace (void);
-bool test_replace_substr (void);
 
 #endif /* __STRING_OPS_H */

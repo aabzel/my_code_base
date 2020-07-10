@@ -14,7 +14,7 @@ extern "C" {
 typedef uint16_t fifo_index_t;
 
 typedef struct {
-    fifo_index_t size;
+    fifo_index_t size; /*capacity*/
     volatile fifo_index_t start;
     volatile fifo_index_t end;
     volatile fifo_index_t count;
