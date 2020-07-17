@@ -640,6 +640,13 @@ static int8_t a2d (char ch) {
     }
 }
 
+
+float cacl_percent(float numerator, float denominator){
+    float percent;
+    percent = numerator*100.0/denominator;
+    return percent;
+}
+
 uint32_t extract_subval_from_32bit (uint32_t inVal, uint8_t maxBit, uint8_t minBit) {
     uint32_t outVal = 0;
     if ((minBit <= maxBit) && (maxBit <= 31) && (minBit <= 31)) {

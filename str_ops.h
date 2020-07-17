@@ -76,6 +76,7 @@ bool try_canch_hex_uint16 (char *inStr, int strLen, uint16_t * val16b);
 bool try_canch_hex_uint32 (char *inStr, int strLen, uint32_t * val32b);
 
 bool is_hex_number (char letter) ;
+uint16_t calc_hex_val_len(char *inStr);
 bool delete_char (char * inOutStr, int curIndex);
 
 bool extract_numbers (char *s, int length);

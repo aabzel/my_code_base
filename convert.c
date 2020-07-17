@@ -8,12 +8,12 @@
 #pragma diag_pop
 #endif
 #endif
+#include "convert.h"
 
 #include <limits.h>
 #include <stdlib.h>
 #include <float.h>
 #include <ctype.h>
-#include "convert.h"
 
 static const char symbols [] = "FEDCBA9876543210123456789ABCDEF";
 

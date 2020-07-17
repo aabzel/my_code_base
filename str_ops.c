@@ -1280,6 +1280,21 @@ bool extract_numbers (char *inOutStr, int length) {
     return res;
 }
 
+uint16_t calc_hex_val_len (char *inStr) {
+    uint16_t strValLen = 0;
+    if (inStr) {
+        bool runLoop = true;
+        while (runLoop) {
+            if (true == is_hex_number (inStr [strValLen])) {
+                strValLen++;
+            } else {
+                runLoop = false;
+            }
+        }
+    }
+    return strValLen;
+}
+
 bool is_hex_number (char letter) {
     bool res = false;
     switch (letter) {
@@ -1329,6 +1344,24 @@ bool is_hex_number (char letter) {
             res = true;
             break;
         case 'f':
+            res = true;
+            break;
+        case 'A':
+            res = true;
+            break;
+        case 'B':
+            res = true;
+            break;
+        case 'C':
+            res = true;
+            break;
+        case 'D':
+            res = true;
+            break;
+        case 'E':
+            res = true;
+            break;
+        case 'F':
             res = true;
             break;
     }
@@ -1464,8 +1497,6 @@ bool try_canch_hex_uint32 (char *inStr, int strLen, uint32_t * val32b) {
     }
     return res;
 }
-
-
 
 bool delete_char (char * inOutStr, int curIndex) {
     bool res = false;

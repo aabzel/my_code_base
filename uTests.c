@@ -17,6 +17,7 @@
 #include "parse_keepass.h"
 #include "permutations.h"
 #include "russian_doll_envelopes_test.h"
+#include "scan_serial_port.h"
 #include "slidingWindowMax.h"
 #include "slidingWindowMid.h"
 #include "sort_linked_list.h"
@@ -33,14 +34,46 @@
 #include <string.h>
 #include <time.h>
 
+static bool test_parse_vi (void) {
+    char inStr [1000];
+    char outStr [1000];
+    char expStr [1000];
+    bool res = false;
+    uint16_t deviceID;
+    strncpy (expStr, "202B17D3015A", sizeof(outStr));
+    strncpy (
+        inStr,
+        "CanFlasher on CanFlash Version 0.17.1.1.34 GCC Release 11/7/2020 19:34:29 FlashId:E58F0042 Serial:202B17D3015A by Arrival",
+        sizeof(inStr));
+    uint64_t serial64BitNumber = 0;
+    res = parse_serial (inStr, sizeof(inStr), &serial64BitNumber);
+    if (true == res) {
+        if (0x202B17D3015A != serial64BitNumber) {
+            printf ("\n %lu", serial64BitNumber);
+            return false;
+        } else {
+            printf ("\n Serial 0x[%08llx]", (long long unsigned int) serial64BitNumber);
+        }
+    } else {
+        printf ("\n Unable to extract Serial from string [%s]", inStr);
+        return false;
+    }
+    deviceID = parse_product (inStr, sizeof(inStr));
+    if (CAN_FLASHER != deviceID) {
+        return false;
+    }
+    return true;
+}
+
 int unitTest (void) {
     bool res = false;
     uint8_t regAddr = 0x00;
     uint16_t regVal = 0x0000;
-    uint16_t sample16bit;
-    float a = 20000.0f;
-    float b = 0.5f;
-    float c = a + b;
+
+    res = test_parse_vi ();
+    if (false == res) {
+        return PARSE_VI_ERROR;
+    }
 
     char inStr [100];
     char outStr [100];
@@ -58,7 +91,6 @@ int unitTest (void) {
         return PARSE_UINT16_ERROR;
     }
 
-
     strncpy (inStr, "         CONFIG[0x1a]: 0x00832800 0b_0000_0000_1000_0011_0010_1000_0000_0000", sizeof(inStr));
     res = try_canch_hex_uint8 (inStr, strlen (inStr), &regAddr);
     if ((0x1a != regAddr) && (true == res)) {
@@ -68,17 +100,16 @@ int unitTest (void) {
     uint32_t reg32Val;
     strncpy (inStr, "         CONFIG[0x1a]: 0x00832800 0b_0000_0000_1000_0011_0010_1000_0000_0000", sizeof(inStr));
     res = try_canch_hex_uint32 (inStr, strlen (inStr), &reg32Val);
-    if ( true == res) {
-        if(0x00832800!=reg32Val){
-            printf("\n reg32Val %x exp 0x00832800",reg32Val);
+    if (true == res) {
+        if (0x00832800 != reg32Val) {
+            printf ("\n reg32Val %x exp 0x00832800", reg32Val);
             return PARSE_UINT32_ERROR;
         }
 
-    }else{
-        printf("try_canch_hex_uint32 failed");
+    } else {
+        printf ("try_canch_hex_uint32 failed");
         return PARSE_UINT32_ERROR;
     }
-
 
     //res = extract_numbers (inStr, strlen (inStr));
     //int cmpRes = strcmp (expStr, outStr);
@@ -104,6 +135,7 @@ int unitTest (void) {
         return SUB_STR_REPL_ERROR;
     }
 
+#if TEST_FLOATS
     print_biggest_mantissa ();
     sample16bit = float_to_uint16 (c);
     if (0U != sample16bit) {
@@ -127,6 +159,7 @@ int unitTest (void) {
     //if (0U != sample16bit) {
     //return FLOAR_TO_SAMPLE_ERROR;
     //}
+#endif
 
 #if 0
     init_file_name ();
@@ -452,9 +485,9 @@ int unitTest (void) {
 
     uint8_t numSetBit = hamming_weight (56);
     if (3 != numSetBit) {
+        printf ("\n numSetBit:%d\n", numSetBit);
         return ONE_BIT_ERROR;
     }
-    printf ("\n numSetBit:%d\n", numSetBit);
 
 #endif
 

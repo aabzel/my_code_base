@@ -72,6 +72,8 @@ uint16_t float_to_uint16 (float val);
 double fraction (uint32_t mantissa);
 float construct_32bit_float (uint32_t integer, uint32_t fractional);
 double fraction_sim (uint32_t mantissa);
+float cacl_percent(float numerator, float denominator);
+
 
 #ifdef __cplusplus
 }

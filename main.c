@@ -10,6 +10,7 @@
 #include "uTests.h"
 #include "mk_to_dot.h"
 #include "simulate_rocket_2d.h"
+#include "scan_serial_port.h"
 
 
 #include <string.h>
@@ -33,7 +34,6 @@ int main (int argc, char* argv []);
 //int main (int argc, char **argv)
 int main (int argc, char* argv []) {
     (void) argc;
-
     (void) argv;
 #if PRINT_ENV
     print_ent();
@@ -43,9 +43,14 @@ int main (int argc, char* argv []) {
     int ret = unitTest ();
     if (0 != ret) {
         printf ("\n\nUnit Test Error: %d\n", ret);
+        exit(ret);
     } else {
         printf ("\n\nUnit Test fine\n");
     }
+#endif
+
+#if DEPLOY_SCAN_COM
+    scan_serial ();
 #endif
 
 #if DEPLOY_PARSE_REG
