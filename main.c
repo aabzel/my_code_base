@@ -8,6 +8,7 @@
 #include "permutations.h"
 #include "utils.h"
 #include "uTests.h"
+#include "tcp_client.h"
 #include "mk_to_dot.h"
 #include "simulate_rocket_2d.h"
 #include "scan_serial_port.h"
@@ -47,6 +48,10 @@ int main (int argc, char* argv []) {
     } else {
         printf ("\n\nUnit Test fine\n");
     }
+#endif
+
+#if DEPLOY_TCP_CLIENT
+    test_tcp_client ();
 #endif
 
 #if DEPLOY_SCAN_COM
@@ -101,6 +106,7 @@ int main (int argc, char* argv []) {
 #endif
 
     printf ("\n\n Done!\n\n");
+    getchar();
     return 0;
 }
 

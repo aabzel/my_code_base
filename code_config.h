@@ -5,6 +5,6 @@
 #define DEPLOY_UTESTS 1
 #define PRINT_ENV 0
 #define DEPLOY_SCAN_COM 1
-
+#define  DEPLOY_TCP_CLIENT 1
  
 #endif /* CODE_CONFIG_H */

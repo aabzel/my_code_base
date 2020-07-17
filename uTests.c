@@ -49,10 +49,8 @@ static bool test_parse_vi (void) {
     res = parse_serial (inStr, sizeof(inStr), &serial64BitNumber);
     if (true == res) {
         if (0x202B17D3015A != serial64BitNumber) {
-            printf ("\n %lu", serial64BitNumber);
+            printf ("\n Serial 0x[%08llx] exp 0x202B17D3015A", (long long unsigned int) serial64BitNumber);
             return false;
-        } else {
-            printf ("\n Serial 0x[%08llx]", (long long unsigned int) serial64BitNumber);
         }
     } else {
         printf ("\n Unable to extract Serial from string [%s]", inStr);

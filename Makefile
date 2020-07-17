@@ -6,6 +6,7 @@ LDFLAGS=
 SOURCES = arrays.c  
 SOURCES += permutations.c 
 SOURCES += utils.c 
+SOURCES += tcp_client.c
 SOURCES += artificial_neural_network.c   
 SOURCES += convert.c  
 SOURCES += scan_serial_port.c
@@ -54,7 +55,7 @@ EXECUTABLE=training
 
 OBJECTS=$(SOURCES:.c=.o)
 
-CFLAGS = -O2
+CFLAGS = -O2 
 #CFLAGS += -g -c
 CFLAGS += -Werror -Wall -Wextra  
 CFLAGS += -Wstrict-prototypes -Wmissing-prototypes
@@ -64,10 +65,10 @@ all: $(EXECUTABLE)
 
 	
 $(EXECUTABLE):	$(OBJECTS)
-	$(CC) -o $@ $^
+	$(CC) -o $@ $^ -lws2_32
 
 %.o:	$(PROJECT_ROOT)%.cpp
-	$(CXX) -c $(CFLAGS) $(CXXFLAGS) $(CPPFLAGS) -o $@ $<
+	$(CXX) -c $(CFLAGS) $(CXXFLAGS) $(CPPFLAGS) -o $@ $<  
 
 %.o:	$(PROJECT_ROOT)%.c
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<

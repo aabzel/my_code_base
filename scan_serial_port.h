@@ -10,11 +10,20 @@ extern "C" {
 #include "custom_type.h"
 
 #define MAX_COM_NUM 20
-
+#define DEBUG_FINE_VI_REQ 0
+#define DEBUG_SPOT_COM 0
 #define DEBUG_FAILED_OPENS 0
 
 typedef enum {
     CAN_FLASHER = 1,
+    TSTP_V1 = 2,
+    TSTP_V2 = 3,
+    TSTF_V1 = 4,
+    TSTF_V2 = 5,
+    TSTE_V1 = 6,
+    TSTS_V1 = 7,
+    TSTI_V1 = 8,
+    IOV4_A = 9,
     UNDEF_DEVICE = 0
 }deciceId_t;
 

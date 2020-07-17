@@ -1,6 +1,5 @@
 #include "scan_serial_port.h"
 
-
 #include <stdio.h>
 #include <windows.h>
 
@@ -41,7 +40,6 @@ static bool com_set_timeout (HANDLE hComm) {
     return res;
 }
 
-
 bool com_send_str (HANDLE hComm, char *txBuffer, uint32_t txBuffLen) {
     bool res = false;
     BOOL status;
@@ -53,6 +51,38 @@ bool com_send_str (HANDLE hComm, char *txBuffer, uint32_t txBuffLen) {
         }
     }
 
+    return res;
+}
+
+static bool com_receive_remain (HANDLE hComm, uint32_t *outRealRxArrayLen) {
+    bool res = false;
+    if (NULL != outRealRxArrayLen) {
+        *outRealRxArrayLen = 0;
+        char tempChar;
+        DWORD numberBytesRead;
+        uint32_t BytesReadCnt = 0;
+        bool loopRun = true;
+        while (loopRun) {
+            ReadFile (hComm,           //Handle of the Serial port
+                &tempChar,       //Temporary character
+                sizeof(tempChar),       //Size of TempChar
+                &numberBytesRead,    //Number of bytes read
+                NULL);
+#if DEDUG_RX_CHAR
+            printf ("%c", tempChar);
+#endif
+            if (0 < numberBytesRead) {
+                loopRun = true;
+            } else {
+                loopRun = false;
+            }
+            BytesReadCnt++;
+        };
+        if (0 < BytesReadCnt) {
+            *outRealRxArrayLen = BytesReadCnt;
+            res = true;
+        }
+    }
     return res;
 }
 
@@ -116,7 +146,9 @@ bool scan_serial (void) {
             printf ("\n  Error in opening serial port [%s]",comNameStr);
 #endif
         } else {
+#if DEBUG_SPOT_COM
             printf ("\n [%s] exists in PC", comNameStr);
+#endif
             deviceList [comPortNum].isExistPort = true;
             CloseHandle (hComm);
         }
@@ -135,21 +167,26 @@ bool scan_serial (void) {
             printf ("\n  Error in opening serial port [%s]",comNameStr);
 #endif
         } else {
+#if DEBUG_SPOT_COM
             printf ("\n [%s] exists in PC", comNameStr);
+#endif
             deviceList [comPortNum].isExistPort = true;
             com_set_params (hComm);
             com_set_timeout (hComm);
-#if 0
+            uint32_t realRxLen = 0;
+
+            res = com_receive_remain (hComm, &realRxLen);
+
             char txBuffer [] = "vi\n\r";
             res = com_send_str (hComm, txBuffer, strlen (txBuffer));
             if (true == res) {
+#if DEBUG_FINE_VI_REQ
                 printf ("\n vi request ok!");
+#endif
             } else {
                 printf ("\n vi request fail!");
             }
-#endif
             char rxBuffer [10000] = "";
-            uint32_t realRxLen = 0;
             printf ("\n");
             res = com_receive_str (hComm, rxBuffer, sizeof(rxBuffer), &realRxLen);
             if (true == res) {
@@ -157,10 +194,10 @@ bool scan_serial (void) {
 #if DEDUG_RX_TEXT
                     printf ("[%s]\n rx %u bytes", rxBuffer, realRxLen);
 #endif
-                    res= parse_serial (rxBuffer, realRxLen, &deviceList[comPortNum].serialNumber);
-                    if(true==res){
-                        deviceList[comPortNum].isExistDevice=true;
-                        deviceList[comPortNum].deviceID = parse_product (rxBuffer, realRxLen);
+                    res = parse_serial (rxBuffer, realRxLen, &deviceList [comPortNum].serialNumber);
+                    if (true == res) {
+                        deviceList [comPortNum].isExistDevice = true;
+                        deviceList [comPortNum].deviceID = parse_product (rxBuffer, realRxLen);
                     }
                 } else {
                     printf ("\nLack of response");
@@ -191,10 +228,10 @@ bool print_device_list (void) {
             out_res = true;
         }
         if (true == deviceList [comPortNum].isExistDevice) {
-            printf ("Serial 0x[%llx] ", (long long unsigned int) deviceList [comPortNum].serialNumber);
-            if(UNDEF_DEVICE!=deviceList[comPortNum].deviceID){
-                printf ("Device %s ", dev_id_name(deviceList[comPortNum].deviceID));
+            if (UNDEF_DEVICE != deviceList [comPortNum].deviceID) {
+                printf (" Device %s ", dev_id_name (deviceList [comPortNum].deviceID));
             }
+            printf ("Serial 0x%llx ", (long long unsigned int) deviceList [comPortNum].serialNumber);
         }
     }
     return out_res;
@@ -205,17 +242,19 @@ uint64_t parse_serial (char *inStr, uint16_t inStrLen, uint64_t *outSerial64bNum
     bool res = false;
     (void) inStrLen;
     //printf ("\n inStr[%s]", inStr);
-    char *serialStartPtr = strstr (inStr, "Serial:");
-    if (NULL != serialStartPtr) {
-        uint16_t hexValLen;
-        //printf ("\n serialStartPtr[%s]", serialStartPtr);
-        //printf ("\n numstr[%s]", (serialStartPtr + strlen ("Serial:")));
-        hexValLen = calc_hex_val_len((serialStartPtr + strlen ("Serial:")));
-        //printf ("\n hexValLen[%d]", hexValLen);
-        res = try_strl2uint64_hex ((const char *) (serialStartPtr + strlen ("Serial:")), hexValLen, outSerial64bNumber);
+    if (strlen ("Serial:") < inStrLen) {
+        char *serialStartPtr = strstr (inStr, "Serial:");
+        if (NULL != serialStartPtr) {
+            uint16_t hexValLen;
+            //printf ("\n serialStartPtr[%s]", serialStartPtr);
+            //printf ("\n numstr[%s]", (serialStartPtr + strlen ("Serial:")));
+            hexValLen = calc_hex_val_len ((serialStartPtr + strlen ("Serial:")));
+            //printf ("\n hexValLen[%d]", hexValLen);
+            res = try_strl2uint64_hex ((const char *) (serialStartPtr + strlen ("Serial:")), hexValLen, outSerial64bNumber);
 
-    } else {
-        printf ("\n lack Serial");
+        } else {
+            printf ("\n lack Serial number in ");
+        }
     }
 
     return res;
@@ -224,20 +263,76 @@ uint64_t parse_serial (char *inStr, uint16_t inStrLen, uint64_t *outSerial64bNum
 uint16_t parse_product (char *inStr, uint16_t inStrLen) {
     (void) inStrLen;
     uint16_t deviceID = UNDEF_DEVICE;
-    char *serialStartPtr = strstr (inStr, "CanFlasher");
-    if (NULL != serialStartPtr) {
+    char *devNameStartPtr;
+    devNameStartPtr = strstr (inStr, "CanFlasher");
+    if (NULL != devNameStartPtr) {
         deviceID = CAN_FLASHER;
+    }
+    devNameStartPtr = strstr (inStr, "TSTE_V1");
+    if (NULL != devNameStartPtr) {
+        deviceID = TSTE_V1;
+    }
+
+    devNameStartPtr = strstr (inStr, "TSTS_V1");
+    if (NULL != devNameStartPtr) {
+        deviceID = TSTS_V1;
+    }
+    devNameStartPtr = strstr (inStr, "TSTF_V2");
+    if (NULL != devNameStartPtr) {
+        deviceID = TSTF_V2;
+    }
+    devNameStartPtr = strstr (inStr, "TSTF_V1");
+    if (NULL != devNameStartPtr) {
+        deviceID = TSTF_V1;
+    }
+
+    devNameStartPtr = strstr (inStr, "IOV4_A");
+    if (NULL != devNameStartPtr) {
+        deviceID = IOV4_A;
+    }
+
+    devNameStartPtr = strstr (inStr, "TSTP_V1");
+    if (NULL != devNameStartPtr) {
+        deviceID = TSTP_V1;
+    }
+    devNameStartPtr = strstr (inStr, "TSTP_V2");
+    if (NULL != devNameStartPtr) {
+        deviceID = TSTP_V2;
     }
     return deviceID;
 }
 
+const char *dev_id_name (deciceId_t deviceID) {
+    static const char *devName = "UNDEF_DEV";
+    switch (deviceID) {
+        case CAN_FLASHER:
+            devName = "CAN_FLASHER";
+            break;
+        case TSTF_V1:
+            devName = "TSTF_V1";
+            break;
+        case TSTF_V2:
+            devName = "TSTF_V2";
+            break;
+        case TSTP_V1:
+            devName = "TSTP_V1";
+            break;
+        case TSTP_V2:
+            devName = "TSTP_V2";
+            break;
+        case TSTI_V1:
+            devName = "TSTI_V1";
+            break;
+        case TSTS_V1:
+            devName = "TSTS_V1";
+            break;
+        case IOV4_A:
+            devName = "IOV4_A";
+            break;
 
-const char *dev_id_name(deciceId_t deviceID){
-    static const char *devName="UNDEF_DEV";
-    switch(deviceID){
-        case CAN_FLASHER: devName="CAN_FLASHER"; break;
-        default: devName="CAN_FLASHER"; break;
-        break;
+        default:
+            devName = "CAN_FLASHER";
+            break;
     }
     return devName;
 }
