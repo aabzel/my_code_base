@@ -1,3 +1,5 @@
+#include "convert.h"
+
 #if defined(__TI_COMPILER_VERSION__) || defined(__GCC__)
 #if defined(__TI_COMPILER_VERSION__)
 #pragma diag_push
@@ -8,7 +10,6 @@
 #pragma diag_pop
 #endif
 #endif
-#include "convert.h"
 
 #include <limits.h>
 #include <stdlib.h>
@@ -1732,3 +1733,117 @@ const char* utoa_bin32 (uint32_t u32_bin_data) {
     return outBitStr32;
 }
 
+/** Converts the string in `192.168.1.101` format to the uint32_t IP address */
+bool try_strl2ipv4(const char str__tsl2i4[], int32_t str_len__tsl2i4, uint32_t* ipv4_ptr__tsl2i4)
+{
+    /* Minimal IPv4 address in correct format is: `0.0.0.0` (7 chars) */
+#   define TRY_STRL2IPV4_MIN_LENGTH     7
+    bool result__tsl2i4;
+
+    if (str__tsl2i4 == NULL) {
+        /* Error: argument `str__tsl2i4` is NULL */
+        result__tsl2i4 = false;
+
+    } else if (str_len__tsl2i4 < TRY_STRL2IPV4_MIN_LENGTH) {
+        /* Error: The `str__tsl2i4` string is too short */
+        result__tsl2i4 = false;
+
+    } else {
+        uint16_t    value__tsl2i4[4] = {0u, 0u, 0u, 0u};
+        uint8_t     octet_n__tsl2i4  = 0u;
+        int32_t     offset__tsl2i4   = 0u;
+
+        result__tsl2i4 = true;
+
+        while ((result__tsl2i4 == true) && (offset__tsl2i4 < str_len__tsl2i4)) {
+            char        c__tsl2i4 = str__tsl2i4[offset__tsl2i4];
+            offset__tsl2i4 += 1u;
+
+            if ((c__tsl2i4 >= '0') && (c__tsl2i4 <= '9')) {
+                value__tsl2i4[octet_n__tsl2i4] *= 10u;
+                value__tsl2i4[octet_n__tsl2i4] += (uint8_t)(c__tsl2i4 - '0');
+
+                if (value__tsl2i4[octet_n__tsl2i4] > 255u) {
+                    /* Error: Octet value is too large */
+                    result__tsl2i4 = false;
+                }
+
+            } else if (c__tsl2i4 == '.') {
+                octet_n__tsl2i4 += 1u;
+
+                if (octet_n__tsl2i4 > 3u) {
+                    /* Error: Number of octets is too large */
+                    result__tsl2i4 = false;
+                }
+
+            } else if ((c__tsl2i4 == '\0') || (c__tsl2i4 == ' ')) {
+                /* end of line */
+                offset__tsl2i4 = str_len__tsl2i4;
+
+            } else {
+                /* Invalid character */
+                result__tsl2i4 = false;
+            }
+        } /* while */
+
+        if (octet_n__tsl2i4 != 3u) {
+            result__tsl2i4 = false;
+        }
+
+        if (result__tsl2i4 == true) {
+            uint32_t    ipv4__tsl2i4 = 0u;
+
+            ipv4__tsl2i4 |= (uint32_t)((uint32_t)(value__tsl2i4[0] & 0xFFu) << 24u);
+            ipv4__tsl2i4 |= (uint32_t)((uint32_t)(value__tsl2i4[1] & 0xFFu) << 16u);
+            ipv4__tsl2i4 |= (uint32_t)((uint32_t)(value__tsl2i4[2] & 0xFFu) <<  8u);
+            ipv4__tsl2i4 |= (uint32_t)((uint32_t)(value__tsl2i4[3] & 0xFFu) <<  0u);
+
+            if (ipv4_ptr__tsl2i4 != NULL) {
+                *ipv4_ptr__tsl2i4 = ipv4__tsl2i4;
+            }
+        }
+    }
+
+    return result__tsl2i4;
+}
+
+
+
+bool try_str2mac(const char str__ts2m[], uint8_t mac_adr_ptr__ts2m[])
+{
+    bool        result__ts2m;
+    uint64_t    mac64__ts2m;
+
+    if (str__ts2m == NULL) {
+        /* Error: Argument `str__ts2m` is NULL */
+        result__ts2m = false;
+
+    } else if (
+        try_strl2uint64_hex(
+            str__ts2m,
+            (int32_t) strlen(str__ts2m),
+            &mac64__ts2m
+        ) != true
+    ) {
+        /* Error: Can't parse MAC address */
+        result__ts2m = false;
+
+    } else if (mac64__ts2m > 0xFFFFFFFFFFFFu) {
+        /* Error: Parsed value is too large to fit into MAC address */
+        result__ts2m = false;
+
+    } else {
+        /* Ok */
+        result__ts2m = true;
+        if (mac_adr_ptr__ts2m != NULL) {
+            mac_adr_ptr__ts2m[0] = (uint8_t)((mac64__ts2m >> 40u) & 0xFFu);
+            mac_adr_ptr__ts2m[1] = (uint8_t)((mac64__ts2m >> 32u) & 0xFFu);
+            mac_adr_ptr__ts2m[2] = (uint8_t)((mac64__ts2m >> 24u) & 0xFFu);
+            mac_adr_ptr__ts2m[3] = (uint8_t)((mac64__ts2m >> 16u) & 0xFFu);
+            mac_adr_ptr__ts2m[4] = (uint8_t)((mac64__ts2m >>  8u) & 0xFFu);
+            mac_adr_ptr__ts2m[5] = (uint8_t)((mac64__ts2m >>  0u) & 0xFFu);
+        }
+    }
+
+    return result__ts2m;
+}

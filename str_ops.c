@@ -1504,3 +1504,25 @@ bool delete_char (char * inOutStr, int curIndex) {
     (void) curIndex;
     return res;
 }
+
+char *mac_to_str (uint8_t *mac_addr) {
+    static char macStrOut [100] = "";
+    snprintf (
+        (char *) macStrOut,
+        sizeof(macStrOut),
+        "%02x:%02x:%02x:%02x:%02x:%02x",
+        mac_addr [0],
+        mac_addr [1],
+        mac_addr [2],
+        mac_addr [3],
+        mac_addr [4],
+        mac_addr [5]);
+    return macStrOut;
+}
+
+char *ip_to_str (uint8_t *ip_addr) {
+    static char ipStrOut [100] = "";
+    snprintf ((char *) ipStrOut, sizeof(ipStrOut), "%02d.%02d.%02d.%02d", ip_addr [3], ip_addr [2], ip_addr [1], ip_addr [0]);
+    return ipStrOut;
+}
+

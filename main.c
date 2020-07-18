@@ -9,10 +9,10 @@
 #include "utils.h"
 #include "uTests.h"
 #include "tcp_client.h"
+#include "tcp_server.h"
 #include "mk_to_dot.h"
 #include "simulate_rocket_2d.h"
 #include "scan_serial_port.h"
-
 
 #include <string.h>
 #include <stdio.h>
@@ -36,6 +36,11 @@ int main (int argc, char* argv []);
 int main (int argc, char* argv []) {
     (void) argc;
     (void) argv;
+    // IPTCP server port tcp server
+#if HIDE_CONSOLE
+    FreeConsole();
+#endif
+    bool res = false;
 #if PRINT_ENV
     print_ent();
 #endif
@@ -44,18 +49,32 @@ int main (int argc, char* argv []) {
     int ret = unitTest ();
     if (0 != ret) {
         printf ("\n\nUnit Test Error: %d\n", ret);
-        exit(ret);
+        exit (ret);
     } else {
         printf ("\n\nUnit Test fine\n");
     }
 #endif
 
 #if DEPLOY_TCP_CLIENT
-    test_tcp_client ();
+    get_mac ();
+#endif
+
+#if DEPLOY_TCP_SERVER
+    res = launch_tcp_server(TCP_BOARD_SERVER_PORT);
+    if (false == res) {
+         printf ("Unable to launch board observation server");
+    }
 #endif
 
 #if DEPLOY_SCAN_COM
-    scan_serial ();
+
+    uint32_t tryCnt;
+    for (tryCnt = 0; tryCnt < 100; tryCnt++) {
+        res = scan_serial ();
+        if (false == res) {
+            printf ("Lack of com ports");
+        }
+    }
 #endif
 
 #if DEPLOY_PARSE_REG
@@ -106,7 +125,7 @@ int main (int argc, char* argv []) {
 #endif
 
     printf ("\n\n Done!\n\n");
-    getchar();
+    getchar ();
     return 0;
 }
 

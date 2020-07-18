@@ -774,3 +774,31 @@ uint16_t float_to_uint16 (float inVal) {
     return outVal;
 }
 
+uint16_t reverse_byte_order_uint16 (const uint16_t in2byteVal)
+{
+    uint16_t swapped = 0;
+    swapped = (in2byteVal >> 8) | (in2byteVal << 8);
+    return swapped;
+}
+
+uint32_t reverse_byte_order_uint32 (const uint32_t in4byteVal)
+{
+    uint32_t retval;
+    retval = in4byteVal & 0xFF;
+    retval = (retval << 8) | ((in4byteVal >> 8) & 0xFF);
+    retval = (retval << 8) | ((in4byteVal >> 16) & 0xFF);
+    retval = (retval << 8) | ((in4byteVal >> 24) & 0xFF);
+    return retval;
+}
+
+
+uint32_t pack_ipv4 ( uint8_t ipAddrByte1,  uint8_t ipAddrByte2,
+                     uint8_t ipAddrByte3,  uint8_t ipAddrByte4)
+{
+    uint8_t ipAddr[4] =
+        { ipAddrByte1, ipAddrByte2, ipAddrByte3, ipAddrByte4 };
+    uint32_t ipv4bytesLe, ipv4bytesBe;
+    memcpy (&ipv4bytesLe, ipAddr, 4);
+    ipv4bytesBe = reverse_byte_order_uint32 (ipv4bytesLe);
+    return ipv4bytesBe;
+}

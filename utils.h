@@ -73,7 +73,11 @@ double fraction (uint32_t mantissa);
 float construct_32bit_float (uint32_t integer, uint32_t fractional);
 double fraction_sim (uint32_t mantissa);
 float cacl_percent(float numerator, float denominator);
+uint32_t pack_ipv4 ( uint8_t ipAddrByte1,  uint8_t ipAddrByte2,
+                     uint8_t ipAddrByte3,  uint8_t ipAddrByte4);
 
+uint16_t reverse_byte_order_uint16 (const uint16_t in2byteVal);
+uint32_t reverse_byte_order_uint32 (const uint32_t in4byteVal);
 
 #ifdef __cplusplus
 }

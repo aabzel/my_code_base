@@ -24,6 +24,9 @@ extern "C" {
 
 bool is_hex_str (const char str_to_check [], int32_t str_to_check_len);
 
+bool try_strl2ipv4 (const char str__tsl2i4[], int32_t str_len__tsl2i4, uint32_t* ipv4_ptr__tsl2i4);
+bool try_str2mac (const char str__ts2m[], uint8_t mac_adr_ptr__ts2m[]);
+
 bool try_str2uint64(const char u64_str[], uint64_t* u64_value);
 bool try_str2int64(const char s64_str[], int64_t* s64_value);
 bool try_strl2uint64(const char u64l_str[], int32_t u64l_str_len, uint64_t* u64l_value);

@@ -1,12 +1,21 @@
 PROJECT_ROOT = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
+#@echo $(error PROJECT_ROOT= $(PROJECT_ROOT))
+
 CC=gcc
-LDFLAGS=
+LDFLAGS=-lws2_32 -liphlpapi
+
+INCDIR = $(PROJECT_ROOT)
+#INCDIR += $(PROJECT_ROOT)tests/
+
+#@echo $(error INCDIR= $(INCDIR))
+
 
 SOURCES = arrays.c  
 SOURCES += permutations.c 
 SOURCES += utils.c 
 SOURCES += tcp_client.c
+SOURCES += tcp_server.c
 SOURCES += artificial_neural_network.c   
 SOURCES += convert.c  
 SOURCES += scan_serial_port.c
@@ -51,7 +60,7 @@ SOURCES += test_avl_tree.c
 SOURCES += slidingWindowMid.c
 SOURCES += slidingWindowMax.c
 
-EXECUTABLE=training
+EXECUTABLE=EclipseBuild
 
 OBJECTS=$(SOURCES:.c=.o)
 
@@ -63,15 +72,16 @@ CFLAGS += -Wstrict-prototypes -Wmissing-prototypes
 
 all: $(EXECUTABLE)
 
-	
+#linker
 $(EXECUTABLE):	$(OBJECTS)
-	$(CC) -o $@ $^ -lws2_32
+	$(CC)  -o   $@ $^  $(LDFLAGS)
 
 %.o:	$(PROJECT_ROOT)%.cpp
-	$(CXX) -c $(CFLAGS) $(CXXFLAGS) $(CPPFLAGS) -o $@ $<  
+	$(CXX) -I$(INCDIR) -c $(CFLAGS) $(CXXFLAGS) $(CPPFLAGS) -o $@ $<  
 
+#compiler
 %.o:	$(PROJECT_ROOT)%.c
-	$(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
+	$(CC)  -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
 	
 #.c.o:
 #	$(CC) $(CFLAGS) $< -o $@

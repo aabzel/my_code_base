@@ -4,7 +4,10 @@
 #include <windows.h>
 
 #include "convert.h"
+#include "code_config.h"
 #include "str_ops.h"
+#include "tcp_client.h"
+#include "utils.h"
 
 xConnection_t deviceList [MAX_COM_NUM];
 
@@ -31,11 +34,11 @@ static bool com_set_timeout (HANDLE hComm) {
     bool res = false;
     COMMTIMEOUTS timeouts =
         { 0 };
-    timeouts.ReadIntervalTimeout = 900; // in milliseconds
-    timeouts.ReadTotalTimeoutConstant = 900; // in milliseconds
-    timeouts.ReadTotalTimeoutMultiplier = 900; // in milliseconds
-    timeouts.WriteTotalTimeoutConstant = 900; // in milliseconds
-    timeouts.WriteTotalTimeoutMultiplier = 900; // in milliseconds
+    timeouts.ReadIntervalTimeout = 500; // in milliseconds
+    timeouts.ReadTotalTimeoutConstant = 500; // in milliseconds
+    timeouts.ReadTotalTimeoutMultiplier = 500; // in milliseconds
+    timeouts.WriteTotalTimeoutConstant = 500; // in milliseconds
+    timeouts.WriteTotalTimeoutMultiplier = 500; // in milliseconds
     SetCommTimeouts (hComm, &timeouts);
     return res;
 }
@@ -124,6 +127,8 @@ bool scan_serial (void) {
     bool res = false;
     char comNameStr [20] = "";
     uint8_t comPortNum;
+    memset (deviceList, 0x00, sizeof(deviceList));
+
     for (comPortNum = 0; comPortNum <= MAX_COM_NUM; comPortNum++) {
 
         snprintf (comNameStr, sizeof(comNameStr), "COM%u", comPortNum);
@@ -218,7 +223,10 @@ bool scan_serial (void) {
 
 bool print_device_list (void) {
     bool out_res = false;
+    bool res = false;
+    uint16_t txTextLen;
     uint32_t comPortNum = 0;
+    char txText [MAX_SIZE_OF_TCP_DATA_BYTE] = "";
     for (comPortNum = 0; comPortNum < MAX_COM_NUM; comPortNum++) {
         if (true == deviceList [comPortNum].isExistPort) {
             printf ("\n COM[%u] ", comPortNum);
@@ -231,7 +239,17 @@ bool print_device_list (void) {
             if (UNDEF_DEVICE != deviceList [comPortNum].deviceID) {
                 printf (" Device %s ", dev_id_name (deviceList [comPortNum].deviceID));
             }
-            printf ("Serial 0x%llx ", (long long unsigned int) deviceList [comPortNum].serialNumber);
+            snprintf (
+                txText,
+                sizeof(txText),
+                "\nDevice: %s Serial 0x%llx from IP %s MAC %s",
+                dev_id_name (deviceList [comPortNum].deviceID),
+                (long long unsigned int) deviceList [comPortNum].serialNumber, workBenchParam.serverIPstr, mac_to_str(workBenchParam.mac_addr));
+            txTextLen = strlen (txText);
+            res = sent_to_tcp_server (txText, txTextLen, TCP_BOARD_SERVER_PORT, pack_ipv4 (192, 168, 0, 11));
+            if (false == res) {
+                printf ("Unable to send to TCP server");
+            }
         }
     }
     return out_res;
