@@ -17,42 +17,51 @@
 
 #include "convert.h"
 #include "str_ops.h"
+#include "tcp_server.h"
 
 ComputerParams_t workBenchParam;
 
 bool sent_to_tcp_server (char *txText, uint16_t txTextLen, uint16_t tcpServerPort, uint32_t tcp_server_ip){
     char *ipAddrStr;
     ipAddrStr = ip_to_str ((uint8_t *)&tcp_server_ip);
-    printf ("\n server IP %s port %u",ipAddrStr,tcpServerPort);
+    //printf ("\n server IP %s port %u",ipAddrStr,tcpServerPort);
     bool res = false;
     WSADATA wsa;
     SOCKET socDescriptor;
     //printf ("\nInitialising Winsock...");
     if (0 == WSAStartup (MAKEWORD (2, 2), &wsa)) {
+#if DEBUG_TCP_CLIENT
         printf ("\nInitialised");
+#endif
         res = true;
         socDescriptor = socket (AF_INET, SOCK_STREAM, 0);
         if (socDescriptor == INVALID_SOCKET) {
             printf ("Could not create socket : %d", WSAGetLastError ());
         } else {
+#if DEBUG_TCP_CLIENT
             printf ("Socket created.\n");
+#endif
             struct sockaddr_in server;
             //server.sin_addr.s_addr = inet_addr ("192.168.0.11");
             server.sin_addr.s_addr = inet_addr (ipAddrStr);
-            printf ("\nip paced %08x des %08x",server.sin_addr.s_addr, tcp_server_ip);
+            //printf ("\nip paced %08x des %08x",server.sin_addr.s_addr, tcp_server_ip);
             server.sin_family = AF_INET;
             server.sin_port = htons (tcpServerPort);
             //Connect to remote server
             if (connect (socDescriptor, (struct sockaddr *) &server, sizeof(server)) < 0) {
-                puts ("connect error");
+                //printf ("\nTCP server connect error");
                 res = false;
             } else {
+#if DEBUG_TCP_CLIENT
                 puts ("Connected");
+#endif
                 if (send (socDescriptor, txText, txTextLen, 0) < 0) {
                     printf ("\nSend failed");
                     res = false;
                 } else {
+#if DEBUG_TCP_CLIENT
                     printf ("\nData Send");
+#endif
                     res = true;
                 }
                 closesocket(socDescriptor);
@@ -68,7 +77,7 @@ bool sent_to_tcp_server (char *txText, uint16_t txTextLen, uint16_t tcpServerPor
     return res;
 }
 
-bool get_mac (void) {
+bool get_adapter_info (void) {
     bool res = false;
     PIP_ADAPTER_INFO AdapterInfo;
     DWORD dwBufLen = sizeof(IP_ADAPTER_INFO);
@@ -104,6 +113,7 @@ bool get_mac (void) {
             if (true == res) {
                 if (0 < ipVal) {
                     workBenchParam.serverIP = ipVal;
+                    serverPC.serverIP = ipVal;
                     sprintf (
                         mac_addr,
                         "%02X:%02X:%02X:%02X:%02X:%02X",
@@ -114,18 +124,15 @@ bool get_mac (void) {
                         pAdapterInfo->Address [4],
                         pAdapterInfo->Address [5]);
 
-                    printf ("Address: %s, MAC: %s\n", pAdapterInfo->IpAddressList.IpAddress.String, mac_addr);
-                    workBenchParam.mac_addr[0] = pAdapterInfo->Address [0];
-                    workBenchParam.mac_addr[1] = pAdapterInfo->Address [1];
-                    workBenchParam.mac_addr[2] = pAdapterInfo->Address [2];
-                    workBenchParam.mac_addr[3] = pAdapterInfo->Address [3];
-                    workBenchParam.mac_addr[4] = pAdapterInfo->Address [4];
-                    workBenchParam.mac_addr[5] = pAdapterInfo->Address [5];
+                    printf ("Address %s, MAC %s\n", pAdapterInfo->IpAddressList.IpAddress.String, mac_addr);
+                    memcpy(workBenchParam.mac_addr, pAdapterInfo->Address, 6);
+                    memcpy(serverPC.mac_addr, pAdapterInfo->Address, 6);
+                    strncpy (workBenchParam.clientIPstr, pAdapterInfo->IpAddressList.IpAddress.String, sizeof(workBenchParam.clientIPstr));
+                    //TODO det form console
                     strncpy (workBenchParam.serverIPstr, pAdapterInfo->IpAddressList.IpAddress.String, sizeof(workBenchParam.serverIPstr));
+                    strncpy (serverPC.serverIPstr, pAdapterInfo->IpAddressList.IpAddress.String, sizeof(serverPC.serverIPstr));
                 }
             }
-            // print them all, return the last one.
-            // return mac_addr;
 
             pAdapterInfo = pAdapterInfo->Next;
             numOfAdapters++;

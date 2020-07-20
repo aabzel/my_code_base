@@ -22,7 +22,8 @@ extern "C" {
 
 #define MAX_PRECISION         (10U)
 
-bool is_hex_str (const char str_to_check [], int32_t str_to_check_len);
+bool is_dec_str (const char str_to_check [], int32_t str_to_check_len);
+bool is_hex_str (const char str_to_check [], int32_t str_to_check_len, uint8_t * const out_shift);
 
 bool try_strl2ipv4 (const char str__tsl2i4[], int32_t str_len__tsl2i4, uint32_t* ipv4_ptr__tsl2i4);
 bool try_str2mac (const char str__ts2m[], uint8_t mac_adr_ptr__ts2m[]);
@@ -59,7 +60,6 @@ bool try_strl2int8(const char s8l_str[], int32_t s8l_str_len, int8_t * s8l_value
 bool try_strl2uint8_hex(const char u8l_hex_str[], int32_t u8l_hex_str_len, uint8_t * u8l_hex_value);
 bool try_strl2int8_hex(const char s8l_hex_str[], int32_t s8l_hex_str_len, int8_t * s8l_hex_value);
 
-
 bool try_str2bool(const char bool_str[], bool * bool_value);
 
 bool try_str2float (const char float_str [], float_t * float_value);
@@ -90,6 +90,7 @@ const char* utoa_bin32(uint32_t u32_bin_data);
 const char* rx_dtoa (double_t d);
 const char* rx_ftoa(float_t float_v);
 
+const char* bool2name(bool val);
 
 #ifdef __cplusplus
 }

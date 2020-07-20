@@ -75,9 +75,11 @@ double fraction_sim (uint32_t mantissa);
 float cacl_percent(float numerator, float denominator);
 uint32_t pack_ipv4 ( uint8_t ipAddrByte1,  uint8_t ipAddrByte2,
                      uint8_t ipAddrByte3,  uint8_t ipAddrByte4);
-
+bool print_mac_addr (uint8_t *mac_addr);
 uint16_t reverse_byte_order_uint16 (const uint16_t in2byteVal);
 uint32_t reverse_byte_order_uint32 (const uint32_t in4byteVal);
+
+bool print_mac_addr (uint8_t *mac_addr);
 
 #ifdef __cplusplus
 }

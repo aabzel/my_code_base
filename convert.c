@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include <float.h>
 #include <ctype.h>
+#include <stdio.h>
 
 static const char symbols [] = "FEDCBA9876543210123456789ABCDEF";
 
@@ -82,8 +83,9 @@ bool try_strl2uint64 (const char u64l_str [], int32_t u64l_str_len, uint64_t *u6
             }
 
             if (u64l_success == true) {
-                if (is_hex_str (u64l_str, u64l_len) == true) {
-                    u64l_success = try_strl2uint64_hex (&u64l_str [2], u64l_len - 2, u64l_value);
+                uint8_t num_shift = 0U;
+                if (is_hex_str (u64l_str, u64l_len, &num_shift) == true) {
+                    u64l_success = try_strl2uint64_hex (&u64l_str [num_shift], u64l_len - ((int32_t) num_shift), u64l_value);
                 } else {
                     u64l_success = try_strl2uint64_dec (u64l_str, u64l_len, u64l_value);
                 }
@@ -109,8 +111,9 @@ bool try_strl2int64 (const char s64l_str [], int32_t s64l_str_len, int64_t *s64l
             }
 
             if (s64l_success == true) {
-                if (is_hex_str (s64l_str, s64l_len) == true) {
-                    s64l_success = try_strl2int64_hex (&s64l_str [2], s64l_len - 2, s64l_value);
+                uint8_t num_shift = 0U;
+                if (is_hex_str (s64l_str, s64l_len, &num_shift) == true) {
+                    s64l_success = try_strl2int64_hex (&s64l_str [num_shift], s64l_len - ((int32_t)num_shift), s64l_value);
                 } else {
                     s64l_success = try_strl2int64_dec (s64l_str, s64l_len, s64l_value);
                 }
@@ -307,17 +310,21 @@ bool try_strl2uint32 (const char u32l_str [], int32_t u32l_str_len, uint32_t *u3
     bool u32l_success = true;
     bool u32l_str_not_empty = true;
     int32_t u32l_len = u32l_str_len;
-    *u32l_value = 0U;
-
-    u32l_str_not_empty = get_str_len (u32l_str, &u32l_len);
-    if (u32l_str_not_empty == false) {
-        u32l_success = false;
-    } else {
-        if (is_hex_str (u32l_str, u32l_len) == true) {
-            u32l_success = try_strl2uint32_hex (&u32l_str [2], u32l_len - 2, u32l_value);
+    if ( (NULL != u32l_str) && (NULL != u32l_value)) {
+        (*u32l_value) = 0U;
+        u32l_str_not_empty = get_str_len (u32l_str, &u32l_len);
+        if (u32l_str_not_empty == false) {
+            u32l_success = false;
         } else {
-            u32l_success = try_strl2uint32_dec (u32l_str, u32l_len, u32l_value);
+            uint8_t num_shift = 0U;
+            if (is_hex_str (u32l_str, u32l_len, &num_shift) == true) {
+                u32l_success = try_strl2uint32_hex (&u32l_str [num_shift], u32l_len - ((int32_t) num_shift), u32l_value);
+            } else {
+                u32l_success = try_strl2uint32_dec (u32l_str, u32l_len, u32l_value);
+            }
         }
+    } else {
+        u32l_success = false;
     }
     return u32l_success;
 }
@@ -326,7 +333,9 @@ bool try_strl2int32 (const char s32l_str [], int32_t s32l_str_len, int32_t *s32l
     bool s32l_success = true;
     bool s32l_str_not_empty = true;
     int32_t s32l_len = s32l_str_len;
-    *s32l_value = 0;
+    if (NULL != s32l_value) {
+        *s32l_value = 0;
+    }
 
     s32l_str_not_empty = get_str_len (s32l_str, &s32l_len);
     if (s32l_str_not_empty == false) {
@@ -334,8 +343,9 @@ bool try_strl2int32 (const char s32l_str [], int32_t s32l_str_len, int32_t *s32l
     }
 
     if (s32l_success == true) {
-        if (is_hex_str (s32l_str, s32l_len) == true) {
-            s32l_success = try_strl2int32_hex (&s32l_str [2], s32l_len - 2, s32l_value);
+        uint8_t out_shift = 0U;
+        if (is_hex_str (s32l_str, s32l_len, &out_shift) == true) {
+            s32l_success = try_strl2int32_hex (&s32l_str [out_shift], s32l_len - ((int32_t) out_shift), s32l_value);
         } else {
             s32l_success = try_strl2int32_dec (s32l_str, s32l_len, s32l_value);
         }
@@ -588,11 +598,11 @@ bool try_str2float (const char float_str [], float_t *float_value) {
         if ((float_success == true) && (*float_ptr != '\0')) {
             float_success = false;
         } else {
-            bool is_positive = (float_temp_value > 0.0) ? true : false;
-            bool is_negative = (float_temp_value < 0.0) ? true : false;
-            bool hi_pos_bound_exceeded = (float_temp_value > FLT_MAX) ? true : false;
-            bool lo_pos_bound_exceeded = (float_temp_value < FLT_MIN) ? true : false;
-            bool lo_neg_bound_exceeded = (float_temp_value < -FLT_MAX) ? true : false;
+            bool is_positive = (float_temp_value > 0.0);
+            bool is_negative = (float_temp_value < 0.0);
+            bool hi_pos_bound_exceeded = (float_temp_value > FLT_MAX);
+            bool lo_pos_bound_exceeded = (float_temp_value < FLT_MIN);
+            bool lo_neg_bound_exceeded = (float_temp_value < -FLT_MAX);
             if ((is_positive == true) && ((hi_pos_bound_exceeded == true) || (lo_pos_bound_exceeded == true))) {
                 float_success = false;
             } else if ((is_negative == true) && (lo_neg_bound_exceeded == true)) {
@@ -1469,20 +1479,59 @@ static bool get_str_len (const char char_str [], int32_t *str_len) {
     return str_not_empty;
 }
 
-bool is_hex_str (const char str_to_check [], int32_t str_to_check_len) {
+static bool is_dec_digit (const char character) {
+    bool res = false;
+    if (('0' <= character) && (character <= '9')) {
+        res = true;
+    } else {
+        res = false;
+    }
+    return res;
+}
+
+bool is_dec_str (const char str_to_check [], int32_t str_to_check_len) {
+    bool is_dec_str_result = false;
+    int32_t valid_dec_cnd = 0;
+    if (NULL != str_to_check) {
+        bool len_check_passed = (0 < str_to_check_len);
+        if (true == len_check_passed) {
+            int32_t i = 0;
+            for (i = 0; i < str_to_check_len; i++) {
+                if ( true == is_dec_digit (str_to_check [i])) {
+                    valid_dec_cnd++;
+                }
+            }
+            if (str_to_check_len == valid_dec_cnd) {
+                is_dec_str_result = true;
+            }
+        }
+    }
+    return is_dec_str_result;
+}
+
+bool is_hex_str (const char str_to_check [], int32_t str_to_check_len, uint8_t * const out_shift) {
     bool is_hex_str_result = false;
     int32_t validHexCnt = 0;
-    if (NULL != str_to_check) {
-        bool len_check_passed = (str_to_check_len > 2) ? true : false;
-        if (true == len_check_passed) {
-            if (((char) '0' == str_to_check [0]) && (((char) 'x' == str_to_check [1]) || ((char) 'X' == str_to_check [1]))) {
+    uint8_t out_shift_loc = 0U;
+    if ((NULL != str_to_check) && (NULL != out_shift)) {
+        bool is_dec_str_res = is_dec_str (str_to_check, str_to_check_len);
+        if (false == is_dec_str_res) {
+            bool len_check_passed = (str_to_check_len > 2);
+            if (true == len_check_passed) {
+                if (((char) '0' == str_to_check [0]) && (((char) 'x' == str_to_check [1]) || ((char) 'X' == str_to_check [1]))) {
+                    out_shift_loc = 2U;
+                } else {
+                    out_shift_loc = 0U;
+                }
+
                 int32_t i = 0;
-                for (i = 2; i < str_to_check_len; i++) {
+                for (i = ((int32_t) out_shift_loc); i < str_to_check_len; i++) {
                     if ( true == is_hex_digit (str_to_check [i])) {
                         validHexCnt++;
                     }
                 }
-                if ((str_to_check_len - 2) == validHexCnt) {
+                if ((str_to_check_len - ((int32_t) out_shift_loc)) == validHexCnt) {
+                    (*out_shift) = out_shift_loc;
                     is_hex_str_result = true;
                 }
             }
@@ -1733,6 +1782,17 @@ const char* utoa_bin32 (uint32_t u32_bin_data) {
     return outBitStr32;
 }
 
+const char* bool2name (bool val) {
+    const char *name = "undef";
+    if (true == val) {
+        name = "on";
+    }
+    if (false == val) {
+        name = "off";
+    }
+    return name;
+}
+
 /** Converts the string in `192.168.1.101` format to the uint32_t IP address */
 bool try_strl2ipv4(const char str__tsl2i4[], int32_t str_len__tsl2i4, uint32_t* ipv4_ptr__tsl2i4)
 {
@@ -1808,42 +1868,22 @@ bool try_strl2ipv4(const char str__tsl2i4[], int32_t str_len__tsl2i4, uint32_t* 
 }
 
 
-
-bool try_str2mac(const char str__ts2m[], uint8_t mac_adr_ptr__ts2m[])
-{
-    bool        result__ts2m;
-    uint64_t    mac64__ts2m;
-
-    if (str__ts2m == NULL) {
-        /* Error: Argument `str__ts2m` is NULL */
-        result__ts2m = false;
-
-    } else if (
-        try_strl2uint64_hex(
-            str__ts2m,
-            (int32_t) strlen(str__ts2m),
-            &mac64__ts2m
-        ) != true
-    ) {
-        /* Error: Can't parse MAC address */
-        result__ts2m = false;
-
-    } else if (mac64__ts2m > 0xFFFFFFFFFFFFu) {
-        /* Error: Parsed value is too large to fit into MAC address */
-        result__ts2m = false;
-
-    } else {
-        /* Ok */
-        result__ts2m = true;
-        if (mac_adr_ptr__ts2m != NULL) {
-            mac_adr_ptr__ts2m[0] = (uint8_t)((mac64__ts2m >> 40u) & 0xFFu);
-            mac_adr_ptr__ts2m[1] = (uint8_t)((mac64__ts2m >> 32u) & 0xFFu);
-            mac_adr_ptr__ts2m[2] = (uint8_t)((mac64__ts2m >> 24u) & 0xFFu);
-            mac_adr_ptr__ts2m[3] = (uint8_t)((mac64__ts2m >> 16u) & 0xFFu);
-            mac_adr_ptr__ts2m[4] = (uint8_t)((mac64__ts2m >>  8u) & 0xFFu);
-            mac_adr_ptr__ts2m[5] = (uint8_t)((mac64__ts2m >>  0u) & 0xFFu);
-        }
+bool try_str2mac (const char macStr [], uint8_t *outMacAddr) {
+    bool res = false;
+    int numberOfVariables;
+    numberOfVariables = sscanf (
+        macStr,
+        "%x:%x:%x:%x:%x:%x",
+        (unsigned int *)&outMacAddr [0],
+        (unsigned int *)&outMacAddr [1],
+        (unsigned int *)&outMacAddr [2],
+        (unsigned int *)&outMacAddr [3],
+        (unsigned int *)&outMacAddr [4],
+        (unsigned int *)&outMacAddr [5]);
+    if (6 == numberOfVariables) {
+        res = true;
     }
 
-    return result__ts2m;
+    return res;
 }
+

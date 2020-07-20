@@ -9,6 +9,7 @@
 #include "bin_tree.h"
 #include "bin_tree_draw.h"
 #include "combinations.h"
+#include "convert.h"
 #include "float_utils.h"
 #include "linked_list.h"
 #include "min_path.h"
@@ -34,6 +35,70 @@
 #include <string.h>
 #include <time.h>
 
+static bool is_mem_equal (uint8_t *arr1, uint8_t *arr2, uint32_t size) {
+    uint32_t i = 0U;
+    uint32_t eqCnt = 0U;
+    bool res = false;
+    for (i = 0; i < size; i++) {
+        if (arr1 [i] == arr2 [i]) {
+            eqCnt++;
+        } else {
+            res = false;
+            i = size + 1;
+        }
+    }
+    if (eqCnt == size) {
+        res = true;
+    }
+    return res;
+
+}
+
+static bool test_parse_mac (void) {
+    bool res = false;
+    char inStr [1000];
+    uint8_t curMac [6];
+    uint8_t expMac [6] =
+        { 0xd4, 0x3b, 0x04, 0xa0, 0xa2, 0x21 };
+    strncpy (inStr, "Device: CAN_FLASHER Serial 0x202b17d3015a from IP 192.168.0.11 MAC d4:3b:04:a0:a2:21", sizeof(inStr));
+    res = parse_mac (inStr, sizeof(inStr), curMac);
+    if (false == res) {
+        printf ("\nunable to parse mac");
+        return false;
+    }
+    bool cmpRes = is_mem_equal (curMac, expMac, 6);
+    if (false == cmpRes ) {
+        printf ("\nexp mac d4:3b:04:a0:a2:21");
+        printf ("\ncur mac ");
+        print_mac_addr(curMac);
+        return false;
+    }
+
+    return true;
+}
+
+static bool test_parse_serial (void) {
+    char inStr [1000];
+    char outStr [1000];
+    char expStr [1000];
+    bool res = false;
+    strncpy (expStr, "202B17D3015A", sizeof(outStr));
+    strncpy (inStr, "Device: IOV4_A Serial 0x907a08b from IP 192.168.0.11 MAC d4:3b:04:a0:a2:214:a0:a2:21", sizeof(inStr));
+    uint64_t serial64BitNumber = 0;
+    res = parse_serial (inStr, sizeof(inStr), &serial64BitNumber);
+    if (true == res) {
+        if (0x907a08b != serial64BitNumber) {
+            printf ("\n Serial 0x[%08llx] exp 0x907a08b", (long long unsigned int) serial64BitNumber);
+            return false;
+        }
+    } else {
+        printf ("\n Unable to extract Serial from string [%s]", inStr);
+        return false;
+    }
+
+    return true;
+}
+
 static bool test_parse_vi (void) {
     char inStr [1000];
     char outStr [1000];
@@ -45,11 +110,11 @@ static bool test_parse_vi (void) {
         inStr,
         "CanFlasher on CanFlash Version 0.17.1.1.34 GCC Release 11/7/2020 19:34:29 FlashId:E58F0042 Serial:202B17D3015A by Arrival",
         sizeof(inStr));
-    uint64_t serial64BitNumber = 0;
+    uint64_t serial64BitNumber = 0U;
     res = parse_serial (inStr, sizeof(inStr), &serial64BitNumber);
     if (true == res) {
-        if (0x202B17D3015A != serial64BitNumber) {
-            printf ("\n Serial 0x[%08llx] exp 0x202B17D3015A", (long long unsigned int) serial64BitNumber);
+        if (0x0000202B17D3015A != serial64BitNumber) {
+            printf ("\n Serial 0x[%08llx] exp 0x0000202B17D3015A", (long long unsigned int) serial64BitNumber);
             return false;
         }
     } else {
@@ -67,6 +132,43 @@ int unitTest (void) {
     bool res = false;
     uint8_t regAddr = 0x00;
     uint16_t regVal = 0x0000;
+    uint8_t shift;
+    uint64_t reg64Val;
+    res = try_strl2uint64 ("202B17D3015A", strlen("202B17D3015A"), &reg64Val);
+    if (0x202B17D3015A != reg64Val) {
+        printf("202B17D3015A");
+        printf ("\n reg64Val %08llx exp 202B17D3015A", (long long unsigned int) reg64Val);
+        return PARSE_HEX_ERROR;
+    }
+
+    res = try_strl2uint64 ("0x202B17D3015A", strlen("0x202B17D3015A"), &reg64Val);
+    if(0x202B17D3015A!=reg64Val) {
+        printf("0x202B17D3015A");
+        printf ("\n reg64Val %08llx exp 202B17D3015A",  (long long unsigned int) reg64Val);
+        return PARSE_HEX_ERROR;
+    }
+
+    res = is_hex_str ("ab1234ba", 8, &shift);
+    if (false == res) {
+        printf("ab1234ba");
+        return PARSE_HEX_ERROR;
+    }
+
+    res = is_hex_str ("0x1234ba", 8, &shift);
+    if (false == res) {
+        printf("0x1234ba");
+        return PARSE_HEX_ERROR;
+    }
+
+    res = test_parse_serial ();
+    if (false == res) {
+        return PARSE_SERIAL_ERROR;
+    }
+
+    res = test_parse_mac ();
+    if (false == res) {
+        return PARSE_MAC_ERROR;
+    }
 
     res = test_parse_vi ();
     if (false == res) {

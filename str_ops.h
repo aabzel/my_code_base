@@ -24,6 +24,9 @@
 
 #define NEW_LINE "\n\r"
 
+bool parse_ip (char *inStr, uint16_t inStrLen, uint32_t *outIpAddr);
+bool parse_mac (char *inStr, uint16_t inStrLen, uint8_t *outMacAddr);
+bool parse_serial (char *inStr, uint16_t inStrLen, uint64_t *outSerial64bNumber);
 bool parse_not (char *expression, int inStrLen);
 bool parse_or (char *expression, int inStrLen);
 bool parse_and (char *expression, int inStrLen);
@@ -78,6 +81,8 @@ bool try_canch_hex_uint8 (char *inStr, int strLen, uint8_t * val8b);
 bool try_canch_hex_uint16 (char *inStr, int strLen, uint16_t * val16b);
 bool try_canch_hex_uint32 (char *inStr, int strLen, uint32_t * val32b);
 
+bool is_ip_number (char letter);
+uint16_t calc_ip_val_len (char *inStr);
 bool is_hex_number (char letter) ;
 uint16_t calc_hex_val_len(char *inStr);
 bool delete_char (char * inOutStr, int curIndex);

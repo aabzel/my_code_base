@@ -14,12 +14,14 @@ typedef struct {
     uint8_t mac_addr [6];
     uint32_t clientIP;
     uint32_t serverIP;
+    uint16_t serverPort;
+    char clientIPstr[100];
     char serverIPstr[100];
 } ComputerParams_t;
 
 extern ComputerParams_t workBenchParam;
 
-bool get_mac (void);
+bool get_adapter_info (void);
 bool sent_to_tcp_server (char *txText, uint16_t txTextLen, uint16_t tcpServerPort, uint32_t tcp_server_ip);
 
 #ifdef __cplusplus

@@ -93,7 +93,11 @@ typedef enum {
     PARSE_UINT16_ERROR = 74,
     PARSE_UINT32_ERROR = 75,
     PARSE_VI_ERROR = 76,
-    NUM_ERROR =  77
+    PARSE_MAC_ERROR = 77,
+    PARSE_IP_ERROR = 79,
+    PARSE_SERIAL_ERROR = 80,
+    PARSE_HEX_ERROR = 81,
+    NUM_ERROR = 100
 } utError_t;
 
 int unitTest (void);

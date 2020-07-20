@@ -125,12 +125,11 @@ static bool com_receive_str (HANDLE hComm, char *outRxArray, uint32_t capasityRx
 
 bool scan_serial (void) {
     bool res = false;
+    bool out_res = false;
     char comNameStr [20] = "";
     uint8_t comPortNum;
     memset (deviceList, 0x00, sizeof(deviceList));
-
     for (comPortNum = 0; comPortNum <= MAX_COM_NUM; comPortNum++) {
-
         snprintf (comNameStr, sizeof(comNameStr), "COM%u", comPortNum);
 #if DEBUG_FAILED_OPENS
         printf ("\n try [%s]...", comNameStr);
@@ -156,6 +155,7 @@ bool scan_serial (void) {
 #endif
             deviceList [comPortNum].isExistPort = true;
             CloseHandle (hComm);
+            out_res = true;
         }
 
         snprintf (comNameStr, sizeof(comNameStr), "\\\\.\\COM%u", comPortNum);
@@ -218,64 +218,49 @@ bool scan_serial (void) {
 
     print_device_list ();
 
-    return res;
+    return out_res;
 }
 
 bool print_device_list (void) {
     bool out_res = false;
     bool res = false;
+    system ("cls");
+    printf("\n Compile Date %s %s ",__DATE__,__TIME__);
+    printf("\n local  mac: ");
+    print_mac_addr (workBenchParam.mac_addr);
+    printf ("\nclient IP: %s Server IP: %s Server port: %u\n", workBenchParam.clientIPstr, workBenchParam.serverIPstr, TCP_BOARD_SERVER_PORT);
     uint16_t txTextLen;
     uint32_t comPortNum = 0;
     char txText [MAX_SIZE_OF_TCP_DATA_BYTE] = "";
     for (comPortNum = 0; comPortNum < MAX_COM_NUM; comPortNum++) {
         if (true == deviceList [comPortNum].isExistPort) {
-            printf ("\n COM[%u] ", comPortNum);
+            printf ("\n COM%u ", comPortNum);
         }
         if (true == deviceList [comPortNum].isExistDevice) {
-            printf ("Device exists. ");
+            //printf ("Device exists. ");
             out_res = true;
         }
         if (true == deviceList [comPortNum].isExistDevice) {
             if (UNDEF_DEVICE != deviceList [comPortNum].deviceID) {
-                printf (" Device %s ", dev_id_name (deviceList [comPortNum].deviceID));
+                printf ("Device [%s] Serial [0x%llx]", dev_id_name (deviceList [comPortNum].deviceID), (long long unsigned int) deviceList [comPortNum].serialNumber);
             }
             snprintf (
                 txText,
                 sizeof(txText),
                 "\nDevice: %s Serial 0x%llx from IP %s MAC %s",
                 dev_id_name (deviceList [comPortNum].deviceID),
-                (long long unsigned int) deviceList [comPortNum].serialNumber, workBenchParam.serverIPstr, mac_to_str(workBenchParam.mac_addr));
+                (long long unsigned int) deviceList [comPortNum].serialNumber,
+                workBenchParam.serverIPstr,
+                mac_to_str (workBenchParam.mac_addr));
             txTextLen = strlen (txText);
-            res = sent_to_tcp_server (txText, txTextLen, TCP_BOARD_SERVER_PORT, pack_ipv4 (192, 168, 0, 11));
+            res = sent_to_tcp_server (txText, txTextLen, workBenchParam.serverPort, workBenchParam.serverIP);
             if (false == res) {
-                printf ("Unable to send to TCP server");
+                //printf ("\nUnable to send to TCP server");
             }
         }
     }
+    printf("\n");
     return out_res;
-}
-
-//CanFlasher on CanFlash Version 0.17.1.1.34 GCC Release 11/7/2020 19:34:29 FlashId:E58F0042 Serial:202B17D3015A by Arrival
-uint64_t parse_serial (char *inStr, uint16_t inStrLen, uint64_t *outSerial64bNumber) {
-    bool res = false;
-    (void) inStrLen;
-    //printf ("\n inStr[%s]", inStr);
-    if (strlen ("Serial:") < inStrLen) {
-        char *serialStartPtr = strstr (inStr, "Serial:");
-        if (NULL != serialStartPtr) {
-            uint16_t hexValLen;
-            //printf ("\n serialStartPtr[%s]", serialStartPtr);
-            //printf ("\n numstr[%s]", (serialStartPtr + strlen ("Serial:")));
-            hexValLen = calc_hex_val_len ((serialStartPtr + strlen ("Serial:")));
-            //printf ("\n hexValLen[%d]", hexValLen);
-            res = try_strl2uint64_hex ((const char *) (serialStartPtr + strlen ("Serial:")), hexValLen, outSerial64bNumber);
-
-        } else {
-            printf ("\n lack Serial number in ");
-        }
-    }
-
-    return res;
 }
 
 uint16_t parse_product (char *inStr, uint16_t inStrLen) {

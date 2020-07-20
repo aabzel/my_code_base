@@ -43,7 +43,6 @@ bool scan_serial (void);
 bool print_device_list (void);
 bool com_send_str (HANDLE hComm, char *txBuffer, uint32_t txBuffLen);
 uint16_t parse_product (char *inStr, uint16_t inStrLen);
-uint64_t parse_serial(char *inStr, uint16_t inStrLen, uint64_t *serialNUmber);
 
 #ifdef __cplusplus
 }

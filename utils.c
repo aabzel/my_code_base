@@ -791,6 +791,20 @@ uint32_t reverse_byte_order_uint32 (const uint32_t in4byteVal)
     return retval;
 }
 
+bool print_mac_addr (uint8_t *mac_addr) {
+    bool res = false;
+    if (NULL != mac_addr) {
+        res = true;
+        for (uint8_t i = 0; i < 6; i++) {
+            printf ("%02x", mac_addr [i]);
+            if (i < 5) {
+                printf (":");
+            }
+        }
+        printf ("\n");
+    }
+    return res;
+}
 
 uint32_t pack_ipv4 ( uint8_t ipAddrByte1,  uint8_t ipAddrByte2,
                      uint8_t ipAddrByte3,  uint8_t ipAddrByte4)

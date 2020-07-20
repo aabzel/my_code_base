@@ -1280,6 +1280,21 @@ bool extract_numbers (char *inOutStr, int length) {
     return res;
 }
 
+uint16_t calc_ip_val_len (char *inStr) {
+    uint16_t strValLen = 0;
+    if (inStr) {
+        bool runLoop = true;
+        while (runLoop) {
+            if (true == is_ip_number (inStr [strValLen])) {
+                strValLen++;
+            } else {
+                runLoop = false;
+            }
+        }
+    }
+    return strValLen;
+}
+
 uint16_t calc_hex_val_len (char *inStr) {
     uint16_t strValLen = 0;
     if (inStr) {
@@ -1295,78 +1310,56 @@ uint16_t calc_hex_val_len (char *inStr) {
     return strValLen;
 }
 
-bool is_hex_number (char letter) {
+bool is_ip_number (char letter) {
     bool res = false;
     switch (letter) {
         case '0':
-            res = true;
-            break;
         case '1':
-            res = true;
-            break;
         case '2':
-            res = true;
-            break;
         case '3':
-            res = true;
-            break;
         case '4':
-            res = true;
-            break;
         case '5':
-            res = true;
-            break;
         case '6':
-            res = true;
-            break;
         case '7':
-            res = true;
-            break;
         case '8':
-            res = true;
-            break;
         case '9':
+        case '.':
             res = true;
             break;
+    }
+    return res;
+}
+
+bool is_hex_number (char letter) {
+    bool res = false;
+    switch (letter) {
+        case 'x':
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
         case 'a':
-            res = true;
-            break;
         case 'b':
-            res = true;
-            break;
         case 'c':
-            res = true;
-            break;
         case 'd':
-            res = true;
-            break;
         case 'e':
-            res = true;
-            break;
         case 'f':
-            res = true;
-            break;
         case 'A':
-            res = true;
-            break;
         case 'B':
-            res = true;
-            break;
         case 'C':
-            res = true;
-            break;
         case 'D':
-            res = true;
-            break;
         case 'E':
-            res = true;
-            break;
         case 'F':
             res = true;
             break;
     }
     return res;
-
 }
 
 ///reg addr: 0x04 reg val: 0x0000 Ob_0000_0000_0000_0000
@@ -1526,3 +1519,62 @@ char *ip_to_str (uint8_t *ip_addr) {
     return ipStrOut;
 }
 
+//Device: CAN_FLASHER Serial 0x202b17d3015a from IP 192.168.0.11 MAC d4:3b:04:a0:a2:21C
+bool parse_mac (char *inStr, uint16_t inStrLen, uint8_t *outMacAddr) {
+    bool res = false;
+    if (strlen ("MAC") < inStrLen) {
+        char *serialStartPtr = strstr (inStr, "MAC ");
+        if (NULL != serialStartPtr) {
+            res = try_str2mac ((const char *) (serialStartPtr + strlen ("MAC ")), outMacAddr);
+        } else {
+            printf ("\n lack MAC addr in [%s]", inStr);
+        }
+    }
+    return res;
+}
+
+bool parse_ip (char *inStr, uint16_t inStrLen, uint32_t *outIpAddr) {
+    bool res = false;
+    if (strlen ("IP ") < inStrLen) {
+        char *serialStartPtr = strstr (inStr, "IP ");
+        if (NULL != serialStartPtr) {
+            uint32_t IpLen;
+            IpLen = calc_ip_val_len ((serialStartPtr + strlen ("IP ")));
+            res = try_strl2ipv4 ((const char *) (serialStartPtr + strlen ("IP ")), IpLen, outIpAddr);
+        } else {
+            printf ("\n lack IP addr in [%s]", inStr);
+        }
+    }
+    return res;
+}
+
+//CanFlasher on CanFlash Version 0.17.1.1.34 GCC Release 11/7/2020 19:34:29 FlashId:E58F0042 Serial:202B17D3015A by Arrival
+bool parse_serial (char *inStr, uint16_t inStrLen, uint64_t *outSerial64bNumber) {
+    bool res = false;
+#if DEBUG_PARSE_SERIAL
+    printf ("\n inStr[%s]", inStr);
+#endif
+    if (strlen ("Serial") < inStrLen) {
+        uint64_t localSerial64bNumber = 0xFFFFFFFFFFFFFFFF;
+        char *serialStartPtr = strstr (inStr, "Serial");
+        if (NULL != serialStartPtr) {
+            uint16_t hexValLen;
+#if DEBUG_PARSE_SERIAL
+            printf ("\n serialStartPtr[%s]", serialStartPtr);
+            printf ("\n numstr [%s]", (serialStartPtr + strlen ("Serial")+1));
+#endif
+            hexValLen = calc_hex_val_len ((serialStartPtr + strlen ("Serial") + 1));
+#if DEBUG_PARSE_SERIAL
+            printf ("\n hexValLen[%d]", hexValLen);
+#endif
+            res = try_strl2uint64 ((const char *) (serialStartPtr + strlen ("Serial") + 1), hexValLen, &localSerial64bNumber);
+            if (true == res) {
+                (*outSerial64bNumber) = localSerial64bNumber;
+            }
+        } else {
+            printf ("\n lack Serial number in [%s]", inStr);
+        }
+    }
+
+    return res;
+}

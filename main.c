@@ -1,6 +1,7 @@
 #include "code_config.h"
 
 #include "algorithms.h"
+#include "convert.h"
 #include "combinations.h"
 #include "hash_table.h"
 #include "linked_list.h"
@@ -56,25 +57,57 @@ int main (int argc, char* argv []) {
 #endif
 
 #if DEPLOY_TCP_CLIENT
-    get_mac ();
+    get_adapter_info ();
 #endif
 
 #if DEPLOY_TCP_SERVER
-    res = launch_tcp_server(TCP_BOARD_SERVER_PORT);
+    if (1 == argc) {
+        res = try_strl2uint16 (argv [0], strlen (argv [0]), &serverPC.serverPort);
+        if (false == res) {
+            serverPC.serverPort = TCP_BOARD_SERVER_PORT;
+        }
+    } else {
+        serverPC.serverPort = TCP_BOARD_SERVER_PORT;
+    }
+    res = launch_tcp_server (serverPC.serverPort);
     if (false == res) {
-         printf ("Unable to launch board observation server");
+        printf ("\nUnable to launch board observation server");
     }
 #endif
 
 #if DEPLOY_SCAN_COM
-
-    uint32_t tryCnt;
-    for (tryCnt = 0; tryCnt < 100; tryCnt++) {
+    if (2 == argc) {
+        printf ("\nargv 0 %s", argv [0]);
+        printf ("\nargv 1 %s", argv [1]);
+        //192.168.0.11 50506
+        res = try_strl2uint16 (argv [0], strlen (argv [0]), &workBenchParam.serverPort);
+        if (true == res) {
+           res = try_strl2ipv4 (argv [1], strlen (argv [1]), &workBenchParam.serverIP);
+           if (false == res) {
+               printf ("\nUnable to parse server IP %s", argv [1]);
+               strncpy (workBenchParam.serverIPstr, TCP_BOARD_SERVER_IP, sizeof(workBenchParam.serverIP));
+               res = try_strl2ipv4 (TCP_BOARD_SERVER_IP, strlen (TCP_BOARD_SERVER_IP), &workBenchParam.serverIP);
+           }else{
+               printf ("\nPort %s", argv [0]);
+               printf ("\nIP %s", argv [1]);
+            }
+        } else {
+            workBenchParam.serverPort = TCP_BOARD_SERVER_PORT;
+            printf ("\nUnable to parse server port %s", argv [1]);
+        }
+    } else {
+        workBenchParam.serverPort = TCP_BOARD_SERVER_PORT;
+        strncpy (workBenchParam.serverIPstr, TCP_BOARD_SERVER_IP, sizeof(workBenchParam.serverIP));
+    }
+    bool pollLoop = true;
+    while (pollLoop) {
+        Sleep (500);
         res = scan_serial ();
         if (false == res) {
-            printf ("Lack of com ports");
+            //printf ("\nLack of COM ports is system");
         }
     }
+
 #endif
 
 #if DEPLOY_PARSE_REG
