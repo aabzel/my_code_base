@@ -7,7 +7,7 @@
 #include <stdint.h>
 #include <string.h>
 
-
+bool test_extract_sub_string (void);
 bool test_lengthOfLongestSubstring (void);
 bool test_detect_change (void);
 bool test_num_to_bin_str (void);

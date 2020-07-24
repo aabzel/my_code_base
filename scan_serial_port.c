@@ -1,6 +1,7 @@
 #include "scan_serial_port.h"
 
 #include <stdio.h>
+#include <time.h>
 #include <windows.h>
 
 #include "convert.h"
@@ -9,7 +10,7 @@
 #include "tcp_client.h"
 #include "utils.h"
 
-xConnection_t deviceList [MAX_COM_NUM];
+xSerialConnection_t deviceList [MAX_COM_NUM];
 
 static bool com_set_params (HANDLE hComm) {
     bool res = false;
@@ -203,6 +204,7 @@ bool scan_serial (void) {
                     if (true == res) {
                         deviceList [comPortNum].isExistDevice = true;
                         deviceList [comPortNum].deviceID = parse_product (rxBuffer, realRxLen);
+                        strncpy( deviceList [comPortNum].deviceName, parse_product_name (rxBuffer, realRxLen),sizeof(deviceList [comPortNum].deviceName));
                     }
                 } else {
                     printf ("\nLack of response");
@@ -224,11 +226,18 @@ bool scan_serial (void) {
 bool print_device_list (void) {
     bool out_res = false;
     bool res = false;
-    system ("cls");
+    system("cmd /c cls");
+	time_t t = time(NULL);
+	struct tm tm = *localtime(&t);
+	printf("\nnow: %d-%02d-%02d %02d:%02d:%02d\n", tm.tm_year + 1900,
+			tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+
+    //system("@cls||clear");
+    //clrscr(); does not work
     printf("\n Compile Date %s %s ",__DATE__,__TIME__);
     printf("\n local  mac: ");
     print_mac_addr (workBenchParam.mac_addr);
-    printf ("\nclient IP: %s Server IP: %s Server port: %u\n", workBenchParam.clientIPstr, workBenchParam.serverIPstr, TCP_BOARD_SERVER_PORT);
+    printf ("\nclient IP: %s \nServer IP: %s Server port: %u\n", workBenchParam.clientIPstr, workBenchParam.serverIPstr, workBenchParam.serverPort);
     uint16_t txTextLen;
     uint32_t comPortNum = 0;
     char txText [MAX_SIZE_OF_TCP_DATA_BYTE] = "";
@@ -247,11 +256,11 @@ bool print_device_list (void) {
             snprintf (
                 txText,
                 sizeof(txText),
-                "\nDevice: %s Serial 0x%llx from IP %s MAC %s",
-                dev_id_name (deviceList [comPortNum].deviceID),
+                "\nDevice [%s] Serial 0x%llx from IP %s MAC %s user <%s>",
+				deviceList [comPortNum].deviceName,
                 (long long unsigned int) deviceList [comPortNum].serialNumber,
-                workBenchParam.serverIPstr,
-                mac_to_str (workBenchParam.mac_addr));
+                workBenchParam.clientIPstr,
+                mac_to_str (workBenchParam.mac_addr), workBenchParam.userName);
             txTextLen = strlen (txText);
             res = sent_to_tcp_server (txText, txTextLen, workBenchParam.serverPort, workBenchParam.serverIP);
             if (false == res) {
@@ -261,6 +270,18 @@ bool print_device_list (void) {
     }
     printf("\n");
     return out_res;
+}
+
+char* parse_product_name (char *inStr, uint16_t inStrLen) {
+	static char devName[100] = "";
+	int i ;
+	for (i = 0; i < inStrLen; i++) {
+		if (' ' != inStr[i]) {
+			devName[i] = inStr[i];
+		}
+	}
+	devName[i] ='\0';
+	return devName;
 }
 
 uint16_t parse_product (char *inStr, uint16_t inStrLen) {

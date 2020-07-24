@@ -17,6 +17,18 @@ typedef struct {
     char serverIPstr[100];
 } ComputerServerParams_t;
 
+typedef struct xDeviceInstance_t {
+    char holderName [100];
+    char deviceName [30];
+    char spotTimeStr [300];
+    uint8_t holderMac [8];
+    //spot time
+    uint32_t holderIp;
+    uint64_t serialNumber;
+    bool isbusy;
+} xConnection_t;
+
+
 extern ComputerServerParams_t serverPC;
 
 bool launch_tcp_server (uint16_t tcpServerPort);

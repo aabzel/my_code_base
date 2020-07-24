@@ -40,6 +40,8 @@ int get_index_in_string (char *expression, int inStrLen, int operandNum, int * c
 bool brackets_same_type (char open, char close);
 int calc_paratasis_nesting (char *s, int * const amountOfPairs);
 
+bool parse_holder_name (char *inStr, uint16_t inStrLen, char *holderName);
+
 bool compare_strings (char *stra, char *strb);
 int myAtoi (char *str);
 int replace_char (char *str, char orig, char rep);
@@ -80,6 +82,8 @@ const char* utoa_bin32 (uint32_t u32_bin_data);
 bool try_canch_hex_uint8 (char *inStr, int strLen, uint8_t * val8b);
 bool try_canch_hex_uint16 (char *inStr, int strLen, uint16_t * val16b);
 bool try_canch_hex_uint32 (char *inStr, int strLen, uint32_t * val32b);
+
+bool parse_substr_name (const  char *const inStr, uint16_t inStrLen, char * const outStr, char openBracket, char closedBracket);
 
 bool is_ip_number (char letter);
 uint16_t calc_ip_val_len (char *inStr);

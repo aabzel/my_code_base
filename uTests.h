@@ -97,6 +97,7 @@ typedef enum {
     PARSE_IP_ERROR = 79,
     PARSE_SERIAL_ERROR = 80,
     PARSE_HEX_ERROR = 81,
+	PARSE_EXTRACT_SUB_ERROR = 82,
     NUM_ERROR = 100
 } utError_t;
 

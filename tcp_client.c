@@ -128,8 +128,6 @@ bool get_adapter_info (void) {
                     memcpy(workBenchParam.mac_addr, pAdapterInfo->Address, 6);
                     memcpy(serverPC.mac_addr, pAdapterInfo->Address, 6);
                     strncpy (workBenchParam.clientIPstr, pAdapterInfo->IpAddressList.IpAddress.String, sizeof(workBenchParam.clientIPstr));
-                    //TODO det form console
-                    strncpy (workBenchParam.serverIPstr, pAdapterInfo->IpAddressList.IpAddress.String, sizeof(workBenchParam.serverIPstr));
                     strncpy (serverPC.serverIPstr, pAdapterInfo->IpAddressList.IpAddress.String, sizeof(serverPC.serverIPstr));
                 }
             }

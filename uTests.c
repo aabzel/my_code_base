@@ -170,6 +170,11 @@ int unitTest (void) {
         return PARSE_MAC_ERROR;
     }
 
+    res = test_extract_sub_string();
+    if (false == res) {
+        return PARSE_EXTRACT_SUB_ERROR;
+    }
+
     res = test_parse_vi ();
     if (false == res) {
         return PARSE_VI_ERROR;

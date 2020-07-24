@@ -7,7 +7,7 @@ extern "C" {
 
 #include "custom_type.h"
 
-#define MAX_SIZE_OF_TCP_DATA_BYTE (200U)
+#define MAX_SIZE_OF_TCP_DATA_BYTE (400U)
 
 typedef struct {
     char userName [100];

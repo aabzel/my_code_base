@@ -35,8 +35,10 @@ static bool print_ent (void) {
 int main (int argc, char* argv []);
 //int main (int argc, char **argv)
 int main (int argc, char* argv []) {
-    (void) argc;
-    (void) argv;
+    printf ("\nargc %u", argc);
+    for (int i = 0; i < argc; i++) {
+        printf ("\nargv[%u] %s", i, argv [i]);
+    }
     // IPTCP server port tcp server
 #if HIDE_CONSOLE
     FreeConsole();
@@ -61,13 +63,14 @@ int main (int argc, char* argv []) {
 #endif
 
 #if DEPLOY_TCP_SERVER
-    if (1 == argc) {
-        res = try_strl2uint16 (argv [0], strlen (argv [0]), &serverPC.serverPort);
+    Sleep (4000);
+    if (2 == argc) {
+        res = try_strl2uint16 (argv [1], strlen (argv [1]), &serverPC.serverPort);
         if (false == res) {
-            serverPC.serverPort = TCP_BOARD_SERVER_PORT;
+            serverPC.serverPort = DFLT_TCP_BOARD_SERVER_PORT;
         }
     } else {
-        serverPC.serverPort = TCP_BOARD_SERVER_PORT;
+        serverPC.serverPort = DFLT_TCP_BOARD_SERVER_PORT;
     }
     res = launch_tcp_server (serverPC.serverPort);
     if (false == res) {
@@ -76,32 +79,34 @@ int main (int argc, char* argv []) {
 #endif
 
 #if DEPLOY_SCAN_COM
-    if (2 == argc) {
-        printf ("\nargv 0 %s", argv [0]);
-        printf ("\nargv 1 %s", argv [1]);
+    if (4 == argc) {
+        strncpy (workBenchParam.userName, argv [3], sizeof(workBenchParam.userName));
         //192.168.0.11 50506
-        res = try_strl2uint16 (argv [0], strlen (argv [0]), &workBenchParam.serverPort);
+        res = try_strl2uint16 (argv [1], strlen (argv [1]), &workBenchParam.serverPort);
         if (true == res) {
-           res = try_strl2ipv4 (argv [1], strlen (argv [1]), &workBenchParam.serverIP);
-           if (false == res) {
-               printf ("\nUnable to parse server IP %s", argv [1]);
-               strncpy (workBenchParam.serverIPstr, TCP_BOARD_SERVER_IP, sizeof(workBenchParam.serverIP));
-               res = try_strl2ipv4 (TCP_BOARD_SERVER_IP, strlen (TCP_BOARD_SERVER_IP), &workBenchParam.serverIP);
-           }else{
-               printf ("\nPort %s", argv [0]);
-               printf ("\nIP %s", argv [1]);
+            res = try_strl2ipv4 (argv [2], strlen (argv [2]), &workBenchParam.serverIP);
+            if (false == res) {
+                printf ("\nUnable to parse server IP %s", argv [2]);
+                strncpy (workBenchParam.serverIPstr, DFLT_TCP_BOARD_SERVER_IP, sizeof(workBenchParam.serverIPstr));
+                res = try_strl2ipv4 (DFLT_TCP_BOARD_SERVER_IP, strlen (DFLT_TCP_BOARD_SERVER_IP), &workBenchParam.serverIP);
+            } else {
+                strncpy (workBenchParam.serverIPstr, argv [2], sizeof(workBenchParam.serverIPstr));
+                printf ("\nPort %s", argv [1]);
+                printf ("\nIP %s", argv [2]);
+                Sleep (4000);
             }
         } else {
-            workBenchParam.serverPort = TCP_BOARD_SERVER_PORT;
-            printf ("\nUnable to parse server port %s", argv [1]);
+            printf ("\nUnable to parse server port %s", argv [2]);
+            workBenchParam.serverPort = DFLT_TCP_BOARD_SERVER_PORT;
         }
     } else {
-        workBenchParam.serverPort = TCP_BOARD_SERVER_PORT;
-        strncpy (workBenchParam.serverIPstr, TCP_BOARD_SERVER_IP, sizeof(workBenchParam.serverIP));
+        workBenchParam.serverPort = DFLT_TCP_BOARD_SERVER_PORT;
+        strncpy (workBenchParam.serverIPstr, DFLT_TCP_BOARD_SERVER_IP, sizeof(workBenchParam.serverIPstr));
     }
     bool pollLoop = true;
+    Sleep (4000);
     while (pollLoop) {
-        Sleep (500);
+        Sleep (444);
         res = scan_serial ();
         if (false == res) {
             //printf ("\nLack of COM ports is system");

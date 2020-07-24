@@ -34,15 +34,16 @@ typedef struct xConnection_t {
     bool isExistDevice;
     uint64_t serialNumber;
     uint16_t deviceID;
-} xConnection_t;
+} xSerialConnection_t;
 
-extern xConnection_t deviceList [MAX_COM_NUM];
+extern xSerialConnection_t deviceList [MAX_COM_NUM];
 
 const char *dev_id_name(deciceId_t deviceID);
 bool scan_serial (void);
 bool print_device_list (void);
 bool com_send_str (HANDLE hComm, char *txBuffer, uint32_t txBuffLen);
 uint16_t parse_product (char *inStr, uint16_t inStrLen);
+char* parse_product_name (char *inStr, uint16_t inStrLen) ;
 
 #ifdef __cplusplus
 }
