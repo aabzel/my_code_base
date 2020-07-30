@@ -99,33 +99,51 @@ static bool test_parse_serial (void) {
     return true;
 }
 
-static bool test_parse_vi (void) {
-    char inStr [1000];
-    char outStr [1000];
-    char expStr [1000];
-    bool res = false;
-    uint16_t deviceID;
-    strncpy (expStr, "202B17D3015A", sizeof(outStr));
-    strncpy (
-        inStr,
-        "CanFlasher on CanFlash Version 0.17.1.1.34 GCC Release 11/7/2020 19:34:29 FlashId:E58F0042 Serial:202B17D3015A by Arrival",
-        sizeof(inStr));
-    uint64_t serial64BitNumber = 0U;
-    res = parse_serial (inStr, sizeof(inStr), &serial64BitNumber);
-    if (true == res) {
-        if (0x0000202B17D3015A != serial64BitNumber) {
-            printf ("\n Serial 0x[%08llx] exp 0x0000202B17D3015A", (long long unsigned int) serial64BitNumber);
-            return false;
-        }
-    } else {
-        printf ("\n Unable to extract Serial from string [%s]", inStr);
-        return false;
-    }
-    deviceID = parse_product (inStr, sizeof(inStr));
-    if (CAN_FLASHER != deviceID) {
-        return false;
-    }
-    return true;
+static bool test_parse_vi_devname(void) {
+	char inStr[1000];
+
+	strncpy(inStr,
+			"vi\n\rCanFlasher on CanFlash Version 0.17.1.1.34 GCC Release 11/7/2020 19:34:29 FlashId:E58F0042 Serial:202B17D3015A by Arrival\n\r1.013:I [SYS] Ok!\n\r-->",
+			sizeof(inStr));
+	char *dev_name;
+	dev_name = parse_product_name(inStr, sizeof(inStr));
+	int cmp_res = strcmp(dev_name, "CanFlasher");
+	if (0 != cmp_res) {
+		printf("\n unable to parse CanFlasher from [%s] \n\r Extracted [%s]", inStr, dev_name);
+		return false;
+	}
+	return true;
+}
+
+static bool test_parse_vi(void) {
+	char inStr[1000];
+	char outStr[1000];
+	char expStr[1000];
+	bool res = false;
+	strncpy(expStr, "202B17D3015A", sizeof(outStr));
+	strncpy(inStr,
+			"vi\n\rCanFlasher on CanFlash Version 0.17.1.1.34 GCC Release 11/7/2020 19:34:29 FlashId:E58F0042 Serial:202B17D3015A by Arrival\n\r1.013:I [SYS] Ok!\n\r-->",
+			sizeof(inStr));
+	uint64_t serial64BitNumber = 0U;
+	res = parse_serial(inStr, sizeof(inStr), &serial64BitNumber);
+	if (true == res) {
+		if (0x0000202B17D3015A != serial64BitNumber) {
+			printf("\n Serial 0x[%08llx] exp 0x0000202B17D3015A",
+					(long long unsigned int) serial64BitNumber);
+			return false;
+		}
+	} else {
+		printf("\n Unable to extract Serial from string [%s]", inStr);
+		return false;
+	}
+
+	res = test_parse_vi_devname ();
+	if (false == res) {
+		printf("\n Unable to extract dev name form vi");
+		return false;
+	}
+
+	return true;
 }
 
 int unitTest (void) {

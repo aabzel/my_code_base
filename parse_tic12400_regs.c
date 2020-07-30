@@ -268,6 +268,22 @@ bool parse_tic12400_reg (uint8_t regAddr, FILE *outFilePrt) {
             procRegCnd++;
             res = parse_tic12400_thres_cfg2_register_2bh (regVal, outFilePrt);
             break;
+        case REG_INT_EN_CFG0:
+        	procRegCnd++;
+        	res = parse_tic12400_int_en_cfg0_register_24h (regVal, outFilePrt);
+        	break;
+        case REG_INT_EN_CFG1:
+        	res = parse_tic12400_int_en_cfg1_register_25h (regVal, outFilePrt);
+            break;
+        case REG_INT_EN_CFG2:
+        	res = parse_tic12400_int_en_cfg2_register_26h (regVal, outFilePrt);
+            break;
+        case REG_INT_EN_CFG3:
+        	res = parse_tic12400_int_en_cfg3_register_27h (regVal, outFilePrt);
+            break;
+        case REG_INT_EN_CFG4:
+        	res = parse_tic12400_int_en_cfg4_register_28h (regVal, outFilePrt);
+            break;
         case REG_THRES_CFG3:
             procRegCnd++;
             res = parse_tic12400_thres_cfg3_register_2ch (regVal, outFilePrt);
@@ -738,13 +754,108 @@ bool parse_tic12400_in_stat_misc_register_04h (uint32_t regVal, FILE *outFilePrt
         fprintf (outFilePrt, "\n  bit 1: R Device junction temperature is below the temperature warning threshold TTW.");
     }
     if (regVal & IN_STAT_MISC_TSD_STAT_0) {
-        fprintf (outFilePrt, "\n  bit 0: R Device junction temperature is above the temperature warning threshold TTW");
+        fprintf (outFilePrt, "\n  bit 0:1 R Device junction temperature is above the temperature warning threshold TTW");
     } else {
-        fprintf (outFilePrt, "\n  bit 0: R Device junction temperature is below the temperature warning threshold TTW");
+        fprintf (outFilePrt, "\n  bit 0:0 R Device junction temperature is below the temperature warning threshold TTW");
     }
 
     return res;
 }
+
+
+bool parse_tic12400_int_en_cfg0_register_24h (uint32_t regVal, FILE *outFilePrt){
+	uint32_t reserved;
+	reserved = extract_subval_from_32bit (regVal, 23, 12);
+	fprintf (outFilePrt, "\n  bit 23-12: %u R Reserved", reserved);
+
+	if (regVal &  INT_EN_CFG0_ADC_DIAG_EN_11) {
+		fprintf (outFilePrt, "\n  bit 11:1 RW INT pin assertion due to ADC error enabled. ");
+	} else {
+		fprintf (outFilePrt, "\n  bit 11:0 RW INT pin assertion due to ADC error disabled ");
+	}
+	if (regVal & INT_EN_CFG0_WET_DIAG_EN_10 ) {
+		fprintf (outFilePrt, "\n  bit 10:1 RW  INT pin assertion due to wetting current error enabled");
+	} else {
+		fprintf (outFilePrt, "\n  bit 10:0 RW INT pin assertion due to wetting current error disabled. ");
+	}
+	if (regVal & INT_EN_CFG0_VS1_EN_9 ) {
+		fprintf (outFilePrt, "\n  bit  9:1 RW INT pin assertion due to VS1 threshold crossing enabled ");
+	} else {
+		fprintf (outFilePrt, "\n  bit  9:0 RW INT pin assertion due to VS1 threshold crossing disabled. ");
+	}
+	if (regVal & INT_EN_CFG0_VS0_EN_8 ) {
+		fprintf (outFilePrt, "\n  bit  8:1 RW INT pin assertion due to VS0 threshold crossing enabled ");
+	} else {
+		fprintf (outFilePrt, "\n  bit  8:0 RW INT pin assertion due to VS0 threshold crossing disabled ");
+	}
+	if (regVal & INT_EN_CFG0_CRC_CALC_EN_7 ) {
+		fprintf (outFilePrt, "\n  bit  7:1 RW INT pin assertion due to CRC calculation completion enabled  ");
+	} else {
+		fprintf (outFilePrt, "\n  bit  7:0 RW INT pin assertion due to CRC calculation completion disabled ");
+	}
+	if (regVal & INT_EN_CFG0_UV_EN_6 ) {
+		fprintf (outFilePrt, "\n  bit  6:1 RW INT pin assertion due to UV event enabled. ");
+	} else {
+		fprintf (outFilePrt, "\n  bit  6:0 RW INT pin assertion due to UV event disabled ");
+	}
+	if (regVal & INT_EN_CFG0_OV_EN_5 ) {
+		fprintf (outFilePrt, "\n  bit  5:1 RW INT pin assertion due to OV event enabled ");
+	} else {
+		fprintf (outFilePrt, "\n  bit  5:0 RW INT pin assertion due to OV event disabled ");
+	}
+	if (regVal & INT_EN_CFG0_TW_EN_4 ) {
+		fprintf (outFilePrt, "\n  bit  4:1 RW INT pin assertion due to TW event enabled ");
+	} else {
+		fprintf (outFilePrt, "\n  bit  4:0 RW INT pin assertion due to TW event disabled");
+	}
+
+	if (regVal & INT_EN_CFG0_TSD_EN_3 ) {
+		fprintf (outFilePrt, "\n  bit  3:1 RW INT pin assertion due to TSD event enabled  ");
+	} else {
+		fprintf (outFilePrt, "\n  bit  3:0 RW INT pin assertion due to TSD event disabled ");
+	}
+
+	if (regVal & INT_EN_CFG0_SSC_EN_2) {
+		fprintf (outFilePrt, "\n  bit  2:1 RW INT pin assertion due to SSC event enabled");
+	} else {
+		fprintf (outFilePrt, "\n  bit  2:0 RW INT pin assertion due to SSC event disabled");
+	}
+	if (regVal & INT_EN_CFG0_PRTY_FAIL_EN_1) {
+		fprintf (outFilePrt, "\n  bit  1:1 RW INT pin assertion due to parity fail event enabled.");
+	} else {
+		fprintf (outFilePrt, "\n  bit  1:0 RW INT pin assertion due to parity fail event disabled");
+	}
+	if (regVal & INT_EN_CFG0_SPI_FAIL_EN_0) {
+		fprintf (outFilePrt, "\n  bit  0:1 RW INT pin assertion due to SPI fail event enabled");
+	}else{
+		fprintf (outFilePrt, "\n  bit  0:0 RW INT pin assertion due to SPI fail event disabled.");
+	}
+	return true;
+}
+
+bool parse_tic12400_int_en_cfg1_register_25h (uint32_t regVal, FILE *outFilePrt) {
+	(void) regVal;
+	(void) outFilePrt;
+	return false;
+}
+
+bool parse_tic12400_int_en_cfg2_register_26h (uint32_t regVal, FILE *outFilePrt){
+	(void) regVal;
+	(void) outFilePrt;
+	return false;
+}
+
+bool parse_tic12400_int_en_cfg3_register_27h (uint32_t regVal, FILE *outFilePrt){
+	(void) regVal;
+	(void) outFilePrt;
+	return false;
+}
+bool parse_tic12400_int_en_cfg4_register_28h (uint32_t regVal, FILE *outFilePrt){
+	(void) regVal;
+	(void) outFilePrt;
+	return false;
+}
+
 
 bool parse_tic12400_device_id_register_01h (uint32_t regVal, FILE *outFilePrt) {
     bool res = false;

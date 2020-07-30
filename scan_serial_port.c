@@ -2,13 +2,13 @@
 
 #include <stdio.h>
 #include <time.h>
-#include <windows.h>
 
 #include "convert.h"
 #include "code_config.h"
 #include "str_ops.h"
 #include "tcp_client.h"
 #include "utils.h"
+#include "win_utils.h"
 
 xSerialConnection_t deviceList [MAX_COM_NUM];
 
@@ -24,6 +24,7 @@ static bool com_set_params (HANDLE hComm) {
     dcbSerialParams.ByteSize = 8;         // Setting ByteSize = 8
     dcbSerialParams.StopBits = ONESTOPBIT;         // Setting StopBits = 1
     dcbSerialParams.Parity = NOPARITY;  // Setting Parity = None
+
     SetCommState (hComm, &dcbSerialParams);
     if (status) {
         res = true;
@@ -35,11 +36,12 @@ static bool com_set_timeout (HANDLE hComm) {
     bool res = false;
     COMMTIMEOUTS timeouts =
         { 0 };
-    timeouts.ReadIntervalTimeout = 500; // in milliseconds
-    timeouts.ReadTotalTimeoutConstant = 500; // in milliseconds
-    timeouts.ReadTotalTimeoutMultiplier = 500; // in milliseconds
-    timeouts.WriteTotalTimeoutConstant = 500; // in milliseconds
-    timeouts.WriteTotalTimeoutMultiplier = 500; // in milliseconds
+    timeouts.ReadIntervalTimeout = 2; // in milliseconds
+    timeouts.ReadTotalTimeoutMultiplier = 5; //
+    timeouts.ReadTotalTimeoutConstant = 100; // in milliseconds
+    timeouts.WriteTotalTimeoutConstant = 1; // in milliseconds
+    timeouts.WriteTotalTimeoutMultiplier = 1;
+
     SetCommTimeouts (hComm, &timeouts);
     return res;
 }
@@ -126,17 +128,19 @@ static bool com_receive_str (HANDLE hComm, char *outRxArray, uint32_t capasityRx
 
 bool scan_serial (void) {
     bool res = false;
+    clear_tui();
     bool out_res = false;
     char comNameStr [20] = "";
     uint8_t comPortNum;
     memset (deviceList, 0x00, sizeof(deviceList));
     for (comPortNum = 0; comPortNum <= MAX_COM_NUM; comPortNum++) {
-        snprintf (comNameStr, sizeof(comNameStr), "COM%u", comPortNum);
 #if DEBUG_FAILED_OPENS
         printf ("\n try [%s]...", comNameStr);
 #endif
         HANDLE hComm;
-        hComm = CreateFile (comNameStr,                //port name
+#if 0
+        snprintf (comNameStr, sizeof(comNameStr), "COM%u", comPortNum);
+        hComm = CreateFile (comNameStr,
             GENERIC_READ | GENERIC_WRITE, //Read/Write
             0,                            // No Sharing
             NULL,                         // No Security
@@ -158,6 +162,7 @@ bool scan_serial (void) {
             CloseHandle (hComm);
             out_res = true;
         }
+#endif
 
         snprintf (comNameStr, sizeof(comNameStr), "\\\\.\\COM%u", comPortNum);
         hComm = CreateFile (comNameStr, GENERIC_READ | GENERIC_WRITE, 0,                            // No Sharing
@@ -196,7 +201,7 @@ bool scan_serial (void) {
             printf ("\n");
             res = com_receive_str (hComm, rxBuffer, sizeof(rxBuffer), &realRxLen);
             if (true == res) {
-                if (0 < realRxLen) {
+                if (10 < realRxLen) {
 #if DEDUG_RX_TEXT
                     printf ("[%s]\n rx %u bytes", rxBuffer, realRxLen);
 #endif
@@ -215,7 +220,6 @@ bool scan_serial (void) {
 
             CloseHandle (hComm);
         }
-
     }
 
     print_device_list ();
@@ -226,16 +230,13 @@ bool scan_serial (void) {
 bool print_device_list (void) {
     bool out_res = false;
     bool res = false;
-    system("cmd /c cls");
 	time_t t = time(NULL);
 	struct tm tm = *localtime(&t);
-	printf("\nnow: %d-%02d-%02d %02d:%02d:%02d\n", tm.tm_year + 1900,
+	printf("\nNow: %d-%02d-%02d %02d:%02d:%02d\n", tm.tm_year + 1900,
 			tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
 
-    //system("@cls||clear");
-    //clrscr(); does not work
-    printf("\n Compile Date %s %s ",__DATE__,__TIME__);
-    printf("\n local  mac: ");
+    printf("\nCompile Date %s %s ",__DATE__,__TIME__);
+    printf("\nlocal  mac: ");
     print_mac_addr (workBenchParam.mac_addr);
     printf ("\nclient IP: %s \nServer IP: %s Server port: %u\n", workBenchParam.clientIPstr, workBenchParam.serverIPstr, workBenchParam.serverPort);
     uint16_t txTextLen;
@@ -251,7 +252,9 @@ bool print_device_list (void) {
         }
         if (true == deviceList [comPortNum].isExistDevice) {
             if (UNDEF_DEVICE != deviceList [comPortNum].deviceID) {
-                printf ("Device [%s] Serial [0x%llx]", dev_id_name (deviceList [comPortNum].deviceID), (long long unsigned int) deviceList [comPortNum].serialNumber);
+                printf ("Serial [0x%016llx] Device [%s] ",
+                		(long long unsigned int) deviceList [comPortNum].serialNumber,
+                		deviceList [comPortNum].deviceName);
             }
             snprintf (
                 txText,
@@ -267,20 +270,37 @@ bool print_device_list (void) {
                 //printf ("\nUnable to send to TCP server");
             }
         }
+        printf(" ");
+        printf(" ");
     }
     printf("\n");
+    Sleep (2000);
     return out_res;
 }
 
-char* parse_product_name (char *inStr, uint16_t inStrLen) {
-	static char devName[100] = "";
-	int i ;
+/**/
+char* parse_product_name(char *inStr, uint16_t inStrLen) {
+	static char devName[50] = "";
+	memset(devName,0x00,sizeof(devName));
+	int i, cnt = 0;
+	//printf("\n%s: in_str [%s] inStrLen %u", __FUNCTION__,inStr, inStrLen );
+	uint16_t line_cnt = 0;
 	for (i = 0; i < inStrLen; i++) {
-		if (' ' != inStr[i]) {
-			devName[i] = inStr[i];
+		if ('\n' == inStr[i]) {
+			if (0 == line_cnt) {
+				cnt = 0;
+			}
+		}
+		if (' ' != inStr[i] ) {
+			if(('\n' != inStr[i])&&('\r' != inStr[i])){
+    			devName[cnt] = inStr[i];
+     			cnt++;
+			}
+		} else {
+			break;
 		}
 	}
-	devName[i] ='\0';
+
 	return devName;
 }
 
@@ -326,6 +346,7 @@ uint16_t parse_product (char *inStr, uint16_t inStrLen) {
     return deviceID;
 }
 
+#if 0
 const char *dev_id_name (deciceId_t deviceID) {
     static const char *devName = "UNDEF_DEV";
     switch (deviceID) {
@@ -360,3 +381,5 @@ const char *dev_id_name (deciceId_t deviceID) {
     }
     return devName;
 }
+
+#endif

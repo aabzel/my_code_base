@@ -12,8 +12,7 @@
 #   include <ws2tcpip.h>
 #endif
 
-#include <Iphlpapi.h>
-#include <Assert.h>
+
 #include <stdio.h>
 #include <time.h>
 
@@ -21,6 +20,7 @@
 #include "convert.h"
 #include "str_ops.h"
 #include "tcp_client.h"
+#include "win_utils.h"
 
 #define MAX_AMOUNT_OF_DEVICES 1000U
 
@@ -31,7 +31,7 @@ xConnection_t deviceList[MAX_AMOUNT_OF_DEVICES];
 static bool print_dev_table(void) {
 	uint16_t i = 0;
 	bool res = false;
-	system("cmd /c cls");
+	clear_tui();
 	printf("\nTCP server port: %u", serverPC.serverPort);
 	printf("\nTCP server IP: %s", serverPC.serverIPstr);
 	time_t t = time(NULL);
@@ -114,7 +114,6 @@ static bool insert_device_in_list(xConnection_t inDev) {
 	}
 	return res;
 }
-
 
 
 static bool update_device_in_list(xConnection_t inDev) {
@@ -223,7 +222,7 @@ bool launch_tcp_server(uint16_t tcpServerPort) {
 				== INVALID_SOCKET) {
 			printf("\nCould not create socket : %d", WSAGetLastError());
 		} else {
-			system("cmd /c cls");
+			clear_tui();
 			printf("Socket created.\n");
 			time_t t = time(NULL);
 			struct tm tm = *localtime(&t);
@@ -254,7 +253,7 @@ bool launch_tcp_server(uint16_t tcpServerPort) {
 				while (new_socket != INVALID_SOCKET) {
 					time_t t = time(NULL);
 					struct tm tm = *localtime(&t);
-					system("cmd /c cls");
+					clear_tui();
 					printf("\nnow: %d-%02d-%02d %02d:%02d:%02d\n", tm.tm_year + 1900,
 							tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
 					printf("\n");

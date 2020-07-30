@@ -50,6 +50,12 @@ bool parse_tic12400_in_stat_adc1_register_07h (uint32_t regVal, FILE *outFilePrt
 
 bool get_adc_channels (uint8_t regAddr, uint8_t *lowChannel, uint8_t *hiChannel);
 
+bool parse_tic12400_int_en_cfg0_register_24h (uint32_t regVal, FILE *outFilePrt);
+bool parse_tic12400_int_en_cfg1_register_25h (uint32_t regVal, FILE *outFilePrt);
+bool parse_tic12400_int_en_cfg2_register_26h (uint32_t regVal, FILE *outFilePrt);
+bool parse_tic12400_int_en_cfg3_register_27h (uint32_t regVal, FILE *outFilePrt);
+bool parse_tic12400_int_en_cfg4_register_28h (uint32_t regVal, FILE *outFilePrt);
+
 bool parse_tic12400_device_id_register_01h (uint32_t regVal, FILE *outFilePrt);
 bool parse_tic12400_interrupt_status_register_02h (uint32_t regVal, FILE *outFilePrt);
 bool parse_tic12400_crc_register_03h (uint32_t regVal, FILE *outFilePrt);

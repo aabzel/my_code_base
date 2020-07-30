@@ -14,6 +14,7 @@
 #include "mk_to_dot.h"
 #include "simulate_rocket_2d.h"
 #include "scan_serial_port.h"
+#include "win_utils.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -43,7 +44,6 @@ int main (int argc, char* argv []) {
 #if HIDE_CONSOLE
     FreeConsole();
 #endif
-    bool res = false;
 #if PRINT_ENV
     print_ent();
 #endif
@@ -63,6 +63,7 @@ int main (int argc, char* argv []) {
 #endif
 
 #if DEPLOY_TCP_SERVER
+    bool res = false;
     Sleep (4000);
     if (2 == argc) {
         res = try_strl2uint16 (argv [1], strlen (argv [1]), &serverPC.serverPort);
@@ -106,7 +107,7 @@ int main (int argc, char* argv []) {
     bool pollLoop = true;
     Sleep (4000);
     while (pollLoop) {
-        Sleep (444);
+        Sleep (100);
         res = scan_serial ();
         if (false == res) {
             //printf ("\nLack of COM ports is system");

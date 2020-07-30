@@ -140,5 +140,27 @@ typedef enum {
 #define  CCP_CFG0_WC_CCP0  (1<<0)
 
 
+#define  INT_EN_CFG0_ADC_DIAG_EN_11 (1<<11)
+#define  INT_EN_CFG0_WET_DIAG_EN_10 (1<<10)
+#define  INT_EN_CFG0_VS1_EN_9 (1<<9)
+#define  INT_EN_CFG0_VS0_EN_8 (1<<8)
+#define  INT_EN_CFG0_CRC_CALC_EN_7 (1<<7)
+#define  INT_EN_CFG0_UV_EN_6 (1<<6)
+#define  INT_EN_CFG0_OV_EN_5 (1<<5)
+#define  INT_EN_CFG0_TW_EN_4 (1<<4)
+#define  INT_EN_CFG0_TSD_EN_3 (1<<3)
+#define  INT_EN_CFG0_SSC_EN_2 (1<<2)
+#define  INT_EN_CFG0_PRTY_FAIL_EN_1 (1<<1)
+#define  INT_EN_CFG0_SPI_FAIL_EN_0 (1<<0)
+
+
+
+
+
+
+
+
+
+
 
 #endif /* TIC12400_BIT_OFFSETS_H */

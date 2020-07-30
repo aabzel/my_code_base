@@ -21,7 +21,7 @@ typedef struct {
 
 extern ComputerParams_t workBenchParam;
 
-bool get_adapter_info (void);
+
 bool sent_to_tcp_server (char *txText, uint16_t txTextLen, uint16_t tcpServerPort, uint32_t tcp_server_ip);
 
 #ifdef __cplusplus
