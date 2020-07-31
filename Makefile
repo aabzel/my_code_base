@@ -15,6 +15,7 @@ SOURCES = arrays.c
 SOURCES += permutations.c 
 SOURCES += utils.c 
 SOURCES += tcp_client.c
+SOURCES += win_utils.c
 SOURCES += tcp_server.c
 SOURCES += artificial_neural_network.c   
 SOURCES += convert.c  
@@ -83,12 +84,7 @@ $(EXECUTABLE):	$(OBJECTS)
 %.o:	$(PROJECT_ROOT)%.c
 	$(CC)  -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
 	
-#.c.o:
-#	$(CC) $(CFLAGS) $< -o $@
 	
 clean:
 	rm -fr $(EXECUTABLE) $(OBJECTS)
-	
-#test: blockAllocator	
-#	./blockAllocator
-	
+

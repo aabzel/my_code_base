@@ -1,15 +1,11 @@
 #PROJECT_ROOT = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
-#@echo $(error PROJECT_ROOT= $(PROJECT_ROOT))
+PATH_PROJECT := $(realpath $(dir $(lastword $(MAKEFILE_LIST))))
+#@echo $(error PATH_PROJECT= $(PATH_PROJECT))
 SRC_PATH :=  $(dir $(abspath $(dir $$PWD) ))
-
 #@echo $(error SRC_PATH=$(SRC_PATH))
 
-#CC=clang           
-
-#all: main.c
-#	clang  main.c -o hello
-    
+OBJDIR := $(SRC_PATH)/obj
 # the compiler to use
 CC = clang
 
@@ -27,18 +23,29 @@ EXECUTABLE=reg_paraser
 
 
 SOURCES = $(SRC_PATH)/main.c 
-SOURCES +=  $(SRC_PATH)/utils.c 
+SOURCES += $(SRC_PATH)/utils.c 
+SOURCES += $(SRC_PATH)/arrays.c  
+SOURCES += $(SRC_PATH)/convert.c  
+SOURCES += $(SRC_PATH)/float_utils.c  
+SOURCES += $(SRC_PATH)/parse_regs.c
+SOURCES += $(SRC_PATH)/parse_tja1101_regs.c
+SOURCES += $(SRC_PATH)/parse_tic12400_regs.c
+SOURCES += $(SRC_PATH)/uTests.c   
+SOURCES += $(SRC_PATH)/str_ops.c
+SOURCES += $(SRC_PATH)/test_str_ops.c    
+SOURCES += $(SRC_PATH)/combinations.c
+SOURCES += $(SRC_PATH)/algorithms.c 
 
-OBJECTS=$(SOURCES:.c=.o)
+
+OBJECTS =$(SOURCES:.c=.o)
+
+#@echo $(error OBJECTS= $(OBJECTS))
 
 all: $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) -o $(EXECUTABLE)
+	$(CC) $(CFLAGS) $(OBJECTS) -o $(EXECUTABLE).exe
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $^  
-
-clean:
-	rm *.o
-
+	mv *.o $(SRC_PATH)

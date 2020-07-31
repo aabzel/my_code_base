@@ -1,32 +1,36 @@
 #include "uTests.h"
 
 #include "algorithms.h"
-#include "amount_of_uio_states.h"
+//#include "amount_of_uio_states.h"
 #include "arrays.h"
+
+#if HAS_BIN_HEAP
 #include "bin_heap.h"
 #include "bin_heap_array.h"
-#include "bin_search_tree.h"
-#include "bin_tree.h"
-#include "bin_tree_draw.h"
-#include "combinations.h"
+#endif
+
+//#include "bin_search_tree.h"
+//#include "bin_tree.h"
+//#include "bin_tree_draw.h"
+//#include "combinations.h"
 #include "convert.h"
 #include "float_utils.h"
-#include "linked_list.h"
-#include "min_path.h"
-#include "min_path_diag_scale.h"
-#include "mk_to_dot.h"
-#include "parse_keepass.h"
+//#include "linked_list.h"
+//#include "min_path.h"
+//#include "min_path_diag_scale.h"
+//#include "mk_to_dot.h"
+//#include "parse_keepass.h"
 #include "permutations.h"
-#include "russian_doll_envelopes_test.h"
-#include "scan_serial_port.h"
-#include "slidingWindowMax.h"
-#include "slidingWindowMid.h"
-#include "sort_linked_list.h"
+//#include "russian_doll_envelopes_test.h"
+//#include "scan_serial_port.h"
+//#include "slidingWindowMax.h"
+//#include "slidingWindowMid.h"
+//#include "sort_linked_list.h"
 #include "str_ops.h"
 #include "test_str_ops.h"
-#include "test_avl_tree.h"
-#include "test_fifo_char.h"
-#include "test_lifo_char.h"
+//#include "test_avl_tree.h"
+//#include "test_fifo_char.h"
+//#include "test_lifo_char.h"
 #include "utils.h"
 
 #include <stdint.h>
@@ -99,6 +103,7 @@ static bool test_parse_serial (void) {
     return true;
 }
 
+#if DEPLOY_TEST_COM_PARSER
 static bool test_parse_vi_devname(void) {
 	char inStr[1000];
 
@@ -114,7 +119,9 @@ static bool test_parse_vi_devname(void) {
 	}
 	return true;
 }
+#endif
 
+#if DEPLOY_TEST_COM_PARSER
 static bool test_parse_vi(void) {
 	char inStr[1000];
 	char outStr[1000];
@@ -145,6 +152,7 @@ static bool test_parse_vi(void) {
 
 	return true;
 }
+#endif
 
 int unitTest (void) {
     bool res = false;
@@ -192,12 +200,13 @@ int unitTest (void) {
     if (false == res) {
         return PARSE_EXTRACT_SUB_ERROR;
     }
-
+#if 0
     res = test_parse_vi ();
     if (false == res) {
         return PARSE_VI_ERROR;
     }
 
+#endif
     char inStr [100];
     char outStr [100];
     char expStr [100];
@@ -321,10 +330,12 @@ int unitTest (void) {
     }
 #endif
 
+#if 0
     res = test_parse_mk ();
     if (false == res) {
         return EXTRACK_MK_FILE_ERROR;
     }
+#endif
 
 #if DEPLOY_TEST_SINGLE_NUMBER
     res = test_single_number ();
@@ -763,7 +774,7 @@ int unitTest (void) {
 
     return FINE;
 }
-
+#if 0
 int test_heap_api (void) {
     bool res = false;
 
@@ -799,6 +810,7 @@ int test_heap_api (void) {
 
     return FINE;
 }
+#endif
 
 bool test_max_bit_val (void) {
     bool res = true;
@@ -948,6 +960,7 @@ bool test_bin_tree_init_array (void) {
 }
 #endif
 
+#if 0
 bool test_bin_tree (void) {
     TreeNode_t *root = NULL;
     bool res = false;
@@ -962,6 +975,8 @@ bool test_bin_tree (void) {
     }
     return res;
 }
+#endif
+
 #if TEST_LIST
 bool test_reverse_list (void) {
     bool res = false;
@@ -991,6 +1006,7 @@ bool test_reverse_list (void) {
 }
 #endif
 
+#if DEPLOY_TEST_UNIQ_PATH
 bool test_uniq_path (void) {
     int numPath;
 
@@ -1061,6 +1077,7 @@ bool test_uniq_path_diag (void) {
 
     return res;
 }
+#endif
 
 bool test_ya_task (void) {
     bool res = false;
@@ -1254,7 +1271,7 @@ bool test_float (void) {
 
     return res;
 }
-
+#if 0
 bool test_min_path (void) {
     bool res = false;
     int grid [3] [3] =
@@ -1371,6 +1388,7 @@ bool test_min_diag_scale_summ (void) {
     return res;
 }
 
+
 bool test_find_min_diag_scale_summ2 (void) {
     bool res = false;
 #define TEST_ARR_DIM2 7
@@ -1398,6 +1416,7 @@ bool test_find_min_diag_scale_summ (void) {
     }
     return res;
 }
+#endif
 
 bool test_valid_float_number (void) {
     bool res;
@@ -1556,7 +1575,7 @@ bool test_k_smallest (void) {
 
     return true;
 }
-
+#if 0
 bool test_medianSlidingWindow (void) {
     bool res = false;
 
@@ -2620,6 +2639,7 @@ bool test_medianSlidingWindow (void) {
     return res;
 }
 
+
 bool check_array (int *arr, int numsSize, int k) {
     bool res;
     int returnSize = 0;
@@ -2777,6 +2797,7 @@ bool test_bin_heap_delete (void) {
     return res;
 }
 
+
 bool test_is_bin_tree (void) {
     bool res = false;
 
@@ -2865,6 +2886,7 @@ bool test_is_bin_tree (void) {
 
     return true;
 }
+#endif
 
 bool test_delim_amount (void) {
 
@@ -2944,7 +2966,7 @@ bool test_split (void) {
 
     return true;
 }
-
+#if 0
 bool test_bin_heap_par_ind_arr (void) {
 
     int parentIndex = 0;
@@ -3040,7 +3062,10 @@ bool test_max_bin_heap_insert (void) {
 
     return true;
 }
+#endif
 
+
+#if 0
 bool test_min_bin_heap_insert (void) {
     BinaryHeap_t binHeapObj;
     binHeapObj.length = 0;
@@ -3075,6 +3100,7 @@ bool test_min_bin_heap_insert (void) {
 
     return true;
 }
+#endif
 
 bool test_string_clean (void) {
     int cmpres;
@@ -3124,6 +3150,7 @@ bool test_string_clean (void) {
     return true;
 }
 
+#if DEPLOY_TEST_BIN_HEAP
 bool test_min_bin_heap_delete_val (void) {
     bool res = false;
     BinaryHeap_t minBinHeapObj;
@@ -3274,6 +3301,7 @@ bool test_sliding_window_max (void) {
     return res;
 }
 
+
 void assemble_tree_from_array (TreeNode_t **root, int *arr, int arraySize) {
     printf ("\n arraySize: %d\n", arraySize);
     for (int index = 0; index < arraySize; index++) {
@@ -3293,3 +3321,4 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements) {
     printf ("\nThe binary search tree is: \n");
     print_inorder_traversal (*root);
 }
+#endif

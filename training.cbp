@@ -8,14 +8,18 @@
 		<Option extended_obj_names="1" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/training" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Debug/CodeBlockBuild" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters='tic12400_reg_map_blob.txt &quot;tic12400_config.txt&quot;' />
+				<Option parameters="tic12400_reg_map_blob_iov040.txt  tic12400_config.txt" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
+				<Linker>
+					<Add library="ws2_32" />
+					<Add library="iphlpapi" />
+				</Linker>
 			</Target>
 			<Target title="Release">
 				<Option output="bin/Release/training" prefix_auto="1" extension_auto="1" />
@@ -73,6 +77,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="combinations.h" />
+		<Unit filename="convert.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="convert.h" />
 		<Unit filename="fifo_char.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -81,6 +89,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="fifo_index.h" />
+		<Unit filename="float_utils.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="float_utils.h" />
 		<Unit filename="lifo_char.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -93,6 +105,10 @@
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="math_model_rocket_2d.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="math_model_rocket_2d.h" />
 		<Unit filename="min_path.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -133,6 +149,14 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="russian_doll_envelopes_test.h" />
+		<Unit filename="scan_serial_port.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="scan_serial_port.h" />
+		<Unit filename="simulate_rocket_2d.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="simulate_rocket_2d.h" />
 		<Unit filename="slidingWindowMax.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -149,6 +173,14 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="str_ops.h" />
+		<Unit filename="tcp_client.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="tcp_client.h" />
+		<Unit filename="tcp_server.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="tcp_server.h" />
 		<Unit filename="test_avl_tree.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -161,6 +193,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="test_lifo_char.h" />
+		<Unit filename="test_str_ops.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="test_str_ops.h" />
 		<Unit filename="uTests.c">
 			<Option compilerVar="CC" />
 		</Unit>

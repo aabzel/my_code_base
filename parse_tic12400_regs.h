@@ -1,4 +1,4 @@
-#ifndef PARSE_TIC124h00_REGS_H
+#ifndef PARSE_TIC12400_REGS_H
 #define PARSE_TIC12400_REGS_H
 
 #include "custom_type.h"

@@ -3,7 +3,7 @@
 #include "convert.h"
 #include "algorithms.h"
 #include "custom_type.h"
-#include "lifo_char.h"
+
 
 #include <ctype.h>
 #include <math.h>
@@ -21,7 +21,7 @@ static int findIndOfFirstDiffFromEnd (char *oldStr, char *newStr);
 static bool get_oparand (char *expression, int i);
 #endif
 
-static bool parse_single_char(char *expression);
+//static bool parse_single_char(char *expression);
 static bool hash_table_char_put(char character, int indexInArray);
 // static bool hash_table_char_remove (char character);
 static void init_hash_table(void);
@@ -815,6 +815,7 @@ char* uint32_to_bin_str(uint32_t inVal32bit) {
 	}
 	return outBitStr;
 }
+#if 0
 
 // "&(t,f)"
 // "|(f,t)"
@@ -934,6 +935,7 @@ bool parse_or(char *expression, int inStrLen) {
 	return res;
 }
 
+
 // "(t,f,t)"          3
 // "(t,f)"            2
 // "(f,t)"            2
@@ -966,226 +968,8 @@ bool parse_and(char *expression, int inStrLen) {
 	}
 	return res;
 }
-//                               level of nesting
-// "(t)"               1     1
-// "(t,f,t)"               3     1
-// "(t,f)"                 2     1
-// "(&(t,f,t),!(t))"       2     2
-// "(&(t,&(f,t),t),!(t))"  2     3
-// "(f,t)"                2
-// "(&(t,f,t),!(t))"    2
-int parse_num_operands(char *expression, int inStrLen) {
-	int numOfOperands = 0;
-	if (expression) {
-		Lifo_array_t lifoObj;
-		if (0 < inStrLen) {
-			char *array = malloc(inStrLen);
-			if (array) {
-				lifo_init(&lifoObj, inStrLen, array);
-				for (int i = 0; i < inStrLen; i++) {
-					char outChar = 'a';
-					if (is_bracket(expression[i])) {
-						lifo_peek(&lifoObj, &outChar);
-						if (true
-								== brackets_same_type(outChar, expression[i])) {
-							lifo_pull(&lifoObj, &outChar);
-						} else {
-							lifo_push(&lifoObj, expression[i]);
-						}
 
-					} else {
-						if (',' == expression[i]) {
-							if (1 == lifoObj.lifoStat.len) {
-								numOfOperands++;
-							}
-						}
-					}
-				}
-				numOfOperands++;
-			}
-		}
-	}
-	return numOfOperands;
-}
-
-//"(f,t)"
-//"(f,t)"
-//"(&(t,f,t),!(t))"
-//"(&(t,f,t),!(t))"
-int get_index_in_string(char *expression, int inStrLen, int operandNum,
-		int *const operandLen) {
-	int indOfoperand = -1;
-	bool match = false;
-	if (expression) {
-#if DEBUG_EXSTRACT_OPERAND
-        print_sub_str (expression, inStrLen);
 #endif
-		int i = 0;
-		Lifo_array_t lifoObj;
-		if (0 < inStrLen) {
-			char *array = malloc(inStrLen);
-			if (array) {
-				indOfoperand = 0;
-				if (0 == operandNum) {
-					match = true;
-					indOfoperand = 1;
-				}
-				lifo_init(&lifoObj, inStrLen, array);
-				for (i = 0; i < inStrLen; i++) {
-					char outChar = 'a';
-					if (is_bracket(expression[i])) {
-						lifo_peek(&lifoObj, &outChar);
-						if (true
-								== brackets_same_type(outChar, expression[i])) {
-							lifo_pull(&lifoObj, &outChar);
-						} else {
-							lifo_push(&lifoObj, expression[i]);
-						}
-
-					} else {
-						if (',' == expression[i]) {
-							if (1 == lifoObj.lifoStat.len) {
-								if (true == match) {
-									(*operandLen) = (i) - indOfoperand;
-									free(array);
-									return indOfoperand;
-								} else {
-									indOfoperand++;
-								}
-								if (indOfoperand == operandNum) {
-									match = true;
-									indOfoperand = i + 1;
-								}
-							}
-						}
-					}
-				}
-				if (true == match) {
-					(*operandLen) = (i - 1) - indOfoperand;
-					free(array);
-					return indOfoperand;
-				}
-				free(array);
-			}
-		}
-	}
-	return indOfoperand;
-}
-
-//(f)
-bool parse_not(char *expression, int inStrLen) {
-	bool res = false;
-#if DEBUG_PARSE_NOT
-    printf (" parse NOT <");
-    print_sub_str (expression, inStrLen);
-    printf ("> len: %d", inStrLen);
-#endif
-	if (expression) {
-		if (1 == inStrLen) {
-			return !parse_single_char(expression);
-		} else {
-			switch (expression[0]) {
-			case '(': {
-				if (((char) 0x29) == expression[inStrLen - 1]) {
-					res = !parse_bool_expr(&expression[1], inStrLen - 2);
-				} else {
-					printf(NEW_LINE " error [%c] " NEW_LINE,
-							expression[inStrLen - 1]);
-				}
-			}
-				break;
-			default:
-				res = !parse_bool_expr(expression, inStrLen);
-				break;
-			}
-		}
-	}
-	return res;
-}
-
-//                               level of nesting
-// "(t,f,t)"                    1
-// "(t,f)"                      1
-// "(&(t,f,t),!(t))"            2
-// "(&(t,&(f,t),t),!(t))"       3
-int calc_paratasis_nesting(char *s, int *const amountOfPairs) {
-	bool res;
-	int nestDepth = -1;
-	(*amountOfPairs) = 0u;
-	res = is_valid_parentheses(s);
-	if (res) {
-		nestDepth = 0;
-		int strLen = strlen(s);
-		char *array = malloc(strLen);
-		if (array) {
-			Lifo_array_t lifoObj;
-			lifo_init(&lifoObj, strLen, array);
-			for (int i = 0; i < strLen; i++) {
-				char outChar = 'a';
-				if (is_bracket(s[i])) {
-					lifo_peek(&lifoObj, &outChar);
-					if (true == brackets_same_type(outChar, s[i])) {
-						lifo_pull(&lifoObj, &outChar);
-						(*amountOfPairs)++;
-					} else {
-						lifo_push(&lifoObj, s[i]);
-						nestDepth = max(lifoObj.lifoStat.len, nestDepth);
-					}
-				}
-			}
-			free(array);
-		}
-	}
-	return nestDepth;
-}
-
-bool is_valid_parentheses(char *s) {
-	bool res = false;
-	Lifo_array_t lifoObj;
-	int strLen = strlen(s);
-	char *array = malloc(strLen);
-	if (array) {
-		lifo_init(&lifoObj, strLen, array);
-		char outChar = 'a';
-		for (int i = 0; i < strLen; i++) {
-			outChar = 'a';
-			if (is_bracket(s[i])) {
-				lifo_peek(&lifoObj, &outChar);
-				if (true == brackets_same_type(outChar, s[i])) {
-					lifo_pull(&lifoObj, &outChar);
-				} else {
-					lifo_push(&lifoObj, s[i]);
-				}
-			}
-		}
-		if (0 == lifoObj.lifoStat.len) {
-			res = true;
-		}
-		free(array);
-	}
-	return res;
-}
-
-bool is_bracket(char ch) {
-	bool res = false;
-	switch (ch) {
-	case '}':
-	case '{':
-	case '[':
-	case ']':
-	case '(':
-	case ')':
-	case '>':
-	case '<':
-		res = true;
-		break;
-	default:
-		res = false;
-		break;
-	}
-	return res;
-}
-
 bool brackets_same_type(char open, char close) {
 	if (('(' == open) && (')' == close)) {
 		return true;

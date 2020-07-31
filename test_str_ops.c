@@ -299,6 +299,8 @@ bool test_num_to_bin_str(void) {
 	return true;
 }
 
+#if 0
+
 bool test_operand_extract(void) {
 	int operLen = -1;
 	EXPECT_EQ(1, get_index_in_string("(f,t)", 5, 0, &operLen));
@@ -378,12 +380,14 @@ bool test_calc_paratasis_nesting(void) {
 	return true;
 }
 
+
 bool test_Valid_Parentheses(void) {
 	EXPECT_TRUE(is_valid_parentheses("()[]{}"));
 	EXPECT_TRUE(is_valid_parentheses("(t,f,t)"));
 	EXPECT_TRUE(is_valid_parentheses("(&(t,&(f,t),t),!(t))"));
 	return true;
 }
+#endif
 
 bool test_replace_substr(void) {
 	char text[100];
