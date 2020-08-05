@@ -129,6 +129,7 @@ static bool com_receive_str (HANDLE hComm, char *outRxArray, uint32_t capasityRx
 bool scan_serial (void) {
     bool res = false;
     clear_tui();
+    printf ("\n Start new scan");
     bool out_res = false;
     char comNameStr [20] = "";
     uint8_t comPortNum;
@@ -223,6 +224,7 @@ bool scan_serial (void) {
     }
 
     print_device_list ();
+    printf("\nScan done\n");
 
     return out_res;
 }
@@ -242,41 +244,43 @@ bool print_device_list (void) {
     uint16_t txTextLen;
     uint32_t comPortNum = 0;
     char txText [MAX_SIZE_OF_TCP_DATA_BYTE] = "";
+
     for (comPortNum = 0; comPortNum < MAX_COM_NUM; comPortNum++) {
         if (true == deviceList [comPortNum].isExistPort) {
             printf ("\n COM%u ", comPortNum);
-        }
-        if (true == deviceList [comPortNum].isExistDevice) {
-            //printf ("Device exists. ");
-            out_res = true;
-        }
-        if (true == deviceList [comPortNum].isExistDevice) {
-            if (UNDEF_DEVICE != deviceList [comPortNum].deviceID) {
-                printf ("Serial [0x%016llx] Device [%s] ",
-                		(long long unsigned int) deviceList [comPortNum].serialNumber,
+            if (true == deviceList [comPortNum].isExistDevice) {
+                printf ("Serial [0x%016llx] Device [%s] ", (long long unsigned int) deviceList [comPortNum].serialNumber,
                 		deviceList [comPortNum].deviceName);
-            }
-            snprintf (
-                txText,
-                sizeof(txText),
-                "\nDevice [%s] Serial 0x%llx from IP %s MAC %s user <%s>",
-				deviceList [comPortNum].deviceName,
-                (long long unsigned int) deviceList [comPortNum].serialNumber,
-                workBenchParam.clientIPstr,
-                mac_to_str (workBenchParam.mac_addr), workBenchParam.userName);
-            txTextLen = strlen (txText);
-            res = sent_to_tcp_server (txText, txTextLen, workBenchParam.serverPort, workBenchParam.serverIP);
-            if (false == res) {
-                //printf ("\nUnable to send to TCP server");
+                out_res = true;
+            } else {
+            	printf (" lack device");
             }
         }
-        printf(" ");
-        printf(" ");
     }
-    printf("\n");
-    printf("\n");
-    printf("\n");
-    Sleep (1000);
+    printf("\nserial ");
+    printf("scan ");
+    printf("done ");
+
+    for (comPortNum = 0; comPortNum < MAX_COM_NUM; comPortNum++) {
+        if (true == deviceList [comPortNum].isExistPort) {
+            if (true == deviceList [comPortNum].isExistDevice) {
+                snprintf (
+                   txText,
+                   sizeof(txText),
+                   "\nDevice [%s] Serial 0x%llx from IP %s MAC %s user <%s>",
+				   deviceList [comPortNum].deviceName,
+                   (long long unsigned int) deviceList [comPortNum].serialNumber,
+                   workBenchParam.clientIPstr,
+                   mac_to_str (workBenchParam.mac_addr), workBenchParam.userName);
+               txTextLen = strlen (txText);
+               res = sent_to_tcp_server (txText, txTextLen, workBenchParam.serverPort, workBenchParam.serverIP);
+               if (false == res) {
+                   printf (" Unable to send to TCP server");
+               }
+            }
+        }
+    }
+    Sleep (2000);
     return out_res;
 }
 

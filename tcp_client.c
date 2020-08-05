@@ -48,15 +48,17 @@ bool sent_to_tcp_server (char *txText, uint16_t txTextLen, uint16_t tcpServerPor
             server.sin_family = AF_INET;
             server.sin_port = htons (tcpServerPort);
             //Connect to remote server
-            if (connect (socDescriptor, (struct sockaddr *) &server, sizeof(server)) < 0) {
-                //printf ("\nTCP server connect error");
+            int con_stat = connect (socDescriptor, (struct sockaddr *) &server, sizeof(server)) ;
+            if (con_stat < 0) {
+                printf ("\nTCP server connect error %u", con_stat);
                 res = false;
             } else {
 #if DEBUG_TCP_CLIENT
                 puts ("Connected");
 #endif
-                if (send (socDescriptor, txText, txTextLen, 0) < 0) {
-                    printf ("\nSend failed");
+                int stat = send (socDescriptor, txText, txTextLen, 0);
+                if (stat < 0) {
+                    printf ("\nSend failed stat %d", stat);
                     res = false;
                 } else {
 #if DEBUG_TCP_CLIENT

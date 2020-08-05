@@ -11,7 +11,20 @@ INCDIR = $(PROJECT_ROOT)
 #@echo $(error INCDIR= $(INCDIR))
 
 
-SOURCES = arrays.c  
+SOURCES = main.c 
+SOURCES += arrays.c  
+SOURCES += utils.c 
+SOURCES += tcp_client.c
+SOURCES += win_utils.c
+SOURCES += convert.c  
+SOURCES += scan_serial_port.c
+SOURCES += float_utils.c  
+SOURCES += uTests.c   
+SOURCES += str_ops.c
+SOURCES += test_str_ops.c    
+SOURCES += algorithms.c 
+SOURCES += fifo_uint16.c
+
 SOURCES += permutations.c 
 SOURCES += utils.c 
 SOURCES += tcp_client.c
