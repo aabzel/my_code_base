@@ -134,12 +134,12 @@ bool scan_serial (void) {
     uint8_t comPortNum;
     memset (deviceList, 0x00, sizeof(deviceList));
     for (comPortNum = 0; comPortNum <= MAX_COM_NUM; comPortNum++) {
+        snprintf (comNameStr, sizeof(comNameStr), "COM%u", comPortNum);
 #if DEBUG_FAILED_OPENS
         printf ("\n try [%s]...", comNameStr);
 #endif
         HANDLE hComm;
-#if 0
-        snprintf (comNameStr, sizeof(comNameStr), "COM%u", comPortNum);
+#if 1
         hComm = CreateFile (comNameStr,
             GENERIC_READ | GENERIC_WRITE, //Read/Write
             0,                            // No Sharing
@@ -274,7 +274,9 @@ bool print_device_list (void) {
         printf(" ");
     }
     printf("\n");
-    Sleep (2000);
+    printf("\n");
+    printf("\n");
+    Sleep (1000);
     return out_res;
 }
 

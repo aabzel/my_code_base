@@ -7,7 +7,9 @@
 
 #include "convert.h"
 #include "tcp_client.h"
+#ifdef DEPLOY_TCP_SERVER
 #include "tcp_server.h"
+#endif
 
 void clear_tui(void){
     system("cmd /c cls");
@@ -48,8 +50,13 @@ bool get_adapter_info (void) {
             res = try_strl2ipv4 (pAdapterInfo->IpAddressList.IpAddress.String, strlen (pAdapterInfo->IpAddressList.IpAddress.String), &ipVal);
             if (true == res) {
                 if (0 < ipVal) {
+                	res = true;
                     workBenchParam.serverIP = ipVal;
+#ifdef DEPLOY_TCP_SERVER
                     serverPC.serverIP = ipVal;
+                    memcpy(serverPC.mac_addr, pAdapterInfo->Address, 6);
+                    strncpy (serverPC.serverIPstr, pAdapterInfo->IpAddressList.IpAddress.String, sizeof(serverPC.serverIPstr));
+#endif
                     sprintf (
                         mac_addr,
                         "%02X:%02X:%02X:%02X:%02X:%02X",
@@ -62,9 +69,7 @@ bool get_adapter_info (void) {
 
                     printf ("Address %s, MAC %s\n", pAdapterInfo->IpAddressList.IpAddress.String, mac_addr);
                     memcpy(workBenchParam.mac_addr, pAdapterInfo->Address, 6);
-                    memcpy(serverPC.mac_addr, pAdapterInfo->Address, 6);
                     strncpy (workBenchParam.clientIPstr, pAdapterInfo->IpAddressList.IpAddress.String, sizeof(workBenchParam.clientIPstr));
-                    strncpy (serverPC.serverIPstr, pAdapterInfo->IpAddressList.IpAddress.String, sizeof(serverPC.serverIPstr));
                 }
             }
 
@@ -75,5 +80,5 @@ bool get_adapter_info (void) {
     printf ("\n numOfAdapters %u", numOfAdapters);
 
     free (AdapterInfo);
-    return true;
+    return res;
 }

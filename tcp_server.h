@@ -9,6 +9,8 @@ extern "C" {
 
 #include "custom_type.h"
 
+#define DEPLOY_TCP_SERVER
+
 typedef struct {
     char userName [100];
     uint8_t mac_addr [6];

@@ -5,12 +5,16 @@
 #include "combinations.h"
 #include "hash_table.h"
 #include "linked_list.h"
+#ifdef DEPLOY_PARSE_REG
 #include "parse_regs.h"
+#endif
 #include "permutations.h"
 #include "utils.h"
 #include "uTests.h"
 #include "tcp_client.h"
+#ifdef DEPLOY_TCP_SERVER
 #include "tcp_server.h"
+#endif
 #include "mk_to_dot.h"
 #include "simulate_rocket_2d.h"
 #include "scan_serial_port.h"
@@ -40,6 +44,7 @@ int main (int argc, char* argv []) {
     for (int i = 0; i < argc; i++) {
         printf ("\nargv[%u] %s", i, argv [i]);
     }
+
     // IPTCP server port tcp server
 #if HIDE_CONSOLE
     FreeConsole();
@@ -58,12 +63,12 @@ int main (int argc, char* argv []) {
     }
 #endif
 
-#if DEPLOY_TCP_CLIENT
+#ifdef DEPLOY_TCP_CLIENT
+    printf ("\nDEPLOY_TCP_CLIENT\n");
     get_adapter_info ();
 #endif
 
-#if DEPLOY_TCP_SERVER
-    bool res = false;
+#ifdef DEPLOY_TCP_SERVER
     Sleep (4000);
     if (2 == argc) {
         res = try_strl2uint16 (argv [1], strlen (argv [1]), &serverPC.serverPort);
@@ -79,17 +84,19 @@ int main (int argc, char* argv []) {
     }
 #endif
 
-#if DEPLOY_SCAN_COM
+#ifdef DEPLOY_SCAN_COM
+    printf ("\nDEPLOY_SCAN_COM\n");
     if (4 == argc) {
         strncpy (workBenchParam.userName, argv [3], sizeof(workBenchParam.userName));
         //192.168.0.11 50506
-        res = try_strl2uint16 (argv [1], strlen (argv [1]), &workBenchParam.serverPort);
-        if (true == res) {
-            res = try_strl2ipv4 (argv [2], strlen (argv [2]), &workBenchParam.serverIP);
-            if (false == res) {
+        bool conv_res = false;
+        conv_res = try_strl2uint16 (argv [1], strlen (argv [1]), &workBenchParam.serverPort);
+        if (true == conv_res) {
+        	conv_res = try_strl2ipv4 (argv [2], strlen (argv [2]), &workBenchParam.serverIP);
+            if (false == conv_res) {
                 printf ("\nUnable to parse server IP %s", argv [2]);
                 strncpy (workBenchParam.serverIPstr, DFLT_TCP_BOARD_SERVER_IP, sizeof(workBenchParam.serverIPstr));
-                res = try_strl2ipv4 (DFLT_TCP_BOARD_SERVER_IP, strlen (DFLT_TCP_BOARD_SERVER_IP), &workBenchParam.serverIP);
+                conv_res = try_strl2ipv4 (DFLT_TCP_BOARD_SERVER_IP, strlen (DFLT_TCP_BOARD_SERVER_IP), &workBenchParam.serverIP);
             } else {
                 strncpy (workBenchParam.serverIPstr, argv [2], sizeof(workBenchParam.serverIPstr));
                 printf ("\nPort %s", argv [1]);
@@ -106,17 +113,23 @@ int main (int argc, char* argv []) {
     }
     bool pollLoop = true;
     Sleep (4000);
+    int cnt=0;
+    int scan_period_ms = 500;
     while (pollLoop) {
-        Sleep (100);
-        res = scan_serial ();
-        if (false == res) {
-            //printf ("\nLack of COM ports is system");
+        Sleep (scan_period_ms);
+        cnt++;
+        printf ("\nUp Time %7.2f", ((float)cnt*scan_period_ms)/1000.0);
+        bool scan_res;
+        scan_res = scan_serial ();
+        if (false == scan_res) {
+            printf ("\nLack of COM ports is system");
+            printf ("\n");
         }
     }
 
 #endif
 
-#if DEPLOY_PARSE_REG
+#ifdef DEPLOY_PARSE_REG
     if (3 == argc) {
         bool res;
         res = parse_regs_file (argv [1], argv [2]);
