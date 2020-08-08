@@ -126,6 +126,39 @@ static bool com_receive_str (HANDLE hComm, char *outRxArray, uint32_t capasityRx
     return res;
 }
 
+static uint64_t knownSerialTable[MAX_NUM_COM_DEV]={0};
+
+bool is_serial_known(uint64_t inSerial) {
+	int i ;
+	for ( i = 0; i < MAX_NUM_COM_DEV; i++) {
+		if (inSerial == knownSerialTable[i]) {
+			return true;
+		}
+	}
+	for (i = 0; i < MAX_NUM_COM_DEV; i++) {
+		if (0 == knownSerialTable[i]) {
+			knownSerialTable[i] = inSerial;
+			return false;
+		}
+	}
+	return false;
+}
+
+static bool print_new_dev_in_file(char *file_name, uint8_t comPortNum, uint64_t serialNumber, char *deviceName){
+	FILE *client_log_p;
+	bool res = false;
+	client_log_p = fopen(file_name, "a");
+	if (NULL!=client_log_p) {
+		fprintf(client_log_p,"\nCOM%u Device: %s Serial: 0x%llx IP %s MAC %s", comPortNum, deviceName,(unsigned long long) serialNumber, workBenchParam.clientIPstr, mac_to_str (workBenchParam.mac_addr));
+		fclose (client_log_p);
+		res = true;
+	} else {
+		printf("Unable to open file");
+	}
+	return res;
+}
+
+
 bool scan_serial (void) {
     bool res = false;
     clear_tui();
@@ -133,7 +166,6 @@ bool scan_serial (void) {
     bool out_res = false;
     char comNameStr [20] = "";
     uint8_t comPortNum;
-    memset (deviceList, 0x00, sizeof(deviceList));
     for (comPortNum = 0; comPortNum <= MAX_COM_NUM; comPortNum++) {
         snprintf (comNameStr, sizeof(comNameStr), "COM%u", comPortNum);
 #if DEBUG_FAILED_OPENS
@@ -208,9 +240,14 @@ bool scan_serial (void) {
 #endif
                     res = parse_serial (rxBuffer, realRxLen, &deviceList [comPortNum].serialNumber);
                     if (true == res) {
+
                         deviceList [comPortNum].isExistDevice = true;
-                        deviceList [comPortNum].deviceID = parse_product (rxBuffer, realRxLen);
+                        //deviceList [comPortNum].deviceID = parse_product (rxBuffer, realRxLen);
                         strncpy( deviceList [comPortNum].deviceName, parse_product_name (rxBuffer, realRxLen),sizeof(deviceList [comPortNum].deviceName));
+                    	res = is_serial_known (deviceList [comPortNum].serialNumber);
+                    	if (false==res) {
+                    		print_new_dev_in_file("scanner_log.txt", comPortNum, deviceList [comPortNum].serialNumber, deviceList [comPortNum].deviceName);
+                    	}
                     }
                 } else {
                     printf ("\nLack of response");
@@ -280,7 +317,7 @@ bool print_device_list (void) {
             }
         }
     }
-    Sleep (2000);
+    Sleep (4000);
     return out_res;
 }
 
@@ -310,6 +347,8 @@ char* parse_product_name(char *inStr, uint16_t inStrLen) {
 	return devName;
 }
 
+
+#if 0
 uint16_t parse_product (char *inStr, uint16_t inStrLen) {
     (void) inStrLen;
     uint16_t deviceID = UNDEF_DEVICE;
@@ -351,41 +390,4 @@ uint16_t parse_product (char *inStr, uint16_t inStrLen) {
     }
     return deviceID;
 }
-
-#if 0
-const char *dev_id_name (deciceId_t deviceID) {
-    static const char *devName = "UNDEF_DEV";
-    switch (deviceID) {
-        case CAN_FLASHER:
-            devName = "CAN_FLASHER";
-            break;
-        case TSTF_V1:
-            devName = "TSTF_V1";
-            break;
-        case TSTF_V2:
-            devName = "TSTF_V2";
-            break;
-        case TSTP_V1:
-            devName = "TSTP_V1";
-            break;
-        case TSTP_V2:
-            devName = "TSTP_V2";
-            break;
-        case TSTI_V1:
-            devName = "TSTI_V1";
-            break;
-        case TSTS_V1:
-            devName = "TSTS_V1";
-            break;
-        case IOV4_A:
-            devName = "IOV4_A";
-            break;
-
-        default:
-            devName = "CAN_FLASHER";
-            break;
-    }
-    return devName;
-}
-
 #endif

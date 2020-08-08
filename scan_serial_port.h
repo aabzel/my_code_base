@@ -15,6 +15,8 @@ extern "C" {
 #define DEBUG_SPOT_COM 0
 #define DEBUG_FAILED_OPENS 0
 
+#define MAX_NUM_COM_DEV 40U
+
 typedef enum {
     CAN_FLASHER = 1,
     TSTP_V1 = 2,

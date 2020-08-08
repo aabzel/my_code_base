@@ -115,6 +115,7 @@ int main (int argc, char* argv []) {
     Sleep (4000);
     int cnt=0;
     int scan_period_ms = 500;
+    memset (deviceList, 0x00, sizeof(deviceList));
     while (pollLoop) {
         Sleep (scan_period_ms);
         cnt++;
