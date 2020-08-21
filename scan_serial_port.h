@@ -41,6 +41,7 @@ typedef struct xConnection_t {
 
 extern xSerialConnection_t deviceList [MAX_COM_NUM];
 
+bool is_serial_known(uint64_t inSerial);
 const char *dev_id_name(deciceId_t deviceID);
 bool scan_serial (void);
 bool print_device_list (void);

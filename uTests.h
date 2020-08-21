@@ -98,10 +98,13 @@ typedef enum {
     PARSE_SERIAL_ERROR = 80,
     PARSE_HEX_ERROR = 81,
 	PARSE_EXTRACT_SUB_ERROR = 82,
+	SHA256_ERROR = 83,
+	AES_ERROR = 84,
+	ARRAY_ERROR = 85,
     NUM_ERROR = 100
 } utError_t;
 
-int unitTest (void);
+int unit_test (void);
 
 //bool test_sliding_window_max (void);
 //bool test_max_bin_heap_insert (void);

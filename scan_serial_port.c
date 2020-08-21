@@ -129,7 +129,7 @@ static bool com_receive_str (HANDLE hComm, char *outRxArray, uint32_t capasityRx
 static uint64_t knownSerialTable[MAX_NUM_COM_DEV]={0};
 
 bool is_serial_known(uint64_t inSerial) {
-	int i ;
+	int i;
 	for ( i = 0; i < MAX_NUM_COM_DEV; i++) {
 		if (inSerial == knownSerialTable[i]) {
 			return true;
@@ -144,7 +144,7 @@ bool is_serial_known(uint64_t inSerial) {
 	return false;
 }
 
-static bool print_new_dev_in_file(char *file_name, uint8_t comPortNum, uint64_t serialNumber, char *deviceName){
+static bool print_new_dev_in_file (char *file_name, uint8_t comPortNum, uint64_t serialNumber, char *deviceName){
 	FILE *client_log_p;
 	bool res = false;
 	client_log_p = fopen(file_name, "a");

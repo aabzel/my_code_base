@@ -11,6 +11,10 @@ extern "C" {
 #include <stdint.h>
 #include <string.h>
 
+bool concatenate_array(uint8_t *out_fin_array, uint32_t fin_array_len,
+		uint8_t *in_array1, uint32_t in_array1_len,
+		uint8_t *in_array2, uint32_t in_array2_len);
+
 void* memdup (const void* mem, size_t sizeByte);
 int *generate_num_array_malloc (int n);
 int* singleNumber (int* nums, int numsSize, int* const returnSize);
@@ -25,6 +29,7 @@ int count_max_amout_of_one_after_del (int *arr, int sizeOfArr);
 int *remove_int_from_arr (int *inArr, int arrSize, int delIndex);
 int *add_val_to_end_array (int *inArr, int arrSize, int val);
 void print_curr_array (int *alphabet, int sizeOfAlphabet);
+void print_mem (unsigned char *alphabet, int sizeOfAlphabet);
 void print_array_of_diff_arrays (int **arrOfArr, int amountOfLine, int *colSizes);
 void print_array_of_arrays (int **arrOfArr, int amountOfLine, int amountOfCol);
 uint64_t sum_arr (uint32_t *arr, uint32_t size);

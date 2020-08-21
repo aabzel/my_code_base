@@ -2,6 +2,7 @@
 #define PARSE_KEE_PASS_H
 
 #include "custom_type.h"
+#include "arrays.h"
 
 #include <stdio.h>
 
@@ -23,9 +24,73 @@
 #define ID_STREAM_START_BYTES     (0x09u)
 #define ID_INNER_RANDOM_STREAM    (0x0Au)
 
+//typedef uintmax_t off_t;
+
+enum kdbx_headerid {
+  END,
+  COMMENT,
+  CIPHERID,
+  COMPRESSIONFLAGS,
+  MASTER_SEED,
+  TRANSFORMSEED,        // 5
+  TRANSFORMROUNDS,
+  ENCRYPTIONIV,
+  PROTECTEDSTREAMKEY,
+  STREAMSTARTBYTES,
+  INNERRANDOMSTREAMID,  // 10
+  HEADERIDCOUNT
+};
 
 
-bool try_to_open_kdbx_file (void);
-bool parse_header (FILE *filePtr);
+typedef struct kdbx_header {
+  uint32_t magic;
+  uint32_t identifier;
+  uint16_t minor_version;
+  uint16_t major_version;
+} kdbx_header_t;
+
+typedef struct kdbx_payload {
+  uint64_t offset_start;
+  uint64_t pos;
+  uint64_t len;
+  uint8_t *encrypted;
+  uint8_t *decrypted;
+
+} kdbx_payload_t;
+
+typedef struct kdbx_header_entry {
+  uint8_t   id;
+  uint16_t  len;
+  uint8_t   *data;
+  uint32_t  dw;
+  uint64_t  qw;
+} kdbx_header_entry_t;
+
+typedef struct kdbx_data {
+    kdbx_header_t  header;
+    size_t    data_len;
+    uint8_t   *data;
+} kbdx_data_t;
+
+typedef struct kdbx_database {
+  kdbx_header_t        fileheader;
+  kdbx_header_entry_t  kdbxheader;
+  kdbx_payload_t       payload;
+} kdbx_database_t;
+
+
+typedef struct xKeePassFileHeader_t{
+	uint8_t transform_seed[32];
+	uint64_t transform_rounds;
+	uint8_t master_seed[32];
+	uint32_t compression_flags;
+	uint8_t encryption_iv[32];
+	uint8_t stream_start_bytes[32];
+}KeePassFileHeader_t;
+
+extern KeePassFileHeader_t keePassHeader;
+
+bool try_to_open_kdbx_file (char *file_name, char *pass_word);
+
 
 #endif /* PARSE_KEE_PASS_H */

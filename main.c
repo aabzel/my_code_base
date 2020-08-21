@@ -20,6 +20,10 @@
 #include "scan_serial_port.h"
 #include "win_utils.h"
 
+#ifdef  DECRYPT_KEEPASS
+#include "parse_keepass.h"
+#endif
+
 #include <string.h>
 #include <stdio.h>
 #include <stdint.h>
@@ -37,8 +41,7 @@ static bool print_ent (void) {
 }
 #endif
 
-int main (int argc, char* argv []);
-//int main (int argc, char **argv)
+
 int main (int argc, char* argv []) {
     printf ("\nargc %u", argc);
     for (int i = 0; i < argc; i++) {
@@ -54,7 +57,7 @@ int main (int argc, char* argv []) {
 #endif
 
 #if DEPLOY_UTESTS
-    int ret = unitTest ();
+    int ret = unit_test ();
     if (0 != ret) {
         printf ("\n\nUnit Test Error: %d\n", ret);
         exit (ret);
@@ -66,6 +69,18 @@ int main (int argc, char* argv []) {
 #ifdef DEPLOY_TCP_CLIENT
     printf ("\nDEPLOY_TCP_CLIENT\n");
     get_adapter_info ();
+#endif
+
+#ifdef DECRYPT_KEEPASS
+    if (3 == argc) {
+    	bool open_res;
+    	open_res = try_to_open_kdbx_file (argv [1],argv [2]);
+    	if (false == open_res ) {
+    		printf ("\n unable to open keepass\n");
+    	}
+    }else{
+    	printf ("\n wrong params\n");
+    }
 #endif
 
 #ifdef DEPLOY_TCP_SERVER

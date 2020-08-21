@@ -323,12 +323,24 @@ bool is_correct_permutation (int *arraOfIndex, int n, int maxVal) {
     return res;
 }
 
-void print_curr_array (int *alphabet, int sizeOfAlphabet) {
-    if (alphabet) {
-        if (0 < sizeOfAlphabet) {
+void print_mem (unsigned char *array, int num) {
+    if (array) {
+        if (0 < num) {
+            for (int i = 0; i < num; i++) {
+                printf ("%02x ", array [i]);
+            }
+            printf ("\n");
+        }
+    }
+}
+
+
+void print_curr_array (int *array, int num) {
+    if (array) {
+        if (0 < num) {
             //printf ("\n");
-            for (int i = 0; i < sizeOfAlphabet; i++) {
-                printf ("%d ", alphabet [i]);
+            for (int i = 0; i < num; i++) {
+                printf ("%d ", array [i]);
             }
         }
     }
@@ -394,3 +406,17 @@ float calc_avarage (uint32_t *arr, uint32_t size) {
     }
     return avarage;
 }
+
+bool concatenate_array (uint8_t *out_fin_array, uint32_t fin_array_len,
+		uint8_t *in_array1, uint32_t in_array1_len,
+		uint8_t *in_array2, uint32_t in_array2_len) {
+	bool res = false;
+	if ( NULL != out_fin_array ) {
+		if ((in_array1_len+in_array2_len)<=fin_array_len) {
+    		memcpy(out_fin_array, in_array1, in_array1_len);
+	    	memcpy(&out_fin_array[in_array1_len], in_array2, in_array2_len);
+		}
+	}
+	return res;
+}
+

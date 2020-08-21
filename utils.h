@@ -25,6 +25,7 @@ extern char kitFile [100];
 
 void print_biggest_mantissa (void) ;
 
+void print_hex_buf(char *s, uint32_t l);
 float power_of (uint32_t base, int32_t exponent);
 char *portNumToStr (uint8_t port);
 void print_pad_nums (void);

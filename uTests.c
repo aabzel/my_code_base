@@ -9,6 +9,18 @@
 #include "bin_heap_array.h"
 #endif
 
+#ifdef TEST_SHA256
+#include "sha256_test.h"
+#endif /*TEST_SHA256*/
+
+#ifdef TEST_AES
+#include "aes_test.h"
+#endif /*TEST_AES*/
+
+#ifdef TEST_ARRAY
+#include "arrays_test.h"
+#endif /*TEST_ARRAY*/
+
 //#include "bin_search_tree.h"
 //#include "bin_tree.h"
 //#include "bin_tree_draw.h"
@@ -154,7 +166,7 @@ static bool test_parse_vi(void) {
 }
 #endif
 
-int unitTest (void) {
+int unit_test (void) {
     bool res = false;
     uint8_t regAddr = 0x00;
     uint16_t regVal = 0x0000;
@@ -173,6 +185,13 @@ int unitTest (void) {
         printf ("\n reg64Val %08llx exp 202B17D3015A",  (long long unsigned int) reg64Val);
         return PARSE_HEX_ERROR;
     }
+#ifdef TEST_ARRAY
+    res = test_array ();
+    if (false == res) {
+        printf("array error");
+        return ARRAY_ERROR;
+    }
+#endif
 
     res = is_hex_str ("ab1234ba", 8, &shift);
     if (false == res) {
@@ -196,10 +215,35 @@ int unitTest (void) {
         return PARSE_MAC_ERROR;
     }
 
+
     res = test_extract_sub_string();
     if (false == res) {
         return PARSE_EXTRACT_SUB_ERROR;
     }
+
+
+#ifdef TEST_SHA256
+    res = test_sha256 ();
+    if ( false == res ) {
+    	printf("\n calc sha256 error");
+    	return SHA256_ERROR;
+    }else{
+    	printf("\n calc sha256 fine");
+
+    }
+#endif
+
+#ifdef TEST_AES
+    res = test_aes ();
+    if ( false == res ) {
+    	printf("\n test aes error");
+    	return AES_ERROR;
+    }else{
+    	printf("\n calc aes fine");
+
+    }
+#endif
+
 #if 0
     res = test_parse_vi ();
     if (false == res) {
@@ -771,7 +815,7 @@ int unitTest (void) {
         return LL_ERROR;
     }
 #endif
-
+    printf("\n unit test done");
     return FINE;
 }
 #if 0
