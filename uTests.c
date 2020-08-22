@@ -56,7 +56,7 @@ static bool is_mem_equal (uint8_t *arr1, uint8_t *arr2, uint32_t size) {
     uint32_t eqCnt = 0U;
     bool res = false;
     for (i = 0; i < size; i++) {
-        if (arr1 [i] == arr2 [i]) {
+        if (arr1[i] == arr2[i]) {
             eqCnt++;
         } else {
             res = false;
@@ -67,26 +67,25 @@ static bool is_mem_equal (uint8_t *arr1, uint8_t *arr2, uint32_t size) {
         res = true;
     }
     return res;
-
 }
 
 static bool test_parse_mac (void) {
     bool res = false;
-    char inStr [1000];
-    uint8_t curMac [6];
-    uint8_t expMac [6] =
-        { 0xd4, 0x3b, 0x04, 0xa0, 0xa2, 0x21 };
-    strncpy (inStr, "Device: CAN_FLASHER Serial 0x202b17d3015a from IP 192.168.0.11 MAC d4:3b:04:a0:a2:21", sizeof(inStr));
-    res = parse_mac (inStr, sizeof(inStr), curMac);
+    char inStr[1000];
+    uint8_t curMac[6];
+    uint8_t expMac[6] = {0xd4, 0x3b, 0x04, 0xa0, 0xa2, 0x21};
+    strncpy (inStr, "Device: CAN_FLASHER Serial 0x202b17d3015a from IP 192.168.0.11 MAC d4:3b:04:a0:a2:21",
+             sizeof (inStr));
+    res = parse_mac (inStr, sizeof (inStr), curMac);
     if (false == res) {
         printf ("\nunable to parse mac");
         return false;
     }
     bool cmpRes = is_mem_equal (curMac, expMac, 6);
-    if (false == cmpRes ) {
+    if (false == cmpRes) {
         printf ("\nexp mac d4:3b:04:a0:a2:21");
         printf ("\ncur mac ");
-        print_mac_addr(curMac);
+        print_mac_addr (curMac);
         return false;
     }
 
@@ -94,17 +93,18 @@ static bool test_parse_mac (void) {
 }
 
 static bool test_parse_serial (void) {
-    char inStr [1000];
-    char outStr [1000];
-    char expStr [1000];
+    char inStr[1000];
+    char outStr[1000];
+    char expStr[1000];
     bool res = false;
-    strncpy (expStr, "202B17D3015A", sizeof(outStr));
-    strncpy (inStr, "Device: IOV4_A Serial 0x907a08b from IP 192.168.0.11 MAC d4:3b:04:a0:a2:214:a0:a2:21", sizeof(inStr));
+    strncpy (expStr, "202B17D3015A", sizeof (outStr));
+    strncpy (inStr, "Device: IOV4_A Serial 0x907a08b from IP 192.168.0.11 MAC d4:3b:04:a0:a2:214:a0:a2:21",
+             sizeof (inStr));
     uint64_t serial64BitNumber = 0;
-    res = parse_serial (inStr, sizeof(inStr), &serial64BitNumber);
+    res = parse_serial (inStr, sizeof (inStr), &serial64BitNumber);
     if (true == res) {
         if (0x907a08b != serial64BitNumber) {
-            printf ("\n Serial 0x[%08llx] exp 0x907a08b", (long long unsigned int) serial64BitNumber);
+            printf ("\n Serial 0x[%08llx] exp 0x907a08b", (long long unsigned int)serial64BitNumber);
             return false;
         }
     } else {
@@ -116,53 +116,54 @@ static bool test_parse_serial (void) {
 }
 
 #if DEPLOY_TEST_COM_PARSER
-static bool test_parse_vi_devname(void) {
-	char inStr[1000];
+static bool test_parse_vi_devname (void) {
+    char inStr[1000];
 
-	strncpy(inStr,
-			"vi\n\rCanFlasher on CanFlash Version 0.17.1.1.34 GCC Release 11/7/2020 19:34:29 FlashId:E58F0042 Serial:202B17D3015A by Arrival\n\r1.013:I [SYS] Ok!\n\r-->",
-			sizeof(inStr));
-	char *dev_name;
-	dev_name = parse_product_name(inStr, sizeof(inStr));
-	int cmp_res = strcmp(dev_name, "CanFlasher");
-	if (0 != cmp_res) {
-		printf("\n unable to parse CanFlasher from [%s] \n\r Extracted [%s]", inStr, dev_name);
-		return false;
-	}
-	return true;
+    strncpy (inStr,
+             "vi\n\rCanFlasher on CanFlash Version 0.17.1.1.34 GCC Release 11/7/2020 19:34:29 FlashId:E58F0042 "
+             "Serial:202B17D3015A by Arrival\n\r1.013:I [SYS] Ok!\n\r-->",
+             sizeof (inStr));
+    char *dev_name;
+    dev_name = parse_product_name (inStr, sizeof (inStr));
+    int cmp_res = strcmp (dev_name, "CanFlasher");
+    if (0 != cmp_res) {
+        printf ("\n unable to parse CanFlasher from [%s] \n\r Extracted [%s]", inStr, dev_name);
+        return false;
+    }
+    return true;
 }
 #endif
 
 #if DEPLOY_TEST_COM_PARSER
-static bool test_parse_vi(void) {
-	char inStr[1000];
-	char outStr[1000];
-	char expStr[1000];
-	bool res = false;
-	strncpy(expStr, "202B17D3015A", sizeof(outStr));
-	strncpy(inStr,
-			"vi\n\rCanFlasher on CanFlash Version 0.17.1.1.34 GCC Release 11/7/2020 19:34:29 FlashId:E58F0042 Serial:202B17D3015A by Arrival\n\r1.013:I [SYS] Ok!\n\r-->",
-			sizeof(inStr));
-	uint64_t serial64BitNumber = 0U;
-	res = parse_serial(inStr, sizeof(inStr), &serial64BitNumber);
-	if (true == res) {
-		if (0x0000202B17D3015A != serial64BitNumber) {
-			printf("\n Serial 0x[%08llx] exp 0x0000202B17D3015A",
-					(long long unsigned int) serial64BitNumber);
-			return false;
-		}
-	} else {
-		printf("\n Unable to extract Serial from string [%s]", inStr);
-		return false;
-	}
+static bool test_parse_vi (void) {
+    char inStr[1000];
+    char outStr[1000];
+    char expStr[1000];
+    bool res = false;
+    strncpy (expStr, "202B17D3015A", sizeof (outStr));
+    strncpy (inStr,
+             "vi\n\rCanFlasher on CanFlash Version 0.17.1.1.34 GCC Release 11/7/2020 19:34:29 FlashId:E58F0042 "
+             "Serial:202B17D3015A by Arrival\n\r1.013:I [SYS] Ok!\n\r-->",
+             sizeof (inStr));
+    uint64_t serial64BitNumber = 0U;
+    res = parse_serial (inStr, sizeof (inStr), &serial64BitNumber);
+    if (true == res) {
+        if (0x0000202B17D3015A != serial64BitNumber) {
+            printf ("\n Serial 0x[%08llx] exp 0x0000202B17D3015A", (long long unsigned int)serial64BitNumber);
+            return false;
+        }
+    } else {
+        printf ("\n Unable to extract Serial from string [%s]", inStr);
+        return false;
+    }
 
-	res = test_parse_vi_devname ();
-	if (false == res) {
-		printf("\n Unable to extract dev name form vi");
-		return false;
-	}
+    res = test_parse_vi_devname ();
+    if (false == res) {
+        printf ("\n Unable to extract dev name form vi");
+        return false;
+    }
 
-	return true;
+    return true;
 }
 #endif
 
@@ -172,36 +173,36 @@ int unit_test (void) {
     uint16_t regVal = 0x0000;
     uint8_t shift;
     uint64_t reg64Val;
-    res = try_strl2uint64 ("202B17D3015A", strlen("202B17D3015A"), &reg64Val);
+    res = try_strl2uint64 ("202B17D3015A", strlen ("202B17D3015A"), &reg64Val);
     if (0x202B17D3015A != reg64Val) {
-        printf("202B17D3015A");
-        printf ("\n reg64Val %08llx exp 202B17D3015A", (long long unsigned int) reg64Val);
+        printf ("202B17D3015A");
+        printf ("\n reg64Val %08llx exp 202B17D3015A", (long long unsigned int)reg64Val);
         return PARSE_HEX_ERROR;
     }
 
-    res = try_strl2uint64 ("0x202B17D3015A", strlen("0x202B17D3015A"), &reg64Val);
-    if(0x202B17D3015A!=reg64Val) {
-        printf("0x202B17D3015A");
-        printf ("\n reg64Val %08llx exp 202B17D3015A",  (long long unsigned int) reg64Val);
+    res = try_strl2uint64 ("0x202B17D3015A", strlen ("0x202B17D3015A"), &reg64Val);
+    if (0x202B17D3015A != reg64Val) {
+        printf ("0x202B17D3015A");
+        printf ("\n reg64Val %08llx exp 202B17D3015A", (long long unsigned int)reg64Val);
         return PARSE_HEX_ERROR;
     }
 #ifdef TEST_ARRAY
     res = test_array ();
     if (false == res) {
-        printf("array error");
+        printf ("array error");
         return ARRAY_ERROR;
     }
 #endif
 
     res = is_hex_str ("ab1234ba", 8, &shift);
     if (false == res) {
-        printf("ab1234ba");
+        printf ("ab1234ba");
         return PARSE_HEX_ERROR;
     }
 
     res = is_hex_str ("0x1234ba", 8, &shift);
     if (false == res) {
-        printf("0x1234ba");
+        printf ("0x1234ba");
         return PARSE_HEX_ERROR;
     }
 
@@ -215,32 +216,28 @@ int unit_test (void) {
         return PARSE_MAC_ERROR;
     }
 
-
-    res = test_extract_sub_string();
+    res = test_extract_sub_string ();
     if (false == res) {
         return PARSE_EXTRACT_SUB_ERROR;
     }
 
-
 #ifdef TEST_SHA256
     res = test_sha256 ();
-    if ( false == res ) {
-    	printf("\n calc sha256 error");
-    	return SHA256_ERROR;
-    }else{
-    	printf("\n calc sha256 fine");
-
+    if (false == res) {
+        printf ("\n[!] calc sha256 error");
+        return SHA256_ERROR;
+    } else {
+        printf ("\n[+] calc sha256 fine");
     }
 #endif
 
 #ifdef TEST_AES
     res = test_aes ();
-    if ( false == res ) {
-    	printf("\n test aes error");
-    	return AES_ERROR;
-    }else{
-    	printf("\n calc aes fine");
-
+    if (false == res) {
+        printf ("\n test aes error");
+        return AES_ERROR;
+    } else {
+        printf ("\n calc aes fine");
     }
 #endif
 
@@ -251,11 +248,11 @@ int unit_test (void) {
     }
 
 #endif
-    char inStr [100];
-    char outStr [100];
-    char expStr [100];
-    strncpy (expStr, "0x04 0x0000", sizeof(outStr));
-    strncpy (inStr, "reg addr: 0x04 reg val: 0xABCD Ob_0000_0000_0000_0000", sizeof(inStr));
+    char inStr[100];
+    char outStr[100];
+    char expStr[100];
+    strncpy (expStr, "0x04 0x0000", sizeof (outStr));
+    strncpy (inStr, "reg addr: 0x04 reg val: 0xABCD Ob_0000_0000_0000_0000", sizeof (inStr));
 
     res = try_canch_hex_uint8 (inStr, strlen (inStr), &regAddr);
     if ((0x04 != regAddr) && (true == res)) {
@@ -267,14 +264,14 @@ int unit_test (void) {
         return PARSE_UINT16_ERROR;
     }
 
-    strncpy (inStr, "         CONFIG[0x1a]: 0x00832800 0b_0000_0000_1000_0011_0010_1000_0000_0000", sizeof(inStr));
+    strncpy (inStr, "         CONFIG[0x1a]: 0x00832800 0b_0000_0000_1000_0011_0010_1000_0000_0000", sizeof (inStr));
     res = try_canch_hex_uint8 (inStr, strlen (inStr), &regAddr);
     if ((0x1a != regAddr) && (true == res)) {
         return PARSE_UINT32_ERROR;
     }
 
     uint32_t reg32Val;
-    strncpy (inStr, "         CONFIG[0x1a]: 0x00832800 0b_0000_0000_1000_0011_0010_1000_0000_0000", sizeof(inStr));
+    strncpy (inStr, "         CONFIG[0x1a]: 0x00832800 0b_0000_0000_1000_0011_0010_1000_0000_0000", sizeof (inStr));
     res = try_canch_hex_uint32 (inStr, strlen (inStr), &reg32Val);
     if (true == res) {
         if (0x00832800 != reg32Val) {
@@ -287,9 +284,9 @@ int unit_test (void) {
         return PARSE_UINT32_ERROR;
     }
 
-    //res = extract_numbers (inStr, strlen (inStr));
-    //int cmpRes = strcmp (expStr, outStr);
-    //if (0 != cmpRes) {
+    // res = extract_numbers (inStr, strlen (inStr));
+    // int cmpRes = strcmp (expStr, outStr);
+    // if (0 != cmpRes) {
     //    return CLEAN_TEXT_ERROR;
     //}
 
@@ -326,14 +323,14 @@ int unit_test (void) {
     val3 = val2 - val1;
     printf ("\n val3 %f \n", val3);
     printf ("\n val3 %e \n", val3);
-    //samval1;ple16bit = float_to_uint16 (23234.2f);
-    //if (23234U != sample16bit) {
-    //return FLOAR_TO_SAMPLE_ERROR;
+    // samval1;ple16bit = float_to_uint16 (23234.2f);
+    // if (23234U != sample16bit) {
+    // return FLOAR_TO_SAMPLE_ERROR;
     //}
 
-    //sample16bit = float_to_uint16 (-23234.2f);
-    //if (0U != sample16bit) {
-    //return FLOAR_TO_SAMPLE_ERROR;
+    // sample16bit = float_to_uint16 (-23234.2f);
+    // if (0U != sample16bit) {
+    // return FLOAR_TO_SAMPLE_ERROR;
     //}
 #endif
 
@@ -815,7 +812,7 @@ int unit_test (void) {
         return LL_ERROR;
     }
 #endif
-    printf("\n unit test done");
+    printf ("\n unit test done");
     return FINE;
 }
 #if 0
@@ -882,8 +879,8 @@ bool test_max_bit_val (void) {
     int *arr = grayCode (2, &returnSize);
     if (arr) {
         if (4 == returnSize) {
-            if (0 == arr [0]) {
-                if (3 == arr [2]) {
+            if (0 == arr[0]) {
+                if (3 == arr[2]) {
                     res = true;
                 }
             }
@@ -1127,9 +1124,8 @@ bool test_ya_task (void) {
     bool res = false;
     int sizeOfArr = 0;
     int numOnes = 0;
-    int arr [] =
-        { 0, 1, 1, 0, 1, 1, 0 };
-    sizeOfArr = sizeof(arr) / sizeof(arr [0]);
+    int arr[] = {0, 1, 1, 0, 1, 1, 0};
+    sizeOfArr = sizeof (arr) / sizeof (arr[0]);
 
     numOnes = findMaxConsecutiveOnesFlip1 (arr, sizeOfArr);
     printf ("\n findMaxConsecutiveOnesFlip1: %d\n", numOnes);
@@ -1174,9 +1170,8 @@ bool test_ya_task (void) {
         printf ("\n num of error ones %d", numOnes);
     }
 
-    int arr2 [] =
-        { 0, 1, 1, 1, 1, 1, 0 };
-    sizeOfArr = sizeof(arr2) / sizeof(arr2 [0]);
+    int arr2[] = {0, 1, 1, 1, 1, 1, 0};
+    sizeOfArr = sizeof (arr2) / sizeof (arr2[0]);
     numOnes = count_max_amout_of_one_after_del (arr2, sizeOfArr);
     if (5 == numOnes) {
         res = true;
@@ -1216,9 +1211,9 @@ void print_bytes (uint32_t byte) {
     float kByte = 4;
     float MByte = 4;
     float GByte = 4;
-    kByte = (float) byte / 1024.0f;
-    MByte = (float) kByte / 1024.0f;
-    GByte = (float) MByte / 1024.0f;
+    kByte = (float)byte / 1024.0f;
+    MByte = (float)kByte / 1024.0f;
+    GByte = (float)MByte / 1024.0f;
     printf ("\nmax Available heap size [%u] byte [%f] k_Byte [%f] M_Byte [%f] G_Byte\n", byte, kByte, MByte, GByte);
 }
 
@@ -1228,7 +1223,7 @@ bool test_heap (void) {
     uint32_t div = 2;
     while (1) {
         char *ptr = NULL;
-        ptr = (char *) malloc (byte);
+        ptr = (char *)malloc (byte);
         if (ptr) {
             byte = (byte * mult) / div;
             // print_bytes (byte);
@@ -1261,8 +1256,8 @@ bool test_algo (void) {
 }
 
 bool test_stsstr (void) {
-    char text [100];
-    char pattern [100];
+    char text[100];
+    char pattern[100];
     char *nullPtr = NULL;
     const char *resPtr;
 
@@ -1464,7 +1459,7 @@ bool test_find_min_diag_scale_summ (void) {
 
 bool test_valid_float_number (void) {
     bool res;
-    char string [100];
+    char string[100];
 
 #if 1
 
@@ -1593,24 +1588,21 @@ bool test_valid_float_number (void) {
 bool test_k_smallest (void) {
     int numsSize;
     int val;
-    int arr1 [] =
-        { 1, 3, -1 };
-    numsSize = sizeof(arr1) / sizeof(arr1 [0]);
+    int arr1[] = {1, 3, -1};
+    numsSize = sizeof (arr1) / sizeof (arr1[0]);
 
     val = qselect (arr1, numsSize, 1);
     if (1 != val) {
         return false;
     }
-    int arr2 [] =
-        { 3, -1, -3 };
-    numsSize = sizeof(arr2) / sizeof(arr2 [0]);
+    int arr2[] = {3, -1, -3};
+    numsSize = sizeof (arr2) / sizeof (arr2[0]);
     val = qselect (arr2, numsSize, 1);
     if (-1 != val) {
         return false;
     }
-    int arr3 [] =
-        { -1, -3, 5 };
-    numsSize = sizeof(arr3) / sizeof(arr2 [0]);
+    int arr3[] = {-1, -3, 5};
+    numsSize = sizeof (arr3) / sizeof (arr2[0]);
 
     val = qselect (arr3, numsSize, 1);
     if (-1 != val) {
@@ -2934,8 +2926,8 @@ bool test_is_bin_tree (void) {
 
 bool test_delim_amount (void) {
 
-    char text [] = "Hello world";
-    char pattern [] = "lo";
+    char text[] = "Hello world";
+    char pattern[] = "lo";
     int amountOfItem = 0;
     amountOfItem = count_amount_of_item (text, pattern);
     if (2 != amountOfItem) {
@@ -2980,7 +2972,7 @@ bool test_split (void) {
     int resCmp = 0;
 
     char **ArrOfStrings;
-    //printf ("\n sizeof(char *) %ld \n", sizeof(char *));
+    // printf ("\n sizeof(char *) %ld \n", sizeof(char *));
     amountOfval = split ("Hello world", "wo", &ArrOfStrings);
     if (2 != amountOfval) {
         printf ("\n%s: %d\n", __FUNCTION__, amountOfval);
@@ -2991,20 +2983,20 @@ bool test_split (void) {
         printf ("\nNull pointer to array of pointer: %p\n", ArrOfStrings);
         return false;
     } else {
-        printf ("\n (ArrOfStrings [0]): <%s> \n", ArrOfStrings [0]);
-        printf ("\n (ArrOfStrings [1]): <%s> \n", ArrOfStrings [1]);
+        printf ("\n (ArrOfStrings [0]): <%s> \n", ArrOfStrings[0]);
+        printf ("\n (ArrOfStrings [1]): <%s> \n", ArrOfStrings[1]);
 
         // printf ("\n *ArrOfStrings+1: %llu\n",(long long unsigned int) *ArrOfStrings + ((char *)1));
     }
 
-    resCmp = strncmp ((char *) ArrOfStrings [0], "Hello ", strlen ("Hello "));
+    resCmp = strncmp ((char *)ArrOfStrings[0], "Hello ", strlen ("Hello "));
     if (0 != resCmp) {
-        printf ("\n%s: [%s]\n", __FUNCTION__, (char *) ArrOfStrings [0]);
+        printf ("\n%s: [%s]\n", __FUNCTION__, (char *)ArrOfStrings[0]);
         return false;
     }
-    resCmp = strncmp ((char *) ArrOfStrings [1], "rld", strlen ("rld"));
+    resCmp = strncmp ((char *)ArrOfStrings[1], "rld", strlen ("rld"));
     if (0 != resCmp) {
-        printf ("\n%s: [%s]\n", __FUNCTION__, (char *) (ArrOfStrings [1]));
+        printf ("\n%s: [%s]\n", __FUNCTION__, (char *)(ArrOfStrings[1]));
         return false;
     }
 
@@ -3107,7 +3099,6 @@ bool test_max_bin_heap_insert (void) {
     return true;
 }
 #endif
-
 
 #if 0
 bool test_min_bin_heap_insert (void) {
@@ -3284,7 +3275,7 @@ bool test_bin_heap_remove (void) {
 
     bool res = true;
     time_t t;
-    srand ((unsigned) time (&t));
+    srand ((unsigned)time (&t));
 
     res = bin_heap_init (&binHeapObj, 20);
     if (res) {
@@ -3330,11 +3321,10 @@ bool test_bin_heap_remove (void) {
 
 bool test_sliding_window_max (void) {
     bool res;
-    int arr [] =
-        { 1, 3, -1, -3, 5, 3, 6, 7 };
+    int arr[] = {1, 3, -1, -3, 5, 3, 6, 7};
     int numsSize = 0;
     int returnSize;
-    numsSize = sizeof(arr) / sizeof(arr [0]);
+    numsSize = sizeof (arr) / sizeof (arr[0]);
     int *resArr;
     resArr = maxSlidingWindow (arr, numsSize, 3, &returnSize);
     if (resArr) {
@@ -3345,11 +3335,10 @@ bool test_sliding_window_max (void) {
     return res;
 }
 
-
 void assemble_tree_from_array (TreeNode_t **root, int *arr, int arraySize) {
     printf ("\n arraySize: %d\n", arraySize);
     for (int index = 0; index < arraySize; index++) {
-        bst_insert (root, arr [index]);
+        bst_insert (root, arr[index]);
     }
 }
 
@@ -3357,7 +3346,7 @@ void assemble_tree_from_array (TreeNode_t **root, int *arr, int arraySize) {
 void create_binary_search_tree (TreeNode_t **root, int how_many_elements) {
     int number = 0, counter = 0;
     time_t t;
-    srand ((unsigned) time (&t));
+    srand ((unsigned)time (&t));
     for (counter = 1; counter <= how_many_elements; counter++) {
         number = rand () / 100;
         bst_insert (root, number);

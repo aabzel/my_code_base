@@ -2,9 +2,9 @@
 
 #include "algorithms.h"
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 int heap_find_max (BinaryHeap_t *binHeap) {
@@ -33,7 +33,7 @@ int heap_peek (BinaryHeap_t *binHeap) {
     int val = 0;
     if (binHeap) {
         if (0 < binHeap->length) {
-            val = binHeap->array [0];
+            val = binHeap->array[0];
         } else {
             printf ("\n %s Bin Heap is empty!\n", __FUNCTION__);
         }
@@ -50,26 +50,25 @@ bool bubble_down_val_heap (BinaryHeap_t *binHeap, bool isMaxHeap) {
                 /*verify max bin heap property*/
                 childIndex = get_left_child_index (parentIndex);
                 if (isMaxHeap) {
-                    if (binHeap->array [parentIndex] < binHeap->array [childIndex]) {
-                        swap_int (&(binHeap->array [parentIndex]), &(binHeap->array [childIndex]));
+                    if (binHeap->array[parentIndex] < binHeap->array[childIndex]) {
+                        swap_int (&(binHeap->array[parentIndex]), &(binHeap->array[childIndex]));
                     }
                 } else {
-                    if (binHeap->array [childIndex] < binHeap->array [parentIndex]) {
-                        swap_int (&(binHeap->array [parentIndex]), &(binHeap->array [childIndex]));
+                    if (binHeap->array[childIndex] < binHeap->array[parentIndex]) {
+                        swap_int (&(binHeap->array[parentIndex]), &(binHeap->array[childIndex]));
                     }
                 }
-
             }
             if (is_right_ch_exist (binHeap, parentIndex)) {
                 childIndex = get_right_child_index (parentIndex);
                 /*verify max bin heap property*/
                 if (isMaxHeap) {
-                    if (binHeap->array [parentIndex] < binHeap->array [childIndex]) {
-                        swap_int (&(binHeap->array [parentIndex]), &(binHeap->array [childIndex]));
+                    if (binHeap->array[parentIndex] < binHeap->array[childIndex]) {
+                        swap_int (&(binHeap->array[parentIndex]), &(binHeap->array[childIndex]));
                     }
                 } else {
-                    if (binHeap->array [childIndex] < binHeap->array [parentIndex]) {
-                        swap_int (&(binHeap->array [parentIndex]), &(binHeap->array [childIndex]));
+                    if (binHeap->array[childIndex] < binHeap->array[parentIndex]) {
+                        swap_int (&(binHeap->array[parentIndex]), &(binHeap->array[childIndex]));
                     }
                 }
             }
@@ -83,8 +82,8 @@ int heap_pop (BinaryHeap_t *binHeap, bool isMaxHeap) {
     int val = 0;
     if (binHeap) {
         if (0 < binHeap->length) {
-            val = binHeap->array [0];
-            binHeap->array [0] = binHeap->array [binHeap->length - 1];
+            val = binHeap->array[0];
+            binHeap->array[0] = binHeap->array[binHeap->length - 1];
             binHeap->length--;
             if (true == isMaxHeap) {
                 bubble_down_val_heap (binHeap, true);
@@ -98,7 +97,7 @@ int heap_pop (BinaryHeap_t *binHeap, bool isMaxHeap) {
     return val;
 }
 
-//0->-1    1->0 2->0 3->1 4->1 5->2 6->2 7->3 8->3 9->4
+// 0->-1    1->0 2->0 3->1 4->1 5->2 6->2 7->3 8->3 9->4
 int get_perent_index (int childIndex) {
     int parentIndex = 0;
     if (0 < childIndex) {
@@ -119,7 +118,7 @@ int get_left_child_index (int parentIndex) {
 
     return childIndex;
 }
-//0->2  1->4  2->6   3->8
+// 0->2  1->4  2->6   3->8
 int get_right_child_index (int parentIndex) {
     int childIndex = 0;
     if (0 <= parentIndex) {
@@ -131,13 +130,13 @@ int get_right_child_index (int parentIndex) {
     return childIndex;
 }
 
-//TODO: boost function
+// TODO: boost function
 int bin_heap_val_index_ll_bf (BinaryHeap_t *binHeap, bool isMaxHeap, int val) {
     int indexVal = -1;
     if (binHeap) {
         if (true == isMaxHeap || false == isMaxHeap) {
             for (int i = 0; i < binHeap->length; i++) {
-                if (val == binHeap->array [i]) {
+                if (val == binHeap->array[i]) {
                     return i;
                 }
             }
@@ -149,7 +148,7 @@ int bin_heap_val_index_ll_bf (BinaryHeap_t *binHeap, bool isMaxHeap, int val) {
 int bin_heap_val_index_ll (BinaryHeap_t *binHeap, bool isMaxHeap, int val) {
     int indexVal = -1;
     if (binHeap) {
-        //indexVal = bin_heap_val_index_ll_bf (binHeap, isMaxHeap, val);
+        // indexVal = bin_heap_val_index_ll_bf (binHeap, isMaxHeap, val);
         indexVal = bin_heap_val_index_lll (binHeap, isMaxHeap, val, 0);
         if (indexVal < 0) {
             printf ("\nUnable to find index of val in bin heap [%d]\n", val);
@@ -158,29 +157,31 @@ int bin_heap_val_index_ll (BinaryHeap_t *binHeap, bool isMaxHeap, int val) {
     return indexVal;
 }
 
-//SIG SEG unable to find val index
+// SIG SEG unable to find val index
 int bin_heap_val_index_lll (BinaryHeap_t *binHeap, bool isMaxHeap, int val, int parentIndex) {
     int indexVal = -1;
     if (binHeap && (0 <= parentIndex) && (parentIndex < (binHeap->length))) {
-        if (val == binHeap->array [parentIndex]) {
+        if (val == binHeap->array[parentIndex]) {
             return parentIndex;
         } else {
             if (isMaxHeap) {
-                if (binHeap->array [parentIndex] < val) {
+                if (binHeap->array[parentIndex] < val) {
                     return -1;
                 } else {
                     indexVal = bin_heap_val_index_lll (binHeap, isMaxHeap, val, get_left_child_index (parentIndex));
                     if (indexVal < 0) {
-                        indexVal = bin_heap_val_index_lll (binHeap, isMaxHeap, val, get_right_child_index (parentIndex));
+                        indexVal =
+                            bin_heap_val_index_lll (binHeap, isMaxHeap, val, get_right_child_index (parentIndex));
                     }
                 }
             } else {
-                if (val < binHeap->array [parentIndex]) {
+                if (val < binHeap->array[parentIndex]) {
                     return -1;
                 } else {
                     indexVal = bin_heap_val_index_lll (binHeap, isMaxHeap, val, get_left_child_index (parentIndex));
                     if (indexVal < 0) {
-                        indexVal = bin_heap_val_index_lll (binHeap, isMaxHeap, val, get_right_child_index (parentIndex));
+                        indexVal =
+                            bin_heap_val_index_lll (binHeap, isMaxHeap, val, get_right_child_index (parentIndex));
                     }
                 }
             }
@@ -198,15 +199,15 @@ bool bin_heap_remove_val (BinaryHeap_t *binHeap, bool isMaxHeap, int val) {
 #if DEBUG_HEAP
             printf ("\n val [%d] exists in heap \n", val);
 #endif
-            //int indexVal = bin_heap_val_index_ll (binHeap, isMaxHeap, val);
-            //if (indexVal != indexVal1) {
+            // int indexVal = bin_heap_val_index_ll (binHeap, isMaxHeap, val);
+            // if (indexVal != indexVal1) {
             //    printf ("\n %s: Val Index   fast %d slow %d \n", __FUNCTION__, indexVal1, indexVal);
             //}
 #if DEBUG_HEAP
             printf ("\n val [%d] exists in heap. Its index [%d] \n", val, indexVal);
 #endif
             if (0 <= indexValFast && indexValFast < binHeap->length) {
-                swap_int (&binHeap->array [indexValFast], &binHeap->array [binHeap->length - 1]);
+                swap_int (&binHeap->array[indexValFast], &binHeap->array[binHeap->length - 1]);
                 binHeap->length--;
                 res = make_bin_heap (binHeap, isMaxHeap);
                 if (false == res) {
@@ -237,7 +238,7 @@ bool heap_insert_val (BinaryHeap_t *binHeap, bool isMaxHeap, int newVal) {
     bool res = false;
     if (binHeap && ((false == isMaxHeap) || (true == isMaxHeap))) {
         if (binHeap->length <= binHeap->capacity) {
-            binHeap->array [binHeap->length] = newVal;
+            binHeap->array[binHeap->length] = newVal;
             if (true == isMaxHeap) {
                 res = bubble_up_val_max_heap (binHeap, binHeap->length);
             } else {
@@ -263,13 +264,13 @@ bool make_bin_heap (BinaryHeap_t *binHeap, bool isMaxHeap) {
         int iter = 0;
         while (false == is_bin_heap (binHeap, isMaxHeap)) {
             res = make_bin_heap_ll (binHeap, isMaxHeap, 0);
-            //printf ("\n make_bin_heap_ll!\n");
+            // printf ("\n make_bin_heap_ll!\n");
             iter++;
         }
         if (0 == iter) {
             res = true;
         }
-        //printf ("\n iter: %d\n", iter);
+        // printf ("\n iter: %d\n", iter);
     }
     return res;
 }
@@ -281,30 +282,30 @@ bool make_bin_heap_ll (BinaryHeap_t *binHeap, bool isMaxHeap, int parentIndex) {
             if (isMaxHeap) {
                 if (is_left_ch_exist (binHeap, parentIndex)) {
                     int lChInd = get_left_child_index (parentIndex);
-                    if ((binHeap->array [parentIndex]) < (binHeap->array [lChInd])) {
-                        swap_int (&(binHeap->array [parentIndex]), &(binHeap->array [lChInd]));
+                    if ((binHeap->array[parentIndex]) < (binHeap->array[lChInd])) {
+                        swap_int (&(binHeap->array[parentIndex]), &(binHeap->array[lChInd]));
                     }
                     res = make_bin_heap_ll (binHeap, isMaxHeap, lChInd);
                 }
                 if (is_right_ch_exist (binHeap, parentIndex)) {
                     int rChInd = get_right_child_index (parentIndex);
-                    if ((binHeap->array [parentIndex]) < (binHeap->array [rChInd])) {
-                        swap_int (&(binHeap->array [parentIndex]), &(binHeap->array [rChInd]));
+                    if ((binHeap->array[parentIndex]) < (binHeap->array[rChInd])) {
+                        swap_int (&(binHeap->array[parentIndex]), &(binHeap->array[rChInd]));
                     }
                     res = make_bin_heap_ll (binHeap, isMaxHeap, rChInd);
                 }
             } else {
                 if (is_left_ch_exist (binHeap, parentIndex)) {
                     int lChInd = get_left_child_index (parentIndex);
-                    if ((binHeap->array [lChInd]) < (binHeap->array [parentIndex])) {
-                        swap_int (&(binHeap->array [parentIndex]), &(binHeap->array [lChInd]));
+                    if ((binHeap->array[lChInd]) < (binHeap->array[parentIndex])) {
+                        swap_int (&(binHeap->array[parentIndex]), &(binHeap->array[lChInd]));
                     }
                     res = make_bin_heap_ll (binHeap, isMaxHeap, lChInd);
                 }
                 if (is_right_ch_exist (binHeap, parentIndex)) {
                     int rChInd = get_right_child_index (parentIndex);
-                    if ((binHeap->array [rChInd]) < (binHeap->array [parentIndex])) {
-                        swap_int (&(binHeap->array [parentIndex]), &(binHeap->array [rChInd]));
+                    if ((binHeap->array[rChInd]) < (binHeap->array[parentIndex])) {
+                        swap_int (&(binHeap->array[parentIndex]), &(binHeap->array[rChInd]));
                     }
                     res = make_bin_heap_ll (binHeap, isMaxHeap, rChInd);
                 }
@@ -323,8 +324,8 @@ bool bubble_up_val_min_heap (BinaryHeap_t *binHeap, int index) {
         if (0 <= (binHeap->length) - index) {
             int childIndex = index;
             int parentIndex = get_perent_index (childIndex);
-            while ((0 <= parentIndex) && (binHeap->array [childIndex] < binHeap->array [parentIndex])) {
-                swap_int (&binHeap->array [parentIndex], &binHeap->array [childIndex]);
+            while ((0 <= parentIndex) && (binHeap->array[childIndex] < binHeap->array[parentIndex])) {
+                swap_int (&binHeap->array[parentIndex], &binHeap->array[childIndex]);
                 childIndex = parentIndex;
                 parentIndex = get_perent_index (childIndex);
             }
@@ -340,8 +341,8 @@ bool bubble_up_val_max_heap (BinaryHeap_t *binHeap, int index) {
         if (0 <= (binHeap->length) - index) {
             int childIndex = index;
             int parentIndex = get_perent_index (childIndex);
-            while ((0 <= parentIndex) && (binHeap->array [parentIndex] < binHeap->array [childIndex])) {
-                swap_int (&binHeap->array [parentIndex], &binHeap->array [childIndex]);
+            while ((0 <= parentIndex) && (binHeap->array[parentIndex] < binHeap->array[childIndex])) {
+                swap_int (&binHeap->array[parentIndex], &binHeap->array[childIndex]);
                 childIndex = parentIndex;
                 parentIndex = get_perent_index (childIndex);
             }
@@ -367,7 +368,7 @@ bool bin_heap_init (BinaryHeap_t *binHeap, int amountOfItems) {
     if (binHeap) {
         binHeap->length = 0;
         binHeap->capacity = 0;
-        binHeap->array = (int *) malloc (amountOfItems * sizeof(int));
+        binHeap->array = (int *)malloc (amountOfItems * sizeof (int));
         if (binHeap->array) {
             binHeap->capacity = amountOfItems;
             res = true;
@@ -381,12 +382,12 @@ bool bin_heap_init (BinaryHeap_t *binHeap, int amountOfItems) {
     return res;
 }
 
-bool is_val_in_bin_heap (BinaryHeap_t *binHeap, bool isMaxHeap, int val, int parentIdnex, int * const outIndex) {
+bool is_val_in_bin_heap (BinaryHeap_t *binHeap, bool isMaxHeap, int val, int parentIdnex, int *const outIndex) {
     bool res = false;
     int valIndex = 0;
     if (binHeap) {
         if ((0 < binHeap->length) && (parentIdnex < (binHeap->length))) {
-            int parentVal = binHeap->array [parentIdnex];
+            int parentVal = binHeap->array[parentIdnex];
             if (parentVal == val) {
                 *outIndex = parentIdnex;
                 return true;
@@ -417,7 +418,6 @@ bool is_val_in_bin_heap (BinaryHeap_t *binHeap, bool isMaxHeap, int val, int par
         }
     }
     return false;
-
 }
 
 bool is_bin_heap (BinaryHeap_t *binHeap, bool isMaxHeap) {
@@ -430,11 +430,11 @@ bool is_bin_heap (BinaryHeap_t *binHeap, bool isMaxHeap) {
                     childIndex = get_left_child_index (parInd);
                     if (true == isMaxHeap) {
                         /*verify max bin heap property*/
-                        if (binHeap->array [parInd] < binHeap->array [childIndex]) {
+                        if (binHeap->array[parInd] < binHeap->array[childIndex]) {
                             res = false;
                         }
                     } else {
-                        if (binHeap->array [childIndex] < binHeap->array [parInd]) {
+                        if (binHeap->array[childIndex] < binHeap->array[parInd]) {
                             res = false;
                         }
                     }
@@ -443,11 +443,11 @@ bool is_bin_heap (BinaryHeap_t *binHeap, bool isMaxHeap) {
                     childIndex = get_right_child_index (parInd);
                     if (true == isMaxHeap) {
                         /*verify max bin heap property*/
-                        if (binHeap->array [parInd] < binHeap->array [childIndex]) {
+                        if (binHeap->array[parInd] < binHeap->array[childIndex]) {
                             res = false;
                         }
                     } else {
-                        if (binHeap->array [childIndex] < binHeap->array [parInd]) {
+                        if (binHeap->array[childIndex] < binHeap->array[parInd]) {
                             res = false;
                         }
                     }
@@ -494,7 +494,7 @@ bool bin_heap_print (BinaryHeap_t *binHeap, bool isMax) {
         printf ("\n%s Bin heap tree [ \n", type_heap_to_name (isMax));
         if (0 < (binHeap->length)) {
             for (int i = 0; i < binHeap->length; i++) {
-                printf (" %d ", binHeap->array [i]);
+                printf (" %d ", binHeap->array[i]);
                 if (is_power_of_two (i)) {
                     printf ("\n");
                 }

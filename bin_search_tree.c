@@ -2,19 +2,19 @@
 
 #include "algorithms.h"
 
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <math.h>
 
-static void bst_insert_ll (TreeNode_t ** tree, TreeNode_t * item);
-static bool is_bin_search_sub_tree (TreeNode_t * root, int *minVal, int *maxVal);
+static void bst_insert_ll (TreeNode_t **tree, TreeNode_t *item);
+static bool is_bin_search_sub_tree (TreeNode_t *root, int *minVal, int *maxVal);
 
 // Recursively inserts elements into binary search tree
 
-void bst_insert (TreeNode_t ** root, int val) {
+void bst_insert (TreeNode_t **root, int val) {
     TreeNode_t *currNode = NULL;
-    currNode = (TreeNode_t *) malloc (sizeof(TreeNode_t));
+    currNode = (TreeNode_t *)malloc (sizeof (TreeNode_t));
     if (NULL != currNode) {
         currNode->left = NULL;
         currNode->right = NULL;
@@ -23,7 +23,7 @@ void bst_insert (TreeNode_t ** root, int val) {
     }
 }
 
-bool is_bin_search_tree (TreeNode_t * root) {
+bool is_bin_search_tree (TreeNode_t *root) {
     bool res = true;
     if (root) {
         if (root->left) {
@@ -44,7 +44,7 @@ bool is_bin_search_tree (TreeNode_t * root) {
     return res;
 }
 
-static bool is_bin_search_sub_tree (TreeNode_t * root, int *minVal, int *maxVal) {
+static bool is_bin_search_sub_tree (TreeNode_t *root, int *minVal, int *maxVal) {
     bool res = true;
     if (root) {
         if (minVal) {
@@ -77,9 +77,9 @@ static bool is_bin_search_sub_tree (TreeNode_t * root, int *minVal, int *maxVal)
 }
 
 // Time:  O(h)
-TreeNode_t* bst_search (TreeNode_t* root, int val) {
-    TreeNode_t* retNode = NULL;
-    TreeNode_t* cur = root;
+TreeNode_t *bst_search (TreeNode_t *root, int val) {
+    TreeNode_t *retNode = NULL;
+    TreeNode_t *cur = root;
     while (cur != NULL) {
         if (val == cur->val) {
             retNode = cur;
@@ -93,9 +93,9 @@ TreeNode_t* bst_search (TreeNode_t* root, int val) {
     return retNode;
 }
 
-bool is_bst_contain (TreeNode_t* root, int val) {
+bool is_bst_contain (TreeNode_t *root, int val) {
     // Iteratively search for val in t.
-    TreeNode_t* cur = root;
+    TreeNode_t *cur = root;
     while (cur != NULL) {
         if (val == cur->val) {
             // We found the value we're looking for in cur.
@@ -121,7 +121,7 @@ bool is_bst_contain (TreeNode_t* root, int val) {
     return false;
 }
 
-static void bst_insert_ll (TreeNode_t ** tree, TreeNode_t * item) {
+static void bst_insert_ll (TreeNode_t **tree, TreeNode_t *item) {
     if (NULL == (*tree)) {
         *tree = item;
         return;

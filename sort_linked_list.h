@@ -14,7 +14,7 @@ extern "C" {
 #include <stdio.h>
 
 bool test_list_sort (void);
-void MergeSort (list_node_t** headRef);
+void MergeSort (list_node_t **headRef);
 
 #ifdef __cplusplus
 }

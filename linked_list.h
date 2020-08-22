@@ -1,6 +1,6 @@
 #ifndef __LINKED_LIST_OF_ARRAYS_H
 #define __LINKED_LIST_OF_ARRAYS_H
-//https://leetcode.com/tag/linked-list/
+// https://leetcode.com/tag/linked-list/
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -22,7 +22,7 @@ typedef struct xListNode {
 #endif
 
 bool push_val (list_node_t **pInHead, int newVal);
-void show_list (list_node_t* headNode);
+void show_list (list_node_t *headNode);
 
 #if 0
 bool linked_list_deinit (list_node_t *pInHead);
@@ -46,8 +46,6 @@ void list_add_node_front (ListNode** headNode, int new_data);
 ListNode* reverseList (ListNode* head);
 void reverse_rec (ListNode** head);
 #endif
-
-
 
 #if 0
 

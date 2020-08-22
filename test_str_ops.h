@@ -22,6 +22,6 @@ bool test_parseBoolExpr (void);
 bool test_reverse (void);
 bool test_str_char_replace (void);
 bool test_replace_substr (void);
-bool test_count_substring (void) ;
+bool test_count_substring (void);
 
 #endif /* TEST_STRING_OPS_H */

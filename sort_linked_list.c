@@ -5,8 +5,8 @@
 #include <stdint.h>
 #include <stdio.h>
 
-static list_node_t* SortedMerge (list_node_t* a, list_node_t* b);
-static void FrontBackSplit (list_node_t* source, list_node_t** frontRef, list_node_t** backRef);
+static list_node_t *SortedMerge (list_node_t *a, list_node_t *b);
+static void FrontBackSplit (list_node_t *source, list_node_t **frontRef, list_node_t **backRef);
 
 bool test_list_sort (void) {
     bool res = false;
@@ -26,11 +26,10 @@ bool test_list_sort (void) {
     return res;
 }
 
-
-void MergeSort (list_node_t** headRef) {
-    list_node_t* head = *headRef;
-    list_node_t* a;
-    list_node_t* b;
+void MergeSort (list_node_t **headRef) {
+    list_node_t *head = *headRef;
+    list_node_t *a;
+    list_node_t *b;
 
     /* Base case -- length 0 or 1 */
     if ((head == NULL) || (head->nextNode == NULL)) {
@@ -48,9 +47,9 @@ void MergeSort (list_node_t** headRef) {
     *headRef = SortedMerge (a, b);
 }
 
-static void FrontBackSplit (list_node_t* source, list_node_t** frontRef, list_node_t** backRef) {
-    list_node_t* fast;
-    list_node_t* slow;
+static void FrontBackSplit (list_node_t *source, list_node_t **frontRef, list_node_t **backRef) {
+    list_node_t *fast;
+    list_node_t *slow;
     slow = source;
     fast = source->nextNode;
 
@@ -70,8 +69,8 @@ static void FrontBackSplit (list_node_t* source, list_node_t** frontRef, list_no
     slow->nextNode = NULL;
 }
 
-static list_node_t* SortedMerge (list_node_t* a, list_node_t* b) {
-    list_node_t* result = NULL;
+static list_node_t *SortedMerge (list_node_t *a, list_node_t *b) {
+    list_node_t *result = NULL;
 
     /* Base cases */
     if (a == NULL)

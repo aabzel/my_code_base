@@ -1,13 +1,13 @@
 #include "parse_regs.h"
 
-#include "str_ops.h"
-#include "parse_tja1101_regs.h"
 #include "parse_tic12400_regs.h"
+#include "parse_tja1101_regs.h"
+#include "str_ops.h"
 #include "utils.h"
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 bool parse_regs_file (char *inFileName, char *outFileName) {
@@ -27,6 +27,4 @@ bool parse_regs_file (char *inFileName, char *outFileName) {
         }
     }
     return res;
-
 }
-

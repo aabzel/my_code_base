@@ -1,11 +1,10 @@
 #ifndef __LINKED_LIST_OF_ARRAYS_TYPE_H
 #define __LINKED_LIST_OF_ARRAYS_TYPE_H
 
-//https://leetcode.com/tag/linked-list/
+// https://leetcode.com/tag/linked-list/
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 #include "array_type.h"

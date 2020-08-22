@@ -7,8 +7,8 @@ extern "C" {
 
 #include "utils.h"
 
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 
 bool proc_mk_file (char *fileName, char *outFileName);

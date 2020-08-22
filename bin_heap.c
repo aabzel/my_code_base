@@ -1,9 +1,9 @@
-#include "algorithms.h"
 #include "bin_heap.h"
+#include "algorithms.h"
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 int get_max (TreeNode_t **binMaxHeapRoot) {
@@ -55,7 +55,7 @@ bool delet_node_with (TreeNode_t **root, int val) {
             }
         } else {
             res = delete_node_with_val (*root, (*root)->left, val, true);
-            if ( false == res) {
+            if (false == res) {
                 res = delete_node_with_val (*root, (*root)->right, val, false);
             }
         }
@@ -67,7 +67,6 @@ int pop_max (TreeNode_t *binMaxHeapRoot) {
     int outVal = 0;
     if (NULL != binMaxHeapRoot) {
         outVal = binMaxHeapRoot->val;
-
     }
     return outVal;
 }
@@ -88,7 +87,7 @@ bool is_max_heap (TreeNode_t *Root) {
             isLeftOk = true;
         }
 
-        //TODO:
+        // TODO:
         if (curNode->right) {
             if (curNode->right->val <= curNode->val) {
                 isRightOk = is_max_heap (curNode->right);
@@ -132,7 +131,7 @@ bool max_heap_insert (TreeNode_t **binMaxHeapRoot, int newVal) {
                 } else if (false == is_complete (curNode->right)) {
                     res = max_heap_insert (&curNode->right, newVal);
                 } else {
-                    //printf ("\n each balansed put in any");
+                    // printf ("\n each balansed put in any");
                     if (1 <= (rightHeight - leftHeight)) {
                         res = max_heap_insert (&curNode->left, newVal);
                     } else if (1 <= (leftHeight - rightHeight)) {
@@ -152,12 +151,11 @@ bool max_heap_insert (TreeNode_t **binMaxHeapRoot, int newVal) {
         if (false == res) {
             printf (" Error");
         }
-
     }
     return res;
 }
 
-void make_max_heap (TreeNode_t * root) {
+void make_max_heap (TreeNode_t *root) {
     if (root) {
         uint32_t amountOfswiftp = 0;
         while (false == is_max_heap (root)) {

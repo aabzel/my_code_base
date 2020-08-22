@@ -2,17 +2,17 @@
 
 #include "algorithms.h"
 
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <math.h>
 
 int g_maxDepthVal = 0;
-static void find_max_depth (struct xTreeNode_t * tree, int level);
-static int find_size_ll (TreeNode_t * tree);
+static void find_max_depth (struct xTreeNode_t *tree, int level);
+static int find_size_ll (TreeNode_t *tree);
 
 /* Given a binary tree, print its nodes in inorder*/
-void print_inorder (TreeNode_t* node) {
+void print_inorder (TreeNode_t *node) {
     if (node == NULL) {
         return;
     }
@@ -61,7 +61,7 @@ void print_post_order (TreeNode_t* node) {
 }
 #endif
 
-bool is_node_has_vacant (TreeNode_t * root) {
+bool is_node_has_vacant (TreeNode_t *root) {
     bool res = false;
     if (root) {
         if (NULL == root->left) {
@@ -74,8 +74,8 @@ bool is_node_has_vacant (TreeNode_t * root) {
     return res;
 }
 
-//get fist node with spare leaf
-TreeNode_t *get_first_spare_leaf_node (TreeNode_t * root) {
+// get fist node with spare leaf
+TreeNode_t *get_first_spare_leaf_node (TreeNode_t *root) {
     TreeNode_t *outNode = NULL;
     TreeNode_t *someSpareNode = get_first_spare_node (root);
     if (someSpareNode) {
@@ -91,7 +91,7 @@ TreeNode_t *get_first_spare_leaf_node (TreeNode_t * root) {
     return outNode;
 }
 
-TreeNode_t *get_first_spare_node (TreeNode_t * root) {
+TreeNode_t *get_first_spare_node (TreeNode_t *root) {
     TreeNode_t *outNode = NULL;
     if (root) {
         if (is_node_has_vacant (root)) {
@@ -106,7 +106,7 @@ TreeNode_t *get_first_spare_node (TreeNode_t * root) {
     return outNode;
 }
 
-bool is_balanced (TreeNode_t * root) {
+bool is_balanced (TreeNode_t *root) {
     bool res = false;
     if (root) {
         int lheight; /* for height of left subtree */
@@ -123,7 +123,7 @@ bool is_balanced (TreeNode_t * root) {
     return res;
 }
 
-bool is_complete (TreeNode_t * root) {
+bool is_complete (TreeNode_t *root) {
     bool res = false;
     if (root) {
         int lheight; /* for height of left subtree */
@@ -140,7 +140,7 @@ bool is_complete (TreeNode_t * root) {
     return res;
 }
 
-int height (TreeNode_t * node) {
+int height (TreeNode_t *node) {
     /* base case tree is empty */
     if (node == NULL)
         return 0;
@@ -150,7 +150,7 @@ int height (TreeNode_t * node) {
     return 1 + max (height (node->left), height (node->right));
 }
 
-int max_depth (struct xTreeNode_t* root) {
+int max_depth (struct xTreeNode_t *root) {
     if (root) {
         g_maxDepthVal = 0;
         find_max_depth (root, 0);
@@ -161,15 +161,15 @@ int max_depth (struct xTreeNode_t* root) {
 }
 
 // Finds the maximum depth of the binary tree
-static void find_max_depth (struct xTreeNode_t * tree, int level) {
+static void find_max_depth (struct xTreeNode_t *tree, int level) {
     int nextLevel = 0;
-    //printf ("\nlevel:%d\n", level);
+    // printf ("\nlevel:%d\n", level);
     if (NULL != tree) {
         if (g_maxDepthVal < level) {
             g_maxDepthVal = level;
         }
         nextLevel = ++level;
-        //printf ("\nnextLevel:%d\n", nextLevel);
+        // printf ("\nnextLevel:%d\n", nextLevel);
         if (tree->left) {
             find_max_depth (tree->left, nextLevel);
         }
@@ -177,13 +177,13 @@ static void find_max_depth (struct xTreeNode_t * tree, int level) {
             find_max_depth (tree->right, nextLevel);
         }
     } else {
-        //printf ("\nlast level:%d\n", level);
+        // printf ("\nlast level:%d\n", level);
     }
     return;
 }
 
 // Finds the maximum depth of the binary tree
-static void find_max_depth_leavs (struct xTreeNode_t * tree, int curLevel, int maxdepth) {
+static void find_max_depth_leavs (struct xTreeNode_t *tree, int curLevel, int maxdepth) {
     int nextLevel = 0;
     printf ("\n curLevel:%d val: %d\n", curLevel, tree->val);
     if (NULL != tree) {
@@ -195,7 +195,7 @@ static void find_max_depth_leavs (struct xTreeNode_t * tree, int curLevel, int m
             printf ("\n max level %d val %d\n", curLevel, tree->val);
         }
         nextLevel = ++curLevel;
-        //printf ("\nnextLevel:%d\n", nextLevel);
+        // printf ("\nnextLevel:%d\n", nextLevel);
         if (tree->left) {
             find_max_depth_leavs (tree->left, nextLevel, maxdepth);
         }
@@ -203,13 +203,13 @@ static void find_max_depth_leavs (struct xTreeNode_t * tree, int curLevel, int m
             find_max_depth_leavs (tree->right, nextLevel, maxdepth);
         }
     } else {
-        //printf ("\nlast level:%d\n", level);
+        // printf ("\nlast level:%d\n", level);
     }
     return;
 }
 
 int g_sum = 0;
-int calc_leaves_sum (TreeNode_t* root, int maxDepth) {
+int calc_leaves_sum (TreeNode_t *root, int maxDepth) {
     g_sum = 0;
     if (root) {
         g_maxDepthVal = 0;
@@ -220,14 +220,14 @@ int calc_leaves_sum (TreeNode_t* root, int maxDepth) {
     return g_sum;
 }
 
-int find_size (TreeNode_t * tree) {
+int find_size (TreeNode_t *tree) {
     int numOfNodes = 0;
     numOfNodes = find_size_ll (tree);
     return numOfNodes;
 }
 
 // In Order traversal
-void print_inorder_traversal (TreeNode_t * tree) {
+void print_inorder_traversal (TreeNode_t *tree) {
     if (tree->left) {
         print_inorder_traversal (tree->left);
     }
@@ -238,8 +238,8 @@ void print_inorder_traversal (TreeNode_t * tree) {
 }
 
 int get_parent_index (int nodeIndex, int size) {
-    double paretnt = ceil (((double) nodeIndex / 2.0f) - 1.0f);
-    int outParent = (int) paretnt;
+    double paretnt = ceil (((double)nodeIndex / 2.0f) - 1.0f);
+    int outParent = (int)paretnt;
     if (size < outParent) {
         printf ("\nError out of array %d\n", outParent);
         outParent = 0;
@@ -310,7 +310,7 @@ void parse_bin_tree (int *arr, int size) {
 }
 #endif
 
-int deepestLeavesSum (TreeNode_t * root) {
+int deepestLeavesSum (TreeNode_t *root) {
     int sum = 0;
     int maxDepth = 0;
     maxDepth = max_depth (root);
@@ -318,7 +318,7 @@ int deepestLeavesSum (TreeNode_t * root) {
     return sum;
 }
 
-bool init_tree_node (TreeNode_t * NodePar, int val, TreeNode_t * NodeLeftChild, TreeNode_t * NodeRightChild) {
+bool init_tree_node (TreeNode_t *NodePar, int val, TreeNode_t *NodeLeftChild, TreeNode_t *NodeRightChild) {
     bool res = false;
     if (NodePar) {
         NodePar->val = val;
@@ -329,17 +329,17 @@ bool init_tree_node (TreeNode_t * NodePar, int val, TreeNode_t * NodeLeftChild, 
     return res;
 }
 
-void init_node (TreeNode_t * Node, int val) {
+void init_node (TreeNode_t *Node, int val) {
     Node->left = NULL;
     Node->right = NULL;
     Node->val = val;
 }
 
-//Set new val to NodePtr
-bool binary_tree_add_node (TreeNode_t ** NodePtr, int val) {
+// Set new val to NodePtr
+bool binary_tree_add_node (TreeNode_t **NodePtr, int val) {
     bool res = false;
     TreeNode_t *newNode = NULL;
-    newNode = (TreeNode_t *) malloc (sizeof(TreeNode_t));
+    newNode = (TreeNode_t *)malloc (sizeof (TreeNode_t));
     if (NULL != newNode) {
         init_node (newNode, val);
         *NodePtr = newNode;
@@ -348,11 +348,11 @@ bool binary_tree_add_node (TreeNode_t ** NodePtr, int val) {
     return res;
 }
 
-bool binary_tree_attace_node (TreeNode_t * NodePtr, int val, bool isleft) {
+bool binary_tree_attace_node (TreeNode_t *NodePtr, int val, bool isleft) {
     bool res = false;
     if (NodePtr) {
         TreeNode_t *newNode = NULL;
-        newNode = (TreeNode_t *) malloc (sizeof(TreeNode_t));
+        newNode = (TreeNode_t *)malloc (sizeof (TreeNode_t));
         if (NULL != newNode) {
             init_node (newNode, val);
             if (isleft) {
@@ -368,7 +368,7 @@ bool binary_tree_attace_node (TreeNode_t * NodePtr, int val, bool isleft) {
 }
 
 // Finds the size of the binary tree
-static int find_size_ll (TreeNode_t * tree) {
+static int find_size_ll (TreeNode_t *tree) {
     int amountOfElements = 0;
     if (tree) {
         amountOfElements++;

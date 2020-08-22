@@ -4,7 +4,6 @@
 #include <stdbool.h>
 #include <windows.h>
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -14,9 +13,9 @@ extern "C" {
 //#define true (1u)
 //#define false (0u)
 
-//typedef _Bool bool;
+// typedef _Bool bool;
 //#define bool uint8_t
-//typedef uint8_t bool;
+// typedef uint8_t bool;
 
 #if 0
 typedef float float_t;

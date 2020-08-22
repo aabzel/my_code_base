@@ -19,19 +19,18 @@ typedef struct xLifo_array_t {
 } Lifo_array_t;
 
 bool init_lifo_index (Lifo_index_t *const lifoIndex, uint16_t desCapacity);
-bool lifo_index_valid (const Lifo_index_t * const lifoIndex);
+bool lifo_index_valid (const Lifo_index_t *const lifoIndex);
 
-bool lifo_init (Lifo_array_t* const instance, uint16_t capacity, char * const array);
-bool lifo_reset (Lifo_array_t* const instance);
-bool lifo_push (Lifo_array_t* const instance, char inChar);
-bool lifo_pull (Lifo_array_t* const instance, char *const outChar);
-bool lifo_peek (Lifo_array_t* const instance, char *const outChar);
-bool has_lifo_valid_data (Lifo_array_t* const instance);
+bool lifo_init (Lifo_array_t *const instance, uint16_t capacity, char *const array);
+bool lifo_reset (Lifo_array_t *const instance);
+bool lifo_push (Lifo_array_t *const instance, char inChar);
+bool lifo_pull (Lifo_array_t *const instance, char *const outChar);
+bool lifo_peek (Lifo_array_t *const instance, char *const outChar);
+bool has_lifo_valid_data (Lifo_array_t *const instance);
 
-
-bool lifo_push_array (Lifo_array_t* const instance, char *const inArr, uint16_t arrLen);
-bool lifo_pull_array (Lifo_array_t* const instance, char *const outArr, uint16_t *const outLen);
-bool lifo_peek_array (Lifo_array_t* const instance, char *const outArr, uint16_t *const outLen);
+bool lifo_push_array (Lifo_array_t *const instance, char *const inArr, uint16_t arrLen);
+bool lifo_pull_array (Lifo_array_t *const instance, char *const outArr, uint16_t *const outLen);
+bool lifo_peek_array (Lifo_array_t *const instance, char *const outArr, uint16_t *const outLen);
 
 #ifdef __cplusplus
 }

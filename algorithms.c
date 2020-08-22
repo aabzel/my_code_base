@@ -7,11 +7,11 @@
 #include "str_ops.h"
 #include "utils.h"
 
-#include <stdlib.h>
 #include <limits.h>
-#include <stdio.h>
-#include <stdint.h>
 #include <math.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 bool is_in_range (int val, int lowBound, int upBound) {
@@ -23,7 +23,7 @@ bool is_in_range (int val, int lowBound, int upBound) {
             }
         }
     } else {
-        printf ("\n%s %d %d %d\n", __FUNCTION__,val,lowBound,upBound);
+        printf ("\n%s %d %d %d\n", __FUNCTION__, val, lowBound, upBound);
     }
     return res;
 }
@@ -92,19 +92,24 @@ int min3 (int val1, int val2, int val3) {
 }
 
 int qselect (int *v, int len, int k) {
-#   define SWAP(a, b) { tmp = v[a]; v[a] = v[b]; v[b] = tmp; }
+#define SWAP(a, b)                                                                                                     \
+    {                                                                                                                  \
+        tmp = v[a];                                                                                                    \
+        v[a] = v[b];                                                                                                   \
+        v[b] = tmp;                                                                                                    \
+    }
     int i, st, tmp;
 
     for (st = i = 0; i < len - 1; i++) {
-        if (v [i] > v [len - 1])
+        if (v[i] > v[len - 1])
             continue;
-        SWAP(i, st);
+        SWAP (i, st);
         st++;
     }
 
-    SWAP(len - 1, st);
+    SWAP (len - 1, st);
 
-    return k == st ? v [st] : st > k ? qselect (v, st, k) : qselect (v + st, len - st, k - st);
+    return k == st ? v[st] : st > k ? qselect (v, st, k) : qselect (v + st, len - st, k - st);
 }
 
 float min3f (float val1, float val2, float val3) {
@@ -115,18 +120,18 @@ float min3f (float val1, float val2, float val3) {
 }
 
 /* Function to swap values at two pointers */
-void swap_char (char * const x, char * const y) {
+void swap_char (char *const x, char *const y) {
     if ((x != y) && (*x != *y)) {
         char temp;
         temp = *x;
         *x = *y;
         *y = temp;
     } else {
-        //printf ("The same element\n");
+        // printf ("The same element\n");
     }
 }
 
-bool swap_int (int * const x, int * const y) {
+bool swap_int (int *const x, int *const y) {
     bool res = false;
     if (x != y) {
         int temp;
@@ -138,9 +143,7 @@ bool swap_int (int * const x, int * const y) {
     return res;
 }
 
-bool is_power_of_two (int x) {
-    return ((0 < x) && (0 == (x & (x - 1))));
-}
+bool is_power_of_two (int x) { return ((0 < x) && (0 == (x & (x - 1)))); }
 
 typedef struct xPox_t {
     int x;
@@ -152,9 +155,9 @@ typedef struct xPox_t {
 // <0 if x<y
 // >0 if x>y
 // определение функции сравнения для массива int'ов
-int cmp_int (const void * p1, const void * p2) {
-    int x = *(int *) p1; // добываем из указателя значение по этому указателю
-    int y = *(int *) p2; // добываем из указателя значение по этому указателю
+int cmp_int (const void *p1, const void *p2) {
+    int x = *(int *)p1; // добываем из указателя значение по этому указателю
+    int y = *(int *)p2; // добываем из указателя значение по этому указателю
     return x - y;
 }
 
@@ -163,14 +166,14 @@ int cmp_int (const void * p1, const void * p2) {
 // and moves all smaller element to left of
 // it and greater elements to right
 int partition (int *arr, int l, int r) {
-    int x = arr [r], i = l;
+    int x = arr[r], i = l;
     for (int j = l; j <= r - 1; j++) {
-        if (arr [j] <= x) {
-            swap_int (&arr [i], &arr [j]);
+        if (arr[j] <= x) {
+            swap_int (&arr[i], &arr[j]);
             i++;
         }
     }
-    swap_int (&arr [i], &arr [r]);
+    swap_int (&arr[i], &arr[r]);
     return i;
 }
 

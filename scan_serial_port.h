@@ -1,7 +1,7 @@
 #ifndef SCAN_SERIAL_PORT_H
 #define SCAN_SERIAL_PORT_H
 
-//https://www.xanthium.in/Serial-Port-Programming-using-Win32-API
+// https://www.xanthium.in/Serial-Port-Programming-using-Win32-API
 
 #ifdef __cplusplus
 extern "C" {
@@ -28,26 +28,26 @@ typedef enum {
     TSTI_V1 = 8,
     IOV4_A = 9,
     UNDEF_DEVICE = 0
-}deciceId_t;
+} deciceId_t;
 
 typedef struct xConnection_t {
-    char comPortName [30];
-    char deviceName [30];
+    char comPortName[30];
+    char deviceName[30];
     bool isExistPort;
     bool isExistDevice;
     uint64_t serialNumber;
     uint16_t deviceID;
 } xSerialConnection_t;
 
-extern xSerialConnection_t deviceList [MAX_COM_NUM];
+extern xSerialConnection_t deviceList[MAX_COM_NUM];
 
-bool is_serial_known(uint64_t inSerial);
-const char *dev_id_name(deciceId_t deviceID);
+bool is_serial_known (uint64_t inSerial);
+const char *dev_id_name (deciceId_t deviceID);
 bool scan_serial (void);
 bool print_device_list (void);
 bool com_send_str (HANDLE hComm, char *txBuffer, uint32_t txBuffLen);
 uint16_t parse_product (char *inStr, uint16_t inStrLen);
-char* parse_product_name (char *inStr, uint16_t inStrLen) ;
+char *parse_product_name (char *inStr, uint16_t inStrLen);
 
 #ifdef __cplusplus
 }

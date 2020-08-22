@@ -69,20 +69,19 @@ void list_print_fwd (void) {
 bool push_val (list_node_t **pInHead, int newVal) {
     bool res = false;
     /* allocate node */
-    list_node_t* newNodePtr = (list_node_t*) malloc (sizeof(list_node_t));
+    list_node_t *newNodePtr = (list_node_t *)malloc (sizeof (list_node_t));
     if (newNodePtr) {
         newNodePtr->data = newVal;
-        newNodePtr->nextNode = (*pInHead) ;
-        (*pInHead)  = newNodePtr;
+        newNodePtr->nextNode = (*pInHead);
+        (*pInHead) = newNodePtr;
         res = true;
     }
     return res;
 }
 
-
 /* Function to print linked list */
-void show_list (list_node_t* headNode) {
-    list_node_t* curNode = headNode;
+void show_list (list_node_t *headNode) {
+    list_node_t *curNode = headNode;
     printf ("\n Start of list\n");
     while (curNode != NULL) {
         printf ("%d  ", curNode->data);
@@ -90,7 +89,6 @@ void show_list (list_node_t* headNode) {
     }
     printf ("\n End of list\n");
 }
-
 
 #if 0
 void save_list_to_file (list_node_t *pInHead, char *filename) {
@@ -327,9 +325,5 @@ bool delete_node (ListNode* node) {
         return true;
     }
 }
-
-
-
-
 
 #endif

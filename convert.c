@@ -3,7 +3,7 @@
 #if defined(__TI_COMPILER_VERSION__) || defined(__GCC__)
 #if defined(__TI_COMPILER_VERSION__)
 #pragma diag_push
-#pragma CHECK_MISRA ("-8.5")
+#pragma CHECK_MISRA("-8.5")
 #endif
 #include <strings.h>
 #if defined(__TI_COMPILER_VERSION__)
@@ -11,66 +11,66 @@
 #endif
 #endif
 
-#include <limits.h>
-#include <stdlib.h>
-#include <float.h>
 #include <ctype.h>
+#include <float.h>
+#include <limits.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-static const char symbols [] = "FEDCBA9876543210123456789ABCDEF";
+static const char symbols[] = "FEDCBA9876543210123456789ABCDEF";
 
 /* PRIVATE ************************************************************************************* */
 
 static bool try_hex_char_to_u8 (uint8_t hex_char, uint8_t *hex_char_to_u8_value);
 static bool try_dec_char_to_u8 (uint8_t dec_char, uint8_t *dec_char_to_u8_value);
 static bool is_signed (const char first_str_char, int32_t *first_digit_index);
-static bool get_str_len (const char char_str [], int32_t *str_len);
-static bool rx_strtod (const char str [], const char **endptr, double_t *result);
+static bool get_str_len (const char char_str[], int32_t *str_len);
+static bool rx_strtod (const char str[], const char **endptr, double_t *result);
 static bool is_hex_digit (const char character);
 static bool is_true (const char *true_str_to_check);
 static bool is_false (const char *false_str_to_check);
-//static void dtoa_normal (double_t double_data, int32_t double_precision, char double_stringified []);
-static void ftoa_normal (float_t float_data, int32_t float_precision, char float_stringified []);
+// static void dtoa_normal (double_t double_data, int32_t double_precision, char double_stringified []);
+static void ftoa_normal (float_t float_data, int32_t float_precision, char float_stringified[]);
 
-static const float_t rounders [(MAX_PRECISION + 1U)] =
-    { 0.5f, /* 0 */
-    0.05f, /* 1 */
-    0.005f, /* 2 */
-    0.0005f, /* 3 */
-    0.00005f, /* 4 */
-    0.000005f, /* 5 */
-    0.0000005f, /* 6 */
-    0.00000005f, /* 7 */
-    0.000000005f, /* 8 */
+static const float_t rounders[(MAX_PRECISION + 1U)] = {
+    0.5f,          /* 0 */
+    0.05f,         /* 1 */
+    0.005f,        /* 2 */
+    0.0005f,       /* 3 */
+    0.00005f,      /* 4 */
+    0.000005f,     /* 5 */
+    0.0000005f,    /* 6 */
+    0.00000005f,   /* 7 */
+    0.000000005f,  /* 8 */
     0.0000000005f, /* 9 */
     0.00000000005f /* 10 */
-    };
+};
 
 /* STRING TO 64 BIT **************************************************************************** */
 
-bool try_str2uint64 (const char u64_str [], uint64_t *u64_value) {
+bool try_str2uint64 (const char u64_str[], uint64_t *u64_value) {
     bool res = false;
     if (NULL != u64_str) {
         if (NULL != u64_value) {
-            int32_t u64_str_len = (int32_t) strlen (u64_str);
+            int32_t u64_str_len = (int32_t)strlen (u64_str);
             res = try_strl2uint64 (u64_str, u64_str_len, u64_value);
         }
     }
     return res;
 }
 
-bool try_str2int64 (const char s64_str [], int64_t *s64_value) {
+bool try_str2int64 (const char s64_str[], int64_t *s64_value) {
     bool res = false;
     if (NULL != s64_str) {
         if (NULL != s64_value) {
-            int32_t s64_str_len = (int32_t) strlen (s64_str);
+            int32_t s64_str_len = (int32_t)strlen (s64_str);
             res = try_strl2int64 (s64_str, s64_str_len, s64_value);
         }
     }
     return res;
 }
 
-bool try_strl2uint64 (const char u64l_str [], int32_t u64l_str_len, uint64_t *u64l_value) {
+bool try_strl2uint64 (const char u64l_str[], int32_t u64l_str_len, uint64_t *u64l_value) {
     bool u64l_success = true;
     bool u64l_str_not_empty = true;
     int32_t u64l_len = u64l_str_len;
@@ -85,7 +85,8 @@ bool try_strl2uint64 (const char u64l_str [], int32_t u64l_str_len, uint64_t *u6
             if (u64l_success == true) {
                 uint8_t num_shift = 0U;
                 if (is_hex_str (u64l_str, u64l_len, &num_shift) == true) {
-                    u64l_success = try_strl2uint64_hex (&u64l_str [num_shift], u64l_len - ((int32_t) num_shift), u64l_value);
+                    u64l_success =
+                        try_strl2uint64_hex (&u64l_str[num_shift], u64l_len - ((int32_t)num_shift), u64l_value);
                 } else {
                     u64l_success = try_strl2uint64_dec (u64l_str, u64l_len, u64l_value);
                 }
@@ -98,7 +99,7 @@ bool try_strl2uint64 (const char u64l_str [], int32_t u64l_str_len, uint64_t *u6
     return u64l_success;
 }
 
-bool try_strl2int64 (const char s64l_str [], int32_t s64l_str_len, int64_t *s64l_value) {
+bool try_strl2int64 (const char s64l_str[], int32_t s64l_str_len, int64_t *s64l_value) {
     bool s64l_success = true;
     bool s64l_str_not_empty = true;
     int32_t s64l_len = s64l_str_len;
@@ -113,7 +114,8 @@ bool try_strl2int64 (const char s64l_str [], int32_t s64l_str_len, int64_t *s64l
             if (s64l_success == true) {
                 uint8_t num_shift = 0U;
                 if (is_hex_str (s64l_str, s64l_len, &num_shift) == true) {
-                    s64l_success = try_strl2int64_hex (&s64l_str [num_shift], s64l_len - ((int32_t)num_shift), s64l_value);
+                    s64l_success =
+                        try_strl2int64_hex (&s64l_str[num_shift], s64l_len - ((int32_t)num_shift), s64l_value);
                 } else {
                     s64l_success = try_strl2int64_dec (s64l_str, s64l_len, s64l_value);
                 }
@@ -128,7 +130,7 @@ bool try_strl2int64 (const char s64l_str [], int32_t s64l_str_len, int64_t *s64l
     return s64l_success;
 }
 
-bool try_strl2uint64_hex (const char u64_hex_str [], int32_t u64_hex_str_len, uint64_t *u64_hex_value) {
+bool try_strl2uint64_hex (const char u64_hex_str[], int32_t u64_hex_str_len, uint64_t *u64_hex_value) {
     bool u64_hex_success = true;
     bool u64_str_not_empty = true;
     uint64_t u64_hex_result = 0U;
@@ -146,7 +148,7 @@ bool try_strl2uint64_hex (const char u64_hex_str [], int32_t u64_hex_str_len, ui
 
         if (u64_hex_success == true) {
             for (u64_hex_str_index = 0; u64_hex_str_index < u64_hex_len; u64_hex_str_index++) {
-                uint8_t u64_hex_str_char = (uint8_t) u64_hex_str [u64_hex_str_index];
+                uint8_t u64_hex_str_char = (uint8_t)u64_hex_str[u64_hex_str_index];
                 uint8_t u64_hex_str_number = 0U;
 
                 if (true == try_hex_char_to_u8 (u64_hex_str_char, &u64_hex_str_number)) {
@@ -166,7 +168,7 @@ bool try_strl2uint64_hex (const char u64_hex_str [], int32_t u64_hex_str_len, ui
     return u64_hex_success;
 }
 
-bool try_strl2int64_hex (const char s64_hex_str [], int32_t s64_hex_str_len, int64_t *s64_hex_value) {
+bool try_strl2int64_hex (const char s64_hex_str[], int32_t s64_hex_str_len, int64_t *s64_hex_value) {
     bool s64_hex_success = true;
     bool s64_str_not_empty = true;
     int64_t s64_hex_result = 0;
@@ -184,12 +186,12 @@ bool try_strl2int64_hex (const char s64_hex_str [], int32_t s64_hex_str_len, int
 
         if (s64_hex_success == true) {
             for (s64_hex_str_index = 0; s64_hex_str_index < s64_hex_len; s64_hex_str_index++) {
-                uint8_t s64_hex_str_char = (uint8_t) s64_hex_str [s64_hex_str_index];
+                uint8_t s64_hex_str_char = (uint8_t)s64_hex_str[s64_hex_str_index];
                 uint8_t s64_hex_str_number = 0U;
                 s64_hex_success = try_hex_char_to_u8 (s64_hex_str_char, &s64_hex_str_number);
 
                 if (s64_hex_success == true) {
-                    s64_hex_result = (s64_hex_result * 16) + (int64_t) s64_hex_str_number;
+                    s64_hex_result = (s64_hex_result * 16) + (int64_t)s64_hex_str_number;
                     if (s64_hex_result > (INT64_MAX / 16)) {
                         s64_hex_success = false;
                     }
@@ -209,16 +211,16 @@ bool try_strl2int64_hex (const char s64_hex_str [], int32_t s64_hex_str_len, int
     return s64_hex_success;
 }
 
-bool try_strl2uint64_dec (const char u64_dec_str [], int32_t u64_dec_str_len, uint64_t *u64_dec_value) {
+bool try_strl2uint64_dec (const char u64_dec_str[], int32_t u64_dec_str_len, uint64_t *u64_dec_value) {
     bool u64l_dec_success = true;
     uint64_t u64l_dec_result = 0U;
     int32_t u64l_dec_str_index = 0;
 
-    if (true == is_signed (u64_dec_str [0], &u64l_dec_str_index)) {
+    if (true == is_signed (u64_dec_str[0], &u64l_dec_str_index)) {
         u64l_dec_success = false;
     } else {
         for (; u64l_dec_str_index < u64_dec_str_len; u64l_dec_str_index++) {
-            uint8_t u64l_dec_str_char = (uint8_t) u64_dec_str [u64l_dec_str_index];
+            uint8_t u64l_dec_str_char = (uint8_t)u64_dec_str[u64l_dec_str_index];
             uint8_t u64l_dec_str_number = 0U;
             uint64_t u64l_dec_temp_value = 0U;
 
@@ -241,26 +243,26 @@ bool try_strl2uint64_dec (const char u64_dec_str [], int32_t u64_dec_str_len, ui
     return u64l_dec_success;
 }
 
-bool try_strl2int64_dec (const char s64_dec_str [], int32_t s64_dec_str_len, int64_t *s64_dec_value) {
+bool try_strl2int64_dec (const char s64_dec_str[], int32_t s64_dec_str_len, int64_t *s64_dec_value) {
     bool s64l_dec_success = true;
     bool s64l_dec_signed = false;
     int64_t s64l_dec_result = 0;
     int32_t s64l_dec_str_index = 0;
     if ((NULL != s64_dec_str) && (NULL != s64_dec_value)) {
-        s64l_dec_signed = is_signed (s64_dec_str [0], &s64l_dec_str_index);
+        s64l_dec_signed = is_signed (s64_dec_str[0], &s64l_dec_str_index);
         if ((s64l_dec_signed == true) && (s64_dec_str_len < 2)) {
             s64l_dec_success = false;
         }
 
         if (s64l_dec_success == true) {
             for (; s64l_dec_str_index < s64_dec_str_len; s64l_dec_str_index++) {
-                uint8_t s64_dec_str_char = (uint8_t) s64_dec_str [s64l_dec_str_index];
+                uint8_t s64_dec_str_char = (uint8_t)s64_dec_str[s64l_dec_str_index];
                 uint8_t s64_dec_str_number = 0U;
                 int64_t s64_dec_temp_value = 0;
 
                 s64l_dec_success = try_dec_char_to_u8 (s64_dec_str_char, &s64_dec_str_number);
                 if (s64l_dec_success == true) {
-                    s64_dec_temp_value = (s64l_dec_result * 10) + (int64_t) s64_dec_str_number;
+                    s64_dec_temp_value = (s64l_dec_result * 10) + (int64_t)s64_dec_str_number;
                     if (s64_dec_temp_value < s64l_dec_result) {
                         s64l_dec_success = false;
                     }
@@ -288,29 +290,29 @@ bool try_strl2int64_dec (const char s64_dec_str [], int32_t s64_dec_str_len, int
 
 /* STRING TO 32 BIT **************************************************************************** */
 
-bool try_str2uint32 (const char u32_str [], uint32_t *u32_value) {
+bool try_str2uint32 (const char u32_str[], uint32_t *u32_value) {
     bool res = false;
     if ((NULL != u32_str) && (NULL != u32_value)) {
-        int32_t u32_str_len = (int32_t) strlen (u32_str);
+        int32_t u32_str_len = (int32_t)strlen (u32_str);
         res = try_strl2uint32 (u32_str, u32_str_len, u32_value);
     }
     return res;
 }
 
-bool try_str2int32 (const char s32_str [], int32_t *s32_value) {
+bool try_str2int32 (const char s32_str[], int32_t *s32_value) {
     bool res = false;
     if ((NULL != s32_str) && (NULL != s32_value)) {
-        int32_t s32_str_len = (int32_t) strlen (s32_str);
+        int32_t s32_str_len = (int32_t)strlen (s32_str);
         res = try_strl2int32 (s32_str, s32_str_len, s32_value);
     }
     return res;
 }
 
-bool try_strl2uint32 (const char u32l_str [], int32_t u32l_str_len, uint32_t *u32l_value) {
+bool try_strl2uint32 (const char u32l_str[], int32_t u32l_str_len, uint32_t *u32l_value) {
     bool u32l_success = true;
     bool u32l_str_not_empty = true;
     int32_t u32l_len = u32l_str_len;
-    if ( (NULL != u32l_str) && (NULL != u32l_value)) {
+    if ((NULL != u32l_str) && (NULL != u32l_value)) {
         (*u32l_value) = 0U;
         u32l_str_not_empty = get_str_len (u32l_str, &u32l_len);
         if (u32l_str_not_empty == false) {
@@ -318,7 +320,7 @@ bool try_strl2uint32 (const char u32l_str [], int32_t u32l_str_len, uint32_t *u3
         } else {
             uint8_t num_shift = 0U;
             if (is_hex_str (u32l_str, u32l_len, &num_shift) == true) {
-                u32l_success = try_strl2uint32_hex (&u32l_str [num_shift], u32l_len - ((int32_t) num_shift), u32l_value);
+                u32l_success = try_strl2uint32_hex (&u32l_str[num_shift], u32l_len - ((int32_t)num_shift), u32l_value);
             } else {
                 u32l_success = try_strl2uint32_dec (u32l_str, u32l_len, u32l_value);
             }
@@ -329,7 +331,7 @@ bool try_strl2uint32 (const char u32l_str [], int32_t u32l_str_len, uint32_t *u3
     return u32l_success;
 }
 
-bool try_strl2int32 (const char s32l_str [], int32_t s32l_str_len, int32_t *s32l_value) {
+bool try_strl2int32 (const char s32l_str[], int32_t s32l_str_len, int32_t *s32l_value) {
     bool s32l_success = true;
     bool s32l_str_not_empty = true;
     int32_t s32l_len = s32l_str_len;
@@ -345,7 +347,7 @@ bool try_strl2int32 (const char s32l_str [], int32_t s32l_str_len, int32_t *s32l
     if (s32l_success == true) {
         uint8_t out_shift = 0U;
         if (is_hex_str (s32l_str, s32l_len, &out_shift) == true) {
-            s32l_success = try_strl2int32_hex (&s32l_str [out_shift], s32l_len - ((int32_t) out_shift), s32l_value);
+            s32l_success = try_strl2int32_hex (&s32l_str[out_shift], s32l_len - ((int32_t)out_shift), s32l_value);
         } else {
             s32l_success = try_strl2int32_dec (s32l_str, s32l_len, s32l_value);
         }
@@ -354,21 +356,21 @@ bool try_strl2int32 (const char s32l_str [], int32_t s32l_str_len, int32_t *s32l
     return s32l_success;
 }
 
-bool try_str2uint32_hex (const char u32_hex_str [], uint32_t *u32_hex_value) {
+bool try_str2uint32_hex (const char u32_hex_str[], uint32_t *u32_hex_value) {
     bool res = false;
     if ((NULL != u32_hex_str) && (NULL != u32_hex_value)) {
-        int32_t u32_hex_str_len = (int32_t) strlen (u32_hex_str);
+        int32_t u32_hex_str_len = (int32_t)strlen (u32_hex_str);
         res = try_strl2uint32_hex (u32_hex_str, u32_hex_str_len, u32_hex_value);
     }
     return res;
 }
 
-bool try_strl2uint32_hex (const char u32l_hex_str [], int32_t u32l_hex_str_len, uint32_t *u32l_hex_value) {
+bool try_strl2uint32_hex (const char u32l_hex_str[], int32_t u32l_hex_str_len, uint32_t *u32l_hex_value) {
     uint64_t u32l_hex_result = 0U;
     bool u32l_hex_success = try_strl2uint64_hex (u32l_hex_str, u32l_hex_str_len, &u32l_hex_result);
 
-    if ((u32l_hex_success == true) && (u32l_hex_result <= (uint64_t) UINT32_MAX)) {
-        *u32l_hex_value = (uint32_t) u32l_hex_result;
+    if ((u32l_hex_success == true) && (u32l_hex_result <= (uint64_t)UINT32_MAX)) {
+        *u32l_hex_value = (uint32_t)u32l_hex_result;
     } else {
         u32l_hex_success = false;
         *u32l_hex_value = 0U;
@@ -377,12 +379,12 @@ bool try_strl2uint32_hex (const char u32l_hex_str [], int32_t u32l_hex_str_len, 
     return u32l_hex_success;
 }
 
-bool try_strl2int32_hex (const char s32l_hex_str [], int32_t s32l_hex_str_len, int32_t *s32l_hex_value) {
+bool try_strl2int32_hex (const char s32l_hex_str[], int32_t s32l_hex_str_len, int32_t *s32l_hex_value) {
     int64_t s32l_hex_result = 0;
     bool s32l_hex_success = try_strl2int64_hex (s32l_hex_str, s32l_hex_str_len, &s32l_hex_result);
 
     if ((s32l_hex_success == true) && (s32l_hex_result <= INT32_MAX) && (s32l_hex_result >= INT32_MIN)) {
-        *s32l_hex_value = (int32_t) s32l_hex_result;
+        *s32l_hex_value = (int32_t)s32l_hex_result;
     } else {
         s32l_hex_success = false;
         *s32l_hex_value = 0;
@@ -391,12 +393,12 @@ bool try_strl2int32_hex (const char s32l_hex_str [], int32_t s32l_hex_str_len, i
     return s32l_hex_success;
 }
 
-bool try_strl2uint32_dec (const char u32_dec_str [], int32_t u32_dec_str_len, uint32_t *u32_dec_value) {
+bool try_strl2uint32_dec (const char u32_dec_str[], int32_t u32_dec_str_len, uint32_t *u32_dec_value) {
     uint64_t u32l_dec_result = 0U;
     bool u32l_dec_success = try_strl2uint64_dec (u32_dec_str, u32_dec_str_len, &u32l_dec_result);
 
     if ((u32l_dec_success == true) && (u32l_dec_result <= UINT32_MAX)) {
-        *u32_dec_value = (uint32_t) u32l_dec_result;
+        *u32_dec_value = (uint32_t)u32l_dec_result;
     } else {
         u32l_dec_success = false;
         *u32_dec_value = 0U;
@@ -405,12 +407,12 @@ bool try_strl2uint32_dec (const char u32_dec_str [], int32_t u32_dec_str_len, ui
     return u32l_dec_success;
 }
 
-bool try_strl2int32_dec (const char s32_dec_str [], int32_t s32_dec_str_len, int32_t *s32_dec_value) {
+bool try_strl2int32_dec (const char s32_dec_str[], int32_t s32_dec_str_len, int32_t *s32_dec_value) {
     int64_t s32l_dec_result = 0;
     bool s32l_dec_success = try_strl2int64_dec (s32_dec_str, s32_dec_str_len, &s32l_dec_result);
 
     if ((s32l_dec_success == true) && (s32l_dec_result <= INT32_MAX) && (s32l_dec_result >= INT32_MIN)) {
-        *s32_dec_value = (int32_t) s32l_dec_result;
+        *s32_dec_value = (int32_t)s32l_dec_result;
     } else {
         s32l_dec_success = false;
         *s32_dec_value = 0;
@@ -421,26 +423,26 @@ bool try_strl2int32_dec (const char s32_dec_str [], int32_t s32_dec_str_len, int
 
 /* STRING TO 16 BIT **************************************************************************** */
 
-bool try_str2uint16 (const char u16_str [], uint16_t *u16_value) {
+bool try_str2uint16 (const char u16_str[], uint16_t *u16_value) {
     bool res = false;
     if ((NULL != u16_str) && (NULL != u16_value)) {
-        int32_t u16_str_len = (int32_t) strlen (u16_str);
+        int32_t u16_str_len = (int32_t)strlen (u16_str);
         res = try_strl2uint16 (u16_str, u16_str_len, u16_value);
     }
     return res;
 }
 
-bool try_str2int16 (const char s16_str [], int16_t *s16_value) {
-    int32_t s16_str_len = (int32_t) strlen (s16_str);
+bool try_str2int16 (const char s16_str[], int16_t *s16_value) {
+    int32_t s16_str_len = (int32_t)strlen (s16_str);
     return try_strl2int16 (s16_str, s16_str_len, s16_value);
 }
 
-bool try_strl2uint16 (const char u16l_str [], int32_t u16l_str_len, uint16_t *u16l_value) {
+bool try_strl2uint16 (const char u16l_str[], int32_t u16l_str_len, uint16_t *u16l_value) {
     uint32_t u16l_result = 0U;
     bool u16l_success = try_strl2uint32 (u16l_str, u16l_str_len, &u16l_result);
 
-    if ((u16l_success == true) && (u16l_result <= (uint32_t) UINT16_MAX)) {
-        *u16l_value = (uint16_t) u16l_result;
+    if ((u16l_success == true) && (u16l_result <= (uint32_t)UINT16_MAX)) {
+        *u16l_value = (uint16_t)u16l_result;
     } else {
         u16l_success = false;
         *u16l_value = 0U;
@@ -449,12 +451,12 @@ bool try_strl2uint16 (const char u16l_str [], int32_t u16l_str_len, uint16_t *u1
     return u16l_success;
 }
 
-bool try_strl2int16 (const char s16l_str [], int32_t s16l_str_len, int16_t *s16l_value) {
+bool try_strl2int16 (const char s16l_str[], int32_t s16l_str_len, int16_t *s16l_value) {
     int32_t s16l_result = 0;
     bool s16l_success = try_strl2int32 (s16l_str, s16l_str_len, &s16l_result);
 
     if ((s16l_success == true) && (s16l_result <= INT16_MAX) && (s16l_result >= INT16_MIN)) {
-        *s16l_value = (int16_t) s16l_result;
+        *s16l_value = (int16_t)s16l_result;
     } else {
         s16l_success = false;
         *s16l_value = 0;
@@ -465,26 +467,26 @@ bool try_strl2int16 (const char s16l_str [], int32_t s16l_str_len, int16_t *s16l
 
 /* STRING TO 8 BIT ***************************************************************************** */
 
-bool try_str2uint8 (const char u8_str [], uint8_t *u8_value) {
+bool try_str2uint8 (const char u8_str[], uint8_t *u8_value) {
     bool res = false;
     if ((NULL != u8_str) && (NULL != u8_value)) {
-        int32_t u8_str_len = (int32_t) strlen (u8_str);
+        int32_t u8_str_len = (int32_t)strlen (u8_str);
         res = try_strl2uint8 (u8_str, u8_str_len, u8_value);
     } /*Otherwise reboot will occur*/
     return res;
 }
 
-bool try_str2int8 (const char s8_str [], int8_t *s8_value) {
-    int32_t s8_str_len = (int32_t) strlen (s8_str);
+bool try_str2int8 (const char s8_str[], int8_t *s8_value) {
+    int32_t s8_str_len = (int32_t)strlen (s8_str);
     return try_strl2int8 (s8_str, s8_str_len, s8_value);
 }
 
-bool try_strl2uint8 (const char u8l_str [], int32_t u8l_str_len, uint8_t *u8l_value) {
+bool try_strl2uint8 (const char u8l_str[], int32_t u8l_str_len, uint8_t *u8l_value) {
     uint32_t u8l_result = 0U;
     bool u8l_success = try_strl2uint32 (u8l_str, u8l_str_len, &u8l_result);
 
-    if ((u8l_success == true) && (u8l_result <= (uint32_t) UINT8_MAX)) {
-        *u8l_value = (uint8_t) u8l_result;
+    if ((u8l_success == true) && (u8l_result <= (uint32_t)UINT8_MAX)) {
+        *u8l_value = (uint8_t)u8l_result;
     } else {
         u8l_success = false;
         *u8l_value = 0U;
@@ -493,12 +495,12 @@ bool try_strl2uint8 (const char u8l_str [], int32_t u8l_str_len, uint8_t *u8l_va
     return u8l_success;
 }
 
-bool try_strl2int8 (const char s8l_str [], int32_t s8l_str_len, int8_t *s8l_value) {
+bool try_strl2int8 (const char s8l_str[], int32_t s8l_str_len, int8_t *s8l_value) {
     int32_t s8l_result = 0;
     bool s8l_success = try_strl2int32 (s8l_str, s8l_str_len, &s8l_result);
 
     if ((s8l_success == true) && (s8l_result <= INT8_MAX) && (s8l_result >= INT8_MIN)) {
-        *s8l_value = (int8_t) s8l_result;
+        *s8l_value = (int8_t)s8l_result;
     } else {
         s8l_success = false;
         *s8l_value = 0;
@@ -507,12 +509,12 @@ bool try_strl2int8 (const char s8l_str [], int32_t s8l_str_len, int8_t *s8l_valu
     return s8l_success;
 }
 
-bool try_strl2uint8_hex (const char u8l_hex_str [], int32_t u8l_hex_str_len, uint8_t *u8l_hex_value) {
+bool try_strl2uint8_hex (const char u8l_hex_str[], int32_t u8l_hex_str_len, uint8_t *u8l_hex_value) {
     uint64_t u8l_hex_result = 0U;
     bool u8l_hex_success = try_strl2uint64_hex (u8l_hex_str, u8l_hex_str_len, &u8l_hex_result);
 
-    if ((u8l_hex_success == true) && (u8l_hex_result <= (uint64_t) UINT8_MAX)) {
-        *u8l_hex_value = (uint8_t) u8l_hex_result;
+    if ((u8l_hex_success == true) && (u8l_hex_result <= (uint64_t)UINT8_MAX)) {
+        *u8l_hex_value = (uint8_t)u8l_hex_result;
     } else {
         u8l_hex_success = false;
         *u8l_hex_value = 0U;
@@ -521,12 +523,12 @@ bool try_strl2uint8_hex (const char u8l_hex_str [], int32_t u8l_hex_str_len, uin
     return u8l_hex_success;
 }
 
-bool try_strl2uint16_hex (const char u16l_hex_str [], int32_t u16l_hex_str_len, uint16_t *u16l_hex_value) {
+bool try_strl2uint16_hex (const char u16l_hex_str[], int32_t u16l_hex_str_len, uint16_t *u16l_hex_value) {
     uint64_t u16l_hex_result = 0U;
     bool u16l_hex_success = try_strl2uint64_hex (u16l_hex_str, u16l_hex_str_len, &u16l_hex_result);
 
-    if ((u16l_hex_success == true) && (u16l_hex_result <= (uint64_t) UINT16_MAX)) {
-        *u16l_hex_value = (uint16_t) u16l_hex_result;
+    if ((u16l_hex_success == true) && (u16l_hex_result <= (uint64_t)UINT16_MAX)) {
+        *u16l_hex_value = (uint16_t)u16l_hex_result;
     } else {
         u16l_hex_success = false;
         *u16l_hex_value = 0U;
@@ -535,12 +537,12 @@ bool try_strl2uint16_hex (const char u16l_hex_str [], int32_t u16l_hex_str_len, 
     return u16l_hex_success;
 }
 
-bool try_strl2int8_hex (const char s8l_hex_str [], int32_t s8l_hex_str_len, int8_t *s8l_hex_value) {
+bool try_strl2int8_hex (const char s8l_hex_str[], int32_t s8l_hex_str_len, int8_t *s8l_hex_value) {
     int64_t s8l_hex_result = 0;
     bool s8l_hex_success = try_strl2int64_hex (s8l_hex_str, s8l_hex_str_len, &s8l_hex_result);
 
     if ((s8l_hex_success == true) && (s8l_hex_result <= INT8_MAX) && (s8l_hex_result >= INT8_MIN)) {
-        *s8l_hex_value = (int8_t) s8l_hex_result;
+        *s8l_hex_value = (int8_t)s8l_hex_result;
     } else {
         s8l_hex_success = false;
         *s8l_hex_value = 0;
@@ -551,9 +553,8 @@ bool try_strl2int8_hex (const char s8l_hex_str [], int32_t s8l_hex_str_len, int8
 
 /* STRING TO BOOL ****************************************************************************** */
 
-bool try_str2bool (const char bool_str [], bool *bool_value) {
-    uint8_t bool_tmp_result [6] =
-        { 0U, 0U, 0U, 0U, 0U, 0U };
+bool try_str2bool (const char bool_str[], bool *bool_value) {
+    uint8_t bool_tmp_result[6] = {0U, 0U, 0U, 0U, 0U, 0U};
     int32_t bool_str_len = -1;
     int32_t bool_str_index;
     bool bool_success = true;
@@ -566,14 +567,14 @@ bool try_str2bool (const char bool_str [], bool *bool_value) {
 
         if (bool_success == true) {
             for (bool_str_index = 0; bool_str_index < bool_str_len; bool_str_index++) {
-                uint8_t bool_str_char = (uint8_t) bool_str [bool_str_index];
-                bool_tmp_result [bool_str_index] = (uint8_t) tolower ((int32_t) bool_str_char);
+                uint8_t bool_str_char = (uint8_t)bool_str[bool_str_index];
+                bool_tmp_result[bool_str_index] = (uint8_t)tolower ((int32_t)bool_str_char);
             }
-            bool_tmp_result [bool_str_len] = 0U;
+            bool_tmp_result[bool_str_len] = 0U;
 
-            if (is_true ((const char*) bool_tmp_result) == true) {
+            if (is_true ((const char *)bool_tmp_result) == true) {
                 *bool_value = true;
-            } else if (is_false ((const char*) bool_tmp_result) == true) {
+            } else if (is_false ((const char *)bool_tmp_result) == true) {
                 *bool_value = false;
             } else {
                 bool_success = false;
@@ -587,7 +588,7 @@ bool try_str2bool (const char bool_str [], bool *bool_value) {
 
 /* STRING TO FLOATING ************************************************************************** */
 
-bool try_str2float (const char float_str [], float_t *float_value) {
+bool try_str2float (const char float_str[], float_t *float_value) {
     bool float_success = false;
 
     if ((NULL != float_value) && (NULL != float_str)) {
@@ -608,7 +609,7 @@ bool try_str2float (const char float_str [], float_t *float_value) {
             } else if ((is_negative == true) && (lo_neg_bound_exceeded == true)) {
                 float_success = false;
             } else {
-                *float_value = (float_t) float_temp_value;
+                *float_value = (float_t)float_temp_value;
             }
         }
     } else {
@@ -617,7 +618,7 @@ bool try_str2float (const char float_str [], float_t *float_value) {
     return float_success;
 }
 
-bool try_str2double (const char double_str [], double_t *double_value) {
+bool try_str2double (const char double_str[], double_t *double_value) {
     bool double_success = false;
     const char *double_ptr = NULL;
     if (NULL != double_str) {
@@ -631,8 +632,8 @@ bool try_str2double (const char double_str [], double_t *double_value) {
     return double_success;
 }
 
-const char* ltoa32_ (int32_t s32_data, char s32_stringified [], uint8_t s32_base, uint32_t *s32_len) {
-    char s32_reverse_str [MAX_INT32_STR_LEN_10 + 1U];
+const char *ltoa32_ (int32_t s32_data, char s32_stringified[], uint8_t s32_base, uint32_t *s32_len) {
+    char s32_reverse_str[MAX_INT32_STR_LEN_10 + 1U];
     uint32_t s32_reverse_str_index = 0U;
     uint32_t s32_result_str_index = 0U;
     uint32_t s32_result_str_len = 0U;
@@ -642,15 +643,15 @@ const char* ltoa32_ (int32_t s32_data, char s32_stringified [], uint8_t s32_base
 
     do {
         s32_temp_value = s32_d;
-        s32_d = s32_d / (int32_t) s32_base;
-        s32_symbol_index = 15 + (s32_temp_value - (s32_d * (int32_t) s32_base));
-        s32_reverse_str [s32_reverse_str_index] = symbols [s32_symbol_index];
+        s32_d = s32_d / (int32_t)s32_base;
+        s32_symbol_index = 15 + (s32_temp_value - (s32_d * (int32_t)s32_base));
+        s32_reverse_str[s32_reverse_str_index] = symbols[s32_symbol_index];
         s32_reverse_str_index++;
     } while (s32_d != 0);
 
     /* Apply negative sign */
     if (s32_temp_value < 0) {
-        s32_reverse_str [s32_reverse_str_index] = '-';
+        s32_reverse_str[s32_reverse_str_index] = '-';
         s32_reverse_str_index++;
     }
 
@@ -660,21 +661,21 @@ const char* ltoa32_ (int32_t s32_data, char s32_stringified [], uint8_t s32_base
         *s32_len = s32_result_str_len;
     }
 
-    s32_reverse_str [s32_reverse_str_index] = '\0';
+    s32_reverse_str[s32_reverse_str_index] = '\0';
     s32_reverse_str_index--;
 
     for (s32_result_str_index = 0U; s32_result_str_index < s32_result_str_len; s32_result_str_index++) {
-        s32_stringified [s32_result_str_index] = s32_reverse_str [s32_reverse_str_index];
+        s32_stringified[s32_result_str_index] = s32_reverse_str[s32_reverse_str_index];
         s32_reverse_str_index--;
     }
 
-    s32_stringified [s32_result_str_index] = '\0';
+    s32_stringified[s32_result_str_index] = '\0';
 
     return s32_stringified;
 }
 
-const char* ltoa64_ (int64_t s64_data, char s64_stringified [], uint8_t s64_base, uint32_t *s64_len) {
-    char s64_reverse_str [MAX_INT64_STR_LEN_10 + 1U];
+const char *ltoa64_ (int64_t s64_data, char s64_stringified[], uint8_t s64_base, uint32_t *s64_len) {
+    char s64_reverse_str[MAX_INT64_STR_LEN_10 + 1U];
     uint32_t s64_reverse_str_index = 0U;
     uint32_t s64_result_str_index = 0U;
     uint32_t s64_result_str_len = 0U;
@@ -684,15 +685,15 @@ const char* ltoa64_ (int64_t s64_data, char s64_stringified [], uint8_t s64_base
 
     do {
         s64_temp_value = s64_d;
-        s64_d = s64_d / (int64_t) s64_base;
-        s64_symbol_index = 15 + (s64_temp_value - (s64_d * (int64_t) s64_base));
-        s64_reverse_str [s64_reverse_str_index] = symbols [s64_symbol_index];
+        s64_d = s64_d / (int64_t)s64_base;
+        s64_symbol_index = 15 + (s64_temp_value - (s64_d * (int64_t)s64_base));
+        s64_reverse_str[s64_reverse_str_index] = symbols[s64_symbol_index];
         s64_reverse_str_index++;
     } while (s64_d != 0);
 
     /* Apply negative sign */
     if (s64_temp_value < 0) {
-        s64_reverse_str [s64_reverse_str_index] = '-';
+        s64_reverse_str[s64_reverse_str_index] = '-';
         s64_reverse_str_index++;
     }
 
@@ -702,21 +703,21 @@ const char* ltoa64_ (int64_t s64_data, char s64_stringified [], uint8_t s64_base
         *s64_len = s64_result_str_len;
     }
 
-    s64_reverse_str [s64_reverse_str_index] = '\0';
+    s64_reverse_str[s64_reverse_str_index] = '\0';
     s64_reverse_str_index--;
 
     for (s64_result_str_index = 0U; s64_result_str_index < s64_result_str_len; s64_result_str_index++) {
-        s64_stringified [s64_result_str_index] = s64_reverse_str [s64_reverse_str_index];
+        s64_stringified[s64_result_str_index] = s64_reverse_str[s64_reverse_str_index];
         s64_reverse_str_index--;
     }
 
-    s64_stringified [s64_result_str_index] = '\0';
+    s64_stringified[s64_result_str_index] = '\0';
 
     return s64_stringified;
 }
 
-const char* utoa32_ (uint32_t u32_data, char u32_stringified [], uint8_t u32_base, uint32_t *u32_len) {
-    char u32_reverse_str [MAX_INT32_STR_LEN_10 + 1U];
+const char *utoa32_ (uint32_t u32_data, char u32_stringified[], uint8_t u32_base, uint32_t *u32_len) {
+    char u32_reverse_str[MAX_INT32_STR_LEN_10 + 1U];
     uint32_t u32_reverse_str_index = 0U;
     uint32_t u32_result_str_index = 0U;
     uint32_t u32_result_str_len = 0U;
@@ -726,9 +727,9 @@ const char* utoa32_ (uint32_t u32_data, char u32_stringified [], uint8_t u32_bas
 
     do {
         u32_temp_value = u32_d;
-        u32_d = u32_d / (uint32_t) u32_base;
-        u32_symbol_index = 15U + (u32_temp_value - (u32_d * (uint32_t) u32_base));
-        u32_reverse_str [u32_reverse_str_index] = symbols [u32_symbol_index];
+        u32_d = u32_d / (uint32_t)u32_base;
+        u32_symbol_index = 15U + (u32_temp_value - (u32_d * (uint32_t)u32_base));
+        u32_reverse_str[u32_reverse_str_index] = symbols[u32_symbol_index];
         u32_reverse_str_index++;
     } while (u32_d != 0U);
 
@@ -738,21 +739,21 @@ const char* utoa32_ (uint32_t u32_data, char u32_stringified [], uint8_t u32_bas
         *u32_len = u32_result_str_len;
     }
 
-    u32_reverse_str [u32_reverse_str_index] = '\0';
+    u32_reverse_str[u32_reverse_str_index] = '\0';
     u32_reverse_str_index--;
 
     for (u32_result_str_index = 0U; u32_result_str_index < u32_result_str_len; u32_result_str_index++) {
-        u32_stringified [u32_result_str_index] = u32_reverse_str [u32_reverse_str_index];
+        u32_stringified[u32_result_str_index] = u32_reverse_str[u32_reverse_str_index];
         u32_reverse_str_index--;
     }
 
-    u32_stringified [u32_result_str_index] = '\0';
+    u32_stringified[u32_result_str_index] = '\0';
 
     return u32_stringified;
 }
 
-const char* utoa64_ (uint64_t u64_data, char u64_stringified [], uint8_t u64_base, uint32_t *u64_len) {
-    char u64_reverse_str [MAX_INT64_STR_LEN_10 + 1U];
+const char *utoa64_ (uint64_t u64_data, char u64_stringified[], uint8_t u64_base, uint32_t *u64_len) {
+    char u64_reverse_str[MAX_INT64_STR_LEN_10 + 1U];
     uint32_t u64_reverse_str_index = 0U;
     uint32_t u64_result_str_index = 0U;
     uint32_t u64_result_str_len = 0U;
@@ -762,9 +763,9 @@ const char* utoa64_ (uint64_t u64_data, char u64_stringified [], uint8_t u64_bas
 
     do {
         u64_temp_value = u64_d;
-        u64_d = u64_d / (uint64_t) u64_base;
-        u64_symbol_index = 15U + (u64_temp_value - (u64_d * (uint64_t) u64_base));
-        u64_reverse_str [u64_reverse_str_index] = symbols [u64_symbol_index];
+        u64_d = u64_d / (uint64_t)u64_base;
+        u64_symbol_index = 15U + (u64_temp_value - (u64_d * (uint64_t)u64_base));
+        u64_reverse_str[u64_reverse_str_index] = symbols[u64_symbol_index];
         u64_reverse_str_index++;
     } while (u64_d != 0U);
 
@@ -774,15 +775,15 @@ const char* utoa64_ (uint64_t u64_data, char u64_stringified [], uint8_t u64_bas
         *u64_len = u64_result_str_len;
     }
 
-    u64_reverse_str [u64_reverse_str_index] = '\0';
+    u64_reverse_str[u64_reverse_str_index] = '\0';
     u64_reverse_str_index--;
 
     for (u64_result_str_index = 0U; u64_result_str_index < u64_result_str_len; u64_result_str_index++) {
-        u64_stringified [u64_result_str_index] = u64_reverse_str [u64_reverse_str_index];
+        u64_stringified[u64_result_str_index] = u64_reverse_str[u64_reverse_str_index];
         u64_reverse_str_index--;
     }
 
-    u64_stringified [u64_result_str_index] = '\0';
+    u64_stringified[u64_result_str_index] = '\0';
 
     return u64_stringified;
 }
@@ -863,11 +864,10 @@ static void dtoa_normal (double_t double_data, int32_t double_precision, char do
 }
 #endif
 
-void dtoa_ (double_t double_data_, int32_t double_precision_, char double_stringified_ []) {
-    (void )double_data_;
-    (void )double_precision_;
-    (void )double_stringified_;
-
+void dtoa_ (double_t double_data_, int32_t double_precision_, char double_stringified_[]) {
+    (void)double_data_;
+    (void)double_precision_;
+    (void)double_stringified_;
 
 #if 0
 #ifdef __TI_COMPILER_VERSION__
@@ -893,7 +893,7 @@ void dtoa_ (double_t double_data_, int32_t double_precision_, char double_string
 #endif
 }
 
-static void ftoa_normal (float_t float_data, int32_t float_precision, char float_stringified []) {
+static void ftoa_normal (float_t float_data, int32_t float_precision, char float_stringified[]) {
     uint32_t float_result_str_index = 0U;
     bool float_auto_precision = false;
     char float_number_to_char;
@@ -901,7 +901,7 @@ static void ftoa_normal (float_t float_data, int32_t float_precision, char float
     int32_t f_precision = float_precision;
 
     if (f_data < 0.0f) {
-        float_stringified [float_result_str_index] = '-';
+        float_stringified[float_result_str_index] = '-';
         float_result_str_index++;
         f_data = (-1.0f) * f_data;
     }
@@ -932,62 +932,62 @@ static void ftoa_normal (float_t float_data, int32_t float_precision, char float
         }
     }
     /* round value according the precision */
-    f_data += rounders [f_precision];
+    f_data += rounders[f_precision];
     if (f_precision == 0) {
-        (void) utoa64_ ((uint64_t) f_data, &float_stringified [float_result_str_index], 10U, NULL);
+        (void)utoa64_ ((uint64_t)f_data, &float_stringified[float_result_str_index], 10U, NULL);
     } else {
-        uint64_t float_int_part = (uint64_t) f_data;
+        uint64_t float_int_part = (uint64_t)f_data;
         uint32_t float_int_part_len = 0U;
-        f_data -= (float_t) float_int_part;
-        (void) utoa64_ (float_int_part, &float_stringified [float_result_str_index], 10U, &float_int_part_len);
+        f_data -= (float_t)float_int_part;
+        (void)utoa64_ (float_int_part, &float_stringified[float_result_str_index], 10U, &float_int_part_len);
         float_result_str_index += float_int_part_len;
-        float_stringified [float_result_str_index] = '.';
+        float_stringified[float_result_str_index] = '.';
         float_result_str_index++;
 
         while (f_precision != 0) {
             f_precision--;
             f_data *= 10.0f;
-            float_int_part = (uint64_t) f_data;
-            float_number_to_char = (char) ('0' + float_int_part);
-            float_stringified [float_result_str_index] = float_number_to_char;
+            float_int_part = (uint64_t)f_data;
+            float_number_to_char = (char)('0' + float_int_part);
+            float_stringified[float_result_str_index] = float_number_to_char;
             float_result_str_index++;
-            f_data -= (float_t) float_int_part;
+            f_data -= (float_t)float_int_part;
         }
 
         if (float_auto_precision == true) {
-            while (float_stringified [float_result_str_index - 1U] == '0') {
+            while (float_stringified[float_result_str_index - 1U] == '0') {
                 float_result_str_index--;
             }
-            if (float_stringified [float_result_str_index - 1U] == '.') {
+            if (float_stringified[float_result_str_index - 1U] == '.') {
                 float_result_str_index--;
             }
         }
 
-        float_stringified [float_result_str_index] = '\0';
+        float_stringified[float_result_str_index] = '\0';
     }
 }
 
-void ftoa_ (float_t float_data_, int32_t float_precision_, char float_stringified_ []) {
+void ftoa_ (float_t float_data_, int32_t float_precision_, char float_stringified_[]) {
     switch (__fpclassifyf (float_data_)) {
-        case FP_NORMAL:
-        case FP_ZERO:
-        case FP_SUBNORMAL:
-            ftoa_normal (float_data_, float_precision_, float_stringified_);
-            break;
-        case FP_INFINITE:
-            (void) strcpy (float_stringified_, "INF");
-            break;
-        case FP_NAN:
-            (void) strcpy (float_stringified_, "NAN");
-            break;
-        default:
-            (void) strcpy (float_stringified_, "???");
-            break;
+    case FP_NORMAL:
+    case FP_ZERO:
+    case FP_SUBNORMAL:
+        ftoa_normal (float_data_, float_precision_, float_stringified_);
+        break;
+    case FP_INFINITE:
+        (void)strcpy (float_stringified_, "INF");
+        break;
+    case FP_NAN:
+        (void)strcpy (float_stringified_, "NAN");
+        break;
+    default:
+        (void)strcpy (float_stringified_, "???");
+        break;
     }
 }
 
-uint32_t base64_encode (const uint8_t encode_data [], uint32_t encode_data_size, char encode_result []) {
-    static char basis64 [] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+uint32_t base64_encode (const uint8_t encode_data[], uint32_t encode_data_size, char encode_result[]) {
+    static char basis64[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
     uint32_t encode_result_index = 0U;
     uint32_t encode_data_base_index = 0U;
     uint8_t basis64_char_index;
@@ -997,24 +997,24 @@ uint32_t base64_encode (const uint8_t encode_data [], uint32_t encode_data_size,
     uint32_t s = encode_data_size;
 
     while (s > 2U) {
-        encode_data_char_0 = encode_data [0U + encode_data_base_index];
-        encode_data_char_1 = encode_data [1U + encode_data_base_index];
-        encode_data_char_2 = encode_data [2U + encode_data_base_index];
+        encode_data_char_0 = encode_data[0U + encode_data_base_index];
+        encode_data_char_1 = encode_data[1U + encode_data_base_index];
+        encode_data_char_2 = encode_data[2U + encode_data_base_index];
 
         basis64_char_index = (encode_data_char_0 >> 2U) & 0x3fU;
-        encode_result [encode_result_index] = basis64 [basis64_char_index];
+        encode_result[encode_result_index] = basis64[basis64_char_index];
         encode_result_index++;
 
         basis64_char_index = (uint8_t) ((encode_data_char_0 & 3U) << 4U) | (encode_data_char_1 >> 4U);
-        encode_result [encode_result_index] = basis64 [basis64_char_index];
+        encode_result[encode_result_index] = basis64[basis64_char_index];
         encode_result_index++;
 
         basis64_char_index = (uint8_t) ((encode_data_char_1 & 0x0fU) << 2U) | (encode_data_char_2 >> 6U);
-        encode_result [encode_result_index] = basis64 [basis64_char_index];
+        encode_result[encode_result_index] = basis64[basis64_char_index];
         encode_result_index++;
 
         basis64_char_index = encode_data_char_2 & 0x3fU;
-        encode_result [encode_result_index] = basis64 [basis64_char_index];
+        encode_result[encode_result_index] = basis64[basis64_char_index];
         encode_result_index++;
 
         encode_data_base_index += 3U;
@@ -1022,236 +1022,56 @@ uint32_t base64_encode (const uint8_t encode_data [], uint32_t encode_data_size,
     }
 
     if (s != 0U) {
-        encode_data_char_0 = encode_data [0U + encode_data_base_index];
-        encode_data_char_1 = encode_data [1U + encode_data_base_index];
+        encode_data_char_0 = encode_data[0U + encode_data_base_index];
+        encode_data_char_1 = encode_data[1U + encode_data_base_index];
 
         basis64_char_index = (encode_data_char_0 >> 2U) & 0x3fU;
-        encode_result [encode_result_index] = basis64 [basis64_char_index];
+        encode_result[encode_result_index] = basis64[basis64_char_index];
         encode_result_index++;
 
         if (s == 1U) {
             basis64_char_index = (uint8_t) ((encode_data_char_0 & 3U) << 4U);
-            encode_result [encode_result_index] = basis64 [basis64_char_index];
+            encode_result[encode_result_index] = basis64[basis64_char_index];
             encode_result_index++;
-            encode_result [encode_result_index] = '=';
+            encode_result[encode_result_index] = '=';
             encode_result_index++;
         } else {
             basis64_char_index = (uint8_t) ((encode_data_char_0 & 3U) << 4U) | (encode_data_char_1 >> 4U);
-            encode_result [encode_result_index] = basis64 [basis64_char_index];
+            encode_result[encode_result_index] = basis64[basis64_char_index];
             encode_result_index++;
 
             basis64_char_index = (uint8_t) ((encode_data_char_1 & 0x0fU) << 2U);
-            encode_result [encode_result_index] = basis64 [basis64_char_index];
+            encode_result[encode_result_index] = basis64[basis64_char_index];
             encode_result_index++;
         }
 
-        encode_result [encode_result_index] = '=';
+        encode_result[encode_result_index] = '=';
         encode_result_index++;
     }
 
-    encode_result [encode_result_index] = '\0';
+    encode_result[encode_result_index] = '\0';
     return encode_result_index;
 }
 
-#define XX         222U
-#define BASE64_EQ  61U
+#define XX 222U
+#define BASE64_EQ 61U
 
-bool base64_decode (const char decode_str [], int32_t decode_str_len, uint8_t decode_data [], uint32_t *decode_data_size) {
-    static const uint8_t basis [] =
-        {
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX, 62U,
-        XX,
-        XX,
-        XX, 63U, 52U, 53U, 54U, 55U, 56U, 57U, 58U, 59U, 60U, 61U,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX, 0U, 1U, 2U, 3U, 4U, 5U, 6U, 7U, 8U, 9U, 10U, 11U, 12U, 13U, 14U, 15U, 16U, 17U, 18U, 19U, 20U, 21U, 22U, 23U, 24U, 25U,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX, 26U, 27U, 28U, 29U, 30U, 31U, 32U, 33U, 34U, 35U, 36U, 37U, 38U, 39U, 40U, 41U, 42U, 43U, 44U, 45U, 46U, 47U, 48U, 49U, 50U, 51U,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
+bool base64_decode (const char decode_str[], int32_t decode_str_len, uint8_t decode_data[],
+                    uint32_t *decode_data_size) {
+    static const uint8_t basis[] = {
+        XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,
+        XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  62U,
+        XX,  XX,  XX,  63U, 52U, 53U, 54U, 55U, 56U, 57U, 58U, 59U, 60U, 61U, XX,  XX,  XX,  XX,  XX,  XX,  XX,  0U,
+        1U,  2U,  3U,  4U,  5U,  6U,  7U,  8U,  9U,  10U, 11U, 12U, 13U, 14U, 15U, 16U, 17U, 18U, 19U, 20U, 21U, 22U,
+        23U, 24U, 25U, XX,  XX,  XX,  XX,  XX,  XX,  26U, 27U, 28U, 29U, 30U, 31U, 32U, 33U, 34U, 35U, 36U, 37U, 38U,
+        39U, 40U, 41U, 42U, 43U, 44U, 45U, 46U, 47U, 48U, 49U, 50U, 51U, XX,  XX,  XX,  XX,  XX,
 
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX,
-        XX };
+        XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,
+        XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,
+        XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,
+        XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,
+        XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,
+        XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX,  XX};
 
     bool decode_success = true;
     uint32_t decode_data_index = 0U;
@@ -1266,7 +1086,7 @@ bool base64_decode (const char decode_str [], int32_t decode_str_len, uint8_t de
 
     *decode_data_size = 0U;
     if (len < 0) {
-        len = (int32_t) strlen (decode_str);
+        len = (int32_t)strlen (decode_str);
     }
 
     if ((len % 4) != 0) {
@@ -1274,32 +1094,32 @@ bool base64_decode (const char decode_str [], int32_t decode_str_len, uint8_t de
     }
 
     for (i = 0; i < len; i++) {
-        uint8_t decode_str_char = (uint8_t) decode_str [i];
+        uint8_t decode_str_char = (uint8_t)decode_str[i];
         if ((decode_success == false) || (decode_str_char == BASE64_EQ)) {
             break;
         }
-        if (basis [decode_str_char] == XX) {
+        if (basis[decode_str_char] == XX) {
             decode_success = false;
         }
     }
 
     if (decode_success == true) {
         while (len > 4) {
-            decode_str_char_0 = (uint8_t) decode_str [0U + decode_str_base_index];
-            decode_str_char_1 = (uint8_t) decode_str [1U + decode_str_base_index];
-            decode_str_char_2 = (uint8_t) decode_str [2U + decode_str_base_index];
-            decode_str_char_3 = (uint8_t) decode_str [3U + decode_str_base_index];
+            decode_str_char_0 = (uint8_t)decode_str[0U + decode_str_base_index];
+            decode_str_char_1 = (uint8_t)decode_str[1U + decode_str_base_index];
+            decode_str_char_2 = (uint8_t)decode_str[2U + decode_str_base_index];
+            decode_str_char_3 = (uint8_t)decode_str[3U + decode_str_base_index];
 
-            decode_value = ((uint8_t) (basis [decode_str_char_0] << 2U) | (uint8_t) (basis [decode_str_char_1] >> 4U));
-            decode_data [decode_data_index] = decode_value;
+            decode_value = ((uint8_t) (basis[decode_str_char_0] << 2U) | (uint8_t) (basis[decode_str_char_1] >> 4U));
+            decode_data[decode_data_index] = decode_value;
             decode_data_index++;
 
-            decode_value = ((uint8_t) (basis [decode_str_char_1] << 4U) | (uint8_t) (basis [decode_str_char_2] >> 2U));
-            decode_data [decode_data_index] = decode_value;
+            decode_value = ((uint8_t) (basis[decode_str_char_1] << 4U) | (uint8_t) (basis[decode_str_char_2] >> 2U));
+            decode_data[decode_data_index] = decode_value;
             decode_data_index++;
 
-            decode_value = ((uint8_t) (basis [decode_str_char_2] << 6U) | basis [decode_str_char_3]);
-            decode_data [decode_data_index] = decode_value;
+            decode_value = ((uint8_t) (basis[decode_str_char_2] << 6U) | basis[decode_str_char_3]);
+            decode_data[decode_data_index] = decode_value;
             decode_data_index++;
 
             decode_str_base_index += 4U;
@@ -1307,21 +1127,22 @@ bool base64_decode (const char decode_str [], int32_t decode_str_len, uint8_t de
         }
 
         if (len != 0) {
-            decode_str_char_0 = (uint8_t) decode_str [0U + decode_str_base_index];
-            decode_str_char_1 = (uint8_t) decode_str [1U + decode_str_base_index];
-            decode_str_char_2 = (uint8_t) decode_str [2U + decode_str_base_index];
-            decode_str_char_3 = (uint8_t) decode_str [3U + decode_str_base_index];
+            decode_str_char_0 = (uint8_t)decode_str[0U + decode_str_base_index];
+            decode_str_char_1 = (uint8_t)decode_str[1U + decode_str_base_index];
+            decode_str_char_2 = (uint8_t)decode_str[2U + decode_str_base_index];
+            decode_str_char_3 = (uint8_t)decode_str[3U + decode_str_base_index];
 
-            decode_value = ((uint8_t) (basis [decode_str_char_0] << 2U) | (uint8_t) (basis [decode_str_char_1] >> 4U));
-            decode_data [decode_data_index] = decode_value;
+            decode_value = ((uint8_t) (basis[decode_str_char_0] << 2U) | (uint8_t) (basis[decode_str_char_1] >> 4U));
+            decode_data[decode_data_index] = decode_value;
             decode_data_index++;
             if (decode_str_char_2 != BASE64_EQ) {
-                decode_value = ((uint8_t) (basis [decode_str_char_1] << 4U) | (uint8_t) (basis [decode_str_char_2] >> 2U));
-                decode_data [decode_data_index] = decode_value;
+                decode_value =
+                    ((uint8_t) (basis[decode_str_char_1] << 4U) | (uint8_t) (basis[decode_str_char_2] >> 2U));
+                decode_data[decode_data_index] = decode_value;
                 decode_data_index++;
                 if (decode_str_char_3 != BASE64_EQ) {
-                    decode_value = ((uint8_t) (basis [decode_str_char_2] << 6U) | basis [decode_str_char_3]);
-                    decode_data [decode_data_index] = decode_value;
+                    decode_value = ((uint8_t) (basis[decode_str_char_2] << 6U) | basis[decode_str_char_3]);
+                    decode_data[decode_data_index] = decode_value;
                     decode_data_index++;
                 }
             }
@@ -1333,54 +1154,54 @@ bool base64_decode (const char decode_str [], int32_t decode_str_len, uint8_t de
     return decode_success;
 }
 
-const char* rx_ltoa32 (int32_t ltoa32_data) {
-    static char ltoa32_str [(MAX_INT32_STR_LEN_10 + 1U)];
+const char *rx_ltoa32 (int32_t ltoa32_data) {
+    static char ltoa32_str[(MAX_INT32_STR_LEN_10 + 1U)];
     return ltoa32_ (ltoa32_data, ltoa32_str, 10U, NULL);
 }
 
-const char* rx_ltoa64 (int64_t ltoa64_data) {
-    static char ltoa64_str [(MAX_INT64_STR_LEN_10 + 1U)];
+const char *rx_ltoa64 (int64_t ltoa64_data) {
+    static char ltoa64_str[(MAX_INT64_STR_LEN_10 + 1U)];
     return ltoa64_ (ltoa64_data, ltoa64_str, 10U, NULL);
 }
 
-const char* rx_utoa32 (uint32_t utoa32_data) {
-    static char utoa32_str [(MAX_INT32_STR_LEN_10 + 1U)];
+const char *rx_utoa32 (uint32_t utoa32_data) {
+    static char utoa32_str[(MAX_INT32_STR_LEN_10 + 1U)];
     return utoa32_ (utoa32_data, utoa32_str, 10U, NULL);
 }
 
-const char* rx_utoa64 (uint64_t utoa64_data) {
-    static char utoa64_str [(MAX_INT64_STR_LEN_10 + 1U)];
+const char *rx_utoa64 (uint64_t utoa64_data) {
+    static char utoa64_str[(MAX_INT64_STR_LEN_10 + 1U)];
     return utoa64_ (utoa64_data, utoa64_str, 10U, NULL);
 }
 
-const char* utoa_hex32 (uint32_t u32_hex_data) {
-    static char utoa_hex32_str [(MAX_INT32_STR_LEN_16 + 1U)];
+const char *utoa_hex32 (uint32_t u32_hex_data) {
+    static char utoa_hex32_str[(MAX_INT32_STR_LEN_16 + 1U)];
     return utoa32_ (u32_hex_data, utoa_hex32_str, 16U, NULL);
 }
 
-const char* utoa_hex64 (uint64_t u64_hex_data) {
-    static char utoa_hex64_str [(MAX_INT64_STR_LEN_16 + 1U)];
+const char *utoa_hex64 (uint64_t u64_hex_data) {
+    static char utoa_hex64_str[(MAX_INT64_STR_LEN_16 + 1U)];
     return utoa64_ (u64_hex_data, utoa_hex64_str, 16U, NULL);
 }
 
-const char* ltoa_hex32 (int32_t s32_hex_data) {
-    static char ltoa_hex32_str [(MAX_INT32_STR_LEN_16 + 1U)];
+const char *ltoa_hex32 (int32_t s32_hex_data) {
+    static char ltoa_hex32_str[(MAX_INT32_STR_LEN_16 + 1U)];
     return ltoa32_ (s32_hex_data, ltoa_hex32_str, 16U, NULL);
 }
 
-const char* ltoa_hex64 (int64_t s64_hex_data) {
-    static char ltoa_hex64_str [(MAX_INT64_STR_LEN_16 + 1U)];
+const char *ltoa_hex64 (int64_t s64_hex_data) {
+    static char ltoa_hex64_str[(MAX_INT64_STR_LEN_16 + 1U)];
     return ltoa64_ (s64_hex_data, ltoa_hex64_str, 16U, NULL);
 }
 
-const char* rx_dtoa (double_t d) {
-    static char dtoa_str [(((MAX_INT64_STR_LEN_10 + MAX_PRECISION) + 1U) + 1U)];
+const char *rx_dtoa (double_t d) {
+    static char dtoa_str[(((MAX_INT64_STR_LEN_10 + MAX_PRECISION) + 1U) + 1U)];
     dtoa_ (d, -1, dtoa_str);
     return dtoa_str;
 }
 
-const char* rx_ftoa (float_t float_v) {
-    static char ftoa_str [(((MAX_INT64_STR_LEN_10 + MAX_PRECISION) + 1U) + 1U)];
+const char *rx_ftoa (float_t float_v) {
+    static char ftoa_str[(((MAX_INT64_STR_LEN_10 + MAX_PRECISION) + 1U) + 1U)];
     ftoa_ (float_v, -1, ftoa_str);
     return ftoa_str;
 }
@@ -1390,37 +1211,37 @@ static bool try_hex_char_to_u8 (uint8_t hex_char, uint8_t *hex_char_to_u8_value)
     bool hex_char_to_u8_success = true;
 
     switch (hex_char) {
-        case (uint8_t) '0':
-        case (uint8_t) '1':
-        case (uint8_t) '2':
-        case (uint8_t) '3':
-        case (uint8_t) '4':
-        case (uint8_t) '5':
-        case (uint8_t) '6':
-        case (uint8_t) '7':
-        case (uint8_t) '8':
-        case (uint8_t) '9':
-            hex_char_to_u8_result = hex_char - (uint8_t) '0';
-            break;
-        case (uint8_t) 'a':
-        case (uint8_t) 'b':
-        case (uint8_t) 'c':
-        case (uint8_t) 'd':
-        case (uint8_t) 'e':
-        case (uint8_t) 'f':
-            hex_char_to_u8_result = ((hex_char - (uint8_t) 'a') + 10U);
-            break;
-        case (uint8_t) 'A':
-        case (uint8_t) 'B':
-        case (uint8_t) 'C':
-        case (uint8_t) 'D':
-        case (uint8_t) 'E':
-        case (uint8_t) 'F':
-            hex_char_to_u8_result = ((hex_char - (uint8_t) 'A') + 10U);
-            break;
-        default:
-            hex_char_to_u8_success = false;
-            break;
+    case (uint8_t)'0':
+    case (uint8_t)'1':
+    case (uint8_t)'2':
+    case (uint8_t)'3':
+    case (uint8_t)'4':
+    case (uint8_t)'5':
+    case (uint8_t)'6':
+    case (uint8_t)'7':
+    case (uint8_t)'8':
+    case (uint8_t)'9':
+        hex_char_to_u8_result = hex_char - (uint8_t)'0';
+        break;
+    case (uint8_t)'a':
+    case (uint8_t)'b':
+    case (uint8_t)'c':
+    case (uint8_t)'d':
+    case (uint8_t)'e':
+    case (uint8_t)'f':
+        hex_char_to_u8_result = ((hex_char - (uint8_t)'a') + 10U);
+        break;
+    case (uint8_t)'A':
+    case (uint8_t)'B':
+    case (uint8_t)'C':
+    case (uint8_t)'D':
+    case (uint8_t)'E':
+    case (uint8_t)'F':
+        hex_char_to_u8_result = ((hex_char - (uint8_t)'A') + 10U);
+        break;
+    default:
+        hex_char_to_u8_success = false;
+        break;
     }
     if (NULL != hex_char_to_u8_value) {
         (*hex_char_to_u8_value) = hex_char_to_u8_result;
@@ -1432,12 +1253,12 @@ static bool try_dec_char_to_u8 (uint8_t dec_char, uint8_t *dec_char_to_u8_value)
     uint8_t dec_char_to_u8_result = 0U;
     bool dec_char_to_u8_success = true;
 
-    if ((dec_char < (uint8_t) '0') || (dec_char > (uint8_t) '9')) {
+    if ((dec_char < (uint8_t)'0') || (dec_char > (uint8_t)'9')) {
         dec_char_to_u8_success = false;
     }
 
     if (dec_char_to_u8_success == true) {
-        dec_char_to_u8_result = dec_char - (uint8_t) '0';
+        dec_char_to_u8_result = dec_char - (uint8_t)'0';
     }
     if (NULL != dec_char_to_u8_value) {
         (*dec_char_to_u8_value) = dec_char_to_u8_result;
@@ -1458,12 +1279,12 @@ static bool is_signed (const char first_str_char, int32_t *first_digit_index) {
     return negative;
 }
 
-static bool get_str_len (const char char_str [], int32_t *str_len) {
+static bool get_str_len (const char char_str[], int32_t *str_len) {
     bool str_not_empty = true;
     if (NULL != char_str) {
         if (*str_len < 0) {
             if (char_str != NULL) {
-                *str_len = (int32_t) strlen (char_str);
+                *str_len = (int32_t)strlen (char_str);
             } else {
                 *str_len = 0;
             }
@@ -1489,7 +1310,7 @@ static bool is_dec_digit (const char character) {
     return res;
 }
 
-bool is_dec_str (const char str_to_check [], int32_t str_to_check_len) {
+bool is_dec_str (const char str_to_check[], int32_t str_to_check_len) {
     bool is_dec_str_result = false;
     int32_t valid_dec_cnd = 0;
     if (NULL != str_to_check) {
@@ -1497,7 +1318,7 @@ bool is_dec_str (const char str_to_check [], int32_t str_to_check_len) {
         if (true == len_check_passed) {
             int32_t i = 0;
             for (i = 0; i < str_to_check_len; i++) {
-                if ( true == is_dec_digit (str_to_check [i])) {
+                if (true == is_dec_digit (str_to_check[i])) {
                     valid_dec_cnd++;
                 }
             }
@@ -1509,7 +1330,7 @@ bool is_dec_str (const char str_to_check [], int32_t str_to_check_len) {
     return is_dec_str_result;
 }
 
-bool is_hex_str (const char str_to_check [], int32_t str_to_check_len, uint8_t * const out_shift) {
+bool is_hex_str (const char str_to_check[], int32_t str_to_check_len, uint8_t *const out_shift) {
     bool is_hex_str_result = false;
     int32_t validHexCnt = 0;
     uint8_t out_shift_loc = 0U;
@@ -1518,19 +1339,20 @@ bool is_hex_str (const char str_to_check [], int32_t str_to_check_len, uint8_t *
         if (false == is_dec_str_res) {
             bool len_check_passed = (str_to_check_len > 2);
             if (true == len_check_passed) {
-                if (((char) '0' == str_to_check [0]) && (((char) 'x' == str_to_check [1]) || ((char) 'X' == str_to_check [1]))) {
+                if (((char)'0' == str_to_check[0]) &&
+                    (((char)'x' == str_to_check[1]) || ((char)'X' == str_to_check[1]))) {
                     out_shift_loc = 2U;
                 } else {
                     out_shift_loc = 0U;
                 }
 
                 int32_t i = 0;
-                for (i = ((int32_t) out_shift_loc); i < str_to_check_len; i++) {
-                    if ( true == is_hex_digit (str_to_check [i])) {
+                for (i = ((int32_t)out_shift_loc); i < str_to_check_len; i++) {
+                    if (true == is_hex_digit (str_to_check[i])) {
                         validHexCnt++;
                     }
                 }
-                if ((str_to_check_len - ((int32_t) out_shift_loc)) == validHexCnt) {
+                if ((str_to_check_len - ((int32_t)out_shift_loc)) == validHexCnt) {
                     (*out_shift) = out_shift_loc;
                     is_hex_str_result = true;
                 }
@@ -1542,8 +1364,7 @@ bool is_hex_str (const char str_to_check [], int32_t str_to_check_len, uint8_t *
 
 static bool is_hex_digit (const char character) {
     bool res = false;
-    if ((('A' <= character) && (character <= 'F')) ||
-        (('a' <= character) && (character <= 'f')) ||
+    if ((('A' <= character) && (character <= 'F')) || (('a' <= character) && (character <= 'f')) ||
         (('0' <= character) && (character <= '9'))) {
         res = true;
     } else {
@@ -1552,7 +1373,7 @@ static bool is_hex_digit (const char character) {
     return res;
 }
 
-static bool rx_strtod (const char str [], const char **endptr, double_t *result) {
+static bool rx_strtod (const char str[], const char **endptr, double_t *result) {
     bool strtod_success = true;
     if (NULL != result) {
         bool strtod_negative = false;
@@ -1566,44 +1387,44 @@ static bool rx_strtod (const char str [], const char **endptr, double_t *result)
         uint8_t temp_value = 0U;
 
         /* Skip leading whitespace */
-        while (isspace ((int32_t) (str [str_index])) > 0) {
+        while (isspace ((int32_t) (str[str_index])) > 0) {
             str_index++;
         }
 
         /* Handle optional sign */
-        if (('-' == str [str_index]) || ('+' == str [str_index])) {
-            if ('-' == str [str_index]) {
+        if (('-' == str[str_index]) || ('+' == str[str_index])) {
+            if ('-' == str[str_index]) {
                 strtod_negative = true;
             }
             str_index++;
         }
 
         /* Process string of digits */
-        while (isdigit ((int32_t) (str [str_index])) > 0) {
-            (void) try_dec_char_to_u8 ((uint8_t) str [str_index], &temp_value);
-            number = (number * 10.0) + (double_t) temp_value;
+        while (isdigit ((int32_t) (str[str_index])) > 0) {
+            (void)try_dec_char_to_u8 ((uint8_t)str[str_index], &temp_value);
+            number = (number * 10.0) + (double_t)temp_value;
             str_index++;
             num_digits++;
         }
 
         /* Process decimal part  */
-        if (str [str_index] == '.') {
+        if (str[str_index] == '.') {
             str_index++;
 
-            while (isdigit ((int32_t) (str [str_index])) > 0) {
-                (void) try_dec_char_to_u8 ((uint8_t) str [str_index], &temp_value);
-                number = (number * 10.0) + (double_t) temp_value;
+            while (isdigit ((int32_t) (str[str_index])) > 0) {
+                (void)try_dec_char_to_u8 ((uint8_t)str[str_index], &temp_value);
+                number = (number * 10.0) + (double_t)temp_value;
                 str_index++;
                 num_digits++;
                 num_decimals++;
             }
 
-            exponent -= (int32_t) num_decimals;
+            exponent -= (int32_t)num_decimals;
         }
 
         if (num_digits == 0U) {
             if (endptr != NULL) {
-                *endptr = &str [str_index];
+                *endptr = &str[str_index];
             }
 
             strtod_success = false;
@@ -1615,24 +1436,24 @@ static bool rx_strtod (const char str [], const char **endptr, double_t *result)
             }
 
             /* Process an exponent string */
-            if ((str [str_index] == 'e') || (str [str_index] == 'E')) {
+            if ((str[str_index] == 'e') || (str[str_index] == 'E')) {
                 /* Handle optional sign */
                 strtod_negative = false;
                 str_index++;
 
-                if (('-' == str [str_index]) || ('+' == str [str_index])) {
-                    if ('-' == str [str_index]) {
+                if (('-' == str[str_index]) || ('+' == str[str_index])) {
+                    if ('-' == str[str_index]) {
                         strtod_negative = true;
                     }
                     str_index++;
                 }
 
-                if (isdigit ((int32_t) (str [str_index])) > 0) {
+                if (isdigit ((int32_t) (str[str_index])) > 0) {
                     /* Process string of digits */
                     s32_number = 0;
-                    while (isdigit ((int32_t) (str [str_index])) > 0) {
-                        (void) try_dec_char_to_u8 ((uint8_t) str [str_index], &temp_value);
-                        s32_number = (s32_number * 10) + (int32_t) temp_value;
+                    while (isdigit ((int32_t) (str[str_index])) > 0) {
+                        (void)try_dec_char_to_u8 ((uint8_t)str[str_index], &temp_value);
+                        s32_number = (s32_number * 10) + (int32_t)temp_value;
                         str_index++;
                     }
 
@@ -1648,7 +1469,7 @@ static bool rx_strtod (const char str [], const char **endptr, double_t *result)
 
             if ((exponent < DBL_MIN_10_EXP) || (exponent > DBL_MAX_10_EXP)) {
                 if (endptr != NULL) {
-                    *endptr = &str [str_index];
+                    *endptr = &str[str_index];
                 }
 
                 strtod_success = false;
@@ -1677,7 +1498,7 @@ static bool rx_strtod (const char str [], const char **endptr, double_t *result)
                 }
 
                 if (endptr != NULL) {
-                    *endptr = &str [str_index];
+                    *endptr = &str[str_index];
                 }
                 if (NULL != result) {
                     *result = number;
@@ -1722,67 +1543,68 @@ static bool is_false (const char *false_str_to_check) {
     return is_false_result;
 }
 
-const char* utoa_bin16 (uint16_t u16_bin_data) {
+const char *utoa_bin16 (uint16_t u16_bin_data) {
     uint8_t cell16 = 0u;
     uint16_t mask16 = 0x8000U;
-    static char outBitStr16 [sizeof("0000_0000_0000_0000") + 1U] = "0000_0000_0000_0000";
+    static char outBitStr16[sizeof ("0000_0000_0000_0000") + 1U] = "0000_0000_0000_0000";
     while (mask16 != 0U) {
-        if (outBitStr16 [cell16] == '_') {
+        if (outBitStr16[cell16] == '_') {
             cell16++;
         }
         if (0u != (u16_bin_data & mask16)) {
-            outBitStr16 [cell16] = '1';
+            outBitStr16[cell16] = '1';
         } else {
-            outBitStr16 [cell16] = '0';
+            outBitStr16[cell16] = '0';
         }
         mask16 >>= 1U;
         cell16++;
     }
-    outBitStr16 [sizeof(outBitStr16) - 1u] = '\0';
+    outBitStr16[sizeof (outBitStr16) - 1u] = '\0';
     return outBitStr16;
 }
 
-const char* utoa_bin24 (uint32_t u32_bin_data) {
+const char *utoa_bin24 (uint32_t u32_bin_data) {
     uint8_t cell24 = 0u;
     uint32_t mask24 = 0x00800000U;
-    static char outBitStr24 [sizeof("0000_0000_0000_0000_0000_0000") + 1U] = "0000_0000_0000_0000_0000_0000";
+    static char outBitStr24[sizeof ("0000_0000_0000_0000_0000_0000") + 1U] = "0000_0000_0000_0000_0000_0000";
     while (mask24 != 0U) {
-        if (outBitStr24 [cell24] == '_') {
+        if (outBitStr24[cell24] == '_') {
             cell24++;
         }
         if (0u != (u32_bin_data & mask24)) {
-            outBitStr24 [cell24] = '1';
+            outBitStr24[cell24] = '1';
         } else {
-            outBitStr24 [cell24] = '0';
+            outBitStr24[cell24] = '0';
         }
         mask24 >>= 1U;
         cell24++;
     }
-    outBitStr24 [sizeof(outBitStr24) - 1u] = '\0';
+    outBitStr24[sizeof (outBitStr24) - 1u] = '\0';
     return outBitStr24;
 }
 
-const char* utoa_bin32 (uint32_t u32_bin_data) {
+const char *utoa_bin32 (uint32_t u32_bin_data) {
     uint8_t cell32 = 0u;
     uint32_t mask32 = 0x80000000U;
-    static char outBitStr32 [sizeof("0000_0000_0000_0000_0000_0000_0000_0000") + 1U] = "0000_0000_0000_0000_0000_0000_0000_0000";
+    static char outBitStr32[sizeof ("0000_0000_0000_0000_0000_0000_0000_0000") + 1U] =
+        "0000_0000_0000_0000_0000_0000_0000_0000";
     while (mask32 != 0U) {
-        if (outBitStr32 [cell32] == '_') {
+        if (outBitStr32[cell32] == '_') {
             cell32++;
         }
         if (0u != (u32_bin_data & mask32)) {
-            outBitStr32 [cell32] = '1';
+            outBitStr32[cell32] = '1';
         } else {
-            outBitStr32 [cell32] = '0';
+            outBitStr32[cell32] = '0';
         }
         mask32 >>= 1U;
         cell32++;
     }
-    outBitStr32 [sizeof(outBitStr32) - 1u] = '\0';
+    outBitStr32[sizeof (outBitStr32) - 1u] = '\0';
     return outBitStr32;
 }
 
-const char* bool2name (bool val) {
+const char *bool2name (bool val) {
     const char *name = "undef";
     if (true == val) {
         name = "on";
@@ -1794,10 +1616,9 @@ const char* bool2name (bool val) {
 }
 
 /** Converts the string in `192.168.1.101` format to the uint32_t IP address */
-bool try_strl2ipv4(const char str__tsl2i4[], int32_t str_len__tsl2i4, uint32_t* ipv4_ptr__tsl2i4)
-{
+bool try_strl2ipv4 (const char str__tsl2i4[], int32_t str_len__tsl2i4, uint32_t *ipv4_ptr__tsl2i4) {
     /* Minimal IPv4 address in correct format is: `0.0.0.0` (7 chars) */
-#   define TRY_STRL2IPV4_MIN_LENGTH     7
+#define TRY_STRL2IPV4_MIN_LENGTH 7
     bool result__tsl2i4;
 
     if (str__tsl2i4 == NULL) {
@@ -1809,19 +1630,19 @@ bool try_strl2ipv4(const char str__tsl2i4[], int32_t str_len__tsl2i4, uint32_t* 
         result__tsl2i4 = false;
 
     } else {
-        uint16_t    value__tsl2i4[4] = {0u, 0u, 0u, 0u};
-        uint8_t     octet_n__tsl2i4  = 0u;
-        int32_t     offset__tsl2i4   = 0u;
+        uint16_t value__tsl2i4[4] = {0u, 0u, 0u, 0u};
+        uint8_t octet_n__tsl2i4 = 0u;
+        int32_t offset__tsl2i4 = 0u;
 
         result__tsl2i4 = true;
 
         while ((result__tsl2i4 == true) && (offset__tsl2i4 < str_len__tsl2i4)) {
-            char        c__tsl2i4 = str__tsl2i4[offset__tsl2i4];
+            char c__tsl2i4 = str__tsl2i4[offset__tsl2i4];
             offset__tsl2i4 += 1u;
 
             if ((c__tsl2i4 >= '0') && (c__tsl2i4 <= '9')) {
                 value__tsl2i4[octet_n__tsl2i4] *= 10u;
-                value__tsl2i4[octet_n__tsl2i4] += (uint8_t)(c__tsl2i4 - '0');
+                value__tsl2i4[octet_n__tsl2i4] += (uint8_t) (c__tsl2i4 - '0');
 
                 if (value__tsl2i4[octet_n__tsl2i4] > 255u) {
                     /* Error: Octet value is too large */
@@ -1851,12 +1672,12 @@ bool try_strl2ipv4(const char str__tsl2i4[], int32_t str_len__tsl2i4, uint32_t* 
         }
 
         if (result__tsl2i4 == true) {
-            uint32_t    ipv4__tsl2i4 = 0u;
+            uint32_t ipv4__tsl2i4 = 0u;
 
-            ipv4__tsl2i4 |= (uint32_t)((uint32_t)(value__tsl2i4[0] & 0xFFu) << 24u);
-            ipv4__tsl2i4 |= (uint32_t)((uint32_t)(value__tsl2i4[1] & 0xFFu) << 16u);
-            ipv4__tsl2i4 |= (uint32_t)((uint32_t)(value__tsl2i4[2] & 0xFFu) <<  8u);
-            ipv4__tsl2i4 |= (uint32_t)((uint32_t)(value__tsl2i4[3] & 0xFFu) <<  0u);
+            ipv4__tsl2i4 |= (uint32_t) ((uint32_t) (value__tsl2i4[0] & 0xFFu) << 24u);
+            ipv4__tsl2i4 |= (uint32_t) ((uint32_t) (value__tsl2i4[1] & 0xFFu) << 16u);
+            ipv4__tsl2i4 |= (uint32_t) ((uint32_t) (value__tsl2i4[2] & 0xFFu) << 8u);
+            ipv4__tsl2i4 |= (uint32_t) ((uint32_t) (value__tsl2i4[3] & 0xFFu) << 0u);
 
             if (ipv4_ptr__tsl2i4 != NULL) {
                 *ipv4_ptr__tsl2i4 = ipv4__tsl2i4;
@@ -1867,23 +1688,16 @@ bool try_strl2ipv4(const char str__tsl2i4[], int32_t str_len__tsl2i4, uint32_t* 
     return result__tsl2i4;
 }
 
-
-bool try_str2mac (const char macStr [], uint8_t *outMacAddr) {
+bool try_str2mac (const char macStr[], uint8_t *outMacAddr) {
     bool res = false;
     int numberOfVariables;
-    numberOfVariables = sscanf (
-        macStr,
-        "%x:%x:%x:%x:%x:%x",
-        (unsigned int *)&outMacAddr [0],
-        (unsigned int *)&outMacAddr [1],
-        (unsigned int *)&outMacAddr [2],
-        (unsigned int *)&outMacAddr [3],
-        (unsigned int *)&outMacAddr [4],
-        (unsigned int *)&outMacAddr [5]);
+    numberOfVariables =
+        sscanf (macStr, "%x:%x:%x:%x:%x:%x", (unsigned int *)&outMacAddr[0], (unsigned int *)&outMacAddr[1],
+                (unsigned int *)&outMacAddr[2], (unsigned int *)&outMacAddr[3], (unsigned int *)&outMacAddr[4],
+                (unsigned int *)&outMacAddr[5]);
     if (6 == numberOfVariables) {
         res = true;
     }
 
     return res;
 }
-

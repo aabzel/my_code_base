@@ -17,9 +17,10 @@ extern "C" {
 #define STRAIGHT_ENTRY (false)
 
 int uniquePathDiagScale (int xMax, int yMax);
-float minPathDiagScaleSum (int* grid, int numLine, int numColumn);
-bool minPathDiagScale (int* grid, int numLine, int numColumn);
-void find_min_path_diag_stale (int* grid, int numLine, int numColumn, float minSum, Cell_t **minPathArr, int *minPathLen);
+float minPathDiagScaleSum (int *grid, int numLine, int numColumn);
+bool minPathDiagScale (int *grid, int numLine, int numColumn);
+void find_min_path_diag_stale (int *grid, int numLine, int numColumn, float minSum, Cell_t **minPathArr,
+                               int *minPathLen);
 
 #ifdef __cplusplus
 }

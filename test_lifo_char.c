@@ -2,23 +2,23 @@
 
 #include "lifo_char.h"
 
-#include <string.h>
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
+#include <string.h>
 
 Lifo_array_t lifiObj;
-char array [5];
+char array[5];
 
 #define STRING19 "123456789"
 Lifo_array_t lifiObj2;
 bool test_lifo_array1_char (void) {
     bool res = false;
-    char array1 [6];
-    char outArray [100];
+    char array1[6];
+    char outArray[100];
     uint16_t outLen = 0;
     int cmpRes = -1;
 
-    lifo_init (&lifiObj2, sizeof(array1), array1);
+    lifo_init (&lifiObj2, sizeof (array1), array1);
 
     res = lifo_push_array (&lifiObj2, STRING19, strlen (STRING19));
     if (true == res) {
@@ -40,7 +40,7 @@ bool test_lifo_array1_char (void) {
         return false;
     }
 
-    strncpy(outArray,"",strlen(outArray));
+    strncpy (outArray, "", strlen (outArray));
     res = lifo_pull_array (&lifiObj2, outArray, &outLen);
     if (false == res) {
         printf ("\n%s %d", __FUNCTION__, __COUNTER__);
@@ -61,19 +61,19 @@ bool test_lifo_array1_char (void) {
 Lifo_array_t lifiObj1;
 bool test_lifo_array_char (void) {
     bool res = false;
-    char array1 [10];
-    char outArray [100];
+    char array1[10];
+    char outArray[100];
     uint16_t outLen = 0;
     int cmpRes = -1;
 
-    lifo_init (&lifiObj1, sizeof(array1), array1);
+    lifo_init (&lifiObj1, sizeof (array1), array1);
 
     res = lifo_push_array (&lifiObj1, "12345", 5);
     if (false == res) {
         printf ("\n%s %d", __FUNCTION__, __COUNTER__);
         return false;
     }
-    strncpy(outArray,"",strlen(outArray));
+    strncpy (outArray, "", strlen (outArray));
     res = lifo_peek_array (&lifiObj1, outArray, &outLen);
     if (false == res) {
         printf ("\n%s %d", __FUNCTION__, __COUNTER__);
@@ -87,7 +87,7 @@ bool test_lifo_array_char (void) {
         return false;
     }
 
-    strncpy(outArray,"",strlen(outArray));
+    strncpy (outArray, "", strlen (outArray));
     res = lifo_pull_array (&lifiObj1, outArray, &outLen);
     if (false == res) {
         printf ("\n%s %d", __FUNCTION__, __COUNTER__);
@@ -131,7 +131,7 @@ bool test_lifo (void) {
 bool test_lifo_char (void) {
     char outChar;
     bool res;
-    lifo_init (&lifiObj, sizeof(array), array);
+    lifo_init (&lifiObj, sizeof (array), array);
 
     res = lifo_push (&lifiObj, '1');
     if (false == res) {

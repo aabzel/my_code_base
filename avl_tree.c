@@ -4,18 +4,18 @@
 
 #include <stdlib.h>
 
-static TreeNode_t * _avl_subtree_insert (TreeNode_t * n, int val);
-static TreeNode_t * _avl_node_create (int val);
-static int _avl_get_height (TreeNode_t* n);
-static int _avl_balance_factor (TreeNode_t * n);
-static int _avl_subtree_min_val (TreeNode_t * n);
-static TreeNode_t * _avl_rotate_left (TreeNode_t * n);
-static TreeNode_t * _avl_rotate_right (TreeNode_t * n);
-static void _avl_update_height (TreeNode_t * n);
-static TreeNode_t * _avl_subtree_remove (TreeNode_t * n, int oldVal);
-static TreeNode_t* _avl_balance (TreeNode_t* n);
+static TreeNode_t *_avl_subtree_insert (TreeNode_t *n, int val);
+static TreeNode_t *_avl_node_create (int val);
+static int _avl_get_height (TreeNode_t *n);
+static int _avl_balance_factor (TreeNode_t *n);
+static int _avl_subtree_min_val (TreeNode_t *n);
+static TreeNode_t *_avl_rotate_left (TreeNode_t *n);
+static TreeNode_t *_avl_rotate_right (TreeNode_t *n);
+static void _avl_update_height (TreeNode_t *n);
+static TreeNode_t *_avl_subtree_remove (TreeNode_t *n, int oldVal);
+static TreeNode_t *_avl_balance (TreeNode_t *n);
 
-TreeNode_t * avl_insert (TreeNode_t *root, int newVal) {
+TreeNode_t *avl_insert (TreeNode_t *root, int newVal) {
     TreeNode_t *node;
     /*
      * We insert val by using our subtree insertion function starting with the
@@ -33,7 +33,7 @@ bool avl_is_empty (TreeNode_t *rootNode) {
     return res;
 }
 
-TreeNode_t * avl_delete (TreeNode_t *rootNode, int oldVal) {
+TreeNode_t *avl_delete (TreeNode_t *rootNode, int oldVal) {
     TreeNode_t *newRoot = NULL;
     if (rootNode) {
         newRoot = _avl_subtree_remove (rootNode, oldVal);
@@ -50,7 +50,7 @@ TreeNode_t * avl_delete (TreeNode_t *rootNode, int oldVal) {
  * Returns the potentially new root of the given subtree, modified to have
  * the specified value removed.
  */
-static TreeNode_t * _avl_subtree_remove (TreeNode_t * n, int oldVal) {
+static TreeNode_t *_avl_subtree_remove (TreeNode_t *n, int oldVal) {
     if (n == NULL) {
         /*
          * If n is NULL, that means we've reached a leaf node without finding
@@ -108,7 +108,7 @@ static TreeNode_t * _avl_subtree_remove (TreeNode_t * n, int oldVal) {
              * n's parent via the recursion.  We don't need to balance the left
              * child before returning, since it should already be balanced.
              */
-            TreeNode_t* left_child = n->left;
+            TreeNode_t *left_child = n->left;
             free (n);
             return left_child;
 
@@ -120,7 +120,7 @@ static TreeNode_t * _avl_subtree_remove (TreeNode_t * n, int oldVal) {
              * n's parent via the recursion.  We don't need to balance the right
              * child before returning, since it should already be balanced.
              */
-            TreeNode_t* right_child = n->right;
+            TreeNode_t *right_child = n->right;
             free (n);
             return right_child;
         } else {
@@ -134,7 +134,7 @@ static TreeNode_t * _avl_subtree_remove (TreeNode_t * n, int oldVal) {
     }
 }
 
-static TreeNode_t* _avl_balance (TreeNode_t* n) {
+static TreeNode_t *_avl_balance (TreeNode_t *n) {
     if (n) {
         int bf = _avl_balance_factor (n);
         if (bf < -1) {
@@ -159,7 +159,6 @@ static TreeNode_t* _avl_balance (TreeNode_t* n) {
             // Just update the height if we didn’t rotate.
             _avl_update_height (n);
             return n;
-
         }
     } else {
         return NULL;
@@ -171,8 +170,8 @@ static TreeNode_t* _avl_balance (TreeNode_t* n) {
  * node.  The rotation is centered around the node's right child.  The new
  * subtree root (the rotation's center) is returned.
  */
-static TreeNode_t * _avl_rotate_right (TreeNode_t * n) {
-    TreeNode_t * center = n->left;
+static TreeNode_t *_avl_rotate_right (TreeNode_t *n) {
+    TreeNode_t *center = n->left;
 
     // The center's right child and n "trade places" in the tree.
     n->left = center->right;
@@ -189,8 +188,8 @@ static TreeNode_t * _avl_rotate_right (TreeNode_t * n) {
  * node.  The rotation is centered around the node's right child.  The new
  * subtree root (the rotation's center) is returned.
  */
-static TreeNode_t * _avl_rotate_left (TreeNode_t * n) {
-    TreeNode_t * center = n->right;
+static TreeNode_t *_avl_rotate_left (TreeNode_t *n) {
+    TreeNode_t *center = n->right;
 
     // The center's left child and n "trade places" in the tree.
     n->right = center->left;
@@ -206,14 +205,14 @@ static TreeNode_t * _avl_rotate_left (TreeNode_t * n) {
  * Helper function to get a node's height, even if the node is NULL (in which
  * case the height is -1).
  */
-static int _avl_get_height (TreeNode_t* n) {
+static int _avl_get_height (TreeNode_t *n) {
     if (n == NULL) {
         return -1;
     }
     return n->height;
 }
 
-static void _avl_update_height (TreeNode_t * n) {
+static void _avl_update_height (TreeNode_t *n) {
     int lh = _avl_get_height (n->left);
     int rh = _avl_get_height (n->right);
 
@@ -225,7 +224,7 @@ static void _avl_update_height (TreeNode_t * n) {
     }
 }
 
-static int _avl_balance_factor (TreeNode_t * n) {
+static int _avl_balance_factor (TreeNode_t *n) {
     int balFac = 0;
     if (n) {
         balFac = _avl_get_height (n->right) - _avl_get_height (n->left);
@@ -235,7 +234,7 @@ static int _avl_balance_factor (TreeNode_t * n) {
     return balFac;
 }
 
-static int _avl_subtree_min_val (TreeNode_t * n) {
+static int _avl_subtree_min_val (TreeNode_t *n) {
     /*
      * The minimum value in any subtree is just the leftmost value.  Keep going
      * left till we get there.
@@ -249,8 +248,8 @@ static int _avl_subtree_min_val (TreeNode_t * n) {
 /*
  * Helper function to generate a single AVL node containing a given value.
  */
-static TreeNode_t * _avl_node_create (int val) {
-    TreeNode_t * n = malloc (sizeof(TreeNode_t));
+static TreeNode_t *_avl_node_create (int val) {
+    TreeNode_t *n = malloc (sizeof (TreeNode_t));
     if (n) {
         n->val = val;
         n->left = n->right = NULL;
@@ -268,7 +267,7 @@ static TreeNode_t * _avl_node_create (int val) {
  * Returns the root of the given subtree, modified to contain a new node with
  * the specified value.
  */
-static TreeNode_t * _avl_subtree_insert (TreeNode_t * n, int val) {
+static TreeNode_t *_avl_subtree_insert (TreeNode_t *n, int val) {
     if (n == NULL) {
         /*
          * If n is NULL, we know we've reached a place to insert val, so we
@@ -297,5 +296,4 @@ static TreeNode_t * _avl_subtree_insert (TreeNode_t * n, int val) {
      * return n here, after balancing n's subtree.
      */
     return _avl_balance (n);
-
 }

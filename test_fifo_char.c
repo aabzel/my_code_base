@@ -2,22 +2,22 @@
 
 #include "fifo_char.h"
 
-#include <string.h>
 #include <stdio.h>
+#include <string.h>
 //#include <stdint.h>
 Fifo_array_t fifiObj;
-char array [5];
+char array[5];
 
 #define STRING19 "123456789"
 bool test_fifo_array1_char (void) {
     bool res = false;
     Fifo_array_t fifiObj1;
-    char array1 [6];
-    char outArray [100];
+    char array1[6];
+    char outArray[100];
     uint16_t outLen = 0;
     int cmpRes = -1;
 
-    fifo_init (&fifiObj, sizeof(array1), array1);
+    fifo_init (&fifiObj, sizeof (array1), array1);
 
     res = fifo_push_array (&fifiObj1, STRING19, strlen (STRING19));
     if (true == res) {
@@ -44,12 +44,12 @@ bool test_fifo_array1_char (void) {
 bool test_fifo_array_char (void) {
     bool res = false;
     Fifo_array_t fifiObj1;
-    char array1 [10];
-    char outArray [100];
+    char array1[10];
+    char outArray[100];
     uint16_t outLen = 0;
     int cmpRes = -1;
 
-    fifo_init (&fifiObj, sizeof(array1), array1);
+    fifo_init (&fifiObj, sizeof (array1), array1);
 
     res = fifo_push_array (&fifiObj1, "12345", 5);
     if (false == res) {
@@ -75,7 +75,7 @@ bool test_fifo_array_char (void) {
 bool test_fifo_char (void) {
     bool res = false;
     char outChar;
-    fifo_init (&fifiObj, sizeof(array), array);
+    fifo_init (&fifiObj, sizeof (array), array);
 
     res = fifo_push (&fifiObj, '1');
     if (false == res) {

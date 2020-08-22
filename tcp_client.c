@@ -1,18 +1,18 @@
 #include "tcp_client.h"
 
 #if !defined(_WIN32) && !defined(__CYGWIN__)
-#   include <sys/socket.h>
-#   include <netinet/in.h>
-#   include <netinet/tcp.h>
-#   include <sys/select.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <sys/select.h>
+#include <sys/socket.h>
 #else
-#   include <winsock2.h>
-#   include <windows.h>
-#   include <ws2tcpip.h>
+#include <windows.h>
+#include <winsock2.h>
+#include <ws2tcpip.h>
 #endif
 
-#include <Iphlpapi.h>
 #include <Assert.h>
+#include <Iphlpapi.h>
 #include <stdio.h>
 
 #include "convert.h"
@@ -21,14 +21,14 @@
 
 ComputerParams_t workBenchParam;
 
-bool sent_to_tcp_server (char *txText, uint16_t txTextLen, uint16_t tcpServerPort, uint32_t tcp_server_ip){
+bool sent_to_tcp_server (char *txText, uint16_t txTextLen, uint16_t tcpServerPort, uint32_t tcp_server_ip) {
     char *ipAddrStr;
     ipAddrStr = ip_to_str ((uint8_t *)&tcp_server_ip);
-    //printf ("\n server IP %s port %u",ipAddrStr,tcpServerPort);
+    // printf ("\n server IP %s port %u",ipAddrStr,tcpServerPort);
     bool res = false;
     WSADATA wsa;
     SOCKET socDescriptor;
-    //printf ("\nInitialising Winsock...");
+    // printf ("\nInitialising Winsock...");
     if (0 == WSAStartup (MAKEWORD (2, 2), &wsa)) {
 #if DEBUG_TCP_CLIENT
         printf ("\nInitialised");
@@ -42,13 +42,13 @@ bool sent_to_tcp_server (char *txText, uint16_t txTextLen, uint16_t tcpServerPor
             printf ("Socket created.\n");
 #endif
             struct sockaddr_in server;
-            //server.sin_addr.s_addr = inet_addr ("192.168.0.11");
+            // server.sin_addr.s_addr = inet_addr ("192.168.0.11");
             server.sin_addr.s_addr = inet_addr (ipAddrStr);
-            //printf ("\nip paced %08x des %08x",server.sin_addr.s_addr, tcp_server_ip);
+            // printf ("\nip paced %08x des %08x",server.sin_addr.s_addr, tcp_server_ip);
             server.sin_family = AF_INET;
             server.sin_port = htons (tcpServerPort);
-            //Connect to remote server
-            int con_stat = connect (socDescriptor, (struct sockaddr *) &server, sizeof(server)) ;
+            // Connect to remote server
+            int con_stat = connect (socDescriptor, (struct sockaddr *)&server, sizeof (server));
             if (con_stat < 0) {
                 printf ("\nTCP server connect error %u", con_stat);
                 res = false;
@@ -66,9 +66,8 @@ bool sent_to_tcp_server (char *txText, uint16_t txTextLen, uint16_t tcpServerPor
 #endif
                     res = true;
                 }
-                closesocket(socDescriptor);
+                closesocket (socDescriptor);
             }
-
         }
 
     } else {

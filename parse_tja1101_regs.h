@@ -10,14 +10,13 @@
 
 #define TJA1101_REG_NUM 18U
 
-typedef struct xRegTJA1101_t{
-  uint8_t regAddr;
-  uint16_t regVal;
-  char regname[100];
-}regTJA1101_t;
+typedef struct xRegTJA1101_t {
+    uint8_t regAddr;
+    uint16_t regVal;
+    char regname[100];
+} regTJA1101_t;
 
 extern regTJA1101_t tja1101RegMap[TJA1101_REG_NUM];
-
 
 const char *reg_name (uint8_t regAddr);
 bool parse_tja1101_regs_file (char *inFileName, char *outFileName);

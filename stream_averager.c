@@ -2,7 +2,7 @@
 
 #include <string.h>
 
-bool init_averager (averager_t * const instance, uint16_t capacity, uint16_t * const inArray) {
+bool init_averager (averager_t *const instance, uint16_t capacity, uint16_t *const inArray) {
     bool res = false;
     if (NULL != instance) {
         instance->curSumm = 0U;
@@ -10,7 +10,7 @@ bool init_averager (averager_t * const instance, uint16_t capacity, uint16_t * c
     }
     return res;
 }
-bool deinit_averager (averager_t * const instance) {
+bool deinit_averager (averager_t *const instance) {
     bool res = false;
     if (NULL != instance) {
         instance->curSumm = 0u;
@@ -19,7 +19,7 @@ bool deinit_averager (averager_t * const instance) {
     return res;
 }
 
-bool put_averager (averager_t * const instance, uint16_t newVal, uint16_t * const outAverageVal) {
+bool put_averager (averager_t *const instance, uint16_t newVal, uint16_t *const outAverageVal) {
     bool res = false;
     uint16_t averageVal = 0U;
     uint16_t oldVal = 0U;
@@ -42,14 +42,12 @@ bool put_averager (averager_t * const instance, uint16_t newVal, uint16_t * cons
     return res;
 }
 
-bool get_averager (averager_t * const instance, uint16_t * const outAverageVal) {
+bool get_averager (averager_t *const instance, uint16_t *const outAverageVal) {
     bool res = false;
     if (NULL != instance) {
         if (NULL != outAverageVal) {
             (*outAverageVal) = instance->curSumm / instance->fifou16.fifoState.count;
         }
-
     }
     return res;
 }
-

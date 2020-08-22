@@ -6,4 +6,3 @@ int* inorderTraversal(struct TreeNode* root, int* returnSize){
 
 }
 #endif
-

@@ -1,20 +1,20 @@
 #include "slidingWindowMid.h"
 
-#include "arrays.h"
 #include "algorithms.h"
+#include "arrays.h"
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
-//https://medium.com/@nitishchandra/sliding-window-median-98a6710ab2a0
-double* medianSlidingWindow (int* nums, int numsSize, int k, int* returnSize) {
-// how many window position exest?
+// https://medium.com/@nitishchandra/sliding-window-median-98a6710ab2a0
+double *medianSlidingWindow (int *nums, int numsSize, int k, int *returnSize) {
+    // how many window position exest?
     printf ("\n Size of Array: %d \n", numsSize);
 #if DEBUG_WINDOW
     print_curr_array (nums, numsSize);
@@ -24,7 +24,7 @@ double* medianSlidingWindow (int* nums, int numsSize, int k, int* returnSize) {
     if (0 < numsSize) {
         if (k <= numsSize) {
             size = numsSize - k + 1;
-            ptrArray = (double *) malloc (sizeof(double) * size);
+            ptrArray = (double *)malloc (sizeof (double) * size);
             if (ptrArray) {
                 init_double_array (ptrArray, size);
                 *returnSize = size;
@@ -41,7 +41,7 @@ double* medianSlidingWindow (int* nums, int numsSize, int k, int* returnSize) {
                     /*load min heap*/
                     int i = 0;
                     for (i = 0; i < k; i++) {
-                        res = heap_insert_val (&maxBinHeap, true, nums [i]);
+                        res = heap_insert_val (&maxBinHeap, true, nums[i]);
                     }
                     /*load max heap     k=4: maxHeap:2
                      * k=5: maxHeap:2
@@ -55,14 +55,16 @@ double* medianSlidingWindow (int* nums, int numsSize, int k, int* returnSize) {
                     int j = k;
                     for (j = k; j < numsSize; j++) {
                         if (1 == k) {
-                            ptrArray [j - k] = nums [j - k];
+                            ptrArray[j - k] = nums[j - k];
                         } else {
                             if (k & 1) {
-                                ptrArray [j - k] = heap_peek (&maxBinHeap);
+                                ptrArray[j - k] = heap_peek (&maxBinHeap);
                             } else {
-                                ptrArray [j - k] = (((double) heap_peek (&maxBinHeap)) + ((double) heap_peek (&minBinHeap))) / 2.0f;
+                                ptrArray[j - k] =
+                                    (((double)heap_peek (&maxBinHeap)) + ((double)heap_peek (&minBinHeap))) / 2.0f;
                             }
-                            res = insert_val_to_2_heaps (&maxBinHeap, &minBinHeap, nums [j], nums [j - k], k, &nums [j - k]);
+                            res =
+                                insert_val_to_2_heaps (&maxBinHeap, &minBinHeap, nums[j], nums[j - k], k, &nums[j - k]);
                             if (false == res) {
                                 bin_heap_deinit (&minBinHeap);
                                 bin_heap_deinit (&maxBinHeap);
@@ -72,31 +74,32 @@ double* medianSlidingWindow (int* nums, int numsSize, int k, int* returnSize) {
                     }
                     if (1 != k) {
                         if ((k & 1)) {
-                            ptrArray [j - k] = heap_peek (&maxBinHeap);
+                            ptrArray[j - k] = heap_peek (&maxBinHeap);
                         } else {
-                            ptrArray [j - k] = (((double) heap_peek (&maxBinHeap)) + ((double) heap_peek (&minBinHeap))) / 2.0f;
+                            ptrArray[j - k] =
+                                (((double)heap_peek (&maxBinHeap)) + ((double)heap_peek (&minBinHeap))) / 2.0f;
                         }
                     } else {
-                        ptrArray [j - k] = nums [j - k];
+                        ptrArray[j - k] = nums[j - k];
                     }
                     bin_heap_deinit (&minBinHeap);
                     bin_heap_deinit (&maxBinHeap);
                 }
             } else {
-                printf ("\n Unable to malloc %u byte", (unsigned int) sizeof(double) * size);
+                printf ("\n Unable to malloc %u byte", (unsigned int)sizeof (double) * size);
             }
         }
     }
     return ptrArray;
 }
 
-double calc_median (int * const inArr, int sizeOfArr) {
+double calc_median (int *const inArr, int sizeOfArr) {
     double median = 0.0;
     if (inArr) {
-        int *localArr = memdup (inArr, sizeOfArr * sizeof(int));
+        int *localArr = memdup (inArr, sizeOfArr * sizeof (int));
         if (localArr) {
             if (is_odd (sizeOfArr)) {
-                median = (double) qselect (localArr, sizeOfArr, sizeOfArr / 2);
+                median = (double)qselect (localArr, sizeOfArr, sizeOfArr / 2);
             } else {
                 int val1 = qselect (localArr, sizeOfArr, (sizeOfArr / 2) - 1);
                 int val2 = qselect (localArr, sizeOfArr, sizeOfArr / 2);
@@ -110,9 +113,10 @@ double calc_median (int * const inArr, int sizeOfArr) {
     return median;
 }
 
-bool insert_val_to_2_heaps (BinaryHeap_t *maxBinHeap, BinaryHeap_t * minBinHeap, int newVal, int oldVal, int sizeOfWind, int *curWinArr) {
+bool insert_val_to_2_heaps (BinaryHeap_t *maxBinHeap, BinaryHeap_t *minBinHeap, int newVal, int oldVal, int sizeOfWind,
+                            int *curWinArr) {
     bool res = false;
-    (void) curWinArr;
+    (void)curWinArr;
 #if DEBUG_INSERT
     printf ("\n\n ");
     print_curr_array (curWinArr + 1, sizeOfWind);
@@ -150,7 +154,7 @@ bool insert_val_to_2_heaps (BinaryHeap_t *maxBinHeap, BinaryHeap_t * minBinHeap,
                     heap_insert_val (maxBinHeap, true, emigratingValue);
                 } else {
 #if DEBUG
-                            printf ("\n heap size invariant fine\n");
+                    printf ("\n heap size invariant fine\n");
 #endif
                 }
             }
@@ -171,7 +175,8 @@ bool insert_val_to_2_heaps (BinaryHeap_t *maxBinHeap, BinaryHeap_t * minBinHeap,
     }
 
 #if DEBUG_INSERT
-    printf ("\n heap_peek (maxBinHeap): [%d] heap_peek (minBinHeap): [%d] ", heap_peek (maxBinHeap), heap_peek (minBinHeap));
+    printf ("\n heap_peek (maxBinHeap): [%d] heap_peek (minBinHeap): [%d] ", heap_peek (maxBinHeap),
+            heap_peek (minBinHeap));
 #endif
     return res;
 }
@@ -195,7 +200,7 @@ bool remove_old_val_from_bin_heaps (BinaryHeap_t *maxBinHeap, BinaryHeap_t *minB
         }
     }
 
-    //if (!is_empty_heap (maxBinHeap) && !is_empty_heap (minBinHeap)) {
+    // if (!is_empty_heap (maxBinHeap) && !is_empty_heap (minBinHeap)) {
     if ((oldVal != heap_peek (maxBinHeap)) && (oldVal == heap_peek (minBinHeap))) {
         heap_pop (minBinHeap, false);
         return true;
@@ -255,17 +260,17 @@ bool insert_new_val_to_bin_heaps (BinaryHeap_t *maxBinHeap, BinaryHeap_t *minBin
 /*How to find the kth(N/2) largest element in an unsorted array of length n in O(n)?*/
 
 /*O(logN)*/
-double calc_median_naiv (int * const inArr, int sizeOfArr) {
+double calc_median_naiv (int *const inArr, int sizeOfArr) {
     double median = 0.0;
     if (inArr) {
-        int *localArr = memdup (inArr, sizeOfArr * sizeof(int));
+        int *localArr = memdup (inArr, sizeOfArr * sizeof (int));
         if (localArr) {
-            qsort (localArr, sizeOfArr, sizeof(int), cmp_int);
+            qsort (localArr, sizeOfArr, sizeof (int), cmp_int);
             if (is_odd (sizeOfArr)) {
-                median = localArr [((int) sizeOfArr / 2)];
+                median = localArr[((int)sizeOfArr / 2)];
             } else {
-                median = avrage_two (localArr [sizeOfArr / 2 - 1], localArr [sizeOfArr / 2]);
-                //median = calc_average (&localArr [sizeOfArr / 2 - 1], 2);
+                median = avrage_two (localArr[sizeOfArr / 2 - 1], localArr[sizeOfArr / 2]);
+                // median = calc_average (&localArr [sizeOfArr / 2 - 1], 2);
             }
             free (localArr);
         } else {
@@ -275,18 +280,17 @@ double calc_median_naiv (int * const inArr, int sizeOfArr) {
     return median;
 }
 
-double* medianSlidingWindowArr (int* nums, int numsSize, int k, int* returnSize) {
-// how many window position exest?
+double *medianSlidingWindowArr (int *nums, int numsSize, int k, int *returnSize) {
+    // how many window position exest?
     int size = numsSize - k + 1;
-    double *ptrArray = (double *) malloc (sizeof(double) * size);
+    double *ptrArray = (double *)malloc (sizeof (double) * size);
     if (ptrArray) {
         *returnSize = size;
         for (int j = 0; j < size; j++) {
-            ptrArray [j] = calc_median (&nums [j], k);
+            ptrArray[j] = calc_median (&nums[j], k);
         }
     } else {
-        printf ("Unable to malloc %u byte", (unsigned int) sizeof(double) * size);
+        printf ("Unable to malloc %u byte", (unsigned int)sizeof (double) * size);
     }
     return ptrArray;
 }
-

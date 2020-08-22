@@ -5,12 +5,11 @@
 extern "C" {
 #endif
 
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 
 #include "utils.h"
-
 
 bool test_array (void);
 

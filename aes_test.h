@@ -3,6 +3,6 @@
 
 #include <stdbool.h>
 
-bool test_aes(void);
+bool test_aes (void);
 
 #endif

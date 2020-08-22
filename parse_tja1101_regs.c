@@ -4,16 +4,16 @@
 #include "tja1101_bits_offsets.h"
 #include "utils.h"
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-extern regTJA1101_t tja1101RegMap [TJA1101_REG_NUM];
+extern regTJA1101_t tja1101RegMap[TJA1101_REG_NUM];
 
 bool parse_tja1101_regs_file (char *inFileName, char *outFileName) {
-    (void) *outFileName;
-    char curFileStr [500];
+    (void)*outFileName;
+    char curFileStr[500];
     bool res = false;
     FILE *inFilePrt = NULL;
     FILE *outFilePrt = NULL;
@@ -21,7 +21,7 @@ bool parse_tja1101_regs_file (char *inFileName, char *outFileName) {
     outFilePrt = fopen (outFileName, "w");
     if (inFilePrt && outFilePrt) {
         int line = 0;
-        while (NULL != fgets (curFileStr, sizeof(curFileStr), inFilePrt)) {
+        while (NULL != fgets (curFileStr, sizeof (curFileStr), inFilePrt)) {
             uint8_t regAddr;
             uint16_t regVal;
             printf ("%s", curFileStr);
@@ -32,7 +32,7 @@ bool parse_tja1101_regs_file (char *inFileName, char *outFileName) {
                     parse_tja1101_reg (regAddr, regVal, outFilePrt);
                 }
             }
-            //printf ("\n[%x] [%x]", regAddr, regVal);
+            // printf ("\n[%x] [%x]", regAddr, regVal);
             line++;
         }
         fclose (inFilePrt);
@@ -44,75 +44,71 @@ bool parse_tja1101_regs_file (char *inFileName, char *outFileName) {
 
 bool parse_tja1101_reg (uint8_t regAddr, uint16_t regVal, FILE *outFilePrt) {
     bool res = false;
-    char curRegName [100] = "";
-    strncpy (curRegName, reg_name (regAddr), sizeof(curRegName));
-    //printf ("\nReg name: %s \t\t reg addr: %u regVal: [0x%04x] or [0b_%s]", reg_name (regAddr),regAddr, regVal, utoa_bin16 (regVal));
+    char curRegName[100] = "";
+    strncpy (curRegName, reg_name (regAddr), sizeof (curRegName));
+    // printf ("\nReg name: %s \t\t reg addr: %u regVal: [0x%04x] or [0b_%s]", reg_name (regAddr),regAddr, regVal,
+    // utoa_bin16 (regVal));
     if (0 != strcmp (UNDEF_REG_NAME, curRegName)) {
-        fprintf (
-            outFilePrt,
-            "\n Register name: [%30s] register addr: [%02u] register value: [0x%04x] or [0b_%s]",
-            reg_name (regAddr),
-            regAddr,
-            regVal,
-            utoa_bin16 (regVal));
+        fprintf (outFilePrt, "\n Register name: [%30s] register addr: [%02u] register value: [0x%04x] or [0b_%s]",
+                 reg_name (regAddr), regAddr, regVal, utoa_bin16 (regVal));
         switch (regAddr) {
-            case 0:
-                res = parse_basic_control_register (regVal, outFilePrt);
-                break;
-            case 1:
-                res = parse_basic_status_register (regVal, outFilePrt);
-                break;
-            case 2:
-                res = parse_phy_identifier_1_register (regVal, outFilePrt);
-                break;
-            case 3:
-                res = parse_phy_identifier_2_register (regVal, outFilePrt);
-                break;
-            case 15:
-                res = parse_extended_status_register (regVal, outFilePrt);
-                break;
-            case 16:
-                res = parse_phy_identifier_3_register (regVal, outFilePrt);
-                break;
-            case 17:
-                res = parse_extended_control_register (regVal, outFilePrt);
-                break;
-            case 18:
-                res = parse_configuration_register_1 (regVal, outFilePrt);
-                break;
+        case 0:
+            res = parse_basic_control_register (regVal, outFilePrt);
+            break;
+        case 1:
+            res = parse_basic_status_register (regVal, outFilePrt);
+            break;
+        case 2:
+            res = parse_phy_identifier_1_register (regVal, outFilePrt);
+            break;
+        case 3:
+            res = parse_phy_identifier_2_register (regVal, outFilePrt);
+            break;
+        case 15:
+            res = parse_extended_status_register (regVal, outFilePrt);
+            break;
+        case 16:
+            res = parse_phy_identifier_3_register (regVal, outFilePrt);
+            break;
+        case 17:
+            res = parse_extended_control_register (regVal, outFilePrt);
+            break;
+        case 18:
+            res = parse_configuration_register_1 (regVal, outFilePrt);
+            break;
 
-            case 19:
-                res = parse_configuration_register_2 (regVal, outFilePrt);
-                break;
-            case 20:
-                res = parse_symbol_error_counter_register (regVal, outFilePrt);
-                break;
-            case 21:
-                res = parse_interrupt_status_register (regVal, outFilePrt);
-                break;
-            case 22:
-                res = parse_interrupt_enable_register (regVal, outFilePrt);
-                break;
-            case 23:
-                res = parse_communication_status_register (regVal, outFilePrt);
-                break;
-            case 24:
-                res = parse_general_status_register (regVal, outFilePrt);
-                break;
-            case 25:
-                res = parse_external_status_register (regVal, outFilePrt);
-                break;
-            case 26:
-                res = parse_link_fail_counter_register (regVal, outFilePrt);
-                break;
-            case 27:
-                res = parse_common_configuration_register (regVal, outFilePrt);
-                break;
-            case 28:
-                res = parse_configuration_register_3 (regVal, outFilePrt);
-                break;
-            default:
-                break;
+        case 19:
+            res = parse_configuration_register_2 (regVal, outFilePrt);
+            break;
+        case 20:
+            res = parse_symbol_error_counter_register (regVal, outFilePrt);
+            break;
+        case 21:
+            res = parse_interrupt_status_register (regVal, outFilePrt);
+            break;
+        case 22:
+            res = parse_interrupt_enable_register (regVal, outFilePrt);
+            break;
+        case 23:
+            res = parse_communication_status_register (regVal, outFilePrt);
+            break;
+        case 24:
+            res = parse_general_status_register (regVal, outFilePrt);
+            break;
+        case 25:
+            res = parse_external_status_register (regVal, outFilePrt);
+            break;
+        case 26:
+            res = parse_link_fail_counter_register (regVal, outFilePrt);
+            break;
+        case 27:
+            res = parse_common_configuration_register (regVal, outFilePrt);
+            break;
+        case 28:
+            res = parse_configuration_register_3 (regVal, outFilePrt);
+            break;
+        default:
+            break;
         }
     }
     return res;
@@ -134,7 +130,8 @@ bool parse_basic_control_register (uint16_t regVal, FILE *outFilePrt) {
     if (regVal & SPEED_SELECT_13) {
         fprintf (outFilePrt, "\n  bit 13: RW 100 Mbit/s if SPEED_SELECT (MSB) = 0 reserved if SPEED_SELECT (MSB) = 1");
     } else {
-        fprintf (outFilePrt, "\n  bit 13: RW 10 Mbit/s if SPEED_SELECT (MSB) = 0 1000 Mbit/s if SPEED_SELECT (MSB) = 1");
+        fprintf (outFilePrt,
+                 "\n  bit 13: RW 10 Mbit/s if SPEED_SELECT (MSB) = 0 1000 Mbit/s if SPEED_SELECT (MSB) = 1");
     }
 
     if (regVal & AUTONEG_EN_12) {
@@ -144,19 +141,17 @@ bool parse_basic_control_register (uint16_t regVal, FILE *outFilePrt) {
     }
 
     if (regVal & POWER_DOWN_11) {
-        fprintf (
-            outFilePrt,
-            "\n  bit 11: RW power down and switch to Standby mode (provided ISOLATE = 0; ignored if ISOLATE = 1 and CONTROL_ERR interrupt generated) ");
+        fprintf (outFilePrt, "\n  bit 11: RW power down and switch to Standby mode (provided ISOLATE = 0; ignored if "
+                             "ISOLATE = 1 and CONTROL_ERR interrupt generated) ");
     } else {
-        fprintf (
-            outFilePrt,
-            "\n  bit 11:RW  normal operation (clearing this bit automatically triggers a transition to Normal mode, provided control bits POWER_MODE are set to 0011 Normal mode, see Table 18) ");
+        fprintf (outFilePrt,
+                 "\n  bit 11:RW  normal operation (clearing this bit automatically triggers a transition to Normal "
+                 "mode, provided control bits POWER_MODE are set to 0011 Normal mode, see Table 18) ");
     }
 
     if (regVal & ISOLATE_10) {
-        fprintf (
-            outFilePrt,
-            "\n  bit 10: RW isolate PHY from MII/RMII (provided POWER_DOWN = 0; ignored if POWER_DOWN = 1 and CONTROL_ERR interrupt generated) ");
+        fprintf (outFilePrt, "\n  bit 10: RW isolate PHY from MII/RMII (provided POWER_DOWN = 0; ignored if POWER_DOWN "
+                             "= 1 and CONTROL_ERR interrupt generated) ");
     } else {
         fprintf (outFilePrt, "\n  bit 10: RW normal operation ");
     }
@@ -185,15 +180,14 @@ bool parse_basic_control_register (uint16_t regVal, FILE *outFilePrt) {
         fprintf (outFilePrt, "\n  bit 6: RW 10 Mbit/s if SPEED_SELECT (LSB) = 0 100 Mbit/s if SPEED_SELECT (LSB) = 1 ");
     }
     if (regVal & UNIDIRECT_EN_5) {
-        fprintf (
-            outFilePrt,
-            "\n  bit 5: RW enable transmit from MII regardless of whether the PHY has determined that a valid link has been established");
+        fprintf (outFilePrt, "\n  bit 5: RW enable transmit from MII regardless of whether the PHY has determined that "
+                             "a valid link has been established");
     } else {
-        fprintf (outFilePrt, "\n  bit 5: RW enable transmit from MII only when the PHY has determined that a valid link has been established ");
+        fprintf (outFilePrt, "\n  bit 5: RW enable transmit from MII only when the PHY has determined that a valid "
+                             "link has been established ");
     }
     fprintf (outFilePrt, "\n");
     return res;
-
 }
 
 bool parse_basic_status_register (uint16_t regVal, FILE *outFilePrt) {
@@ -239,11 +233,11 @@ bool parse_basic_status_register (uint16_t regVal, FILE *outFilePrt) {
         fprintf (outFilePrt, "\n  bit 8: no extended status information in register 15h");
     }
     if (regVal & UNIDIRECT_ABILITY_7) {
-        fprintf (
-            outFilePrt,
-            "\n  bit 7: PHY able to transmit from MII regardless of whether the PHY has determined that a valid link has been established");
+        fprintf (outFilePrt, "\n  bit 7: PHY able to transmit from MII regardless of whether the PHY has determined "
+                             "that a valid link has been established");
     } else {
-        fprintf (outFilePrt, "\n  bit 7: PHY able to transmit from MII only when the PHY has determined that a valid link has been established");
+        fprintf (outFilePrt, "\n  bit 7: PHY able to transmit from MII only when the PHY has determined that a valid "
+                             "link has been established");
     }
     if (regVal & MF_PREAMBLE_SUPPRESSION_6) {
         fprintf (outFilePrt, "\n  bit 6: PHY will accept management frames with preamble suppressed");
@@ -382,27 +376,27 @@ bool parse_extended_control_register (uint16_t regVal, FILE *outFilePrt) {
 bool parse_power_mode (uint8_t regVal, FILE *outFilePrt) {
     bool res = false;
     switch (regVal) {
-        case 0:
-            fprintf (outFilePrt, "\n  bit 14..11: operating mode: no change");
-            break;
-        case 3:
-            fprintf (outFilePrt, "\n  bit 14..11: operating mode: Normal mode (command)");
-            break;
-        case 9:
-            fprintf (outFilePrt, "\n  bit 14..11: Silent mode (read only)");
-            break;
-        case 10:
-            fprintf (outFilePrt, "\n  bit 14..11: Sleep mode (read only)");
-            break;
-        case 11:
-            fprintf (outFilePrt, "\n  bit 14..11: Sleep Request mode (command)");
-            break;
-        case 12:
-            fprintf (outFilePrt, "\n  bit 14..11: Standby mode (command)");
-            break;
-        default:
-            fprintf (outFilePrt, "\n  bit 14..11: Error");
-            break;
+    case 0:
+        fprintf (outFilePrt, "\n  bit 14..11: operating mode: no change");
+        break;
+    case 3:
+        fprintf (outFilePrt, "\n  bit 14..11: operating mode: Normal mode (command)");
+        break;
+    case 9:
+        fprintf (outFilePrt, "\n  bit 14..11: Silent mode (read only)");
+        break;
+    case 10:
+        fprintf (outFilePrt, "\n  bit 14..11: Sleep mode (read only)");
+        break;
+    case 11:
+        fprintf (outFilePrt, "\n  bit 14..11: Sleep Request mode (command)");
+        break;
+    case 12:
+        fprintf (outFilePrt, "\n  bit 14..11: Standby mode (command)");
+        break;
+    default:
+        fprintf (outFilePrt, "\n  bit 14..11: Error");
+        break;
     }
     return res;
 }
@@ -410,33 +404,33 @@ bool parse_power_mode (uint8_t regVal, FILE *outFilePrt) {
 bool parse_test_mode (uint8_t regVal, FILE *outFilePrt) {
     bool res = false;
     switch (regVal) {
-        case 0:
-            fprintf (outFilePrt, "\n  bit 8..6: R/W test mode selection: no test mode");
-            break;
-        case 1:
-            fprintf (outFilePrt, "\n  bit 8..6: R/W test mode selection 100BASE-T1 test mode 1");
-            break;
-        case 2:
-            fprintf (outFilePrt, "\n  bit 8..6: R/W test mode selection 100BASE-T1 test mode 2 ");
-            break;
-        case 3:
-            fprintf (outFilePrt, "\n  bit 8..6: R/W test mode selection test mode 3");
-            break;
-        case 4:
-            fprintf (outFilePrt, "\n  bit 8..6: R/W test mode selection 100BASE-T1 test mode 4");
-            break;
-        case 5:
-            fprintf (outFilePrt, "\n  bit 8..6: R/W test mode selection 100BASE-T1 test mode 5");
-            break;
-        case 6:
-            fprintf (outFilePrt, "\n  bit 8..6: R/W test mode selection scrambler and descrambler bypassed");
-            break;
-        case 7:
-            fprintf (outFilePrt, "\n  bit 8..6: R/W test mode selection reserved");
-            break;
-        default:
-            fprintf (outFilePrt, "\n  bit 8..6: R/W Error");
-            break;
+    case 0:
+        fprintf (outFilePrt, "\n  bit 8..6: R/W test mode selection: no test mode");
+        break;
+    case 1:
+        fprintf (outFilePrt, "\n  bit 8..6: R/W test mode selection 100BASE-T1 test mode 1");
+        break;
+    case 2:
+        fprintf (outFilePrt, "\n  bit 8..6: R/W test mode selection 100BASE-T1 test mode 2 ");
+        break;
+    case 3:
+        fprintf (outFilePrt, "\n  bit 8..6: R/W test mode selection test mode 3");
+        break;
+    case 4:
+        fprintf (outFilePrt, "\n  bit 8..6: R/W test mode selection 100BASE-T1 test mode 4");
+        break;
+    case 5:
+        fprintf (outFilePrt, "\n  bit 8..6: R/W test mode selection 100BASE-T1 test mode 5");
+        break;
+    case 6:
+        fprintf (outFilePrt, "\n  bit 8..6: R/W test mode selection scrambler and descrambler bypassed");
+        break;
+    case 7:
+        fprintf (outFilePrt, "\n  bit 8..6: R/W test mode selection reserved");
+        break;
+    default:
+        fprintf (outFilePrt, "\n  bit 8..6: R/W Error");
+        break;
     }
     return res;
 }
@@ -444,22 +438,22 @@ bool parse_test_mode (uint8_t regVal, FILE *outFilePrt) {
 bool parse_loopback_mode (uint8_t regVal, FILE *outFilePrt) {
     bool res = false;
     switch (regVal) {
-        case 0:
-            fprintf (outFilePrt, "\n  bit 4..3: R/W internal loopback");
-            break;
-        case 1:
-            fprintf (outFilePrt, "\n  bit 4..3: R/W external loopback");
-            break;
-        case 2:
-            fprintf (outFilePrt, "\n  bit 4..3: R/W external loopback");
-            break;
-        case 3:
-            fprintf (outFilePrt, "\n  bit 4..3: R/W remote loopback");
-            break;
+    case 0:
+        fprintf (outFilePrt, "\n  bit 4..3: R/W internal loopback");
+        break;
+    case 1:
+        fprintf (outFilePrt, "\n  bit 4..3: R/W external loopback");
+        break;
+    case 2:
+        fprintf (outFilePrt, "\n  bit 4..3: R/W external loopback");
+        break;
+    case 3:
+        fprintf (outFilePrt, "\n  bit 4..3: R/W remote loopback");
+        break;
 
-        default:
-            fprintf (outFilePrt, "\n  bit 4..3: R/W Error");
-            break;
+    default:
+        fprintf (outFilePrt, "\n  bit 4..3: R/W Error");
+        break;
     }
     return res;
 }
@@ -540,15 +534,15 @@ bool parse_configuration_register_3 (uint16_t regVal, FILE *outFilePrt) {
     return true;
 }
 bool parse_phy_identifier_3_register (uint16_t regVal, FILE *outFilePrt) {
-    (void) regVal;
-    (void) outFilePrt;
+    (void)regVal;
+    (void)outFilePrt;
     fprintf (outFilePrt, "\nLack of detalisation in datasheet");
     fprintf (outFilePrt, "\n");
     return true;
 }
 bool parse_configuration_register_1 (uint16_t regVal, FILE *outFilePrt) {
     bool res = false;
-    (void) outFilePrt;
+    (void)outFilePrt;
     if (regVal & MASTER_SLAVE_15) {
         fprintf (outFilePrt, "\n  bit 15: rw PHY configured as Master");
     } else {
@@ -589,13 +583,11 @@ bool parse_configuration_register_1 (uint16_t regVal, FILE *outFilePrt) {
     }
 
     if (regVal & SLEEP_ACK_4) {
-        fprintf (
-            outFilePrt,
-            "\n  bit 4: sleep acknowledge timer enabled; auto-transition back from Sleep Request mode to Normal mode disabled during data transmission on MII or MDI");
+        fprintf (outFilePrt, "\n  bit 4: sleep acknowledge timer enabled; auto-transition back from Sleep Request mode "
+                             "to Normal mode disabled during data transmission on MII or MDI");
     } else {
-        fprintf (
-            outFilePrt,
-            "\n  bit 4: sleep acknowledge timer disabled; auto-transition back from Sleep Request mode to Normal mode enabled during data transmission on MII or MDI");
+        fprintf (outFilePrt, "\n  bit 4: sleep acknowledge timer disabled; auto-transition back from Sleep Request "
+                             "mode to Normal mode enabled during data transmission on MII or MDI");
     }
 
     if (regVal & FWDPHYREM_2) {
@@ -609,21 +601,25 @@ bool parse_configuration_register_1 (uint16_t regVal, FILE *outFilePrt) {
         fprintf (outFilePrt, "\n  bit 1: autonomous power-down disabled ");
     }
     if (regVal & LPS_ACTIVE_0) {
-        fprintf (outFilePrt, "\n  bit 0: automatic transition from Normal to Sleep Request when LPS code group received enabled ");
+        fprintf (outFilePrt,
+                 "\n  bit 0: automatic transition from Normal to Sleep Request when LPS code group received enabled ");
     } else {
-        fprintf (outFilePrt, "\n  bit 0: automatic transition from Normal to Sleep Request when LPS code group received disabled ");
+        fprintf (outFilePrt,
+                 "\n  bit 0: automatic transition from Normal to Sleep Request when LPS code group received disabled ");
     }
 
     fprintf (outFilePrt, "\n");
     return res;
 }
 bool parse_symbol_error_counter_register (uint16_t regVal, FILE *outFilePrt) {
-    (void) regVal;
-    (void) outFilePrt;
+    (void)regVal;
+    (void)outFilePrt;
     uint16_t sym_err_cnt = regVal;
-    fprintf (
-        outFilePrt,
-        "\n The symbol error counter is incremented when an invalid code symbol is received (including idle symbols). The counter is incremented only once per packet, even when the received packet contains more than one symbol error. This counter increments up to 216. When the counter overflows, the value FFFFh is retained. The counter is reset when the register is read.");
+    fprintf (outFilePrt,
+             "\n The symbol error counter is incremented when an invalid code symbol is received (including idle "
+             "symbols). The counter is incremented only once per packet, even when the received packet contains more "
+             "than one symbol error. This counter increments up to 216. When the counter overflows, the value FFFFh is "
+             "retained. The counter is reset when the register is read.");
     fprintf (outFilePrt, "\n bit 15:0 R sym_err_cnt [%u]", sym_err_cnt);
     fprintf (outFilePrt, "\n");
     return true;
@@ -701,25 +697,27 @@ bool parse_interrupt_status_register (uint16_t regVal, FILE *outFilePrt) {
         fprintf (outFilePrt, "\n  bit 1: R no overtemperature error detected");
     }
     if (regVal & SLEEP_ABORT_0) {
-        fprintf (outFilePrt, "\n  bit 0: R transition from Sleep Request back to Normal as a result of the Sleep Request timer expiring");
+        fprintf (outFilePrt, "\n  bit 0: R transition from Sleep Request back to Normal as a result of the Sleep "
+                             "Request timer expiring");
     } else {
-        fprintf (outFilePrt, "\n  bit 0: R no transition from Sleep Request back to Normal as a result of the Sleep Request timer expiring");
+        fprintf (outFilePrt, "\n  bit 0: R no transition from Sleep Request back to Normal as a result of the Sleep "
+                             "Request timer expiring");
     }
     fprintf (outFilePrt, "\n");
     return true;
 }
 
 bool parse_interrupt_source_register (uint16_t regVal, FILE *outFilePrt) {
-    (void) regVal;
-    (void) outFilePrt;
+    (void)regVal;
+    (void)outFilePrt;
     fprintf (outFilePrt, "\nLack of detalisation ");
     fprintf (outFilePrt, "\n");
     return true;
 }
 
 bool parse_interrupt_enable_register (uint16_t regVal, FILE *outFilePrt) {
-    (void) regVal;
-    (void) outFilePrt;
+    (void)regVal;
+    (void)outFilePrt;
     if (regVal & PWON_EN_15) {
         fprintf (outFilePrt, "\n  bit 15: RW PWON interrupt enabled");
     } else {
@@ -822,7 +820,8 @@ bool parse_general_status_register (uint16_t regVal, FILE *outFilePrt) {
         fprintf (outFilePrt, "\n  bit 12 R no remote wake-up detected");
     }
     if (regVal & DATA_DET_WU_11) {
-        fprintf (outFilePrt, "\n  bit 11  R 100BASE-T1 data detected at MDI (pcs_rx_dv = TRUE; see Ref. 1) or MII (TXEN = 1) in Sleep Request mode");
+        fprintf (outFilePrt, "\n  bit 11  R 100BASE-T1 data detected at MDI (pcs_rx_dv = TRUE; see Ref. 1) or MII "
+                             "(TXEN = 1) in Sleep Request mode");
     } else {
         fprintf (outFilePrt, "\n  bit 11 R no 100BASE-T1 data detected at MDI or MII in Sleep Request mode");
     }
@@ -900,15 +899,15 @@ bool parse_external_status_register (uint16_t regVal, FILE *outFilePrt) {
 
 bool parse_link_fail_counter_register (uint16_t regVal, FILE *outFilePrt) {
     uint16_t loc_rcvr_cnt = extract_subval_from_16bit (regVal, 15, 8);
-    fprintf (
-        outFilePrt,
-        "\n  bit 15:8 R [%u] The counter is incremented when local receiver is NOT_OK; when the counter overflows, the value FFh is retained. The counter is reset when the register is read.",
-        loc_rcvr_cnt);
+    fprintf (outFilePrt,
+             "\n  bit 15:8 R [%u] The counter is incremented when local receiver is NOT_OK; when the counter "
+             "overflows, the value FFh is retained. The counter is reset when the register is read.",
+             loc_rcvr_cnt);
     uint16_t rem_rcvr_cnt = extract_subval_from_16bit (regVal, 7, 0);
-    fprintf (
-        outFilePrt,
-        "\n  bit 7:0  R [%u] The counter is incremented when remote receiver is NOT_OK; when the counter overflows, the value FFh is retained. The counter is reset when the register is read.",
-        rem_rcvr_cnt);
+    fprintf (outFilePrt,
+             "\n  bit 7:0  R [%u] The counter is incremented when remote receiver is NOT_OK; when the counter "
+             "overflows, the value FFh is retained. The counter is reset when the register is read.",
+             rem_rcvr_cnt);
     fprintf (outFilePrt, "\n");
     return true;
 }
@@ -932,7 +931,8 @@ bool parse_common_configuration_register (uint16_t regVal, FILE *outFilePrt) {
         fprintf (outFilePrt, "\n  bit 10:  R/W standard output driver strength at output of CLK_IN_OUT");
     }
     if (regVal & CLK_HOLD_9) {
-        fprintf (outFilePrt, "\n  bit 9: R/W XTAL and CLK_IN_OUT output remain active until device switched to Sleep mode via SMI");
+        fprintf (outFilePrt,
+                 "\n  bit 9: R/W XTAL and CLK_IN_OUT output remain active until device switched to Sleep mode via SMI");
     } else {
         fprintf (outFilePrt, "\n  bit 9: R/W XTAL and CLK_IN_OUT output switched off in Sleep mode");
     }
@@ -957,33 +957,33 @@ bool parse_common_configuration_register (uint16_t regVal, FILE *outFilePrt) {
 bool parse_phy_state (uint8_t phyState, FILE *outFilePrt) {
     bool res = false;
     switch (phyState) {
-        case 0:
-            fprintf (outFilePrt, "\n  bit 2..0: r PHY Idle");
-            break;
-        case 1:
-            fprintf (outFilePrt, "\n  bit 2..0: r PHY Initializing");
-            break;
-        case 2:
-            fprintf (outFilePrt, "\n  bit 2..0: r PHY Configured");
-            break;
-        case 3:
-            fprintf (outFilePrt, "\n  bit 2..0: r PHY Offline");
-            break;
-        case 4:
-            fprintf (outFilePrt, "\n  bit 2..0: r PHY Active");
-            break;
-        case 5:
-            fprintf (outFilePrt, "\n  bit 2..0: r PHY Isolate");
-            break;
-        case 6:
-            fprintf (outFilePrt, "\n  bit 2..0: r PHY Cable test");
-            break;
-        case 7:
-            fprintf (outFilePrt, "\n  bit 2..0: r PHY Test mode");
-            break;
-        default:
-            fprintf (outFilePrt, "\n  bit 2..0: r PHY Test mode");
-            break;
+    case 0:
+        fprintf (outFilePrt, "\n  bit 2..0: r PHY Idle");
+        break;
+    case 1:
+        fprintf (outFilePrt, "\n  bit 2..0: r PHY Initializing");
+        break;
+    case 2:
+        fprintf (outFilePrt, "\n  bit 2..0: r PHY Configured");
+        break;
+    case 3:
+        fprintf (outFilePrt, "\n  bit 2..0: r PHY Offline");
+        break;
+    case 4:
+        fprintf (outFilePrt, "\n  bit 2..0: r PHY Active");
+        break;
+    case 5:
+        fprintf (outFilePrt, "\n  bit 2..0: r PHY Isolate");
+        break;
+    case 6:
+        fprintf (outFilePrt, "\n  bit 2..0: r PHY Cable test");
+        break;
+    case 7:
+        fprintf (outFilePrt, "\n  bit 2..0: r PHY Test mode");
+        break;
+    default:
+        fprintf (outFilePrt, "\n  bit 2..0: r PHY Test mode");
+        break;
     }
     return res;
 }
@@ -991,33 +991,33 @@ bool parse_phy_state (uint8_t phyState, FILE *outFilePrt) {
 bool parse_sqi (uint8_t sqi, FILE *outFilePrt) {
     bool res = false;
     switch (sqi) {
-        case 0:
-            fprintf (outFilePrt, "\n  bit 7..5: r worse than class A SQI (unstable link)");
-            break;
-        case 1:
-            fprintf (outFilePrt, "\n  bit 7..5: r class A SQI (unstable link)");
-            break;
-        case 2:
-            fprintf (outFilePrt, "\n  bit 7..5: r class B SQI (unstable link)");
-            break;
-        case 3:
-            fprintf (outFilePrt, "\n  bit 7..5: r class C SQI (good link)");
-            break;
-        case 4:
-            fprintf (outFilePrt, "\n  bit 7..5: r class D SQI (good link; bit error rate < 1e-10)");
-            break;
-        case 5:
-            fprintf (outFilePrt, "\n  bit 7..5: r class E SQI (good link)");
-            break;
-        case 6:
-            fprintf (outFilePrt, "\n  bit 7..5: r class F SQI (very good link)");
-            break;
-        case 7:
-            fprintf (outFilePrt, "\n  bit 7..5: r class G SQI (very good link)");
-            break;
-        default:
-            fprintf (outFilePrt, "\n  bit 2..0: r Error");
-            break;
+    case 0:
+        fprintf (outFilePrt, "\n  bit 7..5: r worse than class A SQI (unstable link)");
+        break;
+    case 1:
+        fprintf (outFilePrt, "\n  bit 7..5: r class A SQI (unstable link)");
+        break;
+    case 2:
+        fprintf (outFilePrt, "\n  bit 7..5: r class B SQI (unstable link)");
+        break;
+    case 3:
+        fprintf (outFilePrt, "\n  bit 7..5: r class C SQI (good link)");
+        break;
+    case 4:
+        fprintf (outFilePrt, "\n  bit 7..5: r class D SQI (good link; bit error rate < 1e-10)");
+        break;
+    case 5:
+        fprintf (outFilePrt, "\n  bit 7..5: r class E SQI (good link)");
+        break;
+    case 6:
+        fprintf (outFilePrt, "\n  bit 7..5: r class F SQI (very good link)");
+        break;
+    case 7:
+        fprintf (outFilePrt, "\n  bit 7..5: r class G SQI (very good link)");
+        break;
+    default:
+        fprintf (outFilePrt, "\n  bit 2..0: r Error");
+        break;
     }
     return res;
 }
@@ -1025,21 +1025,21 @@ bool parse_sqi (uint8_t sqi, FILE *outFilePrt) {
 bool parse_mii_mode (uint8_t mii_mode, FILE *outFilePrt) {
     bool res = false;
     switch (mii_mode) {
-        case 0:
-            fprintf (outFilePrt, "\n  bit 9:8: RW MII mode enabled");
-            break;
-        case 1:
-            fprintf (outFilePrt, "\n  bit 9:8: RW RMII mode enabled (50 MHz input on REF_CLK)");
-            break;
-        case 2:
-            fprintf (outFilePrt, "\n  bit 9:8: RW RMII mode enabled (50 MHz output on REF_CLK)");
-            break;
-        case 3:
-            fprintf (outFilePrt, "\n  bit 9:8: RW Reverse MII mode");
-            break;
-        default:
-            fprintf (outFilePrt, "\n  bit 9:8: RW Error");
-            break;
+    case 0:
+        fprintf (outFilePrt, "\n  bit 9:8: RW MII mode enabled");
+        break;
+    case 1:
+        fprintf (outFilePrt, "\n  bit 9:8: RW RMII mode enabled (50 MHz input on REF_CLK)");
+        break;
+    case 2:
+        fprintf (outFilePrt, "\n  bit 9:8: RW RMII mode enabled (50 MHz output on REF_CLK)");
+        break;
+    case 3:
+        fprintf (outFilePrt, "\n  bit 9:8: RW Reverse MII mode");
+        break;
+    default:
+        fprintf (outFilePrt, "\n  bit 9:8: RW Error");
+        break;
     }
     return res;
 }
@@ -1047,21 +1047,22 @@ bool parse_mii_mode (uint8_t mii_mode, FILE *outFilePrt) {
 bool parse_clk_mode (uint8_t clk_mode, FILE *outFilePrt) {
     bool res = false;
     switch (clk_mode) {
-        case 0:
-            fprintf (outFilePrt, "\n  bit 13:12 RW 25 MHz XTAL; no clock at CLK_IN_OUT");
-            break;
-        case 1:
-            fprintf (outFilePrt, "\n  bit 13:12 RW 25 MHz XTAL; 25 MHz output at CLK_IN_OUT");
-            break;
-        case 2:
-            fprintf (outFilePrt, "\n  bit 13:12 RW 25 MHz external clock at CLK_IN_OUT");
-            break;
-        case 3:
-            fprintf (outFilePrt, "\n  bit 13:12 RW 50 MHz input at REF_CLK; RMII mode only; no XTAL; no clock at CLK_IN_OUT");
-            break;
-        default:
-            fprintf (outFilePrt, "\n  bit 13:12 RW ");
-            break;
+    case 0:
+        fprintf (outFilePrt, "\n  bit 13:12 RW 25 MHz XTAL; no clock at CLK_IN_OUT");
+        break;
+    case 1:
+        fprintf (outFilePrt, "\n  bit 13:12 RW 25 MHz XTAL; 25 MHz output at CLK_IN_OUT");
+        break;
+    case 2:
+        fprintf (outFilePrt, "\n  bit 13:12 RW 25 MHz external clock at CLK_IN_OUT");
+        break;
+    case 3:
+        fprintf (outFilePrt,
+                 "\n  bit 13:12 RW 50 MHz input at REF_CLK; RMII mode only; no XTAL; no clock at CLK_IN_OUT");
+        break;
+    default:
+        fprintf (outFilePrt, "\n  bit 13:12 RW ");
+        break;
     }
     return res;
 }
@@ -1069,18 +1070,18 @@ bool parse_clk_mode (uint8_t clk_mode, FILE *outFilePrt) {
 bool parse_loc_wu_tim (uint8_t loc_wu_tim, FILE *outFilePrt) {
     bool res = false;
     switch (loc_wu_tim) {
-        case 0:
-            fprintf (outFilePrt, "\n  bit 8:7 RW local wake-up timer: longest (10 ms to 20 ms)");
-            break;
-        case 1:
-            fprintf (outFilePrt, "\n  bit 8:7 RW local wake-up timer: long (250 us to 500 s)");
-            break;
-        case 2:
-            fprintf (outFilePrt, "\n  bit 8:7 RW local wake-up timer: short (100 us to 200 s)");
-            break;
-        case 3:
-            fprintf (outFilePrt, "\n  bit 8:7 RW local wake-up timer: shortest (10 us to 40 s)");
-            break;
+    case 0:
+        fprintf (outFilePrt, "\n  bit 8:7 RW local wake-up timer: longest (10 ms to 20 ms)");
+        break;
+    case 1:
+        fprintf (outFilePrt, "\n  bit 8:7 RW local wake-up timer: long (250 us to 500 s)");
+        break;
+    case 2:
+        fprintf (outFilePrt, "\n  bit 8:7 RW local wake-up timer: short (100 us to 200 s)");
+        break;
+    case 3:
+        fprintf (outFilePrt, "\n  bit 8:7 RW local wake-up timer: shortest (10 us to 40 s)");
+        break;
     }
     return res;
 }
@@ -1088,64 +1089,63 @@ bool parse_loc_wu_tim (uint8_t loc_wu_tim, FILE *outFilePrt) {
 const char *reg_name (uint8_t regAddr) {
     const char *reg_name = UNDEF_REG_NAME;
     switch (regAddr) {
-        case 0:
-            reg_name = "Basic control register";
-            break;
-        case 1:
-            reg_name = "Basic status register";
-            break;
-        case 2:
-            reg_name = "PHY identifier register 1";
-            break;
-        case 3:
-            reg_name = "PHY identifier register 2";
-            break;
-        case 15:
-            reg_name = "Extended status register";
-            break;
-        case 16:
-            reg_name = "PHY identifier register 3";
-            break;
-        case 17:
-            reg_name = "Extended control register";
-            break;
-        case 18:
-            reg_name = "Configuration register 1";
-            break;
-        case 19:
-            reg_name = "Configuration register 2";
-            break;
-        case 20:
-            reg_name = "Symbol error counter register";
-            break;
-        case 21:
-            reg_name = "Interrupt source register";
-            break;
-        case 22:
-            reg_name = "Interrupt enable register";
-            break;
-        case 23:
-            reg_name = "Communication status register";
-            break;
-        case 24:
-            reg_name = "General status register";
-            break;
-        case 25:
-            reg_name = "External status register";
-            break;
-        case 26:
-            reg_name = "Link-fail counter register";
-            break;
-        case 27:
-            reg_name = "Common configuration register";
-            break;
-        case 28:
-            reg_name = "Configuration register 3";
-            break;
-        default:
-            reg_name = UNDEF_REG_NAME;
-            break;
+    case 0:
+        reg_name = "Basic control register";
+        break;
+    case 1:
+        reg_name = "Basic status register";
+        break;
+    case 2:
+        reg_name = "PHY identifier register 1";
+        break;
+    case 3:
+        reg_name = "PHY identifier register 2";
+        break;
+    case 15:
+        reg_name = "Extended status register";
+        break;
+    case 16:
+        reg_name = "PHY identifier register 3";
+        break;
+    case 17:
+        reg_name = "Extended control register";
+        break;
+    case 18:
+        reg_name = "Configuration register 1";
+        break;
+    case 19:
+        reg_name = "Configuration register 2";
+        break;
+    case 20:
+        reg_name = "Symbol error counter register";
+        break;
+    case 21:
+        reg_name = "Interrupt source register";
+        break;
+    case 22:
+        reg_name = "Interrupt enable register";
+        break;
+    case 23:
+        reg_name = "Communication status register";
+        break;
+    case 24:
+        reg_name = "General status register";
+        break;
+    case 25:
+        reg_name = "External status register";
+        break;
+    case 26:
+        reg_name = "Link-fail counter register";
+        break;
+    case 27:
+        reg_name = "Common configuration register";
+        break;
+    case 28:
+        reg_name = "Configuration register 3";
+        break;
+    default:
+        reg_name = UNDEF_REG_NAME;
+        break;
     }
     return reg_name;
 }
-

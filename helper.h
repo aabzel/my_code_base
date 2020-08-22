@@ -7,17 +7,17 @@
  * This file is part of mod0keecrack.
  *
  * "THE BEER-WARE LICENSE" (Revision 42):
- * Thorsten Schroeder <ths at modzero dot ch> wrote this file. As long as you 
- * retain this notice you can do whatever you want with this stuff. If we meet 
- * some day, and you think this stuff is worth it, you can buy me a beer in 
+ * Thorsten Schroeder <ths at modzero dot ch> wrote this file. As long as you
+ * retain this notice you can do whatever you want with this stuff. If we meet
+ * some day, and you think this stuff is worth it, you can buy me a beer in
  * return. Thorsten Schroeder.
  *
  * NON-MILITARY-USAGE CLAUSE
- * Redistribution and use in source and binary form for military use and 
+ * Redistribution and use in source and binary form for military use and
  * military research is not permitted. Infringement of these clauses may
- * result in publishing the source code of the utilizing applications and 
+ * result in publishing the source code of the utilizing applications and
  * libraries to the public. As this software is developed, tested and
- * reviewed by *international* volunteers, this clause shall not be refused 
+ * reviewed by *international* volunteers, this clause shall not be refused
  * due to the matter of *national* security concerns.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
@@ -50,33 +50,32 @@
  * @param[in] s source buffer
  * @param[in] l source buffer length
  * @param[in] o offset
-*/
-void print_hex_ascii_line(const unsigned char *s, int l, int o);
+ */
+void print_hex_ascii_line (const unsigned char *s, int l, int o);
 
 /*!
  * print byte as hex. Prints input byte b as hex string.
  * @param[in]  b    byte
-*/
-void print_hex_byte(char b);
+ */
+void print_hex_byte (char b);
 
 /*!
  * print 16bit word as hex. Prints input word w as hex string.
  * @param[in]  w word
-*/
-void print_hex_word(int16_t w);
+ */
+void print_hex_word (int16_t w);
 
 /*!
  * print 32bit dword as hex. Prints input dword d as hex string.
  * @param[in]  d    dword
-*/
-void print_hex_dword(int32_t d);
+ */
+void print_hex_dword (int32_t d);
 
 /*!
  * print buffer as hex. Prints input byte buffer s as hex string.
  * @param[in] s source buffer
  * @param[in] l source buffer length
-*/
-void print_hex_buf(uint8_t *s, uint32_t l);
-
+ */
+void print_hex_buf (uint8_t *s, uint32_t l);
 
 #endif

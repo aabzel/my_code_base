@@ -1,8 +1,8 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include <stdint.h>
 #include "custom_type.h"
+#include <stdint.h>
 
 #define DEBUG_ENVEL1 0
 
@@ -12,6 +12,6 @@ typedef struct xEnvelop_t {
 } xEnvelop_t;
 
 bool is_fit (xEnvelop_t container, xEnvelop_t object);
-int maxEnvelopes (int** envelopes, int envelopesSize, int* envelopesColSize);
+int maxEnvelopes (int **envelopes, int envelopesSize, int *envelopesColSize);
 
 #endif /* BOARD_H */

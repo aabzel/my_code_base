@@ -1,8 +1,8 @@
 #ifndef TEST_AVL_TREE_H
 #define TEST_AVL_TREE_H
 
-#include "custom_type.h"
 #include "bin_tree.h"
+#include "custom_type.h"
 
 #define DRAW_AVL_TREE 0
 #define DRAW_AVL_TREE_INSERT 1

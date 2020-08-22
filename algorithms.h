@@ -15,13 +15,13 @@ extern "C" {
 
 //#define F_EPSILON 0.0005f
 
-bool swap_int (int * const x, int * const y);
-uint32_t factorial (uint32_t n) ;
+bool swap_int (int *const x, int *const y);
+uint32_t factorial (uint32_t n);
 bool is_in_range (int val, int lowBound, int upBound);
 int update_max (int curMax, int newVal);
 int qselect (int *v, int len, int k);
 bool is_power_of_two (int x);
-void swap_char (char * const x, char * const y);
+void swap_char (char *const x, char *const y);
 
 short compare (int Data1, int Data2);
 int max_int (int val1, int val2);
@@ -36,14 +36,13 @@ float min3f (float val1, float val2, float val3);
 bool is_float_equal (float a__fife, float b__fife, float epsilon__fife);
 
 int partition (int *arr, int l, int r);
-int cmp_int (const void * p1, const void * p2);
-void swap_char (char * const x, char * const y);
+int cmp_int (const void *p1, const void *p2);
+void swap_char (char *const x, char *const y);
 int *generate_num_array (int n);
 char *generate_num_string (int n);
 
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif /* __ALGORITHMS_H */

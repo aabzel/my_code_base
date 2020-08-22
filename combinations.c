@@ -1,34 +1,32 @@
 #include "combinations.h"
 
-#if 1==COMBINATION
+#if 1 == COMBINATION
 
-#include "arrays.h"
 #include "algorithms.h"
+#include "arrays.h"
+#include "linked_list.h"
 #include "permutations.h"
 #include "str_ops.h"
 #include "utils.h"
-#include "arrays.h"
-#include "linked_list.h"
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 list_node_t *combinationListHead = NULL;
 
-void print_combinations (char * const alphabet) {
+void print_combinations (char *const alphabet) {
     int32_t alphabetLength = strlen (alphabet);
     static int cnt = 0;
     cnt++;
     if (1 == cnt) {
 
         for (int32_t i = 0; i < alphabetLength; i++) {
-            printf ("%c\n", alphabet [i]);
-
+            printf ("%c\n", alphabet[i]);
         }
     }
-#if 1==DEBUG_ARG
+#if 1 == DEBUG_ARG
     printf ("\n inAlphabet: [%s] len: [%u] \n", alphabet, alphabetLength);
 #endif
     if (0 < alphabetLength) {
@@ -41,8 +39,8 @@ void print_combinations (char * const alphabet) {
         for (int32_t firstLet = 0; firstLet < alphabetLength; firstLet++) {
             char *remainAlphabet = NULL;
             remainAlphabet = removeCharFromString (alphabet, firstLet);
-#if DEBUG_REMAIN_ALPH==1
-            //printf ("initAlpm[%s]->remainAlp[%s]", alphabet, remainAlphabet);
+#if DEBUG_REMAIN_ALPH == 1
+            // printf ("initAlpm[%s]->remainAlp[%s]", alphabet, remainAlphabet);
 #endif // DEBUG_REMAIN_ALPH
             print_combinations (remainAlphabet);
             free (remainAlphabet);
@@ -51,7 +49,6 @@ void print_combinations (char * const alphabet) {
     if (0 == alphabetLength) {
         return;
     }
-
 }
 
 void combine (int n, int k) {
@@ -120,14 +117,12 @@ bool assemble_combination_list (list_node_t *pPermutHead, list_node_t **pCombine
     return res;
 }
 
-
-
 /**
  * Return an array of arrays of size *returnSize.
  * The sizes of the arrays are returned as *returnColumnSizes array.
  * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
  */
-int** subsets (int* nums, int numsSize, int* returnSize, int** returnColumnSizes) {
+int **subsets (int *nums, int numsSize, int *returnSize, int **returnColumnSizes) {
     int amOfelem = 0u;
     int **arrOfArrys;
     for (amOfelem = 1u; amOfelem <= numsSize; amOfelem++) {
@@ -148,12 +143,11 @@ int** subsets (int* nums, int numsSize, int* returnSize, int** returnColumnSizes
     return arrOfArrys;
 }
 
-
 #endif
 /**
  * Return an array of arrays of size *returnSize.
  * The sizes of the arrays are returned as *returnColumnSizes array.
  * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
  */
-//int** combine(int n, int k, int* returnSize, int** returnColumnSizes){
+// int** combine(int n, int k, int* returnSize, int** returnColumnSizes){
 //}
