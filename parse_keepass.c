@@ -7,6 +7,8 @@
 #include <stddef.h>
 
 #include "aes.h"
+#include "crypto-ms.h"
+#include "helper.h"
 #include "sha256.h"
 #include "utils.h"
 
@@ -19,6 +21,8 @@ char *IDtoNameTUT[11] = { "ID_END_OF_HEADER", "ID_COMMENT", "ID_CIPHER",
 
 #define SIG_SIZE 4U
 #define SIG_VER_SIZE 4U
+
+//static char kdbx_filename[] = "db.key";
 
 size_t kdbx_headerentries_read(FILE *kdbx_fd, kdbx_header_entry_t *entries) {
 	size_t ret = 0;
@@ -37,7 +41,8 @@ size_t kdbx_headerentries_read(FILE *kdbx_fd, kdbx_header_entry_t *entries) {
 			break;
 		} else {
 			//printf("\n read id %u ", id);
-			if (id > HEADERIDCOUNT) {
+			if (HEADER_ID_COUNT < id) {
+				printf("\n read id [%u]", id);
 				id = END;
 				continue;
 			}
@@ -63,7 +68,7 @@ size_t kdbx_headerentries_read(FILE *kdbx_fd, kdbx_header_entry_t *entries) {
 								|| (id == INNERRANDOMSTREAMID)) {
 							memcpy(&entries[id].dw, entries[id].data, 4);
 							memcpy(&entries[id].qw, entries[id].data, 4);
-						} else if (id == TRANSFORMROUNDS) {
+						} else if (id == TRANSFORM_ROUNDS) {
 							memcpy(&entries[id].qw, entries[id].data, 8);
 						}
 						result++;
@@ -80,40 +85,48 @@ size_t kdbx_headerentries_read(FILE *kdbx_fd, kdbx_header_entry_t *entries) {
 }
 
 void kdbx_headerentries_dump(kdbx_header_entry_t *h) {
-	printf("[*] kdbx headerentries:\n");
-	printf("[-]    END_0 :                 ");
-	print_hex_buf((char*) h[0].data, h[0].len);
-	puts("");
-	printf("[-]    COMMENT_1:             ");
-	print_hex_buf((char*) h[1].data, h[1].len);
-	puts("");
-	printf("[-]    CIPHERID_2:            ");
-	print_hex_buf((char*) h[2].data, h[2].len);
-	puts("");
-	printf("[-]    COMPRESSIONFLAGS_3:    %08x\n", h[3].dw);
+	printf("[*] kdbx header entries:\n");
+	printf("[-]    END_0 :             len: %u    ",h[0].len);
+	print_hex_buf( h[0].data, h[0].len);
 
-	printf("[-]    MASTERSEED_4:          ");
-	print_hex_buf((char*) h[MASTER_SEED].data, h[MASTER_SEED].len);
-	puts("");
+	printf("\n[-]    COMMENT_1:        len: %u     ",h[1].len);
+	print_hex_buf(  h[1].data, h[1].len);
 
-	printf("[-]    TRANSFORMSEED_5:       ");
-	print_hex_buf((char*) h[TRANSFORMSEED].data, h[TRANSFORMSEED].len);
-	puts("");
-	printf("[-]    TRANSFORMROUNDS_6:     %016llx\n",
-			(unsigned long long) h[6].qw);
-	printf("[-]    ENCRYPTIONIV_7:        ");
-	print_hex_buf((char*) h[7].data, h[7].len);
-	puts("");
-	printf("[-]    PROTECTEDSTREAMKEY_8:  ");
-	print_hex_buf((char*) h[8].data, h[8].len);
-	puts("");
-	printf("[-]    STREAMSTARTBYTES_9:    ");
-	print_hex_buf((char*) h[9].data, h[9].len);
-	puts("");
-	printf("[-]    INNERRANDOMSTREAMID_10: %08x\n", h[10].dw);
+	printf("\n[-]    CIPHERID_2:      len: %u      ",h[2].len);
+	print_hex_buf( h[2].data, h[2].len);
+
+	printf("\n[-]    COMPRESSION_FLAGS_3:    %08x\n", h[3].dw);
+
+	printf("\n[-]    MASTER_SEED_4:        len: %u  ",h[MASTER_SEED].len);
+	print_hex_buf(  h[MASTER_SEED].data, h[MASTER_SEED].len);
+
+	printf("\n[-]    TRANSFORM_SEED_5:     len: %u  ",h[TRANSFORM_SEED].len);
+	print_hex_buf(  h[TRANSFORM_SEED].data, h[TRANSFORM_SEED].len);
+
+	printf("\n[-]    TRANSFORM_ROUNDS_6:     %016llx\n",			(unsigned long long) h[6].qw);
+
+	printf("\n[-]    ENCRYPTION_IV_7:   len: %u ",h[ENCRYPTION_IV].len);
+	print_hex_buf(  h[ENCRYPTION_IV].data, h[ENCRYPTION_IV].len);
+
+	printf("\n[-]    PROTECTED_STREAM_KEY_8: len: %u ", h[8].len);
+	print_hex_buf(  h[8].data, h[8].len);
+
+	printf("\n[-]    STREAM_START_BYTES_9:  len: %u  ",h[9].len);
+	print_hex_buf(  h[9].data, h[9].len);
+
+
+	uint16_t header_len = 0;
+	for (int i=0;i<HEADER_ID_COUNT;i++) {
+		if(0<h[i].len){
+    		header_len +=h[i].len+2+1;
+		}
+	}
+	printf("\n[*] header_len: %u  ",header_len);
+
 	return;
 }
 
+#if 0
 static bool parse_header(FILE *kdbx_fd) {
 	bool res = true;
 	uint8_t id = 0;
@@ -148,7 +161,8 @@ static bool parse_header(FILE *kdbx_fd) {
 						printf("\n got encryption_iv   ");
 					} else {
 						printf("\n ID_ENCRYPTION_IV size %u expected %u",
-								data_len, (unsigned int)sizeof(keePassHeader.encryption_iv));
+								data_len,
+								(unsigned int) sizeof(keePassHeader.encryption_iv));
 					}
 					break;
 
@@ -194,6 +208,7 @@ static bool parse_header(FILE *kdbx_fd) {
 	return res;
 }
 
+
 bool parse_kee_pass_file_heaser(FILE *kdbx_fd) {
 	size_t numItems = 0;
 	bool res = false;
@@ -226,6 +241,7 @@ bool parse_kee_pass_file_heaser(FILE *kdbx_fd) {
 	}
 	return res;
 }
+#endif
 
 size_t kdbx_header_read(FILE *kdbx_fd, kdbx_header_t *header) {
 	size_t ret = 0;
@@ -249,7 +265,7 @@ void kdbx_header_dump(kdbx_header_t h) {
 	return;
 }
 
-size_t kdbx_payload_read(FILE *kdbx_fd, kdbx_payload_t *p) {
+size_t kdbx_payload_read (FILE *kdbx_fd, kdbx_payload_t *p) {
 	size_t ret = 0;
 	uint64_t off_start = 0;
 	uint64_t off_end = 0;
@@ -258,10 +274,11 @@ size_t kdbx_payload_read(FILE *kdbx_fd, kdbx_payload_t *p) {
 		return 0;
 
 	p->encrypted = NULL;
+	p->decrypted = NULL;
 	off_start = ftell(kdbx_fd);
 	//printf("\n off_start [%lu]", off_start);
 	//printf("\n errno [%u]", errno);
-	if (0xFFFFFFFF==off_start ) {
+	if (0xFFFFFFFF == off_start) {
 		printf("\n errno [%u]", errno);
 	}
 	p->offset_start = off_start;
@@ -271,26 +288,29 @@ size_t kdbx_payload_read(FILE *kdbx_fd, kdbx_payload_t *p) {
 	off_end = ftell(kdbx_fd);
 	//printf("\n Offset end [%u] %x byte", off_end, off_end);
 
-
 	p->len = (off_end - off_start);
-	fseek(kdbx_fd, off_start, SEEK_SET);
+	fseek(kdbx_fd, off_start, SEEK_SET); //? -1
 
-	if (0<p->len) {
-	    p->encrypted = (uint8_t*) malloc(p->len);
+	if (0 < p->len) {
+		p->encrypted = (uint8_t*) malloc(p->len);
 		if (p->encrypted == NULL) {
 			printf("[!] malloc(payload->encrypted) failed.");
 			return 0;
 		} else {
-			printf("\n Allocated %u byte", p->len);
-	    	memset(p->encrypted, 0, p->len);
-	    	ret = fread(p->encrypted, p->len, 1, kdbx_fd);
-		    if (ret != 1) {
-			    printf("[!] fread(payload) failed.");
-		    }
+			printf("\n Allocated %u byte",(unsigned int) p->len);
+			memset(p->encrypted, 0, p->len);
+			ret = fread(p->encrypted, p->len, 1, kdbx_fd);
+			if (ret != 1) {
+				printf("[!] fread(payload) failed.");
+			}
+			p->decrypted = (uint8_t*) malloc(p->len);
+			if(p->decrypted){
+				memcpy(p->decrypted,p->encrypted,p->len);
+			}
 		}
+	} else {
+		printf ("\n payload len zero");
 	}
-
-
 
 	return ret;
 }
@@ -298,10 +318,109 @@ size_t kdbx_payload_read(FILE *kdbx_fd, kdbx_payload_t *p) {
 void kdbx_payload_dump(kdbx_payload_t p) {
 	printf("\n");
 	printf("[*] kdbx payload:\n");
-	printf("[-]    payload offset:      %llx\n",(unsigned long long) p.offset_start);
-	printf("[-]    payload len:         %x\n", (unsigned int) p.len);
+	printf("[-]    payload offset:      0x%llx  %u\n",
+			(unsigned long long) p.offset_start, (unsigned int) p.offset_start);
+	printf("[-]    payload len:         0x%x %u\n", (unsigned int) p.len,
+			(unsigned int) p.len);
 
 	return;
+}
+
+
+bool header_arr_to_bin(kdbx_database_t *db) {
+	bool res = false;
+	if(8==db->kdbxheader[TRANSFORM_ROUNDS].len) {
+		res= true;
+	    memcpy(&keePassHeader.transform_rounds, db->kdbxheader[TRANSFORM_ROUNDS].data ,sizeof(keePassHeader.transform_rounds));
+	} else {
+		printf("Error");
+	}
+	return res;
+}
+
+bool kdbx_decrypt_payload(kdbx_database_t *db, char *pass_word, uint8_t *key_hash) {
+	bool res = false;
+	uint8_t pass[1024] = { 0 };
+	uint8_t hash[32] = { 0 };
+	uint8_t composite_key[32] = { 0 };
+	uint8_t composite_data[64] = { 0 };
+	uint8_t transform_key[32] = { 0 };
+	uint8_t transform_key_sh[32] = { 0 };
+	uint8_t master_key[32] = { 0 };
+	uint8_t masterkey_input[64] ={0};
+	size_t masterkey_input_len = 0;
+
+	//header_arr_to_bin(db);
+	kdbx_header_entry_t *hdr = &db->kdbxheader[0];
+	memset(pass, 0, sizeof(pass));
+	memset(composite_data, 0, 64);
+	memset(transform_key, 0, 32);
+	memset(transform_key_sh, 0, 32);
+
+	memset(master_key, 0, 32);
+
+	memcpy(pass, pass_word, strlen(pass_word));
+	printf("[+] trying: [%s]\r", pass);
+
+	//sha256_hash(hash, (uint8_t *) pass, 32);
+	sha256_hash(hash, (uint8_t *) pass, strlen(pass_word));
+	printf("\n[*] pass_hash \n");
+	print_hex_buf (hash, 32);
+
+	sha256_hash(composite_key, hash, sizeof(hash));
+
+	printf("\n[*] composite_key \n");
+	print_hex_buf (composite_key, 32);
+
+	memcpy(transform_key, composite_key, sizeof(transform_key));
+	printf("\n[*] transform_key ");
+	print_hex_buf (transform_key, 32);
+
+	aes_transformkey(db->kdbxheader, transform_key, sizeof(transform_key));
+
+    sha256_hash(transform_key_sh, transform_key, sizeof(transform_key));
+
+
+    printf("\n[*] Master seed len %u", hdr[MASTER_SEED].len); // 32
+
+    masterkey_input_len = sizeof(transform_key) + hdr[MASTER_SEED].len;
+    printf("\n[*] Master in key len  %u", (unsigned int) masterkey_input_len); // ?
+
+    if(masterkey_input_len < hdr[MASTER_SEED].len) {
+      // should never happen, as masterkey len is (currently) 16 bit
+        puts("[!] masterkey_input len integer overflow.");
+        return 0;
+    }
+    //concat
+    memcpy(masterkey_input, hdr[MASTER_SEED].data, hdr[MASTER_SEED].len);
+    memcpy(masterkey_input+hdr[MASTER_SEED].len, transform_key_sh, sizeof(transform_key_sh));
+
+    sha256_hash(master_key, masterkey_input, masterkey_input_len);
+	printf("\n[*] master_key \n");
+	print_hex_buf (master_key, 32);
+
+    res = aes_decrypt_check(hdr, master_key, &db->payload);
+
+	return res;
+}
+
+bool kdbx_payload_crack(kdbx_database_t *db, char *password) {
+	bool res = false;
+	printf("[*] kdbx crack:\n");
+	int len = strlen(password);
+	if (0 < len) {
+		password[len] = 0x00;
+	}
+	res = kdbx_decrypt_payload(db, password, NULL);
+	if (res) {
+		printf("[*] decryption successful with password \n");
+		//printf("[*] decryption successful with password [%s]\n", password);
+		res = true;
+	} else {
+		printf("[!] decryption error with password\n");
+		//printf("[!] decryption error with password [%s]\n", password);
+	}
+	return res;
 }
 
 bool try_to_open_kdbx_file(char *file_name, char *pass_word) {
@@ -312,20 +431,25 @@ bool try_to_open_kdbx_file(char *file_name, char *pass_word) {
 		//printf("\n the file has been opened");
 		/*Read signature*/
 		size_t ret;
-		kdbx_database_t kdbx_db = { 0 };
+		kdbx_database_t kdbx_db ;
+		memset(&kdbx_db, 0, sizeof(kdbx_db));
 
-		kdbx_header_read(kdbx_fd, &kdbx_db.fileheader);
-		kdbx_header_dump(kdbx_db.fileheader);
+		kdbx_header_read (kdbx_fd, &kdbx_db.fileheader);
+		kdbx_header_dump (kdbx_db.fileheader);
 
-		kdbx_headerentries_read(kdbx_fd, &kdbx_db.kdbxheader);
-		kdbx_headerentries_dump(&kdbx_db.kdbxheader);
+		kdbx_headerentries_read (kdbx_fd, kdbx_db.kdbxheader);
+		kdbx_headerentries_dump (kdbx_db.kdbxheader);
 
-		ret=kdbx_payload_read(kdbx_fd, &kdbx_db.payload);
-		if(0<ret){
-    		kdbx_payload_dump(kdbx_db.payload);
+		ret = kdbx_payload_read (kdbx_fd, &kdbx_db.payload);
+		if (0 < ret) {
+			kdbx_payload_dump (kdbx_db.payload);
+	     	kdbx_payload_crack (&kdbx_db, pass_word);
+		} else {
+			printf("\n Lack payload");
 		}
 
 		fclose(kdbx_fd);
+
 		return true;
 #if 0
 		parse_kee_pass_file_heaser(kdbx_fd);
@@ -333,16 +457,18 @@ bool try_to_open_kdbx_file(char *file_name, char *pass_word) {
 		unsigned char pass_word_hash[32] = { 0 };
 		unsigned char pass_word_32[32] = { 0 };
 		memcpy(pass_word_32, pass_word, strlen(pass_word));
+
 		sha256_hash(pass_word_hash, (unsigned char*) pass_word_32, 32);
 		printf("\n pass len: [%s]\n", pass_word);
 		printf("\n sha256 of key pass len: %u\n", strlen(pass_word));
 		print_mem(pass_word_hash, 32);
 
 		unsigned char composite_key[32] = { 0 };
+
 		sha256_hash(composite_key, (unsigned char*) pass_word_hash, 32);
 		printf("\n composite key\n");
 		print_mem(composite_key, 32);
-
+///
 		unsigned char transformed_key[32];
 		//unsigned char composite_key_sha256[32];
 

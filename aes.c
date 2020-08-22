@@ -133,7 +133,6 @@ static const uint8_t Rcon[11] = { 0x8d, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20,
  *  up to rcon[8] for AES-192, up to rcon[7] for AES-256. rcon[0] is not used in AES algorithm."
  */
 
-
 /*
  static uint8_t getSBoxValue(uint8_t num)
  {
@@ -223,16 +222,14 @@ void AES_init_ctx(struct AES_ctx *ctx, const uint8_t *key) {
 	KeyExpansion(ctx->RoundKey, key);
 }
 
-
-void AES_init_ctx_iv(struct AES_ctx* ctx, const uint8_t* key, const uint8_t* iv) {
-  KeyExpansion(ctx->RoundKey, key);
-  memcpy (ctx->Iv, iv, AES_BLOCKLEN);
+void AES_init_ctx_iv(struct AES_ctx *ctx, const uint8_t *key, const uint8_t *iv) {
+	KeyExpansion(ctx->RoundKey, key);
+	memcpy(ctx->Iv, iv, AES_BLOCKLEN);
 }
 
-void AES_ctx_set_iv(struct AES_ctx* ctx, const uint8_t* iv) {
-  memcpy (ctx->Iv, iv, AES_BLOCKLEN);
+void AES_ctx_set_iv(struct AES_ctx *ctx, const uint8_t *iv) {
+	memcpy(ctx->Iv, iv, AES_BLOCKLEN);
 }
-
 
 // This function adds the round key to state.
 // The round key is added to the state by an XOR function.
@@ -339,65 +336,66 @@ static uint8_t Multiply(uint8_t x, uint8_t y)
 // MixColumns function mixes the columns of the state matrix.
 // The method used to multiply may be difficult to understand for the inexperienced.
 // Please use the references to gain more information.
-static void InvMixColumns(state_t* state)
-{
-  int i;
-  uint8_t a, b, c, d;
-  for (i = 0; i < 4; ++i)
-  { 
-    a = (*state)[i][0];
-    b = (*state)[i][1];
-    c = (*state)[i][2];
-    d = (*state)[i][3];
+static void InvMixColumns(state_t *state) {
+	int i;
+	uint8_t a, b, c, d;
+	for (i = 0; i < 4; ++i) {
+		a = (*state)[i][0];
+		b = (*state)[i][1];
+		c = (*state)[i][2];
+		d = (*state)[i][3];
 
-    (*state)[i][0] = Multiply(a, 0x0e) ^ Multiply(b, 0x0b) ^ Multiply(c, 0x0d) ^ Multiply(d, 0x09);
-    (*state)[i][1] = Multiply(a, 0x09) ^ Multiply(b, 0x0e) ^ Multiply(c, 0x0b) ^ Multiply(d, 0x0d);
-    (*state)[i][2] = Multiply(a, 0x0d) ^ Multiply(b, 0x09) ^ Multiply(c, 0x0e) ^ Multiply(d, 0x0b);
-    (*state)[i][3] = Multiply(a, 0x0b) ^ Multiply(b, 0x0d) ^ Multiply(c, 0x09) ^ Multiply(d, 0x0e);
-  }
+		(*state)[i][0] =
+				Multiply(a,
+						0x0e) ^ Multiply(b, 0x0b) ^ Multiply(c, 0x0d) ^ Multiply(d, 0x09);
+		(*state)[i][1] =
+				Multiply(a,
+						0x09) ^ Multiply(b, 0x0e) ^ Multiply(c, 0x0b) ^ Multiply(d, 0x0d);
+		(*state)[i][2] =
+				Multiply(a,
+						0x0d) ^ Multiply(b, 0x09) ^ Multiply(c, 0x0e) ^ Multiply(d, 0x0b);
+		(*state)[i][3] =
+				Multiply(a,
+						0x0b) ^ Multiply(b, 0x0d) ^ Multiply(c, 0x09) ^ Multiply(d, 0x0e);
+	}
 }
-
 
 // The SubBytes Function Substitutes the values in the
 // state matrix with values in an S-box.
-static void InvSubBytes(state_t* state)
-{
-  uint8_t i, j;
-  for (i = 0; i < 4; ++i)
-  {
-    for (j = 0; j < 4; ++j)
-    {
-      (*state)[j][i] = getSBoxInvert((*state)[j][i]);
-    }
-  }
+static void InvSubBytes(state_t *state) {
+	uint8_t i, j;
+	for (i = 0; i < 4; ++i) {
+		for (j = 0; j < 4; ++j) {
+			(*state)[j][i] = getSBoxInvert((*state)[j][i]);
+		}
+	}
 }
 
-static void InvShiftRows(state_t* state)
-{
-  uint8_t temp;
+static void InvShiftRows(state_t *state) {
+	uint8_t temp;
 
-  // Rotate first row 1 columns to right  
-  temp = (*state)[3][1];
-  (*state)[3][1] = (*state)[2][1];
-  (*state)[2][1] = (*state)[1][1];
-  (*state)[1][1] = (*state)[0][1];
-  (*state)[0][1] = temp;
+	// Rotate first row 1 columns to right
+	temp = (*state)[3][1];
+	(*state)[3][1] = (*state)[2][1];
+	(*state)[2][1] = (*state)[1][1];
+	(*state)[1][1] = (*state)[0][1];
+	(*state)[0][1] = temp;
 
-  // Rotate second row 2 columns to right 
-  temp = (*state)[0][2];
-  (*state)[0][2] = (*state)[2][2];
-  (*state)[2][2] = temp;
+	// Rotate second row 2 columns to right
+	temp = (*state)[0][2];
+	(*state)[0][2] = (*state)[2][2];
+	(*state)[2][2] = temp;
 
-  temp = (*state)[1][2];
-  (*state)[1][2] = (*state)[3][2];
-  (*state)[3][2] = temp;
+	temp = (*state)[1][2];
+	(*state)[1][2] = (*state)[3][2];
+	(*state)[3][2] = temp;
 
-  // Rotate third row 3 columns to right
-  temp = (*state)[0][3];
-  (*state)[0][3] = (*state)[1][3];
-  (*state)[1][3] = (*state)[2][3];
-  (*state)[2][3] = (*state)[3][3];
-  (*state)[3][3] = temp;
+	// Rotate third row 3 columns to right
+	temp = (*state)[0][3];
+	(*state)[0][3] = (*state)[1][3];
+	(*state)[1][3] = (*state)[2][3];
+	(*state)[2][3] = (*state)[3][3];
+	(*state)[3][3] = temp;
 }
 #endif // #if (defined(CBC) && CBC == 1) || (defined(ECB) && ECB == 1)
 
@@ -426,27 +424,25 @@ static void Cipher(state_t *state, const uint8_t *RoundKey) {
 }
 
 #if (defined(CBC) && CBC == 1) || (defined(ECB) && ECB == 1)
-static void InvCipher(state_t* state, const uint8_t* RoundKey)
-{
-  uint8_t round = 0;
+static void InvCipher(state_t *state, const uint8_t *inRoundKey) {
+	uint8_t round = 0;
 
-  // Add the First round key to the state before starting the rounds.
-  AddRoundKey(Nr, state, RoundKey);
+	// Add the First round key to the state before starting the rounds.
+	AddRoundKey(Nr, state, inRoundKey);
 
-  // There will be Nr rounds.
-  // The first Nr-1 rounds are identical.
-  // These Nr rounds are executed in the loop below.
-  // Last one without InvMixColumn()
-  for (round = (Nr - 1); ; --round)
-  {
-    InvShiftRows(state);
-    InvSubBytes(state);
-    AddRoundKey(round, state, RoundKey);
-    if (round == 0) {
-      break;
-    }
-    InvMixColumns(state);
-  }
+	// There will be Nr rounds.
+	// The first Nr-1 rounds are identical.
+	// These Nr rounds are executed in the loop below.
+	// Last one without InvMixColumn()
+	for (round = (Nr - 1);; --round) {
+		InvShiftRows(state);
+		InvSubBytes(state);
+		AddRoundKey(round, state, inRoundKey);
+		if (round == 0) {
+			break;
+		}
+		InvMixColumns(state);
+	}
 
 }
 #endif // #if (defined(CBC) && CBC == 1) || (defined(ECB) && ECB == 1)
@@ -456,62 +452,53 @@ static void InvCipher(state_t* state, const uint8_t* RoundKey)
 /*****************************************************************************/
 #if defined(ECB) && (ECB == 1)
 
-
-void AES_ECB_encrypt(const struct AES_ctx* ctx, uint8_t* buf)
-{
-  // The next function call encrypts the PlainText with the Key using AES algorithm.
-  Cipher((state_t*)buf, ctx->RoundKey);
+void AES_ECB_encrypt(const struct AES_ctx *ctx, uint8_t *inOutBuf) {
+	// The next function call encrypts the PlainText with the Key using AES algorithm.
+	Cipher((state_t*) inOutBuf, ctx->RoundKey);
 }
 
-void AES_ECB_decrypt(const struct AES_ctx* ctx, uint8_t* buf)
-{
-  // The next function call decrypts the PlainText with the Key using AES algorithm.
-  InvCipher((state_t*)buf, ctx->RoundKey);
+void AES_ECB_decrypt(const struct AES_ctx *ctx, uint8_t *buf) {
+	// The next function call decrypts the PlainText with the Key using AES algorithm.
+	InvCipher((state_t*) buf, ctx->RoundKey);
 }
-
 
 #endif // #if defined(ECB) && (ECB == 1)
 
 #if defined(CBC) && (CBC == 1)
 
-
-static void XorWithIv(uint8_t* buf, const uint8_t* Iv)
-{
-  uint8_t i;
-  for (i = 0; i < AES_BLOCKLEN; ++i) // The block in AES is always 128bit no matter the key size
-  {
-    buf[i] ^= Iv[i];
-  }
+static void XorWithIv(uint8_t *inOutBuf, const uint8_t *Iv) {
+	uint8_t i;
+	// The block in AES is always 128bit no matter the key size
+	for (i = 0; i < AES_BLOCKLEN; ++i) {
+		inOutBuf[i] ^= Iv[i];
+	}
 }
 
-void AES_CBC_encrypt_buffer(struct AES_ctx *ctx, uint8_t* buf, uint32_t length)
-{
-  uintptr_t i;
-  uint8_t *Iv = ctx->Iv;
-  for (i = 0; i < length; i += AES_BLOCKLEN)
-  {
-    XorWithIv(buf, Iv);
-    Cipher((state_t*)buf, ctx->RoundKey);
-    Iv = buf;
-    buf += AES_BLOCKLEN;
-  }
-  /* store Iv in ctx for next call */
-  memcpy(ctx->Iv, Iv, AES_BLOCKLEN);
+void AES_CBC_encrypt_buffer(struct AES_ctx *ctx, uint8_t *buf, uint32_t length) {
+	uintptr_t i;
+	uint8_t *Iv = ctx->Iv;
+	for (i = 0; i < length; i += AES_BLOCKLEN)
+	{
+		XorWithIv(buf, Iv);
+		Cipher((state_t*) buf, ctx->RoundKey);
+		Iv = buf;
+		buf += AES_BLOCKLEN;
+	}
+	/* store Iv in ctx for next call */
+	memcpy(ctx->Iv, Iv, AES_BLOCKLEN);
 }
 
-void AES_CBC_decrypt_buffer(struct AES_ctx* ctx, uint8_t* buf,  uint32_t length)
-{
-  uintptr_t i;
-  uint8_t storeNextIv[AES_BLOCKLEN];
-  for (i = 0; i < length; i += AES_BLOCKLEN)
-  {
-    memcpy(storeNextIv, buf, AES_BLOCKLEN);
-    InvCipher((state_t*)buf, ctx->RoundKey);
-    XorWithIv(buf, ctx->Iv);
-    memcpy(ctx->Iv, storeNextIv, AES_BLOCKLEN);
-    buf += AES_BLOCKLEN;
-  }
-
+void AES_CBC_decrypt_buffer (struct AES_ctx *in_ctx, uint8_t *inOutBuf,
+		uint32_t length) {
+	uintptr_t i;
+	uint8_t storeNextIv[AES_BLOCKLEN];
+	for (i = 0; i < length; i += AES_BLOCKLEN) {
+		memcpy(storeNextIv, inOutBuf, AES_BLOCKLEN);
+		InvCipher((state_t*) inOutBuf, in_ctx->RoundKey);
+		XorWithIv(inOutBuf, in_ctx->Iv);
+		memcpy(in_ctx->Iv, storeNextIv, AES_BLOCKLEN);
+		inOutBuf += AES_BLOCKLEN;
+	}
 }
 
 #endif // #if defined(CBC) && (CBC == 1)
@@ -519,37 +506,33 @@ void AES_CBC_decrypt_buffer(struct AES_ctx* ctx, uint8_t* buf,  uint32_t length)
 #if defined(CTR) && (CTR == 1)
 
 /* Symmetrical operation: same function for encrypting as for decrypting. Note any IV/nonce should never be reused with the same key */
-void AES_CTR_xcrypt_buffer(struct AES_ctx* ctx, uint8_t* buf, uint32_t length)
-{
-  uint8_t buffer[AES_BLOCKLEN];
-  
-  unsigned i;
-  int bi;
-  for (i = 0, bi = AES_BLOCKLEN; i < length; ++i, ++bi)
-  {
-    if (bi == AES_BLOCKLEN) /* we need to regen xor compliment in buffer */
-    {
-      
-      memcpy(buffer, ctx->Iv, AES_BLOCKLEN);
-      Cipher((state_t*)buffer,ctx->RoundKey);
+void AES_CTR_xcrypt_buffer(struct AES_ctx *ctx, uint8_t *buf, uint32_t length) {
+	uint8_t buffer[AES_BLOCKLEN];
 
-      /* Increment Iv and handle overflow */
-      for (bi = (AES_BLOCKLEN - 1); bi >= 0; --bi)
-      {
-	/* inc will overflow */
-        if (ctx->Iv[bi] == 255)
-	{
-          ctx->Iv[bi] = 0;
-          continue;
-        } 
-        ctx->Iv[bi] += 1;
-        break;   
-      }
-      bi = 0;
-    }
+	unsigned i;
+	int bi;
+	for (i = 0, bi = AES_BLOCKLEN; i < length; ++i, ++bi) {
+		if (bi == AES_BLOCKLEN) /* we need to regen xor compliment in buffer */
+		{
 
-    buf[i] = (buf[i] ^ buffer[bi]);
-  }
+			memcpy(buffer, ctx->Iv, AES_BLOCKLEN);
+			Cipher((state_t*) buffer, ctx->RoundKey);
+
+			/* Increment Iv and handle overflow */
+			for (bi = (AES_BLOCKLEN - 1); bi >= 0; --bi) {
+				/* inc will overflow */
+				if (ctx->Iv[bi] == 255) {
+					ctx->Iv[bi] = 0;
+					continue;
+				}
+				ctx->Iv[bi] += 1;
+				break;
+			}
+			bi = 0;
+		}
+
+		buf[i] = (buf[i] ^ buffer[bi]);
+	}
 }
 
 #endif // #if defined(CTR) && (CTR == 1)

@@ -31,14 +31,14 @@ enum kdbx_headerid {
   COMMENT,
   CIPHERID,
   COMPRESSIONFLAGS,
-  MASTER_SEED,
-  TRANSFORMSEED,        // 5
-  TRANSFORMROUNDS,
-  ENCRYPTIONIV,
+  MASTER_SEED, // 4
+  TRANSFORM_SEED,        // 5
+  TRANSFORM_ROUNDS,
+  ENCRYPTION_IV,
   PROTECTEDSTREAMKEY,
-  STREAMSTARTBYTES,
+  STREAM_START_BYTES, //9
   INNERRANDOMSTREAMID,  // 10
-  HEADERIDCOUNT
+  HEADER_ID_COUNT //11
 };
 
 
@@ -74,9 +74,10 @@ typedef struct kdbx_data {
 
 typedef struct kdbx_database {
   kdbx_header_t        fileheader;
-  kdbx_header_entry_t  kdbxheader;
+  kdbx_header_entry_t  kdbxheader[HEADER_ID_COUNT];
   kdbx_payload_t       payload;
 } kdbx_database_t;
+
 
 
 typedef struct xKeePassFileHeader_t{
@@ -89,6 +90,7 @@ typedef struct xKeePassFileHeader_t{
 }KeePassFileHeader_t;
 
 extern KeePassFileHeader_t keePassHeader;
+
 
 bool try_to_open_kdbx_file (char *file_name, char *pass_word);
 

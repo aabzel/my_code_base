@@ -38,7 +38,6 @@ static int8_t a2d(char ch);
 #define PORT_O          14U
 #define PORT_P          15U
 
-static const unsigned char _tab[] = "0123456789ABCDEF";
 
 char* portNumToStr(uint8_t port) {
 	static char *outStrNone = "NONE";
@@ -722,27 +721,7 @@ void print_biggest_mantissa(void) {
 	printf("\n fractiona %f", fractiona);
 }
 
-void print_hex_buf (char *s, uint32_t len) {
-	if (0 < len) {
-		if (NULL != s) {
-			//printf("\n len ID %u \n", len);
-			uint16_t sizeOf_tab=sizeof(_tab);
-			uint16_t index;
-			while (len--) {
-				index = (*s >> 4) & 0xF;
-				if (index<sizeOf_tab) {
-				    putchar(_tab[index]);
 
-				}
-				index = (*s >> 0) & 0xF;
-				if (index<sizeOf_tab) {
-				    putchar(_tab[index]);
-				}
-				s++;
-			}
-		}
-	}
-}
 
 #define BIAS 127
 uint16_t float_to_uint16(float inVal) {
