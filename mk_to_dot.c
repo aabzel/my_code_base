@@ -109,6 +109,7 @@ bool parse_mk (char *fileStr, char *tempStr, int outStrLen) {
 // grep "    include $(ROOT)/components/toolboxes/io_toolbox/io_toolbox.mk" -E "\w+.mk"
 bool test_parse_mk (void) {
     int cmpRes;
+    printf ("\n[d] %s(): line %u",__FUNCTION__,__LINE__);
     char tempStr[1000];
     strncpy (tempStr, "", sizeof (tempStr));
     parse_mk ("    include $(ROOT)//components//toolboxes//io_toolbox//io_toolbox.mk\n", tempStr, sizeof (tempStr));
@@ -116,7 +117,7 @@ bool test_parse_mk (void) {
     if (0 != cmpRes) {
         return false;
     }
-
+    printf ("\n[d] %s(): line %u",__FUNCTION__,__LINE__);
     strncpy (tempStr, "", sizeof (tempStr));
     parse_mk ("include $(ROOT)/components/lib/spc58_mcan/spc58_mcan.mk", tempStr, sizeof (tempStr));
     cmpRes = strcmp ("spc58_mcan.mk", tempStr);

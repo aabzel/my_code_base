@@ -42,9 +42,11 @@ static bool print_ent (void) {
 #endif
 
 int main (int argc, char *argv[]) {
-    printf ("\nargc %u", argc);
+    printf ("\n[-] Argc: [%u]", argc);
+    printf ("\n[d] 1");
     for (int i = 0; i < argc; i++) {
-        printf ("\nargv[%u] %s", i, argv[i]);
+    	printf ("\n[d] 1");
+        printf ("\n[-]  argv[%d] [%s]", i, argv[i]);
     }
 
     // IPTCP server port tcp server
@@ -55,7 +57,8 @@ int main (int argc, char *argv[]) {
     print_ent ();
 #endif
 
-#if DEPLOY_UTESTS
+#ifdef HAS_UTESTS
+    printf ("\n[d] line %u",__LINE__);
     int ret = unit_test ();
     if (0 != ret) {
         printf ("\n\nUnit Test Error: %d\n", ret);
@@ -64,12 +67,12 @@ int main (int argc, char *argv[]) {
         printf ("\n\nUnit Test fine\n");
     }
 #endif
-
+    printf ("\n[d] line %u",__LINE__);
 #ifdef DEPLOY_TCP_CLIENT
     printf ("\nDEPLOY_TCP_CLIENT\n");
     get_adapter_info ();
 #endif
-
+    printf ("\n[d] line %u",__LINE__);
 #ifdef DECRYPT_KEEPASS
     if (3 == argc) {
         bool open_res;
@@ -81,7 +84,7 @@ int main (int argc, char *argv[]) {
         printf ("\n wrong params\n");
     }
 #endif
-
+    printf ("\n[d] line %u",__LINE__);
 #ifdef DEPLOY_TCP_SERVER
     Sleep (4000);
     if (2 == argc) {
@@ -144,7 +147,7 @@ int main (int argc, char *argv[]) {
     }
 
 #endif
-
+    printf ("\n[d] line %u",__LINE__);
 #ifdef DEPLOY_PARSE_REG
     if (3 == argc) {
         bool res;
@@ -162,15 +165,15 @@ int main (int argc, char *argv[]) {
     }
 #endif
     // perform_exper ();
-#if PARSE_MK
+#ifdef HAS_PARSE_MK
     if (3 == argc) {
-        // printf ("\n\narg 0  [%s]\n",argv[0]);
         printf ("\nin file [%s]", argv[1]);
-        // printf ("\n\nout file [%s]",argv[2]);
         bool res = proc_mk_file (argv[1], argv[2]);
         if (false == res) {
             printf ("\n\nError\n");
         }
+    } else {
+    	printf ("\n[!] main args error %u\n", argc);
     }
 #endif
     // permute (alphabet);
@@ -191,7 +194,7 @@ int main (int argc, char *argv[]) {
         printf ("\nUnable to simulate rocket\n\n");
     }
 #endif
-
+    printf ("\n[d] line %u",__LINE__);
     printf ("\n\n Done!\n\n");
     getchar ();
     return 0;
