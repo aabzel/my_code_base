@@ -380,7 +380,14 @@ int unit_test (void) {
 #ifdef HAS_TEST_PARSE_MK
     res = test_parse_mk ();
     if (false == res) {
-        return EXTRACK_MK_FILE_ERROR;
+        return EXTRACT_MK_FILE_ERROR;
+    }
+#endif
+
+#ifdef HAS_TEST_PARSE_C
+    res = test_parse_c ();
+    if (false == res) {
+        return EXTRACT_C_FILE_ERROR;
     }
 #endif
     printf ("\n[d] %s(): line %u",__FUNCTION__,__LINE__);

@@ -149,7 +149,7 @@ int main (int argc, char *argv[]) {
 #endif
     printf ("\n[d] line %u",__LINE__);
 #ifdef DEPLOY_PARSE_REG
-    if (3 == argc) {
+    if (4 == argc) {
         bool res;
         res = parse_regs_file (argv[1], argv[2]);
         if (false == res) {
@@ -166,9 +166,9 @@ int main (int argc, char *argv[]) {
 #endif
     // perform_exper ();
 #ifdef HAS_PARSE_MK
-    if (3 == argc) {
+    if (5 == argc) {
         printf ("\nin file [%s]", argv[1]);
-        bool res = proc_mk_file (argv[1], argv[2]);
+        bool res = proc_mk_file (argv[1], argv[2], argv[3], argv[4]);
         if (false == res) {
             printf ("\n\nError\n");
         }
@@ -196,6 +196,6 @@ int main (int argc, char *argv[]) {
 #endif
     printf ("\n[d] line %u",__LINE__);
     printf ("\n\n Done!\n\n");
-    getchar ();
+    //getchar ();
     return 0;
 }

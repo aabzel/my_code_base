@@ -18,7 +18,8 @@ OPT = -DHAS_PARSE_MK
 OPT += -DTEST_FIFO
 OPT += -DHAS_UTESTS
 OPT += -DHAS_TEST_PARSE_MK
-
+OPT += -DHAS_TEST_PARSE_C
+         
 #files to link:
 LFLAGS=-lws2_32 -liphlpapi 
   

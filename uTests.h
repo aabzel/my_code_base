@@ -78,7 +78,7 @@ typedef enum {
     PARSE_NOT_ERROR = 59,
     PARSE_AND_ERROR = 60,
     SINGLE_NUMBER_ERROR = 61,
-    EXTRACK_MK_FILE_ERROR = 62,
+	EXTRACT_MK_FILE_ERROR = 62,
     CHAR_REP_ERROR = 63,
     LIST_SORT_ERROR = 64,
     NUM_OF_ARGS_ERROR = 65,
@@ -101,6 +101,7 @@ typedef enum {
     SHA256_ERROR = 83,
     AES_ERROR = 84,
     ARRAY_ERROR = 85,
+	EXTRACT_C_FILE_ERROR = 86,
     NUM_ERROR = 100
 } utError_t;
 
