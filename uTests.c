@@ -3,6 +3,8 @@
 #include "algorithms.h"
 //#include "amount_of_uio_states.h"
 #include "arrays.h"
+#include "bin_utils_test.h"
+#include "compare_version_test.h"
 
 #if HAS_BIN_HEAP
 #include "bin_heap.h"
@@ -170,8 +172,20 @@ static bool test_parse_vi (void) {
 #endif
 
 int unit_test (void) {
-	printf ("\n[d] line %u",__LINE__);
+
     bool res = false;
+
+    res = compare_version_test ();
+    if (false == res) {
+        return COMPARE_VERSION_ERROR;
+    }
+
+    res = test_binary_gap ();
+    if (false == res) {
+        return BIN_GAP_ERROR;
+    }
+
+    printf ("\n[d] line %u", __LINE__);
     uint8_t regAddr = 0x00;
     uint16_t regVal = 0x0000;
     uint8_t shift;
@@ -182,14 +196,14 @@ int unit_test (void) {
         printf ("\n reg64Val %08llx exp 202B17D3015A", (long long unsigned int)reg64Val);
         return PARSE_HEX_ERROR;
     }
-    printf ("\n[d] %s(): line %u",__FUNCTION__,__LINE__);
+    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
     res = try_strl2uint64 ("0x202B17D3015A", strlen ("0x202B17D3015A"), &reg64Val);
     if (0x202B17D3015A != reg64Val) {
         printf ("0x202B17D3015A");
         printf ("\n reg64Val %08llx exp 202B17D3015A", (long long unsigned int)reg64Val);
         return PARSE_HEX_ERROR;
     }
-    printf ("\n[d] line %u",__LINE__);
+    printf ("\n[d] line %u", __LINE__);
 #ifdef TEST_ARRAY
     res = test_array ();
     if (false == res) {
@@ -197,7 +211,7 @@ int unit_test (void) {
         return ARRAY_ERROR;
     }
 #endif
-    printf ("\n[d] %s(): line %u",__FUNCTION__,__LINE__);
+    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
     res = is_hex_str ("ab1234ba", 8, &shift);
     if (false == res) {
         printf ("ab1234ba");
@@ -219,7 +233,7 @@ int unit_test (void) {
     if (false == res) {
         return PARSE_MAC_ERROR;
     }
-    printf ("\n[d] %s(): line %u",__FUNCTION__,__LINE__);
+    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
     res = test_extract_sub_string ();
     if (false == res) {
         return PARSE_EXTRACT_SUB_ERROR;
@@ -255,7 +269,7 @@ int unit_test (void) {
     char inStr[100];
     char outStr[100];
     char expStr[100];
-    printf ("\n[d] %s(): line %u",__FUNCTION__,__LINE__);
+    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
     strncpy (expStr, "0x04 0x0000", sizeof (outStr));
     strncpy (inStr, "reg addr: 0x04 reg val: 0xABCD Ob_0000_0000_0000_0000", sizeof (inStr));
 
@@ -288,7 +302,7 @@ int unit_test (void) {
         printf ("try_canch_hex_uint32 failed");
         return PARSE_UINT32_ERROR;
     }
-    printf ("\n[d] %s(): line %u",__FUNCTION__,__LINE__);
+    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
     // res = extract_numbers (inStr, strlen (inStr));
     // int cmpRes = strcmp (expStr, outStr);
     // if (0 != cmpRes) {
@@ -312,7 +326,7 @@ int unit_test (void) {
     if (false == res) {
         return SUB_STR_REPL_ERROR;
     }
-    printf ("\n[d] %s(): line %u",__FUNCTION__,__LINE__);
+    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
 #if TEST_FLOATS
     print_biggest_mantissa ();
     sample16bit = float_to_uint16 (c);
@@ -338,45 +352,45 @@ int unit_test (void) {
     // return FLOAR_TO_SAMPLE_ERROR;
     //}
 #endif
-    printf ("\n[d] %s(): line %u",__FUNCTION__,__LINE__);
+    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
 #if 0
     init_file_name ();
     print_pad_nums ();
 #endif
-    printf ("\n[d] %s(): line %u",__FUNCTION__,__LINE__);
+    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
 #ifdef TEST_MY_PRINTF
     res = test_my_printf ();
     if (false == res) {
         return NUM_OF_ARGS_ERROR;
     }
 #endif
-    printf ("\n[d] %s(): line %u",__FUNCTION__,__LINE__);
+    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
 #ifdef TEST_MAX_ENFELOP
     res = maxEnvelopes_test ();
     if (false == res) {
         return MAX_ENVELOPES_TEST_ERROR;
     }
 #endif
-    printf ("\n[d] %s(): line %u",__FUNCTION__,__LINE__);
+    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
 #if TEST_LIST_SORT
     res = test_list_sort ();
     if (false == res) {
         return LIST_SORT_ERROR;
     }
 #endif
-    printf ("\n[d] %s(): line %u",__FUNCTION__,__LINE__);
+    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
     res = test_str_char_replace ();
     if (false == res) {
         return CHAR_REP_ERROR;
     }
-    printf ("\n[d] %s(): line %u",__FUNCTION__,__LINE__);
+    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
 #ifdef TEST_FIFO
     res = test_fifo_char ();
     if (false == res) {
         return FIFO_CAHR_ERROR;
     }
 #endif
-    printf ("\n[d] %s(): line %u",__FUNCTION__,__LINE__);
+    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
 #ifdef HAS_TEST_PARSE_MK
     res = test_parse_mk ();
     if (false == res) {
@@ -390,7 +404,7 @@ int unit_test (void) {
         return EXTRACT_C_FILE_ERROR;
     }
 #endif
-    printf ("\n[d] %s(): line %u",__FUNCTION__,__LINE__);
+    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
 #if DEPLOY_TEST_SINGLE_NUMBER
     res = test_single_number ();
     if (false == res) {
@@ -426,7 +440,7 @@ int unit_test (void) {
     if (false == res) {
         return PARSE_AND_ERROR;
     }
-    printf ("\n[d] %s(): line %u",__FUNCTION__,__LINE__);
+    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
     res = test_parse_not ();
     if (false == res) {
         return PARSE_NOT_ERROR;
@@ -461,7 +475,7 @@ int unit_test (void) {
         return DETECT_CHANGE_ERROR;
     }
 #endif
-    printf ("\n[d] %s(): line %u",__FUNCTION__,__LINE__);
+    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
 #if DEPLOY_DIF_SUB_STR_ERROR
     res = test_lengthOfLongestSubstring ();
     if (false == res) {
@@ -499,7 +513,7 @@ int unit_test (void) {
         return STRING_SPLIT_ERROR;
     }
 #endif
-    printf ("\n[d] %s(): line %u",__FUNCTION__,__LINE__);
+    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
 #if 0
     res = test_sliding_window_max ();
     if (false == res) {
@@ -532,7 +546,7 @@ int unit_test (void) {
         return BIN_HEAP_SAME_ERROR;
     }
 #endif
-    printf ("\n[d] %s(): line %u",__FUNCTION__,__LINE__);
+    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
 #if TEST_HEAP_CON
     res = test_bin_heap_dec_add ();
     if (false == res) {
@@ -567,7 +581,7 @@ int unit_test (void) {
         return MEDIAN_ERROR;
     }
 #endif
-    printf ("\n[d] %s(): line %u",__FUNCTION__,__LINE__);
+    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
 #if 0
     res = test_valid_float_number ();
     if (false == res) {
@@ -601,7 +615,7 @@ int unit_test (void) {
         return MIN_PATH_DIAG_ERROR;
     }
 #endif
-    printf ("\n[d] %s(): line %u",__FUNCTION__,__LINE__);
+    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
 #if TEST_MIN_DIAG_SCALE_SUMM
     res = test_min_diag_scale_summ ();
     if (false == res) {

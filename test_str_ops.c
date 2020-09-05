@@ -399,7 +399,7 @@ bool test_replace_substr (void) {
 }
 
 bool test_str_char_replace (void) {
-	printf ("\n[d] %s(): line %u",__FUNCTION__,__LINE__);
+    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
     char fileName[100];
     int cmpRes = 0;
     strncpy (fileName, "spc58_pass.mk", sizeof (fileName));

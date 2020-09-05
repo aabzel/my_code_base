@@ -5,6 +5,9 @@
 #include "convert.h"
 #include "hash_table.h"
 #include "linked_list.h"
+
+#include "compare_version.h"
+
 #ifdef DEPLOY_PARSE_REG
 #include "parse_regs.h"
 #endif
@@ -45,7 +48,7 @@ int main (int argc, char *argv[]) {
     printf ("\n[-] Argc: [%u]", argc);
     printf ("\n[d] 1");
     for (int i = 0; i < argc; i++) {
-    	printf ("\n[d] 1");
+        printf ("\n[d] 1");
         printf ("\n[-]  argv[%d] [%s]", i, argv[i]);
     }
 
@@ -58,7 +61,7 @@ int main (int argc, char *argv[]) {
 #endif
 
 #ifdef HAS_UTESTS
-    printf ("\n[d] line %u",__LINE__);
+    printf ("\n[d] line %u", __LINE__);
     int ret = unit_test ();
     if (0 != ret) {
         printf ("\n\nUnit Test Error: %d\n", ret);
@@ -67,12 +70,12 @@ int main (int argc, char *argv[]) {
         printf ("\n\nUnit Test fine\n");
     }
 #endif
-    printf ("\n[d] line %u",__LINE__);
+    printf ("\n[d] line %u", __LINE__);
 #ifdef DEPLOY_TCP_CLIENT
     printf ("\nDEPLOY_TCP_CLIENT\n");
     get_adapter_info ();
 #endif
-    printf ("\n[d] line %u",__LINE__);
+    printf ("\n[d] line %u", __LINE__);
 #ifdef DECRYPT_KEEPASS
     if (3 == argc) {
         bool open_res;
@@ -84,7 +87,7 @@ int main (int argc, char *argv[]) {
         printf ("\n wrong params\n");
     }
 #endif
-    printf ("\n[d] line %u",__LINE__);
+    printf ("\n[d] line %u", __LINE__);
 #ifdef DEPLOY_TCP_SERVER
     Sleep (4000);
     if (2 == argc) {
@@ -147,7 +150,7 @@ int main (int argc, char *argv[]) {
     }
 
 #endif
-    printf ("\n[d] line %u",__LINE__);
+    printf ("\n[d] line %u", __LINE__);
 #ifdef DEPLOY_PARSE_REG
     if (4 == argc) {
         bool res;
@@ -173,7 +176,7 @@ int main (int argc, char *argv[]) {
             printf ("\n\nError\n");
         }
     } else {
-    	printf ("\n[!] main args error %u\n", argc);
+        printf ("\n[!] main args error %u\n", argc);
     }
 #endif
     // permute (alphabet);
@@ -194,8 +197,8 @@ int main (int argc, char *argv[]) {
         printf ("\nUnable to simulate rocket\n\n");
     }
 #endif
-    printf ("\n[d] line %u",__LINE__);
+    printf ("\n[d] line %u", __LINE__);
     printf ("\n\n Done!\n\n");
-    //getchar ();
+    // getchar ();
     return 0;
 }

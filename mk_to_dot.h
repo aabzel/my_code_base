@@ -11,7 +11,7 @@ extern "C" {
 #include <stdio.h>
 #include <string.h>
 
-bool proc_mk_file (char *fileName, char *outFileName, char *edge_color,char *root_node_name);
+bool proc_mk_file (char *fileName, char *outFileName, char *edge_color, char *root_node_name);
 
 bool test_parse_mk (void);
 bool test_parse_c (void);

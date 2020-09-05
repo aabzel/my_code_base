@@ -9,7 +9,7 @@
 #include <string.h>
 //#include <regex.h>
 
-bool proc_mk_file (char *fileName, char *outFileName, char *edge_color,char *root_node_name) {
+bool proc_mk_file (char *fileName, char *outFileName, char *edge_color, char *root_node_name) {
     FILE *filePrt = NULL;
     FILE *outFilePrt = NULL;
     bool res = false;
@@ -43,29 +43,29 @@ bool proc_mk_file (char *fileName, char *outFileName, char *edge_color,char *roo
             memset (childMkNode, 0x00, sizeof (childMkNode));
 
             bool mk_res = parse_mk (curFileStr, childMkFile, sizeof (childMkFile));
-            if (true == mk_res ) {
+            if (true == mk_res) {
                 strncpy (childMkNode, childMkFile, sizeof (childMkNode));
                 replace_char (childMkNode, '.', '_');
-                fprintf (outFilePrt, "\n%s [ label = \"%s\", style=filled, fillcolor=lightskyblue];", childMkNode, childMkFile);
+                fprintf (outFilePrt, "\n%s [ label = \"%s\", style=filled, fillcolor=lightskyblue];", childMkNode,
+                         childMkFile);
                 fprintf (outFilePrt, "\n%s->%s [color=%s];", root_node_name, childMkNode, edge_color);
             } else {
                 // printf ("\nUnable to parse line: %d %s ", line, curFileStr);
                 line++;
             }
             if (false == mk_res) {
-            	memset (child_c_file, 0x00, sizeof (child_c_file));
-                bool c_res = parse_c (curFileStr, child_c_file, sizeof(child_c_file));
-                if (true==c_res) {
-                	strncpy(child_c_file_node, child_c_file,sizeof(child_c_file_node));
-                	replace_char (child_c_file_node, '.', '_');
-                	fprintf (outFilePrt, "\n%s [ label = \"%s\", style=filled, fillcolor=cornsilk];", child_c_file_node, child_c_file);
-                	fprintf (outFilePrt, "\n%s->%s [color=%s];", root_node_name, child_c_file_node, edge_color);
-                	printf ("\n %s", child_c_file);
+                memset (child_c_file, 0x00, sizeof (child_c_file));
+                bool c_res = parse_c (curFileStr, child_c_file, sizeof (child_c_file));
+                if (true == c_res) {
+                    strncpy (child_c_file_node, child_c_file, sizeof (child_c_file_node));
+                    replace_char (child_c_file_node, '.', '_');
+                    fprintf (outFilePrt, "\n%s [ label = \"%s\", style=filled, fillcolor=cornsilk];", child_c_file_node,
+                             child_c_file);
+                    fprintf (outFilePrt, "\n%s->%s [color=%s];", root_node_name, child_c_file_node, edge_color);
+                    printf ("\n %s", child_c_file);
                 }
             }
         }
-
-
 
         res = true;
         fclose (filePrt);
@@ -78,48 +78,46 @@ bool proc_mk_file (char *fileName, char *outFileName, char *edge_color,char *roo
     return res;
 }
 
-bool parse_c(char *in_file_str, char *out_temp_str, int out_temp_str_len) {
-	bool res = false;
-	if (NULL != in_file_str) {
-		int inStrLen = strlen(in_file_str);
-		if (0 < inStrLen) {
-			if (NULL != strstr(in_file_str, ".c")) {
-				char fifoArray[1000];
-				Fifo_array_t outfilefifo;
-				fifo_init(&outfilefifo, sizeof(fifoArray), fifoArray);
-				for (int i = 0; i < inStrLen; i++) {
-					if (true == is_allowed_char_file(in_file_str[i])) {
-						if ('#' == in_file_str[i]) {
-							i = inStrLen;
-							break;
-						}
-						if (('\n' != in_file_str[i]) && ('\r' != in_file_str[i])
-								&& (' ' != in_file_str[i])) {
-							fifo_push(&outfilefifo, in_file_str[i]);
-						}
-					} else {
-						fifo_reset(&outfilefifo);
-					}
-				}
-				uint16_t fileNameLen = 0;
-				fifo_peek_array(&outfilefifo, out_temp_str, &fileNameLen);
-				if (0 < fileNameLen) {
-					if (NULL != strstr(out_temp_str, ".c")) {
-						// printf ("\n mk file: [%s]", tempStr);
-						if(NULL == strstr(out_temp_str, ".cmm")){
-						    res = true;
-						}
-					} else {
-						fifo_reset(&outfilefifo);
-						memset(out_temp_str, 0x00, out_temp_str_len);
-					}
-				}
-			}
+bool parse_c (char *in_file_str, char *out_temp_str, int out_temp_str_len) {
+    bool res = false;
+    if (NULL != in_file_str) {
+        int inStrLen = strlen (in_file_str);
+        if (0 < inStrLen) {
+            if (NULL != strstr (in_file_str, ".c")) {
+                char fifoArray[1000];
+                Fifo_array_t outfilefifo;
+                fifo_init (&outfilefifo, sizeof (fifoArray), fifoArray);
+                for (int i = 0; i < inStrLen; i++) {
+                    if (true == is_allowed_char_file (in_file_str[i])) {
+                        if ('#' == in_file_str[i]) {
+                            i = inStrLen;
+                            break;
+                        }
+                        if (('\n' != in_file_str[i]) && ('\r' != in_file_str[i]) && (' ' != in_file_str[i])) {
+                            fifo_push (&outfilefifo, in_file_str[i]);
+                        }
+                    } else {
+                        fifo_reset (&outfilefifo);
+                    }
+                }
+                uint16_t fileNameLen = 0;
+                fifo_peek_array (&outfilefifo, out_temp_str, &fileNameLen);
+                if (0 < fileNameLen) {
+                    if (NULL != strstr (out_temp_str, ".c")) {
+                        // printf ("\n mk file: [%s]", tempStr);
+                        if (NULL == strstr (out_temp_str, ".cmm")) {
+                            res = true;
+                        }
+                    } else {
+                        fifo_reset (&outfilefifo);
+                        memset (out_temp_str, 0x00, out_temp_str_len);
+                    }
+                }
+            }
+        }
+    }
 
-		}
-	}
-
-	return res;
+    return res;
 }
 
 //
@@ -127,7 +125,7 @@ bool parse_mk (char *in_file_str, char *tempStr, int outStrLen) {
     bool res = false;
     uint16_t fileNameLen = 0;
     char fifoArray[1000];
-    if (NULL!=in_file_str) {
+    if (NULL != in_file_str) {
         int inStrLen = strlen (in_file_str);
         if (0 < inStrLen) {
             if (NULL != strstr (in_file_str, ".mk")) {
@@ -196,7 +194,6 @@ bool test_parse_c (void) {
 
     return true;
 }
-
 
 // grep "    include $(ROOT)/components/toolboxes/io_toolbox/io_toolbox.mk" -E "\w+.mk"
 bool test_parse_mk (void) {
