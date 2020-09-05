@@ -161,7 +161,7 @@ int findMaxConsecutiveOnes (int *nums, int numsSize) {
         } else {
             currentCount++;
         }
-        curMax = max (curMax, currentCount);
+        curMax = max_int (curMax, currentCount);
     }
     return curMax;
 }
@@ -180,7 +180,7 @@ int findMaxConsecutiveOnesFlip1 (int *nums, int length) {
     for (int i = 0; i < length; i++) {
         if (nums[i] == 1) {
             count[index]++;
-            maxConOne = max (maxConOne, count[0] + count[1]);
+            maxConOne = max_int (maxConOne, count[0] + count[1]);
         } else {
             zero = true;
             index = index ^ 1; // 0->1   1->0
@@ -204,7 +204,7 @@ int findMaxConOnesDel1 (int *const array, int length) {
         } else {
             oneCnt++;
         }
-        maxConOne = max (maxConOne, oneCnt + prevOneCnt);
+        maxConOne = max_int (maxConOne, oneCnt + prevOneCnt);
     }
     return maxConOne;
 }
@@ -243,6 +243,8 @@ int *add_val_to_end_array (int *inArr, int arrSize, int val) {
                 printf ("\n");
 #endif
                 memcpy (newArr, inArr, sizeof (int) * (arrSize));
+                //free(inArr);
+                //inArr = NULL;
             }
         }
         newArr[arrSize] = val;

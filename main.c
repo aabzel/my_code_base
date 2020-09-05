@@ -19,9 +19,11 @@
 #include "tcp_server.h"
 #endif
 #include "mk_to_dot.h"
-#include "scan_serial_port.h"
-#include "simulate_rocket_2d.h"
+#ifdef HAS_SERIAL
 #include "win_utils.h"
+#include "scan_serial_port.h"
+#endif
+#include "simulate_rocket_2d.h"
 
 #ifdef DECRYPT_KEEPASS
 #include "parse_keepass.h"

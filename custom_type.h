@@ -2,7 +2,7 @@
 #define CUSTOM_TYPE_H
 
 #include <stdbool.h>
-#include <windows.h>
+//#include <windows.h>
 
 #ifdef __cplusplus
 extern "C" {

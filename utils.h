@@ -23,8 +23,16 @@ extern "C" {
 extern char pemutationFile[100];
 extern char kitFile[100];
 
+struct Results {
+    int *res;
+    int R; // Length of the array
+};
+
+struct Results solution (int *A, int N, int F, int M);
+
 void print_biggest_mantissa (void);
 
+int solution4 (int n);
 bool print_mem_ascii (uint8_t *memPtr, uint32_t numByte);
 float power_of (uint32_t base, int32_t exponent);
 char *portNumToStr (uint8_t port);
@@ -60,6 +68,9 @@ long long summ_array (int const *const inArr, int sizeOfArr);
 double avrage_two (int val1, int val2);
 void print_array_double (double *alphabet, int sizeOfAlphabet);
 bool is_odd (int val);
+
+void print_indent (int indent);
+
 double calc_average (int const *const inArr, int sizeOfArr);
 void print_bytes (uint32_t byte);
 int parse_num_of_args (const char *format);

@@ -86,8 +86,8 @@ float minf (float val1, float val2) {
 
 int min3 (int val1, int val2, int val3) {
     int outVal = 0;
-    outVal = min (val1, val2);
-    outVal = min (outVal, val3);
+    outVal = min_int (val1, val2);
+    outVal = min_int (outVal, val3);
     return outVal;
 }
 

@@ -36,6 +36,7 @@
 #include "mk_to_dot.h"
 #endif
 //#include "parse_keepass.h"
+#include "permutation_test.h"
 #include "permutations.h"
 //#include "russian_doll_envelopes_test.h"
 //#include "scan_serial_port.h"
@@ -174,6 +175,20 @@ static bool test_parse_vi (void) {
 int unit_test (void) {
 
     bool res = false;
+
+    struct Results cube;
+    int A[4] = {3, 2, 4, 3};
+
+    int array_of_numbers[6] = {1, 2, 3, 4, 5, 6};
+    permute_from_set (2, array_of_numbers, 6);
+    return FINE;
+
+    // cube = solution(A, 4, 2, 4);
+
+    int ret = solution4 (955); // 1101110111
+    if (ret != 4) {
+        return BIN_PERIOD_ERROR;
+    }
 
     res = compare_version_test ();
     if (false == res) {

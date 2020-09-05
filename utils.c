@@ -761,6 +761,12 @@ uint32_t reverse_byte_order_uint32 (const uint32_t in4byteVal) {
     return retval;
 }
 
+void print_indent (int indent) {
+    for (int i = 0; i < indent; i++) {
+        printf (" ");
+    }
+}
+
 bool print_mac_addr (uint8_t *mac_addr) {
     bool res = false;
     if (NULL != mac_addr) {
@@ -795,4 +801,62 @@ bool print_mem_ascii (uint8_t *memPtr, uint32_t numByte) {
         }
     }
     return res;
+}
+
+// 12 2  [1,2,3,4,5,6]
+// 6+5
+void amoun_of_way_to_assemble_summ (int summ, int F) {
+    // go over all permutation lengt of F with range 1...6
+    // check the sum of permutation
+    for (int num = 0; num < F; num++) {
+    }
+}
+
+struct Results solution (int *A, int N, int F, int M) {
+    struct Results result;
+    // write your code in C99 (gcc 6.2.0)
+    // meas  = total_sum / total_try
+    result.R = F;
+    result.res = (int)malloc (F * sizeof (int));
+    int total_try = N + F;
+    int total_sum = total_try * M;
+    printf ("\n total_try %u", total_try);
+    printf ("\n total_sum %u", total_sum);
+    int fogotten_sum = total_sum;
+    for (int i = 0; i < N; i++) {
+        fogotten_sum -= A[i];
+    }
+    printf ("\n fogotten_sum %u", fogotten_sum);
+
+    // result.res = ...
+    // result.R = ...
+    return result;
+}
+
+int solution4 (int n) {
+    int d[32];
+    int l = 0;
+    int p;
+    printf ("\n");
+    while (n > 0) {
+        d[l] = n % 2;
+        printf ("%u", d[l]);
+        n /= 2;
+        l++;
+    }
+    printf ("\n l %u", l);
+    for (p = 1; p < 32; ++p) {
+        int ok = 1;
+        int i;
+        for (i = 0; i < l - p; ++i) {
+            if (d[i] != d[i + p]) {
+                ok = 0;
+                break;
+            }
+        }
+        if (ok) {
+            return p;
+        }
+    }
+    return -1;
 }

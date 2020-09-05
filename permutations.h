@@ -1,6 +1,10 @@
 #ifndef __PERMUTATIONS_H
 #define __PERMUTATIONS_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define DEPLOY_PERMUTATIONS 1
 
 #if 1 == DEPLOY_PERMUTATIONS
@@ -16,6 +20,8 @@
 #define DEBUG_CURR_ARRAY 0
 
 extern list_node_t *permutllHead;
+
+void permute_from_set (int amount_of_num, int *array_of_numbers, int array_size);
 
 bool get_i_permutation_of_n (int maxNumOfElement, uint32_t permutIndex, int *array);
 // given number N
@@ -37,6 +43,10 @@ bool is_permutated_element_in_list (list_node_t *pHead, int *inArr, int arrSize)
 void permutation (int n);
 bool print_permutations (int N);
 
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 // function to check permutations

@@ -1,7 +1,5 @@
 #include "permutations.h"
 
-#if 1 == DEPLOY_PERMUTATIONS
-
 #include "algorithms.h"
 #include "arrays.h"
 #include "linked_list.h"
@@ -12,16 +10,45 @@
 #include <stdlib.h>
 #include <string.h>
 
+void print_permut (int *in_current_array, int in_curr_arr_size, int pos, int *alf, int alf_size, int total_num) {
+    if (in_curr_arr_size == total_num) {
+        printf ("\n");
+        print_curr_array (in_current_array, in_curr_arr_size);
+        free (in_current_array);
+        in_current_array = NULL;
+    }
+
+    if (pos < total_num) {
+        for (int i = 0; i < alf_size; i++) {
+            // print_indent (pos);
+            // printf("%d",alf[i]);
+            int *currentArray = add_val_to_end_array (in_current_array, in_curr_arr_size, alf[i]);
+            if (NULL!=currentArray) {
+                print_permut (currentArray, in_curr_arr_size + 1, pos + 1, alf, alf_size, total_num);
+            } else {
+                printf ("\nUnable to alloc memory");
+            }
+        }
+    } else {
+        // printf("\n");
+    }
+}
+
+void permute_from_set (int total_num, int *alf, int alf_size) {
+    printf ("\n");
+    print_permut (NULL, 0, 0, alf, alf_size, total_num);
+}
+
 // static int curPermutationNumber = 0;
-/*inCurrentArray will be freed in here*/
+/*in_current_array will be freed in here*/
 /*inIndexArrayRemain will be freed outside */
-bool print_permutations_ll (int *inCurrentArray, int inCurrSize, int *inIndexArrayRemain, int remainSize,
+bool print_permutations_ll (int *in_current_array, int in_curr_arr_size, int *inIndexArrayRemain, int remainSize,
                             int totalSize, // amount of item in permutation
                             int targetPermutIndex, int startIndex, int endIndex, int *outArray) {
 
 #if DEBUG_CURR_ARRAY
     printf ("\n cur array: ");
-    print_curr_array (inCurrentArray, inCurrSize);
+    print_curr_array (in_current_array, in_curr_arr_size);
     printf ("\n");
 #endif
     bool res = false;
@@ -38,7 +65,7 @@ bool print_permutations_ll (int *inCurrentArray, int inCurrSize, int *inIndexArr
     }
 #endif
     if (false == is_in_range (targetPermutIndex, startIndex, endIndex)) {
-        free (inCurrentArray);
+        free (in_current_array);
         return false;
     } else {
 #if DEBUG_IND_RANGE
@@ -49,25 +76,25 @@ bool print_permutations_ll (int *inCurrentArray, int inCurrSize, int *inIndexArr
         // printf ("remainSize 0 \n");
         // free(inIndexArrayRemain);
     }
-    if (inCurrSize < 0) {
+    if (in_curr_arr_size < 0) {
         printf ("%s Error %d\n", __FUNCTION__, 1);
         return false;
     }
-    if ((NULL == inCurrentArray)) {
+    if ((NULL == in_current_array)) {
         printf ("%s Error %d\n", __FUNCTION__, 2);
         return false;
     }
 
-    if (inCurrSize == totalSize) {
+    if (in_curr_arr_size == totalSize) {
 #if DEBUG_ARRAY
         printf ("\n number %d", curPermutationNumber);
-        print_curr_array (inCurrentArray, inCurrSize);
+        print_curr_array (in_current_array, in_curr_arr_size);
 #endif
 
         if ((NULL != outArray) && (targetPermutIndex == startIndex)) {
             // printf ("\n ");
-            memcpy (outArray, inCurrentArray, inCurrSize * sizeof (int));
-            free (inCurrentArray);
+            memcpy (outArray, in_current_array, in_curr_arr_size * sizeof (int));
+            free (in_current_array);
             free (inIndexArrayRemain);
             return true;
         }
@@ -106,11 +133,11 @@ bool print_permutations_ll (int *inCurrentArray, int inCurrSize, int *inIndexArr
     for (int i = 0; i < remainSize; i++) {
         indexArrayTemp = (int *)memdup ((void *)inIndexArrayRemain, remainSize * sizeof (int));
         if (indexArrayTemp) {
-            int *currentArray = add_val_to_end_array (inCurrentArray, inCurrSize, indexArrayTemp[i]);
+            int *currentArray = add_val_to_end_array (in_current_array, in_curr_arr_size, indexArrayTemp[i]);
             if (currentArray) {
 #if DEBUG_PRINT_PERMUTATIONS_LL
                 printf ("\n");
-                print_curr_array (currentArray, inCurrSize + 1);
+                print_curr_array (currentArray, in_curr_arr_size + 1);
                 printf ("\n");
 #endif
                 indexArrayNew = remove_int_from_arr (indexArrayTemp, remainSize, i);
@@ -122,8 +149,8 @@ bool print_permutations_ll (int *inCurrentArray, int inCurrSize, int *inIndexArr
                     endInd = startIndex + (i * stepInd) + stepInd - 1; //
                 }
                 if (true == is_in_range (targetPermutIndex, startInd, endInd)) {
-                    res = print_permutations_ll (currentArray, inCurrSize + 1, indexArrayNew, remainSize - 1, totalSize,
-                                                 targetPermutIndex, startInd, endInd, outArray);
+                    res = print_permutations_ll (currentArray, in_curr_arr_size + 1, indexArrayNew, remainSize - 1,
+                                                 totalSize, targetPermutIndex, startInd, endInd, outArray);
                 } else {
                     free (currentArray);
                 }
@@ -137,7 +164,7 @@ bool print_permutations_ll (int *inCurrentArray, int inCurrSize, int *inIndexArr
             }
         }
     }
-    free (inCurrentArray);
+    free (in_current_array);
     return res;
 }
 // 4: 1....24     6    (1 7 13 19)
@@ -239,29 +266,29 @@ void permutation (int n) {
  *
  * */
 /* k - amount of letters*/
-#if 0
+
 void assemble_from_alph (int *inAlphabet, int sizeOfAlphabet, int k, int *curArr, int curArrSize) {
     if (0 == k) {
 #if DEBUG_ASSEMBLE
         print_array_to_filename (kitFile, curArr, curArrSize);
         print_curr_array (curArr, curArrSize);
 #endif
-        linked_list_add_array (&permutllHead, curArr, curArrSize);
+        // linked_list_add_array (&permutllHead, curArr, curArrSize);
     }
     if (0 < k) {
         if (0 < sizeOfAlphabet) {
 #if DEBUG_ASSEMBLE
             print_array (inAlphabet, sizeOfAlphabet, k);
 #endif
-            int *localAlphabet = malloc (sizeof(int) * sizeOfAlphabet);
+            int *localAlphabet = malloc (sizeof (int) * sizeOfAlphabet);
             if (NULL == localAlphabet) {
                 printf ("malloc for in alphabet error");
                 return;
             }
             for (int numOrger = 0; numOrger < sizeOfAlphabet; numOrger++) {
-                memcpy (localAlphabet, inAlphabet, sizeof(int) * sizeOfAlphabet);
-                //printf ("\nw[%d]=%d", 2 - k, localAlphabet [numOrger]);
-                int *currArray = add_val_to_end_array (curArr, curArrSize, localAlphabet [numOrger]);
+                memcpy (localAlphabet, inAlphabet, sizeof (int) * sizeOfAlphabet);
+                // printf ("\nw[%d]=%d", 2 - k, localAlphabet [numOrger]);
+                int *currArray = add_val_to_end_array (curArr, curArrSize, localAlphabet[numOrger]);
                 if (NULL != currArray) {
                     int *redusedAlphabet = NULL;
                     redusedAlphabet = remove_int_from_arr (localAlphabet, sizeOfAlphabet, numOrger);
@@ -280,10 +307,8 @@ void assemble_from_alph (int *inAlphabet, int sizeOfAlphabet, int k, int *curArr
 #endif
             free (localAlphabet);
         }
-
     }
 }
-#endif
 
 #define DEBUG_IS_PERMUTATED 0
 bool is_permutation (int *arr1, int *arr2, int sizeOfArr) {
@@ -359,28 +384,12 @@ bool is_permutated_element_in_list (list_node_t *pHead, int *inArr, int arrSize)
  * The sizes of the arrays are returned as *returnColumnSizes array.
  * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
  */
-#if 0
-int** permute_array (int* array, int numsSize, int* returnSize, int** returnColumnSizes) {
+
+int **permute_array (int *array, int numsSize, int *returnSize, int **returnColumnSizes) {
     int **arrayOfPtr;
-    //clean list permutllHead
+    // clean list permutllHead
     assemble_from_alph (array, numsSize, numsSize, NULL, 0);
-    //save_list_to_file (permutllHead, pemutationFile);
-    arrayOfPtr = list_of_arr_to_arr_of_arr (permutllHead, returnSize, returnColumnSizes);
+    // save_list_to_file (permutllHead, pemutationFile);
+    // arrayOfPtr = list_of_arr_to_arr_of_arr (permutllHead, returnSize, returnColumnSizes);
     return arrayOfPtr;
 }
-#endif
-
-#if 0
-void test_permut (void) {
-    int** resArray;
-    int* returnColumnSizes = NULL;
-    int returnSize = 0;
-    int inArray [4] =
-        { 1, 2, 3, 4 };
-    int numsSize = sizeof(inArray) / sizeof(inArray [0]);
-    resArray = permute_array (inArray, numsSize, &returnSize, &returnColumnSizes);
-    print_array_of_arrays (resArray, returnSize, numsSize);
-}
-#endif
-
-#endif

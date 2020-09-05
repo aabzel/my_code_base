@@ -104,6 +104,7 @@ typedef enum {
     EXTRACT_C_FILE_ERROR = 86,
     BIN_GAP_ERROR = 87,
     COMPARE_VERSION_ERROR = 88,
+    BIN_PERIOD_ERROR = 89,
     NUM_ERROR = 100
 } utError_t;
 

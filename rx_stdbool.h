@@ -2,7 +2,7 @@
 #define STD_BOOL_H
 
 #include <stdbool.h>
-#include <windows.h>
+//s#include <windows.h>
 
 #ifdef __cplusplus
 extern "C" {
