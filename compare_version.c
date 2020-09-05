@@ -24,40 +24,39 @@ int calc_rank (char *version) {
 //"7.5.2.4" 1 ->5
 //"7.5.2.4" 3 ->4
 int extract_val (char *version, int k, int rank) {
-	printf("\nv [%s] p %u r %u\n ",version,k,rank);
+    printf ("\nv [%s] p %u r %u\n ", version, k, rank);
     int32_t value = 0;
-    int len=strlen(version);
-   	char *pos = version;
-    int32_t str_len=0;
-    if (k<rank) {
+    int len = strlen (version);
+    char *pos = version;
+    int32_t str_len = 0;
+    if (k < rank) {
         bool res;
-		if (0 == k) {
-			pos = version;
-            str_len = strchr (pos, '.') - version;
-            res = try_strl2int32_dec (pos, str_len, &value);
-            if (false == res) {
-                printf ("\ndigit [%s] len [%u] k [%u]\n", version, str_len, k);
-                value = -1;
+        if (0 == k) {
+            pos = version;
+            if (1 < rank) {
+                str_len = strchr (pos, '.') - version;
+            } else {
+                str_len = len;
             }
-        }else if (k==rank-1){
+        } else if (k == rank - 1) {
             for (int i = 0; i < k; i++) {
-        	    pos = strchr (pos+1, '.');
+                pos = strchr (pos + 1, '.');
             }
             str_len = &version[len] - (pos)-1;
             pos++;
-        }else {
+        } else {
             for (int i = 0; i < k; i++) {
-                pos = strchr (pos+1, '.');
+                pos = strchr (pos + 1, '.');
             }
-            str_len = strchr (pos+1, '.') - (pos)-1;
+            str_len = strchr (pos + 1, '.') - (pos)-1;
             pos++;
         }
     } else {
         // error
     }
-    if (0<str_len ) {
-        printf("\n str [%s] len %u",pos,str_len);
-        bool res = try_strl2int32_dec (pos, str_len, (int32_t *) &value);
+    if (0 < str_len) {
+        printf ("\n str [%s] len %u", pos, str_len);
+        bool res = try_strl2int32_dec (pos, str_len, (int32_t *)&value);
         if (false == res) {
             printf ("\ndigit [%s] len [%u] pos [%u]\n ", pos, str_len, k);
             value = 0;
