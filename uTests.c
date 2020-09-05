@@ -1,6 +1,9 @@
 #include "uTests.h"
 
 #include "algorithms.h"
+
+#include "algorithms_test.h"
+
 //#include "amount_of_uio_states.h"
 #include "arrays.h"
 #include "bin_utils_test.h"
@@ -176,6 +179,11 @@ int unit_test (void) {
 
     bool res = false;
 
+    res = test_algorithm ();
+    if (false == res) {
+        return ALGORITM_ERROR;
+    }
+
     struct Results cube;
     int A[4] = {3, 2, 4, 3};
 
@@ -200,7 +208,7 @@ int unit_test (void) {
         return BIN_GAP_ERROR;
     }
 
-    printf ("\n[d] line %u", __LINE__);
+
     uint8_t regAddr = 0x00;
     uint16_t regVal = 0x0000;
     uint8_t shift;
@@ -218,7 +226,7 @@ int unit_test (void) {
         printf ("\n reg64Val %08llx exp 202B17D3015A", (long long unsigned int)reg64Val);
         return PARSE_HEX_ERROR;
     }
-    printf ("\n[d] line %u", __LINE__);
+
 #ifdef TEST_ARRAY
     res = test_array ();
     if (false == res) {

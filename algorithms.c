@@ -14,6 +14,37 @@
 #include <stdlib.h>
 #include <string.h>
 
+void print_permut_terms (int *in_current_array, int in_curr_arr_size, int pos, int *alf, int alf_size, int total_num,
+                         int sum, int *syllables) {
+    if (in_curr_arr_size == total_num) {
+        int arr_sum = sum_arr (in_current_array, in_curr_arr_size);
+        if (sum == arr_sum) {
+            printf ("\n");
+            print_curr_array (in_current_array, in_curr_arr_size);
+            memcpy (syllables, in_current_array, sizeof (int) * in_curr_arr_size);
+        }
+        free (in_current_array);
+        in_current_array = NULL;
+    }
+
+    if (pos < total_num) {
+        for (int i = 0; i < alf_size; i++) {
+            int *currentArray = add_val_to_end_array (in_current_array, in_curr_arr_size, alf[i]);
+            if (NULL != currentArray) {
+                print_permut_terms (currentArray, in_curr_arr_size + 1, pos + 1, alf, alf_size, total_num, sum,
+                                    syllables);
+            } else {
+                printf ("\nUnable to alloc memory");
+            }
+        }
+    }
+}
+
+void print_terms (int total_num, int *alf, int alf_size, int sum, int *syllables) {
+    printf ("\n");
+    print_permut_terms (NULL, 0, 0, alf, alf_size, total_num, sum, syllables);
+}
+
 bool is_in_range (int val, int lowBound, int upBound) {
     bool res = false;
     if (lowBound <= upBound) {

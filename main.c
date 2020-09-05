@@ -20,8 +20,8 @@
 #endif
 #include "mk_to_dot.h"
 #ifdef HAS_SERIAL
-#include "win_utils.h"
 #include "scan_serial_port.h"
+#include "win_utils.h"
 #endif
 #include "simulate_rocket_2d.h"
 
@@ -63,7 +63,7 @@ int main (int argc, char *argv[]) {
 #endif
 
 #ifdef HAS_UTESTS
-    printf ("\n[d] line %u", __LINE__);
+
     int ret = unit_test ();
     if (0 != ret) {
         printf ("\n\nUnit Test Error: %d\n", ret);
@@ -72,12 +72,12 @@ int main (int argc, char *argv[]) {
         printf ("\n\nUnit Test fine\n");
     }
 #endif
-    printf ("\n[d] line %u", __LINE__);
+
 #ifdef DEPLOY_TCP_CLIENT
     printf ("\nDEPLOY_TCP_CLIENT\n");
     get_adapter_info ();
 #endif
-    printf ("\n[d] line %u", __LINE__);
+
 #ifdef DECRYPT_KEEPASS
     if (3 == argc) {
         bool open_res;
@@ -89,7 +89,7 @@ int main (int argc, char *argv[]) {
         printf ("\n wrong params\n");
     }
 #endif
-    printf ("\n[d] line %u", __LINE__);
+
 #ifdef DEPLOY_TCP_SERVER
     Sleep (4000);
     if (2 == argc) {
@@ -152,7 +152,7 @@ int main (int argc, char *argv[]) {
     }
 
 #endif
-    printf ("\n[d] line %u", __LINE__);
+
 #ifdef DEPLOY_PARSE_REG
     if (4 == argc) {
         bool res;
@@ -199,7 +199,7 @@ int main (int argc, char *argv[]) {
         printf ("\nUnable to simulate rocket\n\n");
     }
 #endif
-    printf ("\n[d] line %u", __LINE__);
+
     printf ("\n\n Done!\n\n");
     // getchar ();
     return 0;

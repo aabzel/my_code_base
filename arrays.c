@@ -243,8 +243,7 @@ int *add_val_to_end_array (int *inArr, int arrSize, int val) {
                 printf ("\n");
 #endif
                 memcpy (newArr, inArr, sizeof (int) * (arrSize));
-                //free(inArr);
-                //inArr = NULL;
+                // must not be freed
             }
         }
         newArr[arrSize] = val;

@@ -105,6 +105,7 @@ typedef enum {
     BIN_GAP_ERROR = 87,
     COMPARE_VERSION_ERROR = 88,
     BIN_PERIOD_ERROR = 89,
+    ALGORITM_ERROR = 90,
     NUM_ERROR = 100
 } utError_t;
 

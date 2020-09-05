@@ -20,17 +20,13 @@ void print_permut (int *in_current_array, int in_curr_arr_size, int pos, int *al
 
     if (pos < total_num) {
         for (int i = 0; i < alf_size; i++) {
-            // print_indent (pos);
-            // printf("%d",alf[i]);
             int *currentArray = add_val_to_end_array (in_current_array, in_curr_arr_size, alf[i]);
-            if (NULL!=currentArray) {
+            if (NULL != currentArray) {
                 print_permut (currentArray, in_curr_arr_size + 1, pos + 1, alf, alf_size, total_num);
             } else {
                 printf ("\nUnable to alloc memory");
             }
         }
-    } else {
-        // printf("\n");
     }
 }
 

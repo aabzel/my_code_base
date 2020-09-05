@@ -5,10 +5,6 @@
 extern "C" {
 #endif
 
-#define DEPLOY_PERMUTATIONS 1
-
-#if 1 == DEPLOY_PERMUTATIONS
-
 #include "custom_type.h"
 #include "linked_list.h"
 #include "utils.h"
@@ -42,8 +38,6 @@ bool is_permutation (int *arr1, int *arr2, int sizeOfArr);
 bool is_permutated_element_in_list (list_node_t *pHead, int *inArr, int arrSize);
 void permutation (int n);
 bool print_permutations (int N);
-
-#endif
 
 #ifdef __cplusplus
 }
