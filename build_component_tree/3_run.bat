@@ -1,11 +1,15 @@
 rem components\lib\shared_data\shared_data.mk
 rem spc58_lanctrl.mk
 rem lan.mk
-
+rem https://graphviz.org/doc/info/colors.html
 rem components\lib\lan_config_V1\lan_config.mk
 
 echo digraph build_Dependence {> files_tree.dot
 echo rankdir=LR;>> files_tree.dot
+
+parse_mk.exe "C:/Job/IO_V4/1_FW/controllers_abarunin_io_040/components/drivers/tja1021/tja1021.mk" files_tree.dot magenta1 tja1021_mk
+parse_mk.exe "C:/Job/IO_V4/1_FW/controllers_abarunin_io_040/components/lib/lin/lin.mk" files_tree.dot green lin_mk
+parse_mk.exe "C:/Job/IO_V4/1_FW/controllers_abarunin_io_040/components/lib/spc58_lin_lld/spc58_lin_lld.mk" files_tree.dot orange spc58_lin_lld_mk
 
 parse_mk.exe "C:\Job\IO_V4\1_FW\controllers_abarunin_io_040\components\drivers\ad5641\ad5641.mk" files_tree.dot blue ad5641_mk
 parse_mk.exe "C:/Job/IO_V4/1_FW/controllers_abarunin_io_040/common/utils_spc58/rules.mk" files_tree.dot blue rules_mk

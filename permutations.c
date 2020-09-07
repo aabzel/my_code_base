@@ -30,6 +30,13 @@ void print_permut (int *in_current_array, int in_curr_arr_size, int pos, int *al
     }
 }
 
+int** permute(int* nums, int numsSize, int* returnSize, int** returnColumnSizes){
+	(void) returnSize;
+	(void) returnColumnSizes;
+	permute_from_set (numsSize , nums, numsSize);
+	return NULL;
+}
+
 void permute_from_set (int total_num, int *alf, int alf_size) {
     printf ("\n");
     print_permut (NULL, 0, 0, alf, alf_size, total_num);
@@ -233,7 +240,7 @@ void permute_ll (char *string, int left, int right) {
     }
 }
 
-void permute (char *string) {
+void permute_str (char *string) {
     int len = strlen (string);
     if (1 == len) {
         // printf ("%s\n", string);
@@ -249,7 +256,7 @@ void permutation (int n) {
         char *numString = NULL;
         numString = generate_num_string (n);
         if (NULL != numString) {
-            permute (numString);
+            permute_str (numString);
             free (numString);
         }
     }
@@ -264,7 +271,14 @@ void permutation (int n) {
 /* k - amount of letters*/
 
 void assemble_from_alph (int *inAlphabet, int sizeOfAlphabet, int k, int *curArr, int curArrSize) {
-    if (0 == k) {
+	printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+	if(NULL==inAlphabet){
+		return;
+	}
+	if(NULL==curArr){
+		return;
+	}
+	if (0 == k) {
 #if DEBUG_ASSEMBLE
         print_array_to_filename (kitFile, curArr, curArrSize);
         print_curr_array (curArr, curArrSize);
@@ -382,7 +396,8 @@ bool is_permutated_element_in_list (list_node_t *pHead, int *inArr, int arrSize)
  */
 
 int **permute_array (int *array, int numsSize, int *returnSize, int **returnColumnSizes) {
-    int **arrayOfPtr;
+	 printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+    int **arrayOfPtr=NULL;
     // clean list permutllHead
     assemble_from_alph (array, numsSize, numsSize, NULL, 0);
     // save_list_to_file (permutllHead, pemutationFile);

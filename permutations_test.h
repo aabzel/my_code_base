@@ -5,7 +5,9 @@
 extern "C" {
 #endif
 
-void test_permut (void);
+#include <stdbool.h>
+
+bool test_permutation (void);
 
 #ifdef __cplusplus
 }

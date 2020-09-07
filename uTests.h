@@ -106,6 +106,8 @@ typedef enum {
     COMPARE_VERSION_ERROR = 88,
     BIN_PERIOD_ERROR = 89,
     ALGORITM_ERROR = 90,
+	PERMUT_ERROR = 91,
+	COMBINE_ERROR = 92,
     NUM_ERROR = 100
 } utError_t;
 
@@ -150,6 +152,10 @@ bool test_find_min_diag_scale_summ (void);
 bool test_find_min_diag_scale_summ2 (void);
 bool test_delim_amount (void);
 bool check_array (int *arr, int numsSize, int k);
+
+void print_matrix_ji(void);
+void print_matrix_ij(void);
+bool test_print_matrix (void);
 
 // bool test_bin_heap_delete (void);
 // bool test_min_bin_heap_insert (void);

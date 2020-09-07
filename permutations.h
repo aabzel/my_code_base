@@ -19,6 +19,7 @@ extern list_node_t *permutllHead;
 
 void permute_from_set (int amount_of_num, int *array_of_numbers, int array_size);
 
+int** permute(int* nums, int numsSize, int* returnSize, int** returnColumnSizes);
 bool get_i_permutation_of_n (int maxNumOfElement, uint32_t permutIndex, int *array);
 // given number N
 // print all permutations for (1,2,..,N)
@@ -26,7 +27,7 @@ void test_permut (void);
 int **permute_array (int *nums, int numsSize, int *returnSize, int **returnColumnSizes);
 void permut_set (char *InSet);
 void permute_ll (char *string, int left, int right);
-void permute (char *string);
+void permute_str (char *string);
 int *generate_num_array (int n);
 char *generate_num_string (int n);
 // void assemble_from_alph (int *inAlphabet, int sizeOfAlphabet, int k, int *curArr, int curArrSize);

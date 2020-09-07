@@ -1,7 +1,8 @@
 #include "uTests.h"
 
-#include "algorithms.h"
+#include <time.h>
 
+#include "algorithms.h"
 #include "algorithms_test.h"
 
 //#include "amount_of_uio_states.h"
@@ -39,8 +40,11 @@
 #include "mk_to_dot.h"
 #endif
 //#include "parse_keepass.h"
-#include "permutation_test.h"
+#ifdef HAS_PERMUTATION
+#include "permutations_test.h"
 #include "permutations.h"
+#endif /*HAS_PERMUTATION*/
+
 //#include "russian_doll_envelopes_test.h"
 //#include "scan_serial_port.h"
 //#include "slidingWindowMax.h"
@@ -176,17 +180,36 @@ static bool test_parse_vi (void) {
 #endif
 
 int unit_test (void) {
-
+	printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
     bool res = false;
+#ifdef HAS_COMBINATION_TEST
+    res = test_combinations ();
+    if (false == res) {
+        return COMBINE_ERROR;
+    }
+#endif
 
+
+#ifdef HAS_PERMUTATION_TEST
+    res= test_permutation ();
+    if (false == res) {
+        return PERMUT_ERROR;
+    }
+#endif
+
+#ifdef HAS_ALGORITHM_TEST
     res = test_algorithm ();
     if (false == res) {
         return ALGORITM_ERROR;
     }
+#endif
+
+#ifdef HAS_PERMUTATION
+	test_print_matrix ();
+
 
     struct Results cube;
     int A[4] = {3, 2, 4, 3};
-
     int array_of_numbers[6] = {1, 2, 3, 4, 5, 6};
     permute_from_set (2, array_of_numbers, 6);
     return FINE;
@@ -197,16 +220,21 @@ int unit_test (void) {
     if (ret != 4) {
         return BIN_PERIOD_ERROR;
     }
+#endif
 
+#ifdef HAS_COMPARE_VERSION_TEST
     res = compare_version_test ();
     if (false == res) {
         return COMPARE_VERSION_ERROR;
     }
+#endif
 
+#ifdef HAS_BIN_UTILS_TEST
     res = test_binary_gap ();
     if (false == res) {
         return BIN_GAP_ERROR;
     }
+#endif
 
 
     uint8_t regAddr = 0x00;
@@ -3405,3 +3433,71 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements) {
     print_inorder_traversal (*root);
 }
 #endif
+
+#define NN 5
+int Amatrix[NN][NN];
+
+
+void init_matrix_a(void) {
+	int i,j;
+	for(j=0; j<NN; j++) {
+		for(i=0; i<NN; i++) {
+			Amatrix[i][j] = i + j;
+			printf("\n %p i=%u j=%u",&Amatrix[i][j],i,j);
+		}
+	}
+	printf("\n");
+}
+
+//slow
+void print_matrix_ji(void) {
+	int i=0,j=0;
+	for(j=0; j<NN; j++){
+		for(i=0; i<NN; i++){
+			//printf("%u ",Amatrix[i][j]);
+			Amatrix[i][j]++;
+		}
+
+	}
+}
+
+//fast
+void print_matrix_ij(void) {
+	int i=0,j=0;
+	for(i=0;i<NN;i++){
+		for(j=0;j<NN;j++){
+			//printf("%u ",Amatrix[i][j]);
+			Amatrix[i][j]++;
+		}
+	}
+}
+
+
+
+
+bool test_print_matrix (void) {
+	init_matrix_a();
+	clock_t begin = clock();
+	print_matrix_ji() ;
+	clock_t end = clock();
+	double time_spent_ji = (double)(end - begin) / CLOCKS_PER_SEC;
+
+	begin = clock();
+	print_matrix_ij() ;
+	end = clock();
+	double time_spent_ij = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("\nElapsed: ji %f seconds\n", time_spent_ji);
+	printf("\nElapsed: ij %f seconds\n", time_spent_ij);
+	//Elapsed: ji 0.015000 seconds
+	//Elapsed: ij 0.000000 seconds
+
+	//Elapsed: ji 0.265000 seconds
+	//Elapsed: ij 0.266000 seconds
+
+	//Elapsed: ji 0.672000 seconds
+	//Elapsed: ij 0.219000 seconds
+
+	//Elapsed: ji 3.297000 seconds
+	//Elapsed: ij 0.906000 seconds
+
+}

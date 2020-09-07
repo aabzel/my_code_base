@@ -228,6 +228,7 @@ void *memdup (const void *mem, size_t sizeByte) {
     return out;
 }
 
+//
 int *add_val_to_end_array (int *inArr, int arrSize, int val) {
     int *newArr = NULL;
 #if DEBUG_ADD_VAL_TO_END_ARRAY
