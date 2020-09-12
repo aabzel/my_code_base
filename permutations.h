@@ -19,7 +19,7 @@ extern list_node_t *permutllHead;
 
 void permute_from_set (int amount_of_num, int *array_of_numbers, int array_size);
 
-int** permute(int* nums, int numsSize, int* returnSize, int** returnColumnSizes);
+int **permute (int *nums, int numsSize, int *returnSize, int **returnColumnSizes);
 bool get_i_permutation_of_n (int maxNumOfElement, uint32_t permutIndex, int *array);
 // given number N
 // print all permutations for (1,2,..,N)

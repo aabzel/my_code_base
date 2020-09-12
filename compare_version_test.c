@@ -1,5 +1,7 @@
 #include "compare_version_test.h"
 
+#include <stdio.h>
+
 #include "compare_version.h"
 
 bool compare_version_test (void) {

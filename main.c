@@ -46,37 +46,38 @@ static bool print_ent (void) {
 }
 #endif
 
-void inc (char *array){
-	array++;
-	*(array+1)='P';
-	(*(array+1))++;
-	char *ptr = array;
-	*(ptr+2)='N';
-	char *ptr2 = ptr;
-	*ptr2='R';
-	(*ptr2)++;
+void inc (char *array) {
+    array++;
+    *(array + 1) = 'P';
+    (*(array + 1))++;
+    char *ptr = array;
+    *(ptr + 2) = 'N';
+    char *ptr2 = ptr;
+    *ptr2 = 'R';
+    (*ptr2)++;
 }
 
 int main (int argc, char *argv[]) {
-	 printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
-    char array[]={'A','G','V',0};
-    inc(&array[0]);
-    printf("%s\n",array);
-	float x= 9/7;
-	printf ("\nx=[%f]\n", x);
+    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+#ifdef BEAM_TREAL
+    char array[] = {'A', 'G', 'V', 0};
+    inc (&array[0]);
+    printf ("%s\n", array);
+    float x = 9 / 7;
+    printf ("\nx=[%f]\n", x);
 
-	long int a=-1;
-	unsigned int b=1;
-	printf ("\n[%zu]\n", sizeof(a));
-	printf ("\n[%zu]\n", sizeof(b));
-	if(a>b){
-		printf ("\na\n");
-	}else{
-		printf ("\nb\n");
-	}
-	printf ("\na [%x]\n",(unsigned int) (a));
-	printf ("\nb [%x]\n",(unsigned int)  (b));
-
+    long int a = -1;
+    unsigned int b = 1;
+    printf ("\n[%zu]\n", sizeof (a));
+    printf ("\n[%zu]\n", sizeof (b));
+    if (a > b) {
+        printf ("\na\n");
+    } else {
+        printf ("\nb\n");
+    }
+    printf ("\na [%x]\n", (unsigned int)(a));
+    printf ("\nb [%x]\n", (unsigned int)(b));
+#endif
 
     printf ("\n[-] Argc: [%u]", argc);
     printf ("\n[d] 1");
@@ -235,6 +236,3 @@ int main (int argc, char *argv[]) {
     // getchar ();
     return 0;
 }
-
-
-

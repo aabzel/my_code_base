@@ -1,6 +1,5 @@
 #include "combinations.h"
 
-
 #include "algorithms.h"
 #include "arrays.h"
 #include "linked_list.h"
@@ -127,14 +126,14 @@ bool assemble_combination_list (list_node_t *pPermutHead, list_node_t **pCombine
  * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
  */
 int **subsets (int *nums, int numsSize, int *returnSize, int **returnColumnSizes) {
-	printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
     int amOfelem = 0u;
     int **arrOfArrys;
     for (amOfelem = 1u; amOfelem <= numsSize; amOfelem++) {
         assemble_from_alph (nums, numsSize, amOfelem, NULL, 0u);
     }
-    //combinationListHead = NULL;
-    //assemble_combination_list (permutllHead, &combinationListHead);
+    // combinationListHead = NULL;
+    // assemble_combination_list (permutllHead, &combinationListHead);
 #if PRINT_COMBINATIONS
     printf ("compination list:");
     print_list (combinationListHead);
@@ -149,7 +148,6 @@ int **subsets (int *nums, int numsSize, int *returnSize, int **returnColumnSizes
 #endif
     return arrOfArrys;
 }
-
 
 /**
  * Return an array of arrays of size *returnSize.

@@ -30,11 +30,11 @@ void print_permut (int *in_current_array, int in_curr_arr_size, int pos, int *al
     }
 }
 
-int** permute(int* nums, int numsSize, int* returnSize, int** returnColumnSizes){
-	(void) returnSize;
-	(void) returnColumnSizes;
-	permute_from_set (numsSize , nums, numsSize);
-	return NULL;
+int **permute (int *nums, int numsSize, int *returnSize, int **returnColumnSizes) {
+    (void)returnSize;
+    (void)returnColumnSizes;
+    permute_from_set (numsSize, nums, numsSize);
+    return NULL;
 }
 
 void permute_from_set (int total_num, int *alf, int alf_size) {
@@ -263,60 +263,75 @@ void permutation (int n) {
 }
 
 /*
- * inAlphabet array of elements to get values for the combinations
- * sizeOfAlphabet size of that array
+ * in_remain_alphabet array of elements to get values for the combinations
+ * size_of_alphabet size of that array
  * k - amount of letters in result combination instance
  *
  * */
-/* k - amount of letters*/
 
-void assemble_from_alph (int *inAlphabet, int sizeOfAlphabet, int k, int *curArr, int curArrSize) {
-	printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
-	if(NULL==inAlphabet){
-		return;
-	}
-	if(NULL==curArr){
-		return;
-	}
-	if (0 == k) {
-#if DEBUG_ASSEMBLE
-        print_array_to_filename (kitFile, curArr, curArrSize);
-        print_curr_array (curArr, curArrSize);
+/* k - amount of letters in set*/
+// сделать size_of_alphabet копий выходного массива (cur_array_extended) и
+// к каждой копии добавить по одной цифре из алфавита in_remain_alphabet
+void assemble_from_alph (int *in_remain_alphabet, int size_of_alphabet, int *in_cur_arr, int in_cur_arrSize) {
+#ifdef DEBUG_PERMUT
+    printf ("\n[d] %s(): line %u alphSize: %d\n", __FUNCTION__, __LINE__, size_of_alphabet);
 #endif
-        // linked_list_add_array (&permutllHead, curArr, curArrSize);
-    }
-    if (0 < k) {
-        if (0 < sizeOfAlphabet) {
-#if DEBUG_ASSEMBLE
-            print_array (inAlphabet, sizeOfAlphabet, k);
+    if ((0 == size_of_alphabet) && (NULL == in_remain_alphabet)) {
+#ifdef DEBUG_PERMUT
+        print_array_to_filename (kitFile, in_cur_arr, in_cur_arrSize);
 #endif
-            int *localAlphabet = malloc (sizeof (int) * sizeOfAlphabet);
-            if (NULL == localAlphabet) {
-                printf ("malloc for in alphabet error");
+        if ((NULL != in_cur_arr) && (0 < in_cur_arrSize)) {
+            print_array_int (in_cur_arr, in_cur_arrSize);
+            free (in_cur_arr);
+        }
+        return;
+    } else if ((0 < size_of_alphabet) && (NULL != in_remain_alphabet)) {
+#ifdef DEBUG_PERMUT
+        printf ("\n[d] alphabet");
+        print_array_int (in_remain_alphabet, size_of_alphabet);
+#endif
+        for (int num_order = 0; num_order < size_of_alphabet; num_order++) {
+            int *new_remain_alphabet = memdup (in_remain_alphabet, sizeof (int) * size_of_alphabet);
+            if (NULL == new_remain_alphabet) {
+                printf ("\n Unable to duplicate in alphabet %u ", num_order);
                 return;
             }
-            for (int numOrger = 0; numOrger < sizeOfAlphabet; numOrger++) {
-                memcpy (localAlphabet, inAlphabet, sizeof (int) * sizeOfAlphabet);
-                // printf ("\nw[%d]=%d", 2 - k, localAlphabet [numOrger]);
-                int *currArray = add_val_to_end_array (curArr, curArrSize, localAlphabet[numOrger]);
-                if (NULL != currArray) {
-                    int *redusedAlphabet = NULL;
-                    redusedAlphabet = remove_int_from_arr (localAlphabet, sizeOfAlphabet, numOrger);
-                    if (redusedAlphabet) {
-                        assemble_from_alph (redusedAlphabet, (sizeOfAlphabet - 1), (k - 1), currArray, curArrSize + 1);
-                        free (redusedAlphabet);
-                        free (currArray);
-                    } else {
-                        printf ("malloc for reduced alphabet error");
-                        return;
-                    }
+
+            // printf ("\nw[%d]=%d\n", num_order, new_remain_alphabet[num_order]);
+            int *cur_array_extended = add_val_to_end_array (in_cur_arr, in_cur_arrSize, new_remain_alphabet[num_order]);
+            free (in_cur_arr);
+            if (NULL != cur_array_extended) {
+                // part of the solution allocated
+                int *redused_alphabet = remove_int_from_arr (new_remain_alphabet, size_of_alphabet, num_order);
+                if (redused_alphabet != new_remain_alphabet) {
+                    // printf ("\n remove array val error");
                 }
+                if (NULL != redused_alphabet) {
+                    assemble_from_alph (redused_alphabet, (size_of_alphabet - 1), cur_array_extended,
+                                        in_cur_arrSize + 1);
+                    // free (redused_alphabet);
+                } else {
+                    assemble_from_alph (NULL, 0, cur_array_extended, in_cur_arrSize + 1);
+                    // free(new_remain_alphabet);
+                    // new_remain_alphabet=NULL;
+                    // printf ("\nmalloc for reduced alphabet error");
+                    // return;
+                }
+            } else {
+                printf ("\n Unable to add val to end %u", num_order);
+                printf ("\nw[%d]=%d", num_order, new_remain_alphabet[num_order]);
             }
-#if DEBUG_COMBINE
-            printf ("\n");
-#endif
-            free (localAlphabet);
+            if (new_remain_alphabet) {
+                free (new_remain_alphabet);
+            }
         }
+
+        free (in_remain_alphabet);
+#if DEBUG_PERMUT
+        printf ("\n");
+#endif
+    } else {
+        printf ("\n strange error");
     }
 }
 
@@ -396,10 +411,10 @@ bool is_permutated_element_in_list (list_node_t *pHead, int *inArr, int arrSize)
  */
 
 int **permute_array (int *array, int numsSize, int *returnSize, int **returnColumnSizes) {
-	 printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
-    int **arrayOfPtr=NULL;
+    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+    int **arrayOfPtr = NULL;
     // clean list permutllHead
-    assemble_from_alph (array, numsSize, numsSize, NULL, 0);
+    assemble_from_alph (array, numsSize, NULL, 0);
     // save_list_to_file (permutllHead, pemutationFile);
     // arrayOfPtr = list_of_arr_to_arr_of_arr (permutllHead, returnSize, returnColumnSizes);
     return arrayOfPtr;

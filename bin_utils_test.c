@@ -1,5 +1,7 @@
 #include "bin_utils_test.h"
 
+#include <stdio.h>
+
 #include "bin_utils.h"
 
 bool test_binary_gap (void) {

@@ -34,7 +34,7 @@ int proc_bit (int bit, int *cur_state, int *cnt) {
 int binary_gap (int N) {
     int i = 0;
     printf ("\n N %u\n", N);
-    int max_gap = 0, cur_gap;
+    int max_gap = 0;
     int cur_cnt = 0;
     int cur_bit;
     int count_zero_mode = 0;

@@ -106,8 +106,9 @@ typedef enum {
     COMPARE_VERSION_ERROR = 88,
     BIN_PERIOD_ERROR = 89,
     ALGORITM_ERROR = 90,
-	PERMUT_ERROR = 91,
-	COMBINE_ERROR = 92,
+    PERMUT_ERROR = 91,
+    COMBINE_ERROR = 92,
+    CONVERT_ERROR = 93,
     NUM_ERROR = 100
 } utError_t;
 
@@ -153,8 +154,8 @@ bool test_find_min_diag_scale_summ2 (void);
 bool test_delim_amount (void);
 bool check_array (int *arr, int numsSize, int k);
 
-void print_matrix_ji(void);
-void print_matrix_ij(void);
+void print_matrix_ji (void);
+void print_matrix_ij (void);
 bool test_print_matrix (void);
 
 // bool test_bin_heap_delete (void);
@@ -180,6 +181,7 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
     do {                                                                                                               \
         if (val1 != val2) {                                                                                            \
             printf ("\n%s:Line: %d %d in val1: %d val2: %d ", __FUNCTION__, __LINE__, __COUNTER__, val1, val2);        \
+            printf ("\n%s:Line: %d %d in val1: %x val2: %x ", __FUNCTION__, __LINE__, __COUNTER__, val1, val2);        \
             return false;                                                                                              \
         }                                                                                                              \
     } while (0);

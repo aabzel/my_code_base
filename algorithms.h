@@ -14,7 +14,7 @@ extern "C" {
 #define DEBUG_ARG 0
 
 //#define F_EPSILON 0.0005f
-
+void print_terms (int total_num, int *alf, int alf_size, int sum, int *syllables);
 bool swap_int (int *const x, int *const y);
 uint32_t factorial (uint32_t n);
 bool is_in_range (int val, int lowBound, int upBound);

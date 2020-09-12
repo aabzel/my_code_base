@@ -54,7 +54,7 @@ double calc_median_naiv (int *const inArr, int sizeOfArr);
 char *generate_num_string (int n);
 void print_sub_str (char *const str, int len);
 void print_array (int *alphabet, int sizeOfAlphabet, int k);
-void print_curr_array (int *alphabet, int sizeOfAlphabet);
+void print_array_int (int *alphabet, int sizeOfAlphabet);
 bool print_mem_vertical (uint8_t *memPtr, uint32_t numByte, bool printChars);
 bool print_mem_horisonal (uint8_t *memPtr, uint32_t numByte);
 double avrage_two (int val1, int val2);

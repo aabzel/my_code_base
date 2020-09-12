@@ -1,5 +1,7 @@
 #include "algorithms_test.h"
 
+#include <stdlib.h>
+
 #include "algorithms.h"
 
 bool test_algorithm (void) {

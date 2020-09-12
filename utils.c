@@ -127,13 +127,17 @@ char *generate_num_string (int n) {
     return charStr;
 }
 
-void print_array (int *alphabet, int sizeOfAlphabet, int k) {
-    printf ("\nAlphabet size: [%d] lettesRemained [%d] ", sizeOfAlphabet, k);
-    printf ("{");
+void print_array_int (int *alphabet, int sizeOfAlphabet) {
+    printf ("\n size: [%d]  ", sizeOfAlphabet);
+    printf ("[");
     for (int i = 0; i < sizeOfAlphabet; i++) {
-        printf ("%d", alphabet[i]);
+        if (i != (sizeOfAlphabet - 1)) {
+            printf ("%d, ", alphabet[i]);
+        } else {
+            printf ("%d", alphabet[i]);
+        }
     }
-    printf ("}");
+    printf ("]");
     printf ("\n");
 }
 
@@ -817,7 +821,7 @@ struct Results solution (int *A, int N, int F, int M) {
     // write your code in C99 (gcc 6.2.0)
     // meas  = total_sum / total_try
     result.R = F;
-    result.res = (int)malloc (F * sizeof (int));
+    result.res = (int *)malloc (F * sizeof (int));
     int total_try = N + F;
     int total_sum = total_try * M;
     printf ("\n total_try %u", total_try);

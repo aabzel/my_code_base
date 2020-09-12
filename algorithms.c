@@ -17,7 +17,7 @@
 void print_permut_terms (int *in_current_array, int in_curr_arr_size, int pos, int *alf, int alf_size, int total_num,
                          int sum, int *syllables) {
     if (in_curr_arr_size == total_num) {
-        int arr_sum = sum_arr (in_current_array, in_curr_arr_size);
+        int arr_sum = sum_arr ((uint32_t *)in_current_array, in_curr_arr_size);
         if (sum == arr_sum) {
             printf ("\n");
             print_curr_array (in_current_array, in_curr_arr_size);

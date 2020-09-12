@@ -74,7 +74,7 @@ bool test_fifo_array_char (void) {
 }
 bool test_fifo_char (void) {
     bool res = false;
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
     char outChar;
     fifo_init (&fifiObj, sizeof (array), array);
 
@@ -83,7 +83,7 @@ bool test_fifo_char (void) {
         printf ("\nError: %s %d", __FUNCTION__, 1);
         return false;
     }
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
     res = fifo_push (&fifiObj, '2');
     if (false == res) {
         printf ("\nError: %s %d", __FUNCTION__, 2);
@@ -104,63 +104,63 @@ bool test_fifo_char (void) {
         printf ("\nError: %s %d", __FUNCTION__, 5);
         return false;
     }
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
     res = fifo_push (&fifiObj, '6');
     if (true == res) {
         printf ("\nError: %s %d", __FUNCTION__, 6);
         return false;
     }
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
     res = fifo_pull (&fifiObj, &outChar);
     if (false == res) {
         printf ("\nError: %s %d", __FUNCTION__, 7);
         return false;
     }
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
     if ('1' != outChar) {
         printf ("\nError: %s %d", __FUNCTION__, 8);
         return false;
     }
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
     res = fifo_pull (&fifiObj, &outChar);
     if (false == res) {
         printf ("\nError: %s %d", __FUNCTION__, 9);
         return false;
     }
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
     if ('2' != outChar) {
         printf ("\nError: %s %d", __FUNCTION__, 10);
         return false;
     }
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
     res = fifo_pull (&fifiObj, &outChar);
     if (false == res) {
         printf ("\nError: %s %d", __FUNCTION__, 11);
         return false;
     }
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
     if ('3' != outChar) {
         printf ("\nError: %s %d", __FUNCTION__, 12);
         return false;
     }
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
     res = fifo_pull (&fifiObj, &outChar);
     if (false == res) {
         printf ("\nError: %s %d", __FUNCTION__, 13);
         return false;
     }
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
     if ('4' != outChar) {
         printf ("\nError: %s %d", __FUNCTION__, 14);
         return false;
     }
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
     res = fifo_pull (&fifiObj, &outChar);
     if (false == res) {
         printf ("\nError: %s %d", __FUNCTION__, 15);
         return false;
     }
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
     if ('5' != outChar) {
         printf ("\nError: %s %d", __FUNCTION__, 16);
         return false;
@@ -170,19 +170,18 @@ bool test_fifo_char (void) {
         printf ("\nError: %s %d", __FUNCTION__, 17);
         return false;
     }
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
     res = test_fifo_array_char ();
     if (true == res) {
         printf ("\nError: %s %d", __FUNCTION__, 18);
         return false;
     }
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
     res = test_fifo_array1_char ();
     if (true == res) {
         printf ("\nError: %s %d", __FUNCTION__, 19);
         return false;
     }
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
 
     return true;
 }

@@ -90,6 +90,7 @@ const char *utoa_bin32 (uint32_t u32_bin_data);
 const char *rx_dtoa (double_t d);
 const char *rx_ftoa (float_t float_v);
 
+uint32_t assemble_uint32 (uint8_t byte1, uint8_t byte2, uint8_t byte3, uint8_t byte4);
 const char *bool2name (bool val);
 
 #ifdef __cplusplus

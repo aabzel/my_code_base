@@ -1701,3 +1701,15 @@ bool try_str2mac (const char macStr[], uint8_t *outMacAddr) {
 
     return res;
 }
+
+uint32_t assemble_uint32 (uint8_t byte1, uint8_t byte2, uint8_t byte3, uint8_t byte4) {
+    uint32_t v32 = 0;
+    uint8_t v8[4] = {0x00, 0x00, 0x00, 0x00};
+    v8[0] = byte4;
+    v8[1] = byte3;
+    v8[2] = byte2;
+    v8[3] = byte1;
+    (void)memcpy ((uint8_t *)&v32, (uint8_t *)&v8[0], 4);
+
+    return v32;
+}

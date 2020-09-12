@@ -6,7 +6,11 @@
 #include "algorithms_test.h"
 
 //#include "amount_of_uio_states.h"
+#ifdef HAS_ARRAY
 #include "arrays.h"
+#include "test_arrays.h"
+#endif
+
 #include "bin_utils_test.h"
 #include "compare_version_test.h"
 
@@ -32,6 +36,10 @@
 //#include "bin_tree_draw.h"
 //#include "combinations.h"
 #include "convert.h"
+#ifdef TEST_CONVERT
+#include "test_convert.h"
+#endif
+
 #include "float_utils.h"
 //#include "linked_list.h"
 //#include "min_path.h"
@@ -41,8 +49,8 @@
 #endif
 //#include "parse_keepass.h"
 #ifdef HAS_PERMUTATION
-#include "permutations_test.h"
 #include "permutations.h"
+#include "permutations_test.h"
 #endif /*HAS_PERMUTATION*/
 
 //#include "russian_doll_envelopes_test.h"
@@ -180,20 +188,36 @@ static bool test_parse_vi (void) {
 #endif
 
 int unit_test (void) {
-	printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
     bool res = false;
+
+#ifdef TEST_CONVERT
+    res = test_convert ();
+    if (false == res) {
+        printf ("test_convert error");
+        return CONVERT_ERROR;
+    }
+#endif
+
+#ifdef TEST_ARRAY
+    res = test_array ();
+    if (false == res) {
+        printf ("array error");
+        return ARRAY_ERROR;
+    }
+#endif
+
+#ifdef HAS_PERMUTATION_TEST
+    res = test_permutation ();
+    if (false == res) {
+        return PERMUT_ERROR;
+    }
+#endif
+
 #ifdef HAS_COMBINATION_TEST
     res = test_combinations ();
     if (false == res) {
         return COMBINE_ERROR;
-    }
-#endif
-
-
-#ifdef HAS_PERMUTATION_TEST
-    res= test_permutation ();
-    if (false == res) {
-        return PERMUT_ERROR;
     }
 #endif
 
@@ -204,9 +228,8 @@ int unit_test (void) {
     }
 #endif
 
-#ifdef HAS_PERMUTATION
-	test_print_matrix ();
-
+#ifdef BEAM_TRAIL
+    test_print_matrix ();
 
     struct Results cube;
     int A[4] = {3, 2, 4, 3};
@@ -236,7 +259,6 @@ int unit_test (void) {
     }
 #endif
 
-
     uint8_t regAddr = 0x00;
     uint16_t regVal = 0x0000;
     uint8_t shift;
@@ -247,7 +269,7 @@ int unit_test (void) {
         printf ("\n reg64Val %08llx exp 202B17D3015A", (long long unsigned int)reg64Val);
         return PARSE_HEX_ERROR;
     }
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
     res = try_strl2uint64 ("0x202B17D3015A", strlen ("0x202B17D3015A"), &reg64Val);
     if (0x202B17D3015A != reg64Val) {
         printf ("0x202B17D3015A");
@@ -255,14 +277,6 @@ int unit_test (void) {
         return PARSE_HEX_ERROR;
     }
 
-#ifdef TEST_ARRAY
-    res = test_array ();
-    if (false == res) {
-        printf ("array error");
-        return ARRAY_ERROR;
-    }
-#endif
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
     res = is_hex_str ("ab1234ba", 8, &shift);
     if (false == res) {
         printf ("ab1234ba");
@@ -284,7 +298,7 @@ int unit_test (void) {
     if (false == res) {
         return PARSE_MAC_ERROR;
     }
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
     res = test_extract_sub_string ();
     if (false == res) {
         return PARSE_EXTRACT_SUB_ERROR;
@@ -320,7 +334,7 @@ int unit_test (void) {
     char inStr[100];
     char outStr[100];
     char expStr[100];
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
     strncpy (expStr, "0x04 0x0000", sizeof (outStr));
     strncpy (inStr, "reg addr: 0x04 reg val: 0xABCD Ob_0000_0000_0000_0000", sizeof (inStr));
 
@@ -353,7 +367,7 @@ int unit_test (void) {
         printf ("try_canch_hex_uint32 failed");
         return PARSE_UINT32_ERROR;
     }
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
     // res = extract_numbers (inStr, strlen (inStr));
     // int cmpRes = strcmp (expStr, outStr);
     // if (0 != cmpRes) {
@@ -377,7 +391,7 @@ int unit_test (void) {
     if (false == res) {
         return SUB_STR_REPL_ERROR;
     }
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
 #if TEST_FLOATS
     print_biggest_mantissa ();
     sample16bit = float_to_uint16 (c);
@@ -403,45 +417,45 @@ int unit_test (void) {
     // return FLOAR_TO_SAMPLE_ERROR;
     //}
 #endif
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
 #if 0
     init_file_name ();
     print_pad_nums ();
 #endif
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
 #ifdef TEST_MY_PRINTF
     res = test_my_printf ();
     if (false == res) {
         return NUM_OF_ARGS_ERROR;
     }
 #endif
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
 #ifdef TEST_MAX_ENFELOP
     res = maxEnvelopes_test ();
     if (false == res) {
         return MAX_ENVELOPES_TEST_ERROR;
     }
 #endif
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
 #if TEST_LIST_SORT
     res = test_list_sort ();
     if (false == res) {
         return LIST_SORT_ERROR;
     }
 #endif
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
     res = test_str_char_replace ();
     if (false == res) {
         return CHAR_REP_ERROR;
     }
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
 #ifdef TEST_FIFO
     res = test_fifo_char ();
     if (false == res) {
         return FIFO_CAHR_ERROR;
     }
 #endif
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
 #ifdef HAS_TEST_PARSE_MK
     res = test_parse_mk ();
     if (false == res) {
@@ -455,7 +469,7 @@ int unit_test (void) {
         return EXTRACT_C_FILE_ERROR;
     }
 #endif
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
 #if DEPLOY_TEST_SINGLE_NUMBER
     res = test_single_number ();
     if (false == res) {
@@ -491,7 +505,7 @@ int unit_test (void) {
     if (false == res) {
         return PARSE_AND_ERROR;
     }
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
     res = test_parse_not ();
     if (false == res) {
         return PARSE_NOT_ERROR;
@@ -526,7 +540,7 @@ int unit_test (void) {
         return DETECT_CHANGE_ERROR;
     }
 #endif
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
 #if DEPLOY_DIF_SUB_STR_ERROR
     res = test_lengthOfLongestSubstring ();
     if (false == res) {
@@ -564,7 +578,7 @@ int unit_test (void) {
         return STRING_SPLIT_ERROR;
     }
 #endif
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
 #if 0
     res = test_sliding_window_max ();
     if (false == res) {
@@ -597,7 +611,7 @@ int unit_test (void) {
         return BIN_HEAP_SAME_ERROR;
     }
 #endif
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
 #if TEST_HEAP_CON
     res = test_bin_heap_dec_add ();
     if (false == res) {
@@ -632,7 +646,7 @@ int unit_test (void) {
         return MEDIAN_ERROR;
     }
 #endif
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
 #if 0
     res = test_valid_float_number ();
     if (false == res) {
@@ -666,7 +680,7 @@ int unit_test (void) {
         return MIN_PATH_DIAG_ERROR;
     }
 #endif
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+
 #if TEST_MIN_DIAG_SCALE_SUMM
     res = test_min_diag_scale_summ ();
     if (false == res) {
@@ -3437,67 +3451,62 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements) {
 #define NN 5
 int Amatrix[NN][NN];
 
-
-void init_matrix_a(void) {
-	int i,j;
-	for(j=0; j<NN; j++) {
-		for(i=0; i<NN; i++) {
-			Amatrix[i][j] = i + j;
-			printf("\n %p i=%u j=%u",&Amatrix[i][j],i,j);
-		}
-	}
-	printf("\n");
+void init_matrix_a (void) {
+    int i, j;
+    for (j = 0; j < NN; j++) {
+        for (i = 0; i < NN; i++) {
+            Amatrix[i][j] = i + j;
+            printf ("\n %p i=%u j=%u", &Amatrix[i][j], i, j);
+        }
+    }
+    printf ("\n");
 }
 
-//slow
-void print_matrix_ji(void) {
-	int i=0,j=0;
-	for(j=0; j<NN; j++){
-		for(i=0; i<NN; i++){
-			//printf("%u ",Amatrix[i][j]);
-			Amatrix[i][j]++;
-		}
-
-	}
+// slow
+void print_matrix_ji (void) {
+    int i = 0, j = 0;
+    for (j = 0; j < NN; j++) {
+        for (i = 0; i < NN; i++) {
+            // printf("%u ",Amatrix[i][j]);
+            Amatrix[i][j]++;
+        }
+    }
 }
 
-//fast
-void print_matrix_ij(void) {
-	int i=0,j=0;
-	for(i=0;i<NN;i++){
-		for(j=0;j<NN;j++){
-			//printf("%u ",Amatrix[i][j]);
-			Amatrix[i][j]++;
-		}
-	}
+// fast
+void print_matrix_ij (void) {
+    int i = 0, j = 0;
+    for (i = 0; i < NN; i++) {
+        for (j = 0; j < NN; j++) {
+            // printf("%u ",Amatrix[i][j]);
+            Amatrix[i][j]++;
+        }
+    }
 }
-
-
-
 
 bool test_print_matrix (void) {
-	init_matrix_a();
-	clock_t begin = clock();
-	print_matrix_ji() ;
-	clock_t end = clock();
-	double time_spent_ji = (double)(end - begin) / CLOCKS_PER_SEC;
+    init_matrix_a ();
+    clock_t begin = clock ();
+    print_matrix_ji ();
+    clock_t end = clock ();
+    double time_spent_ji = (double)(end - begin) / CLOCKS_PER_SEC;
 
-	begin = clock();
-	print_matrix_ij() ;
-	end = clock();
-	double time_spent_ij = (double)(end - begin) / CLOCKS_PER_SEC;
-	printf("\nElapsed: ji %f seconds\n", time_spent_ji);
-	printf("\nElapsed: ij %f seconds\n", time_spent_ij);
-	//Elapsed: ji 0.015000 seconds
-	//Elapsed: ij 0.000000 seconds
+    begin = clock ();
+    print_matrix_ij ();
+    end = clock ();
+    double time_spent_ij = (double)(end - begin) / CLOCKS_PER_SEC;
+    printf ("\nElapsed: ji %f seconds\n", time_spent_ji);
+    printf ("\nElapsed: ij %f seconds\n", time_spent_ij);
+    // Elapsed: ji 0.015000 seconds
+    // Elapsed: ij 0.000000 seconds
 
-	//Elapsed: ji 0.265000 seconds
-	//Elapsed: ij 0.266000 seconds
+    // Elapsed: ji 0.265000 seconds
+    // Elapsed: ij 0.266000 seconds
 
-	//Elapsed: ji 0.672000 seconds
-	//Elapsed: ij 0.219000 seconds
+    // Elapsed: ji 0.672000 seconds
+    // Elapsed: ij 0.219000 seconds
 
-	//Elapsed: ji 3.297000 seconds
-	//Elapsed: ij 0.906000 seconds
-
+    // Elapsed: ji 3.297000 seconds
+    // Elapsed: ij 0.906000 seconds
+    return true;
 }
