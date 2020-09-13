@@ -215,7 +215,7 @@ void *memdup (const void *mem, size_t sizeByte) {
         if (NULL != mem) {
             out = (void *)malloc (sizeByte);
             if (NULL != out) {
-                memcpy (out, mem, sizeByte);
+                memcpy ((void *)out,(void *) mem, sizeByte);
             } else {
                 printf ("\n Unable to malloc [%u] byte\n", (unsigned int)sizeByte);
             }

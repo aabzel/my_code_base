@@ -128,7 +128,7 @@ char *generate_num_string (int n) {
 }
 
 void print_array_int (int *alphabet, int sizeOfAlphabet) {
-    printf ("\n size: [%d]  ", sizeOfAlphabet);
+    printf ("[d] <%d>  ", sizeOfAlphabet);
     printf ("[");
     for (int i = 0; i < sizeOfAlphabet; i++) {
         if (i != (sizeOfAlphabet - 1)) {
