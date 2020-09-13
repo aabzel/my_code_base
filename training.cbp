@@ -36,6 +36,14 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-DTEST_FIFO" />
+			<Add option="-DHAS_UTESTS" />
+			<Add option="-DHAS_PERMUTATION" />
+			<Add option="-DHAS_PERMUTATION_TEST" />
+			<Add option="-DDEBUG_ASSEMBLE_FROM_ALPH" />
+			<Add option="-DTEST_ARRAY" />
+			<Add option="-DHAS_ARRAY" />
+			<Add option="-DTEST_CONVERT" />
 		</Compiler>
 		<Unit filename="algorithms.c">
 			<Option compilerVar="CC" />
@@ -55,6 +63,8 @@
 		<Unit filename="avl_tree.h" />
 		<Unit filename="bin_heap.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
 		</Unit>
 		<Unit filename="bin_heap.h" />
 		<Unit filename="bin_heap_array.c">
@@ -67,6 +77,8 @@
 		<Unit filename="bin_search_tree.h" />
 		<Unit filename="bin_tree.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
 		</Unit>
 		<Unit filename="bin_tree.h" />
 		<Unit filename="bin_tree_draw.c">
@@ -107,14 +119,20 @@
 		</Unit>
 		<Unit filename="math_model_rocket_2d.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
 		</Unit>
 		<Unit filename="math_model_rocket_2d.h" />
 		<Unit filename="min_path.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
 		</Unit>
 		<Unit filename="min_path.h" />
 		<Unit filename="min_path_diag_scale.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
 		</Unit>
 		<Unit filename="min_path_diag_scale.h" />
 		<Unit filename="mk_to_dot.c">
@@ -123,15 +141,21 @@
 		<Unit filename="mk_to_dot.h" />
 		<Unit filename="parse_keepass.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
 		</Unit>
 		<Unit filename="parse_keepass.h" />
 		<Unit filename="parse_phy_regs.h" />
 		<Unit filename="parse_regs.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
 		</Unit>
 		<Unit filename="parse_regs.h" />
 		<Unit filename="parse_tic12400_regs.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
 		</Unit>
 		<Unit filename="parse_tic12400_regs.h" />
 		<Unit filename="parse_tja1101_regs.c">
@@ -141,20 +165,32 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="permutations.h" />
+		<Unit filename="permutations_test.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="permutations_test.h" />
 		<Unit filename="russian_doll_envelopes.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
 		</Unit>
 		<Unit filename="russian_doll_envelopes.h" />
 		<Unit filename="russian_doll_envelopes_test.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
 		</Unit>
 		<Unit filename="russian_doll_envelopes_test.h" />
 		<Unit filename="scan_serial_port.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
 		</Unit>
 		<Unit filename="scan_serial_port.h" />
 		<Unit filename="simulate_rocket_2d.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
 		</Unit>
 		<Unit filename="simulate_rocket_2d.h" />
 		<Unit filename="slidingWindowMax.c">
@@ -175,16 +211,30 @@
 		<Unit filename="str_ops.h" />
 		<Unit filename="tcp_client.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
 		</Unit>
 		<Unit filename="tcp_client.h" />
 		<Unit filename="tcp_server.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
 		</Unit>
 		<Unit filename="tcp_server.h" />
-		<Unit filename="test_avl_tree.c">
+		<Unit filename="test_arrays.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="test_arrays.h" />
+		<Unit filename="test_avl_tree.c">
+			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="test_avl_tree.h" />
+		<Unit filename="test_convert.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="test_convert.h" />
 		<Unit filename="test_fifo_char.c">
 			<Option compilerVar="CC" />
 		</Unit>

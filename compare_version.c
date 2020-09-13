@@ -30,7 +30,6 @@ int extract_val (char *version, int k, int rank) {
     char *pos = version;
     int32_t str_len = 0;
     if (k < rank) {
-        bool res;
         if (0 == k) {
             pos = version;
             if (1 < rank) {

@@ -348,7 +348,7 @@ void print_array_of_arrays (int **arrOfArr, int amountOfLine, int amountOfCol) {
     if (NULL != arrOfArr) {
         printf ("\n amountOfLine %d ", amountOfLine);
         for (int line = 0; line < amountOfLine; line++) {
-            print_curr_array (arrOfArr[line], amountOfCol);
+            print_array_int ((int *)arrOfArr[line], amountOfCol);
         }
     }
 }
