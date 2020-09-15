@@ -15,6 +15,7 @@ float g_one_bit_voltage = 0.0;
 uint8_t procRegCnd = 0;
 
 bool parse_tic12400_regs_file (char *inFileName, char *outFileName) {
+	printf ("\n%s()\n",__FUNCTION__);
     char curFileStr[500];
     bool res = false;
     FILE *inFilePrt = NULL;

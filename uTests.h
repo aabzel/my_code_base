@@ -109,6 +109,8 @@ typedef enum {
     PERMUT_ERROR = 91,
     COMBINE_ERROR = 92,
     CONVERT_ERROR = 93,
+	PARSE_PHY_ADDR_ERROR = 94,
+	PARSE_PHY_REG_VALS_ERROR = 95,
     NUM_ERROR = 100
 } utError_t;
 

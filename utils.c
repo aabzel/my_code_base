@@ -128,12 +128,12 @@ char *generate_num_string (int n) {
 }
 
 void print_array_int (int *alphabet, int sizeOfAlphabet) {
-	if(NULL==alphabet){
-		return;
-	}
-	if(sizeOfAlphabet<0){
-		return;
-	}
+    if (NULL == alphabet) {
+        return;
+    }
+    if (sizeOfAlphabet < 0) {
+        return;
+    }
     printf ("<%d>  ", sizeOfAlphabet);
     printf ("[");
     for (int i = 0; i < sizeOfAlphabet; i++) {
@@ -144,7 +144,6 @@ void print_array_int (int *alphabet, int sizeOfAlphabet) {
         }
     }
     printf ("]");
-    printf ("\n");
 }
 
 void init_double_array (double *ptrArray, int size) {

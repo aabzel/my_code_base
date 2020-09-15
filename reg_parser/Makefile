@@ -7,13 +7,16 @@ SRC_PATH :=  $(dir $(abspath $(dir $$PWD) ))
 
 OBJDIR := $(SRC_PATH)/obj
 # the compiler to use
-CC = clang
+#CC = clang
+CC = gcc
 
 # compiler flags:
 #  -g    adds debugging information to the executable file
 #  -Wall turns on most, but not all, compiler warnings
 CFLAGS  = -g -Wall
-  
+CFLAGS  += -DHAS_PARSE_REG
+CFLAGS  += -DHAS_UTESTS
+
 #files to link:
 LFLAGS =
   
@@ -25,7 +28,9 @@ EXECUTABLE=reg_paraser
 SOURCES = $(SRC_PATH)/main.c 
 SOURCES += $(SRC_PATH)/utils.c 
 SOURCES += $(SRC_PATH)/arrays.c  
+SOURCES += $(SRC_PATH)/test_arrays.c  
 SOURCES += $(SRC_PATH)/convert.c  
+SOURCES += $(SRC_PATH)/test_convert.c  
 SOURCES += $(SRC_PATH)/float_utils.c  
 SOURCES += $(SRC_PATH)/parse_regs.c
 SOURCES += $(SRC_PATH)/parse_tja1101_regs.c
@@ -33,7 +38,6 @@ SOURCES += $(SRC_PATH)/parse_tic12400_regs.c
 SOURCES += $(SRC_PATH)/uTests.c   
 SOURCES += $(SRC_PATH)/str_ops.c
 SOURCES += $(SRC_PATH)/test_str_ops.c    
-SOURCES += $(SRC_PATH)/combinations.c
 SOURCES += $(SRC_PATH)/algorithms.c 
 
 

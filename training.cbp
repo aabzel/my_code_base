@@ -12,7 +12,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="tic12400_reg_map_blob_iov040.txt  tic12400_config.txt" />
+				<Option parameters="tja1101_reg_blob.txt tja1101_config.txt" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -38,9 +38,7 @@
 			<Add option="-Wall" />
 			<Add option="-DTEST_FIFO" />
 			<Add option="-DHAS_UTESTS" />
-			<Add option="-DHAS_PERMUTATION" />
-			<Add option="-DHAS_PERMUTATION_TEST" />
-			<Add option="-DDEBUG_ASSEMBLE_FROM_ALPH" />
+			<Add option="-DHAS_PARSE_REG" />
 			<Add option="-DTEST_ARRAY" />
 			<Add option="-DHAS_ARRAY" />
 			<Add option="-DTEST_CONVERT" />
@@ -148,14 +146,10 @@
 		<Unit filename="parse_phy_regs.h" />
 		<Unit filename="parse_regs.c">
 			<Option compilerVar="CC" />
-			<Option compile="0" />
-			<Option link="0" />
 		</Unit>
 		<Unit filename="parse_regs.h" />
 		<Unit filename="parse_tic12400_regs.c">
 			<Option compilerVar="CC" />
-			<Option compile="0" />
-			<Option link="0" />
 		</Unit>
 		<Unit filename="parse_tic12400_regs.h" />
 		<Unit filename="parse_tja1101_regs.c">

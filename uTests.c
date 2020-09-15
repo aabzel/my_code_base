@@ -14,6 +14,10 @@
 #include "bin_utils_test.h"
 #include "compare_version_test.h"
 
+#ifdef HAS_PARSE_REG
+#include "parse_tja1101_regs.h"
+#endif
+
 #if HAS_BIN_HEAP
 #include "bin_heap.h"
 #include "bin_heap_array.h"
@@ -50,7 +54,9 @@
 //#include "parse_keepass.h"
 #ifdef HAS_PERMUTATION
 #include "permutations.h"
+#ifdef HAS_PERMUTATIONS_TEST
 #include "permutations_test.h"
+#endif /*HAS_PERMUTATIONS_TEST*/
 #endif /*HAS_PERMUTATION*/
 
 //#include "russian_doll_envelopes_test.h"
@@ -187,6 +193,86 @@ static bool test_parse_vi (void) {
 }
 #endif
 
+
+static bool test_parse_phy_addr (void) {
+	printf("\n%s()", __FUNCTION__);
+    char inStr[100];
+    uint8_t reg_addr=0;
+
+    bool res = false;
+
+    strncpy (inStr,
+             "reg addr: 02 reg val: 0x0180 Ob_0000_0001_1000_0000",
+             sizeof (inStr));
+
+    res = parse_8bit_reg_addr (inStr, strlen (inStr), &reg_addr);
+    if (true == res) {
+        if (2 != reg_addr) {
+            printf ("\n phy addr exp 2 real [%u]", reg_addr);
+            return false;
+        }
+    } else {
+    	printf ("\n parse_reg_addr err 1");
+        return false;
+    }
+
+
+    strncpy (inStr,
+             "reg addr: 09 reg val: 0x0000 Ob_0000_0000_0000_0000",
+             sizeof (inStr));
+
+    res = parse_8bit_reg_addr (inStr, sizeof (inStr), &reg_addr);
+    if (true == res) {
+        if (9 != reg_addr) {
+            printf ("\n phy addr exp 9 real %u", reg_addr);
+            return false;
+        }
+    } else {
+        printf ("\n parse_reg_addr err 2");
+        return false;
+    }
+
+
+    return true;
+}
+
+
+static bool test_parse_phy_reg_vals(void) {
+	printf("\n%s()", __FUNCTION__);
+    bool res;
+	char inStr[500];
+	uint16_t reg16_val;
+	strncpy(inStr, "reg addr: 02 reg val: 0x0180 Ob_0000_0001_1000_0000",
+			sizeof(inStr));
+
+	res = try_canch_hex_uint16(inStr, strlen(inStr), &reg16_val);
+	if(true==res){
+	    if ((0x0180 != reg16_val)) {
+	    	printf("\n reg16_val %x exp  0x0180", reg16_val);
+	    	return false;
+	    }
+	}else{
+		return false;
+	}
+
+	strncpy(inStr, "reg addr: 19 reg val: 0x3241 Ob_0011_0010_0100_0001",
+			sizeof(inStr));
+	res = try_canch_hex_uint16(inStr, strlen(inStr), &reg16_val);
+	if ((0x3241 != reg16_val)) {
+		printf("\n reg16_val %x exp 0x3241 ", reg16_val);
+		return false;
+	}
+
+	strncpy(inStr, "reg addr: 27 reg val: 0x2020 Ob_0010_0000_0010_0000",
+			sizeof(inStr));
+	res = try_canch_hex_uint16(inStr, strlen(inStr), &reg16_val);
+	if (0x2020 != reg16_val) {
+		printf("\n reg16_val %x exp 0x2020 ", reg16_val);
+		return false;
+	}
+	return true;
+}
+
 int unit_test (void) {
 
     bool res = false;
@@ -207,7 +293,7 @@ int unit_test (void) {
     }
 #endif
 
-#ifdef HAS_PERMUTATION_TEST
+#ifdef HAS_PERMUTATIONS_TEST
     res = test_permutation ();
     if (false == res) {
         return PERMUT_ERROR;
@@ -259,8 +345,8 @@ int unit_test (void) {
     }
 #endif
 
-    uint8_t regAddr = 0x00;
-    uint16_t regVal = 0x0000;
+    //uint8_t regAddr = 0x00;
+    //uint16_t regVal = 0x0000;
     uint8_t shift;
     uint64_t reg64Val;
     res = try_strl2uint64 ("202B17D3015A", strlen ("202B17D3015A"), &reg64Val);
@@ -304,6 +390,16 @@ int unit_test (void) {
         return PARSE_EXTRACT_SUB_ERROR;
     }
 
+    res =  test_parse_phy_addr ( );
+    if (false == res) {
+        return PARSE_PHY_ADDR_ERROR;
+    }
+
+    res =  test_parse_phy_reg_vals ( );
+    if (false == res) {
+        return PARSE_PHY_REG_VALS_ERROR;
+    }
+
 #ifdef TEST_SHA256
     res = test_sha256 ();
     if (false == res) {
@@ -331,48 +427,10 @@ int unit_test (void) {
     }
 
 #endif
-    char inStr[100];
-    char outStr[100];
-    char expStr[100];
 
-    strncpy (expStr, "0x04 0x0000", sizeof (outStr));
-    strncpy (inStr, "reg addr: 0x04 reg val: 0xABCD Ob_0000_0000_0000_0000", sizeof (inStr));
 
-    res = try_canch_hex_uint8 (inStr, strlen (inStr), &regAddr);
-    if ((0x04 != regAddr) && (true == res)) {
-        return PARSE_UINT8_ERROR;
-    }
 
-    res = try_canch_hex_uint16 (inStr, strlen (inStr), &regVal);
-    if ((0xABCD != regVal) && (true == res)) {
-        return PARSE_UINT16_ERROR;
-    }
 
-    strncpy (inStr, "         CONFIG[0x1a]: 0x00832800 0b_0000_0000_1000_0011_0010_1000_0000_0000", sizeof (inStr));
-    res = try_canch_hex_uint8 (inStr, strlen (inStr), &regAddr);
-    if ((0x1a != regAddr) && (true == res)) {
-        return PARSE_UINT32_ERROR;
-    }
-
-    uint32_t reg32Val;
-    strncpy (inStr, "         CONFIG[0x1a]: 0x00832800 0b_0000_0000_1000_0011_0010_1000_0000_0000", sizeof (inStr));
-    res = try_canch_hex_uint32 (inStr, strlen (inStr), &reg32Val);
-    if (true == res) {
-        if (0x00832800 != reg32Val) {
-            printf ("\n reg32Val %x exp 0x00832800", reg32Val);
-            return PARSE_UINT32_ERROR;
-        }
-
-    } else {
-        printf ("try_canch_hex_uint32 failed");
-        return PARSE_UINT32_ERROR;
-    }
-
-    // res = extract_numbers (inStr, strlen (inStr));
-    // int cmpRes = strcmp (expStr, outStr);
-    // if (0 != cmpRes) {
-    //    return CLEAN_TEXT_ERROR;
-    //}
 
 #if TEST_FLOART
     printf ("a %f b %f a+b %f", a, b, c);

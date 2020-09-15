@@ -483,7 +483,13 @@ bool try_str2int8 (const char s8_str[], int8_t *s8_value) {
 
 bool try_strl2uint8 (const char u8l_str[], int32_t u8l_str_len, uint8_t *u8l_value) {
     uint32_t u8l_result = 0U;
-    bool u8l_success = try_strl2uint32 (u8l_str, u8l_str_len, &u8l_result);
+    //
+    int16_t i=0;
+    while(' '==u8l_str[i]){
+    	i++;
+    	u8l_str_len--;
+    }
+    bool u8l_success = try_strl2uint32 (&u8l_str[i], u8l_str_len, &u8l_result);
 
     if ((u8l_success == true) && (u8l_result <= (uint32_t)UINT8_MAX)) {
         *u8l_value = (uint8_t)u8l_result;

@@ -215,7 +215,7 @@ void *memdup (const void *mem, size_t sizeByte) {
         if (NULL != mem) {
             out = (void *)malloc (sizeByte);
             if (NULL != out) {
-                memcpy ((void *)out,(void *) mem, sizeByte);
+                memcpy ((void *)out, (void *)mem, sizeByte);
             } else {
                 printf ("\n Unable to malloc [%u] byte\n", (unsigned int)sizeByte);
             }
@@ -346,8 +346,9 @@ void print_curr_array (int *array, int num) {
 
 void print_array_of_arrays (int **arrOfArr, int amountOfLine, int amountOfCol) {
     if (NULL != arrOfArr) {
-        printf ("\n amountOfLine %d ", amountOfLine);
+        printf ("\n amountOfLine %d \n", amountOfLine);
         for (int line = 0; line < amountOfLine; line++) {
+        	printf ("\n %d: ", line+1);
             print_array_int ((int *)arrOfArr[line], amountOfCol);
         }
     }

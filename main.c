@@ -8,7 +8,7 @@
 
 #include "compare_version.h"
 
-#ifdef DEPLOY_PARSE_REG
+#ifdef HAS_PARSE_REG
 #include "parse_regs.h"
 #endif
 #include "permutations.h"
@@ -185,14 +185,16 @@ int main (int argc, char *argv[]) {
 
 #endif
 
-#ifdef DEPLOY_PARSE_REG
-    if (4 == argc) {
+#ifdef HAS_PARSE_REG
+    printf ("\n Parse registers\n");
+    if (3 == argc) {
         bool res;
         res = parse_regs_file (argv[1], argv[2]);
         if (false == res) {
             printf ("\nError in parsing PHY regs\n");
         }
     } else {
+    	printf ("\n wrong command options\n");
         char inFileName[100];
         strncpy (inFileName, "tja1101_reg_map_blob.txt", sizeof (inFileName));
         bool res = parse_regs_file (inFileName, "tja1101_config.txt");
