@@ -1,0 +1,5 @@
+#ifndef KSZ8081_BIT_OFFSETS_H
+#define KSZ8081_BIT_OFFSETS_H
+
+
+#endif /* KSZ8081_BIT_OFFSETS_H */

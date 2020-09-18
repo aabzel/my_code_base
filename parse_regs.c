@@ -2,6 +2,9 @@
 
 #include "parse_tic12400_regs.h"
 #include "parse_tja1101_regs.h"
+#ifdef HAS_KSZ8081
+#include "parse_ksz8081_regs.h"
+#endif
 #include "str_ops.h"
 #include "utils.h"
 
@@ -29,5 +32,14 @@ bool parse_regs_file (char *in_file_name, char *out_file_name) {
             printf ("\nError in parsing tic12400 register blob");
         }
     }
+#ifdef HAS_KSZ8081
+    ch = strstr (in_file_name, "ksz8081");
+    if (NULL != ch) {
+        res = parse_ksz8081_regs_file (in_file_name, out_file_name);
+        if (false == res) {
+            printf ("\nError in parsing ksz8081 register blob");
+        }
+    }
+#endif
     return res;
 }

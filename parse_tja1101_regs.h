@@ -22,7 +22,6 @@ const char *reg_name (uint8_t regAddr);
 bool parse_tja1101_regs_file (char *inFileName, char *outFileName);
 bool parse_tja1101_reg (uint8_t regAddr, uint16_t regVal, FILE *outFilePrt);
 
-bool parse_8bit_reg_addr(char *in_str, uint32_t len, uint8_t *reg_addr);
 bool parse_16bit_val(char *in_str_val, uint32_t len, uint16_t *reg_addr);
 
 bool parse_basic_control_register (uint16_t regVal, FILE *outFilePrt);

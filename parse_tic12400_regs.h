@@ -2,12 +2,10 @@
 #define PARSE_TIC12400_REGS_H
 
 #include "custom_type.h"
+#include "parse_regs.h"
 #include "tic12400_bits_offsets.h"
 
 #include <stdio.h>
-
-#define REG_ADDR_LEN (strlen ("0x21"))
-#define REG_VAL_LEN (strlen ("0x87654321"))
 
 typedef struct xTic12400Reg_t {
     uint8_t reg8BitAddr;

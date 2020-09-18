@@ -1719,3 +1719,25 @@ uint32_t assemble_uint32 (uint8_t byte1, uint8_t byte2, uint8_t byte3, uint8_t b
 
     return v32;
 }
+
+bool parse_8bit_reg_addr(char *in_str_val, uint32_t len, uint8_t *reg_addr) {
+	bool res;
+	int cnt=0;
+	char *in_str= in_str_val;
+	if (NULL != in_str) {
+		in_str = strstr(in_str_val, " ");
+		while (NULL!=in_str) {
+			if(111<cnt){
+				return false;
+			}
+			//printf("\n %s",istr);
+			res = try_strl2uint8(in_str, 3, reg_addr);
+			if (true == res) {
+				return true;
+			}
+			cnt++;
+			in_str = strstr (in_str+1," ");
+		}
+	}
+	return false;
+}

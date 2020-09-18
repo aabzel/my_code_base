@@ -1,0 +1,67 @@
+
+
+reg                            Basic Control addr 0x00 val 0x3000 0b_0011_0000_0000_0000
+
+reg                             Basic Status addr 0x01 val 0x7849 0b_0111_1000_0100_1001
+
+reg                         PHY Identifier 1 addr 0x02 val 0x0022 0b_0000_0000_0010_0010
+
+reg                         PHY Identifier 2 addr 0x03 val 0x1560 0b_0001_0101_0110_0000
+
+reg           Auto-Negotiation Advertisement addr 0x04 val 0x81e1 0b_1000_0001_1110_0001
+
+reg    Auto-Negotiation Link Partner Ability addr 0x05 val 0x0000 0b_0000_0000_0000_0000
+
+reg               Auto-Negotiation Expansion addr 0x06 val 0x0004 0b_0000_0000_0000_0100
+
+reg               Auto-Negotiation Next Page addr 0x07 val 0x2001 0b_0010_0000_0000_0001
+
+reg           Link Partner Next Page Ability addr 0x08 val 0x0000 0b_0000_0000_0000_0000
+
+reg                                 Reserved addr 0x09 val 0x0000 0b_0000_0000_0000_0000
+
+reg                                 Reserved addr 0x0a val 0x0000 0b_0000_0000_0000_0000
+
+reg                                 Reserved addr 0x0b val 0x0000 0b_0000_0000_0000_0000
+
+reg                                 Reserved addr 0x0c val 0x0000 0b_0000_0000_0000_0000
+
+reg                                 Reserved addr 0x0d val 0x0000 0b_0000_0000_0000_0000
+
+reg                                 Reserved addr 0x0e val 0x0000 0b_0000_0000_0000_0000
+
+reg                                 Reserved addr 0x0f val 0x0000 0b_0000_0000_0000_0000
+
+reg                 Digital Reserved Control addr 0x10 val 0x0000 0b_0000_0000_0000_0000
+
+reg                            AFE Control 1 addr 0x11 val 0x0000 0b_0000_0000_0000_0000
+
+reg                                 Reserved addr 0x12 val 0x0000 0b_0000_0000_0000_0000
+
+reg                                 Reserved addr 0x13 val 0x0000 0b_0000_0000_0000_0000
+
+reg                                 Reserved addr 0x14 val 0x0000 0b_0000_0000_0000_0000
+
+reg                             RXER Counter addr 0x15 val 0x0000 0b_0000_0000_0000_0000
+
+reg            Operation Mode Strap Override addr 0x16 val 0x0001 0b_0000_0000_0000_0001
+
+reg              Operation Mode Strap Status addr 0x17 val 0x5c01 0b_0101_1100_0000_0001
+
+reg                         Expanded Control addr 0x18 val 0x0801 0b_0000_1000_0000_0001
+
+reg                                 Reserved addr 0x19 val 0x7777 0b_0111_0111_0111_0111
+
+reg                                 Reserved addr 0x1a val 0x7777 0b_0111_0111_0111_0111
+
+reg                 Interrupt Control/Status addr 0x1b val 0x0000 0b_0000_0000_0000_0000
+
+reg                                 Reserved addr 0x1c val 0x0000 0b_0000_0000_0000_0000
+
+reg                    LinkMD Control/Status addr 0x1d val 0x0000 0b_0000_0000_0000_0000
+
+reg                            PHY Control 1 addr 0x1e val 0x0000 0b_0000_0000_0000_0000
+
+reg                            PHY Control 2 addr 0x1f val 0x8100 0b_1000_0001_0000_0000
+
+ Support: aabzele@gmail.com Alexander Barunin

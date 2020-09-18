@@ -28,7 +28,7 @@ bool parse_tic12400_regs_file (char *inFileName, char *outFileName) {
 #if DEBUG_IN_FILE_STR
             printf ("\n>[%s]", curFileStr);
 #endif
-            if ((REG_ADDR_LEN + REG_VAL_LEN) < strlen (curFileStr)) {
+            if ((REG_ADDR_LEN + REG_VAL32_LEN) < strlen (curFileStr)) {
                 uint8_t reg8bitAddr;
                 uint32_t reg32bitVal;
                 res = try_canch_hex_uint8 (curFileStr, strlen (curFileStr), &reg8bitAddr);
@@ -67,7 +67,7 @@ bool parse_tic12400_regs_file (char *inFileName, char *outFileName) {
                     cacl_percent ((float)procRegCnd, 47.0), 47 - procRegCnd);
             printf ("\n processed %u/1128 bits %f%%", procRegCnd * 24,
                     cacl_percent ((float)procRegCnd * 24.0, 47.0 * 24.0));
-
+            fprintf (outFilePrt, "\n\n Support: aabzele@gmail.com Alexander Barunin");
             fclose (outFilePrt);
         }
     }

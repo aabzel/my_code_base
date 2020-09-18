@@ -22,6 +22,7 @@ bool parse_tja1101_regs_file (char *inFileName, char *outFileName) {
     outFilePrt = fopen (outFileName, "w");
     uint16_t reg_cnt=0;
     if (inFilePrt && outFilePrt) {
+
         int line = 0;
         while (NULL != fgets (curFileStr, sizeof (curFileStr), inFilePrt)) {
             uint8_t regAddr;
@@ -47,6 +48,7 @@ bool parse_tja1101_regs_file (char *inFileName, char *outFileName) {
             // printf ("\n[%x] [%x]", regAddr, reg16b_val);
             line++;
         }
+    	fprintf (outFilePrt, "\n\n Support: aabzele@gmail.com");
         fclose (inFilePrt);
         fclose (outFilePrt);
         res = true;
@@ -1162,28 +1164,6 @@ const char *reg_name (uint8_t regAddr) {
         break;
     }
     return reg_name;
-}
-
-bool parse_8bit_reg_addr(char *in_str_val, uint32_t len, uint8_t *reg_addr) {
-	bool res;
-	int cnt=0;
-	char *in_str= in_str_val;
-	if (NULL != in_str) {
-		in_str = strstr(in_str_val, " ");
-		while (NULL!=in_str) {
-			if(111<cnt){
-				return false;
-			}
-			//printf("\n %s",istr);
-			res = try_strl2uint8(in_str, 3, reg_addr);
-			if (true == res) {
-				return true;
-			}
-			cnt++;
-			in_str = strstr (in_str+1," ");
-		}
-	}
-	return false;
 }
 
 bool parse_16bit_val(char *in_str_val, uint32_t len, uint16_t *reg_addr) {
