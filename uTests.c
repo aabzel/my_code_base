@@ -196,15 +196,13 @@ static bool test_parse_vi (void) {
 
 #ifdef TEST_PARSE_REG
 static bool test_parse_phy_addr (void) {
-	printf("\n%s()", __FUNCTION__);
+    printf ("\n%s()", __FUNCTION__);
     char inStr[100];
-    uint8_t reg_addr=0;
+    uint8_t reg_addr = 0;
 
     bool res = false;
 
-    strncpy (inStr,
-             "reg addr: 02 reg val: 0x0180 Ob_0000_0001_1000_0000",
-             sizeof (inStr));
+    strncpy (inStr, "reg addr: 02 reg val: 0x0180 Ob_0000_0001_1000_0000", sizeof (inStr));
 
     res = parse_8bit_reg_addr (inStr, strlen (inStr), &reg_addr);
     if (true == res) {
@@ -213,14 +211,11 @@ static bool test_parse_phy_addr (void) {
             return false;
         }
     } else {
-    	printf ("\n parse_reg_addr err 1");
+        printf ("\n parse_reg_addr err 1");
         return false;
     }
 
-
-    strncpy (inStr,
-             "reg addr: 09 reg val: 0x0000 Ob_0000_0000_0000_0000",
-             sizeof (inStr));
+    strncpy (inStr, "reg addr: 09 reg val: 0x0000 Ob_0000_0000_0000_0000", sizeof (inStr));
 
     res = parse_8bit_reg_addr (inStr, sizeof (inStr), &reg_addr);
     if (true == res) {
@@ -233,45 +228,40 @@ static bool test_parse_phy_addr (void) {
         return false;
     }
 
-
     return true;
 }
 
-
-static bool test_parse_phy_reg_vals(void) {
-	printf("\n%s()", __FUNCTION__);
+static bool test_parse_phy_reg_vals (void) {
+    printf ("\n%s()", __FUNCTION__);
     bool res;
-	char inStr[500];
-	uint16_t reg16_val;
-	strncpy(inStr, "reg addr: 02 reg val: 0x0180 Ob_0000_0001_1000_0000",
-			sizeof(inStr));
+    char inStr[500];
+    uint16_t reg16_val;
+    strncpy (inStr, "reg addr: 02 reg val: 0x0180 Ob_0000_0001_1000_0000", sizeof (inStr));
 
-	res = try_canch_hex_uint16(inStr, strlen(inStr), &reg16_val);
-	if(true==res){
-	    if ((0x0180 != reg16_val)) {
-	    	printf("\n reg16_val %x exp  0x0180", reg16_val);
-	    	return false;
-	    }
-	}else{
-		return false;
-	}
+    res = try_canch_hex_uint16 (inStr, strlen (inStr), &reg16_val);
+    if (true == res) {
+        if ((0x0180 != reg16_val)) {
+            printf ("\n reg16_val %x exp  0x0180", reg16_val);
+            return false;
+        }
+    } else {
+        return false;
+    }
 
-	strncpy(inStr, "reg addr: 19 reg val: 0x3241 Ob_0011_0010_0100_0001",
-			sizeof(inStr));
-	res = try_canch_hex_uint16(inStr, strlen(inStr), &reg16_val);
-	if ((0x3241 != reg16_val)) {
-		printf("\n reg16_val %x exp 0x3241 ", reg16_val);
-		return false;
-	}
+    strncpy (inStr, "reg addr: 19 reg val: 0x3241 Ob_0011_0010_0100_0001", sizeof (inStr));
+    res = try_canch_hex_uint16 (inStr, strlen (inStr), &reg16_val);
+    if ((0x3241 != reg16_val)) {
+        printf ("\n reg16_val %x exp 0x3241 ", reg16_val);
+        return false;
+    }
 
-	strncpy(inStr, "reg addr: 27 reg val: 0x2020 Ob_0010_0000_0010_0000",
-			sizeof(inStr));
-	res = try_canch_hex_uint16(inStr, strlen(inStr), &reg16_val);
-	if (0x2020 != reg16_val) {
-		printf("\n reg16_val %x exp 0x2020 ", reg16_val);
-		return false;
-	}
-	return true;
+    strncpy (inStr, "reg addr: 27 reg val: 0x2020 Ob_0010_0000_0010_0000", sizeof (inStr));
+    res = try_canch_hex_uint16 (inStr, strlen (inStr), &reg16_val);
+    if (0x2020 != reg16_val) {
+        printf ("\n reg16_val %x exp 0x2020 ", reg16_val);
+        return false;
+    }
+    return true;
 }
 #endif
 
@@ -347,8 +337,8 @@ int unit_test (void) {
     }
 #endif
 
-    //uint8_t regAddr = 0x00;
-    //uint16_t regVal = 0x0000;
+    // uint8_t regAddr = 0x00;
+    // uint16_t regVal = 0x0000;
     uint8_t shift;
     uint64_t reg64Val;
     res = try_strl2uint64 ("202B17D3015A", strlen ("202B17D3015A"), &reg64Val);
@@ -392,12 +382,12 @@ int unit_test (void) {
         return PARSE_EXTRACT_SUB_ERROR;
     }
 #ifdef TEST_PARSE_REG
-    res =  test_parse_phy_addr ( );
+    res = test_parse_phy_addr ();
     if (false == res) {
         return PARSE_PHY_ADDR_ERROR;
     }
 
-    res =  test_parse_phy_reg_vals ( );
+    res = test_parse_phy_reg_vals ();
     if (false == res) {
         return PARSE_PHY_REG_VALS_ERROR;
     }
@@ -430,10 +420,6 @@ int unit_test (void) {
     }
 
 #endif
-
-
-
-
 
 #if TEST_FLOART
     printf ("a %f b %f a+b %f", a, b, c);
@@ -500,7 +486,6 @@ int unit_test (void) {
     }
 #endif
 
-
     res = test_str_ops ();
     if (false == res) {
         return STR_OPS_ERROR;
@@ -519,7 +504,6 @@ int unit_test (void) {
         return TEST_MK_2_DOT_ERROR;
     }
 #endif
-
 
 #if DEPLOY_TEST_SINGLE_NUMBER
     res = test_single_number ();

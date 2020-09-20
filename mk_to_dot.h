@@ -11,8 +11,8 @@ extern "C" {
 #include <stdio.h>
 #include <string.h>
 
-bool discard_path (char *in_file_path, int rank, char *out_file_path) ;
-bool calc_mk_node(char *in_file_name, char *out_root_node_name);
+bool discard_path (char *in_file_path, int rank, char *out_file_path);
+bool calc_mk_node (char *in_file_name, char *out_root_node_name);
 bool proc_mk_file (char *fileName, char *outFileName);
 
 bool parse_mk (char *fileStr, char *tempStr, int outStrLen);

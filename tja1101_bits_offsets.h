@@ -1,6 +1,6 @@
 #ifndef TJA1101_BIT_OFFSETS_H
 #define TJA1101_BIT_OFFSETS_H
-//Basic Control
+// Basic Control
 #define RESET_BIT_15 (1 << 15)
 #define LOOPBACK_14 (1 << 14)
 #define SPEED_SELECT_13 (1 << 13)

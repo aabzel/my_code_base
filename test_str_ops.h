@@ -7,7 +7,7 @@
 #include <stdint.h>
 #include <string.h>
 
-bool test_str_ops(void);
+bool test_str_ops (void);
 
 bool test_extract_sub_string (void);
 bool test_lengthOfLongestSubstring (void);

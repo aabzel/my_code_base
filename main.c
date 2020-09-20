@@ -33,8 +33,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 #include <sys/time.h>
+#include <time.h>
 
 extern char **environ;
 
@@ -59,16 +59,16 @@ void inc (char *array) {
     (*ptr2)++;
 }
 
-uint64_t GetTimeStamp() {
+uint64_t GetTimeStamp () {
     struct timeval tv;
-    gettimeofday(&tv,NULL);
-    return tv.tv_sec*(uint64_t)1000000+tv.tv_usec;
+    gettimeofday (&tv, NULL);
+    return tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 }
 
 int main (int argc, char *argv[]) {
     printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
-    //time_t t;
-	srand((unsigned) GetTimeStamp());
+    // time_t t;
+    srand ((unsigned)GetTimeStamp ());
 #ifdef BEAM_TREAL
     char array[] = {'A', 'G', 'V', 0};
     inc (&array[0]);
@@ -204,7 +204,7 @@ int main (int argc, char *argv[]) {
             printf ("\nError in parsing PHY regs\n");
         }
     } else {
-    	printf ("\n wrong command options\n");
+        printf ("\n wrong command options\n");
         char inFileName[100];
         strncpy (inFileName, "tja1101_reg_map_blob.txt", sizeof (inFileName));
         bool res = parse_regs_file (inFileName, "tja1101_config.txt");
@@ -245,7 +245,7 @@ int main (int argc, char *argv[]) {
     }
 #endif
 
-    //printf ("\n\n program finish!\n\n");
+    // printf ("\n\n program finish!\n\n");
     // getchar ();
     return 0;
 }

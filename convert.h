@@ -92,7 +92,7 @@ const char *rx_ftoa (float_t float_v);
 
 uint32_t assemble_uint32 (uint8_t byte1, uint8_t byte2, uint8_t byte3, uint8_t byte4);
 const char *bool2name (bool val);
-bool parse_8bit_reg_addr(char *in_str_val, uint32_t len, uint8_t *reg_addr);
+bool parse_8bit_reg_addr (char *in_str_val, uint32_t len, uint8_t *reg_addr);
 #ifdef __cplusplus
 }
 #endif

@@ -13,47 +13,47 @@
 extern regTJA1101_t tja1101RegMap[TJA1101_REG_NUM];
 
 bool parse_tja1101_regs_file (char *inFileName, char *outFileName) {
-    printf ("\n%s()\n",__FUNCTION__);
+    printf ("\n%s()\n", __FUNCTION__);
     char curFileStr[500];
     bool res = false;
     FILE *inFilePrt = NULL;
     FILE *outFilePrt = NULL;
     inFilePrt = fopen (inFileName, "r");
     outFilePrt = fopen (outFileName, "w");
-    uint16_t reg_cnt=0;
+    uint16_t reg_cnt = 0;
     if (inFilePrt && outFilePrt) {
 
         int line = 0;
         while (NULL != fgets (curFileStr, sizeof (curFileStr), inFilePrt)) {
             uint8_t regAddr;
             uint16_t reg16b_val;
-            //printf ("\nFile line :<%s>", curFileStr);
+            // printf ("\nFile line :<%s>", curFileStr);
 
-            res = parse_8bit_reg_addr (curFileStr, strlen (curFileStr)-1, &regAddr);
+            res = parse_8bit_reg_addr (curFileStr, strlen (curFileStr) - 1, &regAddr);
             if (true == res) {
-                res = parse_16bit_val (curFileStr, strlen (curFileStr)-1, &reg16b_val);
+                res = parse_16bit_val (curFileStr, strlen (curFileStr) - 1, &reg16b_val);
                 if (true == res) {
                     res = parse_tja1101_reg (regAddr, reg16b_val, outFilePrt);
-                    if (true==res) {
-                    	reg_cnt++;
+                    if (true == res) {
+                        reg_cnt++;
                     } else {
-                    	printf ("\n%s(): parse phy reg [%u] error",__FUNCTION__,regAddr);
+                        printf ("\n%s(): parse phy reg [%u] error", __FUNCTION__, regAddr);
                     }
                 } else {
-                	printf ("\n%s(): parse reg 16bit value from [%s] error",__FUNCTION__,curFileStr);
+                    printf ("\n%s(): parse reg 16bit value from [%s] error", __FUNCTION__, curFileStr);
                 }
             } else {
-            	printf ("\n%s(): Unable to parse reg 8bit address from [%s]",__FUNCTION__,curFileStr);
+                printf ("\n%s(): Unable to parse reg 8bit address from [%s]", __FUNCTION__, curFileStr);
             }
             // printf ("\n[%x] [%x]", regAddr, reg16b_val);
             line++;
         }
-    	fprintf (outFilePrt, "\n\n Support: aabzele@gmail.com");
+        fprintf (outFilePrt, "\n\n Support: aabzele@gmail.com");
         fclose (inFilePrt);
         fclose (outFilePrt);
         res = true;
     }
-    printf ("\n%s(): processed registers %u/32 \n",__FUNCTION__,reg_cnt );
+    printf ("\n%s(): processed registers %u/32 \n", __FUNCTION__, reg_cnt);
     return res;
 }
 
@@ -61,8 +61,8 @@ bool parse_tja1101_reg (uint8_t regAddr, uint16_t reg16b_val, FILE *outFilePrt) 
     bool res = false;
     char curRegName[100] = "";
     strncpy (curRegName, reg_name (regAddr), sizeof (curRegName));
-    // printf ("\nReg name: %s \t\t reg addr: %u reg16b_val: [0x%04x] or [0b_%s]", reg_name (regAddr),regAddr, reg16b_val,
-    // utoa_bin16 (reg16b_val));
+    // printf ("\nReg name: %s \t\t reg addr: %u reg16b_val: [0x%04x] or [0b_%s]", reg_name (regAddr),regAddr,
+    // reg16b_val, utoa_bin16 (reg16b_val));
     if (0 != strcmp (UNDEF_REG_NAME, curRegName)) {
         fprintf (outFilePrt, "\n Register name: [%30s] register addr: [%02u] register value: [0x%04x] or [0b_%s]",
                  reg_name (regAddr), regAddr, reg16b_val, utoa_bin16 (reg16b_val));
@@ -123,7 +123,7 @@ bool parse_tja1101_reg (uint8_t regAddr, uint16_t reg16b_val, FILE *outFilePrt) 
             res = parse_configuration_register_3 (reg16b_val, outFilePrt);
             break;
         default:
-        	res = false;
+            res = false;
             break;
         }
     }
@@ -1166,31 +1166,30 @@ const char *reg_name (uint8_t regAddr) {
     return reg_name;
 }
 
-bool parse_16bit_val(char *in_str_val, uint32_t len, uint16_t *reg_addr) {
-	bool res;
-	int cnt=0;
-	char *in_str = in_str_val;
-	if (len < 4) {
-		return false;
-	}
-	if (NULL == in_str) {
-		return false;
-	}
+bool parse_16bit_val (char *in_str_val, uint32_t len, uint16_t *reg_addr) {
+    bool res;
+    int cnt = 0;
+    char *in_str = in_str_val;
+    if (len < 4) {
+        return false;
+    }
+    if (NULL == in_str) {
+        return false;
+    }
 
-	in_str = strstr(in_str, "0x");
-	while (NULL != in_str) {
-		if(4<cnt){
+    in_str = strstr (in_str, "0x");
+    while (NULL != in_str) {
+        if (4 < cnt) {
             return false;
-		}
-		//printf("\n %s",istr);
-		res = try_strl2uint16(in_str, 6, reg_addr);
-		if (true == res) {
-			return true;
-		}
-		cnt++;
-		in_str = strstr(in_str+1, "0x");
-	}
+        }
+        // printf("\n %s",istr);
+        res = try_strl2uint16 (in_str, 6, reg_addr);
+        if (true == res) {
+            return true;
+        }
+        cnt++;
+        in_str = strstr (in_str + 1, "0x");
+    }
 
     return false;
 }
-

@@ -430,7 +430,7 @@ int **permute (int *array, int numsSize, int *returnSize, int **returnColumnSize
     (*returnSize) = amount_of_comb;
 #ifdef DEBUG_PERMUT
     printf ("\n[d]amount_of_comb %u", amount_of_comb);
-    int size_for_sol = amount_of_comb*numsSize * sizeof(int);
+    int size_for_sol = amount_of_comb * numsSize * sizeof (int);
     printf ("\n[d]size_for_sol %u", size_for_sol);
 #endif
     int **solution;

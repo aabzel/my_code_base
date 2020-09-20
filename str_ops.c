@@ -1023,7 +1023,7 @@ bool reblace_substring (char *inOutStr, char *orig, char *rep) {
 #if DEBUG_REP_STR
                 printf ("\n tempStr [%s]", tempStr);
 #endif
-                free (tempStr);//11 19
+                free (tempStr); // 11 19
                 tempStr = NULL;
                 res = true;
             }
@@ -1177,7 +1177,7 @@ bool try_canch_hex_uint8 (char *inStr, int strLen, uint8_t *val8b) {
                         hexValCnt++;
 
                         if (4 == valLen) {
-                            //res = try_strl2uint8_hex (&inStr[startIndex + 2], 2, val8b);
+                            // res = try_strl2uint8_hex (&inStr[startIndex + 2], 2, val8b);
                             res = try_str2uint8 (&inStr[startIndex], val8b);
                             return res;
                         }

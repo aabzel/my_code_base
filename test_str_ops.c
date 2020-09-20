@@ -418,9 +418,8 @@ bool test_count_substring (void) {
     return true;
 }
 
-bool test_str_ops(void){
-	EXPECT_EQ(true, test_replace_substr ())  ;
-	EXPECT_EQ(true, test_str_char_replace ())  ;
-	return true;
+bool test_str_ops (void) {
+    EXPECT_EQ (true, test_replace_substr ());
+    EXPECT_EQ (true, test_str_char_replace ());
+    return true;
 }
-

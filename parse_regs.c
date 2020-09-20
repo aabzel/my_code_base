@@ -14,7 +14,7 @@
 #include <string.h>
 
 bool parse_regs_file (char *in_file_name, char *out_file_name) {
-	printf ("\n%s()\n",__FUNCTION__);
+    printf ("\n%s()\n", __FUNCTION__);
     bool res = false;
     char *ch;
     ch = strstr (in_file_name, "tja1101");

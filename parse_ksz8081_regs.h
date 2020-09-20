@@ -6,7 +6,6 @@
 
 #include <stdio.h>
 
-
 #define UNDEF_REG_NAME "Undef_REG_NAME"
 
 #define KSZ8081_REG_NUM 31U
