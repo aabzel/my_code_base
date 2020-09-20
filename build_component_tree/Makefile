@@ -7,7 +7,8 @@ SRC_PATH :=  $(dir $(abspath $(dir $$PWD) ))
 
 OBJDIR := $(SRC_PATH)/obj
 # the compiler to use
-CC = clang
+##CC = clang
+CC = gcc
 
 # compiler flags:
 #  -g    adds debugging information to the executable file
@@ -19,6 +20,7 @@ OPT += -DTEST_FIFO
 OPT += -DHAS_UTESTS
 OPT += -DHAS_TEST_PARSE_MK
 OPT += -DHAS_TEST_PARSE_C
+         
          
 #files to link:
 LFLAGS=-lws2_32 -liphlpapi 
@@ -42,6 +44,7 @@ SOURCES += $(SRC_PATH)/str_ops.c
 SOURCES += $(SRC_PATH)/test_str_ops.c
 SOURCES += $(SRC_PATH)/fifo_char.c
 SOURCES += $(SRC_PATH)/test_fifo_char.c
+SOURCES += $(SRC_PATH)/test_mk_2_dot.c
 
 
 OBJECTS =$(SOURCES:.c=.o)

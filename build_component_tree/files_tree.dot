@@ -1,0 +1,103 @@
+digraph build_Dependence {
+rankdir=LR;
+
+
+tja1021_mk [ label = "tja1021.mk"];
+tja1021_mcal_c [ label = "tja1021_mcal.c", style=filled, fillcolor=cornsilk];
+tja1021_mk->tja1021_mcal_c [color=blue];
+tja1021_c [ label = "tja1021.c", style=filled, fillcolor=cornsilk];
+tja1021_mk->tja1021_c [color=blue];
+
+lin_mk [ label = "lin.mk"];
+lin_net_c [ label = "lin_net.c", style=filled, fillcolor=cornsilk];
+lin_mk->lin_net_c [color=navy];
+lin_phy_commands_c [ label = "lin_phy_commands.c", style=filled, fillcolor=cornsilk];
+lin_mk->lin_phy_commands_c [color=navy];
+lin_commands_c [ label = "lin_commands.c", style=filled, fillcolor=cornsilk];
+lin_mk->lin_commands_c [color=navy];
+lin_diag_page_c [ label = "lin_diag_page.c", style=filled, fillcolor=cornsilk];
+lin_mk->lin_diag_page_c [color=navy];
+lin_phy_commands_c [ label = "lin_phy_commands.c", style=filled, fillcolor=cornsilk];
+lin_mk->lin_phy_commands_c [color=navy];
+
+spc58_lin_lld_mk [ label = "spc58_lin_lld.mk"];
+spc58_lin_lld_mcal_c [ label = "spc58_lin_lld_mcal.c", style=filled, fillcolor=cornsilk];
+spc58_lin_lld_mk->spc58_lin_lld_mcal_c [color=navy];
+spc58_lin_lld_c [ label = "spc58_lin_lld.c", style=filled, fillcolor=cornsilk];
+spc58_lin_lld_mk->spc58_lin_lld_c [color=navy];
+
+ad5641_mk [ label = "ad5641.mk"];
+ad5641_dac_driver_c [ label = "ad5641_dac_driver.c", style=filled, fillcolor=cornsilk];
+ad5641_mk->ad5641_dac_driver_c [color=chartreuse];
+dac_math_c [ label = "dac_math.c", style=filled, fillcolor=cornsilk];
+ad5641_mk->dac_math_c [color=chartreuse];
+dac_commands_c [ label = "dac_commands.c", style=filled, fillcolor=cornsilk];
+ad5641_mk->dac_commands_c [color=chartreuse];
+ad5641_dac_driver_test_c [ label = "ad5641_dac_driver_test.c", style=filled, fillcolor=cornsilk];
+ad5641_mk->ad5641_dac_driver_test_c [color=chartreuse];
+
+uio_mk [ label = "uio.mk"];
+uio_ll_v4_c [ label = "uio_ll_v4.c", style=filled, fillcolor=cornsilk];
+uio_mk->uio_ll_v4_c [color=blueviolet];
+uio_ll_v4_c [ label = "uio_ll_v4.c", style=filled, fillcolor=cornsilk];
+uio_mk->uio_ll_v4_c [color=blueviolet];
+uio_msg_handler_c [ label = "uio_msg_handler.c", style=filled, fillcolor=cornsilk];
+uio_mk->uio_msg_handler_c [color=blueviolet];
+uio_config_validator_c [ label = "uio_config_validator.c", style=filled, fillcolor=cornsilk];
+uio_mk->uio_config_validator_c [color=blueviolet];
+uio_commands_c [ label = "uio_commands.c", style=filled, fillcolor=cornsilk];
+uio_mk->uio_commands_c [color=blueviolet];
+uio_diag_page_c [ label = "uio_diag_page.c", style=filled, fillcolor=cornsilk];
+uio_mk->uio_diag_page_c [color=blueviolet];
+uio_api_c [ label = "uio_api.c", style=filled, fillcolor=cornsilk];
+uio_mk->uio_api_c [color=blueviolet];
+uio_init_c [ label = "uio_init.c", style=filled, fillcolor=cornsilk];
+uio_mk->uio_init_c [color=blueviolet];
+uio_c [ label = "uio.c", style=filled, fillcolor=cornsilk];
+uio_mk->uio_c [color=blueviolet];
+uio_pin_codes_c [ label = "uio_pin_codes.c", style=filled, fillcolor=cornsilk];
+uio_mk->uio_pin_codes_c [color=blueviolet];
+uio_params_c [ label = "uio_params.c", style=filled, fillcolor=cornsilk];
+uio_mk->uio_params_c [color=blueviolet];
+uio_report_c [ label = "uio_report.c", style=filled, fillcolor=cornsilk];
+uio_mk->uio_report_c [color=blueviolet];
+uio_task_c [ label = "uio_task.c", style=filled, fillcolor=cornsilk];
+uio_mk->uio_task_c [color=blueviolet];
+uio_diag_c [ label = "uio_diag.c", style=filled, fillcolor=cornsilk];
+uio_mk->uio_diag_c [color=blueviolet];
+bridge_ll_v4_c [ label = "bridge_ll_v4.c", style=filled, fillcolor=cornsilk];
+uio_mk->bridge_ll_v4_c [color=blueviolet];
+bridge_ll_v4_c [ label = "bridge_ll_v4.c", style=filled, fillcolor=cornsilk];
+uio_mk->bridge_ll_v4_c [color=blueviolet];
+bridge_msg_handler_c [ label = "bridge_msg_handler.c", style=filled, fillcolor=cornsilk];
+uio_mk->bridge_msg_handler_c [color=blueviolet];
+vnq7e100_c [ label = "vnq7e100.c", style=filled, fillcolor=cornsilk];
+uio_mk->vnq7e100_c [color=blueviolet];
+vnhd7008_c [ label = "vnhd7008.c", style=filled, fillcolor=cornsilk];
+uio_mk->vnhd7008_c [color=blueviolet];
+bridge_c [ label = "bridge.c", style=filled, fillcolor=cornsilk];
+uio_mk->bridge_c [color=blueviolet];
+bridge_commands_c [ label = "bridge_commands.c", style=filled, fillcolor=cornsilk];
+uio_mk->bridge_commands_c [color=blueviolet];
+bridge_diag_page_c [ label = "bridge_diag_page.c", style=filled, fillcolor=cornsilk];
+uio_mk->bridge_diag_page_c [color=blueviolet];
+ppp_diag_page_c [ label = "ppp_diag_page.c", style=filled, fillcolor=cornsilk];
+uio_mk->ppp_diag_page_c [color=blueviolet];
+ppb_diag_page_c [ label = "ppb_diag_page.c", style=filled, fillcolor=cornsilk];
+uio_mk->ppb_diag_page_c [color=blueviolet];
+poll_pull_pin_voltages_c [ label = "poll_pull_pin_voltages.c", style=filled, fillcolor=cornsilk];
+uio_mk->poll_pull_pin_voltages_c [color=blueviolet];
+poll_pull_bridge_voltages_c [ label = "poll_pull_bridge_voltages.c", style=filled, fillcolor=cornsilk];
+uio_mk->poll_pull_bridge_voltages_c [color=blueviolet];
+load_detect_c [ label = "load_detect.c", style=filled, fillcolor=cornsilk];
+uio_mk->load_detect_c [color=blueviolet];
+load_detect_commands_c [ label = "load_detect_commands.c", style=filled, fillcolor=cornsilk];
+uio_mk->load_detect_commands_c [color=blueviolet];
+
+C__Job_IO_V4_1_FW_controllers_abarunin_io_040_components_boards_IO_V4_A_board_mk [ label = "board.mk"];
+io_v4_mk [ label = "io_v4.mk", style=filled, fillcolor=lightskyblue];
+C__Job_IO_V4_1_FW_controllers_abarunin_io_040_components_boards_IO_V4_A_board_mk->io_v4_mk [color=magenta];
+utils_mk [ label = "utils.mk", style=filled, fillcolor=lightskyblue];
+C__Job_IO_V4_1_FW_controllers_abarunin_io_040_components_boards_IO_V4_A_board_mk->utils_mk [color=magenta];
+rules_mk [ label = "rules.mk", style=filled, fillcolor=lightskyblue];
+C__Job_IO_V4_1_FW_controllers_abarunin_io_040_components_boards_IO_V4_A_board_mk->rules_mk [color=magenta];}

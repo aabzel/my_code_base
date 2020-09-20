@@ -7,9 +7,100 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-//#include <regex.h>
 
-bool proc_mk_file (char *fileName, char *outFileName, char *edge_color, char *root_node_name) {
+
+bool calc_mk_node(char *in_file_name, char *out_root_node_name) {
+	printf("\n%s()", __FUNCTION__);
+	char file_name[1000];
+	strcpy(file_name,in_file_name);
+	char *ch;
+	ch=strstr(in_file_name,"Makefile");
+	if(NULL!=ch){
+		replace_char (file_name, '.', '_');
+		replace_char (file_name, '\\', '_');
+		replace_char (file_name, '/', '_');
+		replace_char (file_name, ':', '_');
+		strcpy(out_root_node_name,file_name);
+		return true;
+	}
+
+	ch=strstr(in_file_name,"board.mk");
+	if(NULL!=ch){
+		replace_char (file_name, '.', '_');
+		replace_char (file_name, '\\', '_');
+		replace_char (file_name, '/', '_');
+		replace_char (file_name, ':', '_');
+		strcpy(out_root_node_name,file_name);
+		return true;
+	}
+	ch=strstr(in_file_name,"board_cfg.mk");
+	if(NULL!=ch){
+		replace_char (file_name, '.', '_');
+		replace_char (file_name, '\\', '_');
+		replace_char (file_name, '/', '_');
+		replace_char (file_name, ':', '_');
+		strcpy(out_root_node_name,file_name);
+		return true;
+	}
+
+	//char *bname = basename(in_file_name);
+	//printf("\n base name %s", bname);
+	//replace_char (bname, '.', '_');
+	//strcpy(out_root_node_name,bname);
+
+	bool discard = false;
+	int str_len = strlen(file_name);
+	int i ;
+	for ( i = str_len; 0<=i; i--) {
+		if(('/'==file_name[i])||('\\'==file_name[i])){
+			discard=true;
+		}
+		if (true==discard) {
+			file_name[i]='_';
+		}
+	}
+	for (i=0; i<str_len; i++) {
+		if('_'!=file_name[i]){
+			replace_char (&file_name[i], '.', '_');
+			strcpy(out_root_node_name,&file_name[i]);
+			return true;
+		}
+	}
+	return false;
+}
+
+#define NUM_COLORS 15
+const char *avaulableColors[]={
+ "black",
+ "blue",
+ "blueviolet",
+ "brown1",
+ "gold",
+ "brown4",
+ "chartreuse",
+ "green",
+ "chocolate1",
+ "cyan",
+ "purple",
+ "darkgreen",
+ "magenta",
+ "navy",
+ "fuchsia"
+};
+
+static bool assigne_edge_collor(char *out_edge_color){
+	//TODO assigne rand from list
+	int i = rand()%NUM_COLORS;
+	strcpy(out_edge_color,avaulableColors[i]);
+	return true;
+}
+
+bool proc_mk_file (char *fileName, char *outFileName) {
+
+#ifdef DEBUD_PROC_MK
+	printf("\n%s()", __FUNCTION__);
+#endif
+
     FILE *filePrt = NULL;
     FILE *outFilePrt = NULL;
     bool res = false;
@@ -20,6 +111,12 @@ bool proc_mk_file (char *fileName, char *outFileName, char *edge_color, char *ro
     char rootMkFile[500];
     char curFileStr[500];
     char rootMknodeName[500];
+    char root_node_name[100];
+    char edge_color[100];
+
+    assigne_edge_collor(edge_color);
+
+    calc_mk_node(fileName,root_node_name);
 
     res = parse_mk (fileName, rootMkFile, sizeof (rootMkFile));
     if (false == res) {
@@ -50,7 +147,7 @@ bool proc_mk_file (char *fileName, char *outFileName, char *edge_color, char *ro
                          childMkFile);
                 fprintf (outFilePrt, "\n%s->%s [color=%s];", root_node_name, childMkNode, edge_color);
             } else {
-                // printf ("\nUnable to parse line: %d %s ", line, curFileStr);
+                // printf ("\nUnable to parse line: %d %s", line, curFileStr);
                 line++;
             }
             if (false == mk_res) {
@@ -79,6 +176,9 @@ bool proc_mk_file (char *fileName, char *outFileName, char *edge_color, char *ro
 }
 
 bool parse_c (char *in_file_str, char *out_temp_str, int out_temp_str_len) {
+#ifdef DEBUD_PROC_MK
+	printf("\n%s()", __FUNCTION__);
+#endif
     bool res = false;
     if (NULL != in_file_str) {
         int inStrLen = strlen (in_file_str);
@@ -122,6 +222,9 @@ bool parse_c (char *in_file_str, char *out_temp_str, int out_temp_str_len) {
 
 //
 bool parse_mk (char *in_file_str, char *tempStr, int outStrLen) {
+#ifdef DEBUD_PROC_MK
+	printf("\n%s()", __FUNCTION__);
+#endif
     bool res = false;
     uint16_t fileNameLen = 0;
     char fifoArray[1000];
@@ -160,68 +263,6 @@ bool parse_mk (char *in_file_str, char *tempStr, int outStrLen) {
     return res;
 }
 
-bool test_parse_c (void) {
-    int cmp_res;
-
-    char tempStr[1000];
-    strncpy (tempStr, "", sizeof (tempStr));
-    parse_c ("CSRC += $(PATH_BOARD)/src/tsts_v1_driver.c\n", tempStr, sizeof (tempStr));
-    cmp_res = strcmp ("tsts_v1_driver.c", tempStr);
-    if (0 != cmp_res) {
-        return false;
-    }
-
-    strncpy (tempStr, "", sizeof (tempStr));
-    parse_c ("    CSRC += $(PATH_BOARD)/src/can_led_config.c", tempStr, sizeof (tempStr));
-    cmp_res = strcmp ("can_led_config.c", tempStr);
-    if (0 != cmp_res) {
-        return false;
-    }
-
-    strncpy (tempStr, "", sizeof (tempStr));
-    parse_c ("    CSRC += $(PATH_BOARD)/src/tsts_v1_msg_handler.c\n", tempStr, sizeof (tempStr));
-    cmp_res = strcmp ("tsts_v1_msg_handler.c", tempStr);
-    if (0 != cmp_res) {
-        return false;
-    }
-
-    strncpy (tempStr, "", sizeof (tempStr));
-    parse_c ("%.cmm: $(OBJDIR_)", tempStr, sizeof (tempStr));
-    cmp_res = strcmp ("", tempStr);
-    if (0 != cmp_res) {
-        return false;
-    }
-
-    return true;
-}
-
-// grep "    include $(ROOT)/components/toolboxes/io_toolbox/io_toolbox.mk" -E "\w+.mk"
-bool test_parse_mk (void) {
-    int cmp_res;
-
-    char tempStr[1000];
-    strncpy (tempStr, "", sizeof (tempStr));
-    parse_mk ("    include $(ROOT)//components//toolboxes//io_toolbox//io_toolbox.mk\n", tempStr, sizeof (tempStr));
-    cmp_res = strcmp ("io_toolbox.mk", tempStr);
-    if (0 != cmp_res) {
-        return false;
-    }
-
-    strncpy (tempStr, "", sizeof (tempStr));
-    parse_mk ("include $(ROOT)/components/lib/spc58_mcan/spc58_mcan.mk", tempStr, sizeof (tempStr));
-    cmp_res = strcmp ("spc58_mcan.mk", tempStr);
-    if (0 != cmp_res) {
-        return false;
-    }
-
-    strncpy (tempStr, "", sizeof (tempStr));
-    parse_mk ("CAN_MANAGER_GENERATED_MK_NAME   = can_generated_patched.mk\n", tempStr, sizeof (tempStr));
-    cmp_res = strcmp ("can_generated_patched.mk", tempStr);
-    if (0 != cmp_res) {
-        return false;
-    }
-    return true;
-}
 
 bool is_allowed_char_file (char ch) {
     if ('=' == ch) {

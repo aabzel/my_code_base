@@ -368,7 +368,7 @@ bool test_Valid_Parentheses(void) {
 }
 #endif
 
-bool test_replace_substr (void) {
+static bool test_replace_substr (void) {
     char text[100];
 
     strncpy (text, "aabzelaabzelaabzelaabzel", sizeof (text));
@@ -398,7 +398,7 @@ bool test_replace_substr (void) {
     return true;
 }
 
-bool test_str_char_replace (void) {
+static bool test_str_char_replace (void) {
     printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
     char fileName[100];
     int cmpRes = 0;
@@ -417,3 +417,10 @@ bool test_count_substring (void) {
     EXPECT_EQ (2, count_substring ("aabzelaabzel", "ab"));
     return true;
 }
+
+bool test_str_ops(void){
+	EXPECT_EQ(true, test_replace_substr ())  ;
+	EXPECT_EQ(true, test_str_char_replace ())  ;
+	return true;
+}
+

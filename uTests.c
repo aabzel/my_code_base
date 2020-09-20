@@ -4,6 +4,7 @@
 
 #include "algorithms.h"
 #include "algorithms_test.h"
+#include "test_mk_2_dot.h"
 
 //#include "amount_of_uio_states.h"
 #ifdef HAS_ARRAY
@@ -193,7 +194,7 @@ static bool test_parse_vi (void) {
 }
 #endif
 
-
+#ifdef TEST_PARSE_REG
 static bool test_parse_phy_addr (void) {
 	printf("\n%s()", __FUNCTION__);
     char inStr[100];
@@ -272,6 +273,7 @@ static bool test_parse_phy_reg_vals(void) {
 	}
 	return true;
 }
+#endif
 
 int unit_test (void) {
 
@@ -389,7 +391,7 @@ int unit_test (void) {
     if (false == res) {
         return PARSE_EXTRACT_SUB_ERROR;
     }
-
+#ifdef TEST_PARSE_REG
     res =  test_parse_phy_addr ( );
     if (false == res) {
         return PARSE_PHY_ADDR_ERROR;
@@ -399,6 +401,7 @@ int unit_test (void) {
     if (false == res) {
         return PARSE_PHY_REG_VALS_ERROR;
     }
+#endif
 
 #ifdef TEST_SHA256
     res = test_sha256 ();
@@ -443,11 +446,6 @@ int unit_test (void) {
     res = test_count_substring ();
     if (false == res) {
         return SUB_STR_CNT_ERROR;
-    }
-
-    res = test_replace_substr ();
-    if (false == res) {
-        return SUB_STR_REPL_ERROR;
     }
 
 #if TEST_FLOATS
@@ -502,9 +500,10 @@ int unit_test (void) {
     }
 #endif
 
-    res = test_str_char_replace ();
+
+    res = test_str_ops ();
     if (false == res) {
-        return CHAR_REP_ERROR;
+        return STR_OPS_ERROR;
     }
 
 #ifdef TEST_FIFO
@@ -515,18 +514,12 @@ int unit_test (void) {
 #endif
 
 #ifdef HAS_TEST_PARSE_MK
-    res = test_parse_mk ();
+    res = test_mk_2_dot ();
     if (false == res) {
-        return EXTRACT_MK_FILE_ERROR;
+        return TEST_MK_2_DOT_ERROR;
     }
 #endif
 
-#ifdef HAS_TEST_PARSE_C
-    res = test_parse_c ();
-    if (false == res) {
-        return EXTRACT_C_FILE_ERROR;
-    }
-#endif
 
 #if DEPLOY_TEST_SINGLE_NUMBER
     res = test_single_number ();

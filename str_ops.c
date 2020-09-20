@@ -974,8 +974,8 @@ bool brackets_same_type (char open, char close) {
     return false;
 }
 
-int replace_char (char *str, char orig, char rep) {
-    char *ix = str;
+int replace_char (char *out_str, char orig, char rep) {
+    char *ix = out_str;
     int n = 0;
     while ((ix = strchr (ix, orig)) != NULL) {
         *ix++ = rep;

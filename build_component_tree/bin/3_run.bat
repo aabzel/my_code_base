@@ -9,12 +9,12 @@ echo digraph build_Dependence {> files_tree.dot
 echo rankdir=LR;>> files_tree.dot
 
 parse_mk.exe "C:/Job/IO_V4/1_FW/controllers_abarunin_io_040/components/drivers/tja1021/tja1021.mk" files_tree.dot 
-parse_mk.exe "C:/Job/IO_V4/1_FW/controllers_abarunin_io_040/components/lib/lin/lin.mk" files_tree.dot 
-parse_mk.exe "C:/Job/IO_V4/1_FW/controllers_abarunin_io_040/components/lib/spc58_lin_lld/spc58_lin_lld.mk" files_tree.dot  
+rem parse_mk.exe "C:/Job/IO_V4/1_FW/controllers_abarunin_io_040/components/lib/lin/lin.mk" files_tree.dot green lin_mk
+rem parse_mk.exe "C:/Job/IO_V4/1_FW/controllers_abarunin_io_040/components/lib/spc58_lin_lld/spc58_lin_lld.mk" files_tree.dot orange spc58_lin_lld_mk
 
-parse_mk.exe "C:\Job\IO_V4\1_FW\controllers_abarunin_io_040\components\drivers\ad5641\ad5641.mk" files_tree.dot  
+rem parse_mk.exe "C:\Job\IO_V4\1_FW\controllers_abarunin_io_040\components\drivers\ad5641\ad5641.mk" files_tree.dot blue ad5641_mk
 rem parse_mk.exe "C:/Job/IO_V4/1_FW/controllers_abarunin_io_040/common/utils_spc58/rules.mk" files_tree.dot blue rules_mk
-parse_mk.exe "C:\Job\IO_V4\1_FW\controllers_abarunin_io_040\components\lib\uio\uio.mk" files_tree.dot
+rem parse_mk.exe "C:\Job\IO_V4\1_FW\controllers_abarunin_io_040\components\lib\uio\uio.mk" files_tree.dot mediumorchid1 uio_mk
 rem parse_mk.exe "C:/Job/IO_V4/1_FW/controllers_abarunin_io_040/components/lib/bootloader/bootloader.mk" files_tree.dot blue  bootloader_mk
 rem parse_mk.exe "C:/Job/IO_V4/1_FW/controllers_abarunin_io_040/common/utils/generate_can_manager.mk" files_tree.dot black  generate_can_manager_mk
  rem parse_mk.exe "C:/Job/IO_V4/1_FW/controllers_abarunin_io_040/common/utils/generate_parameters.mk" files_tree.dot black generate_parameters_mk
@@ -27,7 +27,7 @@ rem parse_mk.exe "C:/Job/IO_V4/1_FW/controllers_abarunin_io_040/common/utils_spc
 
 rem parse_mk.exe "C:\Job\IO_V4\1_FW\controllers_abarunin_io_040\components\boards\IO_V4\cfg\board_cfg.mk" files_tree.dot black IO_V4_board_cfg_mk
 rem parse_mk.exe "C:\Job\IO_V4\1_FW\controllers_abarunin_io_040\components\boards\IO_V4\io_v4.mk" files_tree.dot black io_v4_mk
-parse_mk.exe "C:\Job\IO_V4\1_FW\controllers_abarunin_io_040\components\boards\IO_V4_A\board.mk" files_tree.dot 
+rem parse_mk.exe "C:\Job\IO_V4\1_FW\controllers_abarunin_io_040\components\boards\IO_V4_A\board.mk" files_tree.dot black IO_V4_A_board_mk
 rem parse_mk.exe "C:\Job\IO_V4\1_FW\controllers_abarunin_io_040\components\boards\TSTP_V2\board.mk" files_tree.dot red TSTP_V2_board_mk  
 rem parse_mk.exe "C:\Job\IO_V4\1_FW\controllers_abarunin_io_040\components\boards\TSTS_V1\board.mk" files_tree.dot cyan TSTS_V1_board_mk
 echo }>> files_tree.dot

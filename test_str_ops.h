@@ -7,6 +7,8 @@
 #include <stdint.h>
 #include <string.h>
 
+bool test_str_ops(void);
+
 bool test_extract_sub_string (void);
 bool test_lengthOfLongestSubstring (void);
 bool test_detect_change (void);
@@ -20,8 +22,6 @@ bool test_parse_num_operands (void);
 bool test_Valid_Parentheses (void);
 bool test_parseBoolExpr (void);
 bool test_reverse (void);
-bool test_str_char_replace (void);
-bool test_replace_substr (void);
 bool test_count_substring (void);
 
 #endif /* TEST_STRING_OPS_H */

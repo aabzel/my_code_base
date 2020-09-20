@@ -1,4 +1,4 @@
 @echo off
-del /S *.exe
+del *.exe
 make
-pause
+sleep 10

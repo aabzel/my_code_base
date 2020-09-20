@@ -111,6 +111,8 @@ typedef enum {
     CONVERT_ERROR = 93,
 	PARSE_PHY_ADDR_ERROR = 94,
 	PARSE_PHY_REG_VALS_ERROR = 95,
+	STR_OPS_ERROR = 96,
+	TEST_MK_2_DOT_ERROR = 97,
     NUM_ERROR = 100
 } utError_t;
 
@@ -182,8 +184,8 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
 #define EXPECT_EQ(val1, val2)                                                                                          \
     do {                                                                                                               \
         if (val1 != val2) {                                                                                            \
-            printf ("\n%s:Line: %d %d in val1: %d val2: %d ", __FUNCTION__, __LINE__, __COUNTER__, val1, val2);        \
-            printf ("\n%s:Line: %d %d in val1: %x val2: %x ", __FUNCTION__, __LINE__, __COUNTER__, val1, val2);        \
+            printf ("\n%s:Line: %d %d in val1: %d val2: %d ", __FUNCTION__, __LINE__, __COUNTER__, (int)val1, (int)val2);        \
+            printf ("\n%s:Line: %d %d in val1: %x val2: %x ", __FUNCTION__, __LINE__, __COUNTER__, (int)val1,(int) val2);        \
             return false;                                                                                              \
         }                                                                                                              \
     } while (0);
@@ -191,15 +193,15 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
 #define EXPECT_HEX_EQ(val1, val2)                                                                                      \
     do {                                                                                                               \
         if (val1 != val2) {                                                                                            \
-            printf ("\n%s:Line: %d %d in val1: %x val2: %x ", __FUNCTION__, __LINE__, __COUNTER__, val1, val2);        \
+            printf ("\n%s:Line: %d %d in val1: %x val2: %x ", __FUNCTION__, __LINE__, __COUNTER__, (int)val1, (int)val2);        \
             return false;                                                                                              \
         }                                                                                                              \
     } while (0);
 
 #define EXPECT_TRUE(val)                                                                                               \
     do {                                                                                                               \
-        if (true != val) {                                                                                             \
-            printf ("\n%s:Line: %d %d in val %d ", __FUNCTION__, __LINE__, __COUNTER__, val);                          \
+        if (true != ((bool) val)) {                                                                                             \
+            printf ("\n%s:Line: %d %d in val %d ", __FUNCTION__, __LINE__, __COUNTER__,(int) val);                          \
             return false;                                                                                              \
         }                                                                                                              \
     } while (0);
@@ -207,7 +209,7 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
 #define EXPECT_FALSE(val)                                                                                              \
     do {                                                                                                               \
         if (false != val) {                                                                                            \
-            printf ("\n%s:Line: %d %d in val %d ", __FUNCTION__, __LINE__, __COUNTER__, val);                          \
+            printf ("\n%s:Line: %d %d in val %d ", __FUNCTION__, __LINE__, __COUNTER__,(int) val);                          \
             return false;                                                                                              \
         }                                                                                                              \
     } while (0);

@@ -49,6 +49,32 @@ char *ksz8081_reg_2_name[ ] = {
 };
 //19 registers
 
+static bool parse_basic_control_register_0h (uint16_t reg_val, FILE *out_file_prt);
+static bool parse_basic_status_register_1h (uint16_t reg_val, FILE *out_file_prt);
+static bool parse_phy_identifier_1_register_2h (uint16_t reg_val, FILE *out_file_prt);
+static bool parse_phy_identifier_2_register_3h (uint16_t reg_val, FILE *out_file_prt);
+static bool parse_auto_negotiation_advertisement_register_4h (uint16_t reg_val, FILE *out_file_prt);
+static bool parse_auto_negotiation_link_partner_ability_register_5h (uint16_t reg_val, FILE *out_file_prt);
+static bool parse_auto_negotiation_expansion_register_6h (uint16_t reg_val, FILE *out_file_prt);
+static bool parse_auto_negotiation_next_page_register_7h (uint16_t reg_val, FILE *out_file_prt);
+static bool parse_link_partner_next_page_ability_register_8h (uint16_t reg_val, FILE *out_file_prt);
+static bool parse_digital_reserved_control_register_10h (uint16_t reg_val, FILE *out_file_prt);
+static bool parse_afe_control_1_register_11h (uint16_t reg_val, FILE *out_file_prt);
+static bool parse_rxer_counter_register_15h (uint16_t reg_val, FILE *out_file_prt);
+static bool parse_operation_mode_strap_override_register_16h (uint16_t reg_val, FILE *out_file_prt);
+static bool parse_operation_mode_strap_status_register_17h (uint16_t reg_val, FILE *out_file_prt);
+static bool parse_expanded_control_register_18h (uint16_t reg_val, FILE *out_file_prt);
+static bool parse_interrupt_control_status_register_1bh (uint16_t reg_val, FILE *out_file_prt);
+
+static bool parse_linkmd_control_status_register_1dh (uint16_t reg_val, FILE *out_file_prt){
+    uint8_t Cable_Fault_Counter = 0x00FF & reg_val;
+    fprintf (out_file_prt, "\n bit 8:0 RO Distance to fault [%u] %f m", Cable_Fault_Counter, 0.38f*((float_t ) Cable_Fault_Counter));
+    fprintf (out_file_prt, "\n");
+}
+
+static bool parse_phy_control_1_register_1eh (uint16_t reg_val, FILE *out_file_prt);
+static bool parse_phy_control_2_register_1fh (uint16_t reg_val, FILE *out_file_prt);
+
 static bool load_ksz8081_reg (uint8_t reg_addr, uint16_t reg_val) {
     bool res = false;
     ksz8081RegMap[reg_addr].reg_val = reg_val;
@@ -56,10 +82,10 @@ static bool load_ksz8081_reg (uint8_t reg_addr, uint16_t reg_val) {
     return res;
 }
 
-static bool parse_ksz8081_reg (uint8_t reg_addr, FILE *outFilePrt) {
+static bool parse_ksz8081_reg (uint8_t reg_addr, FILE *out_file_prt) {
     bool res = false;
     uint16_t reg16_val = ksz8081RegMap[reg_addr].reg_val;
-    fprintf (outFilePrt, "\n\nreg %40s addr 0x%02x val 0x%04x 0b_%s", ksz8081_reg_2_name[reg_addr], reg_addr, reg16_val,
+    fprintf (out_file_prt, "\n\nreg %40s addr 0x%02x val 0x%04x 0b_%s", ksz8081_reg_2_name[reg_addr], reg_addr, reg16_val,
              utoa_bin16 (reg16_val));
     switch (reg_addr) {
     case 0:
@@ -116,6 +142,7 @@ static bool parse_ksz8081_reg (uint8_t reg_addr, FILE *outFilePrt) {
         break;
 
     case 15:
+
         proc_reg_cnt++;
         break;
     case 16:
@@ -152,6 +179,7 @@ static bool parse_ksz8081_reg (uint8_t reg_addr, FILE *outFilePrt) {
     	proc_reg_cnt++;
     	    	        break;
     case 29:
+    	res = parse_linkmd_control_status_register_1dh (  reg16_val, out_file_prt);
     	proc_reg_cnt++;
     	    	        break;
     case 30:
@@ -162,7 +190,7 @@ static bool parse_ksz8081_reg (uint8_t reg_addr, FILE *outFilePrt) {
     	        break;
     default:
 #if DPLOY_LACK
-        fprintf (outFilePrt, "\n Lack of parser for reg %s addr 0x%x val 0x%x", ksz8081_reg_2_name[reg_addr], reg_addr,
+        fprintf (out_file_prt, "\n Lack of parser for reg %s addr 0x%x val 0x%x", ksz8081_reg_2_name[reg_addr], reg_addr,
                  reg16_val);
 #endif
         break;
@@ -211,13 +239,13 @@ bool parse_ksz8081_regs_file (char *in_file_name, char *out_file_name) {
         printf ("\nUnable to open file [%s]", in_file_name);
     }
 
-    FILE *outFilePrt = NULL;
-    outFilePrt = fopen (out_file_name, "w");
-    if (outFilePrt) {
+    FILE *out_file_prt = NULL;
+    out_file_prt = fopen (out_file_name, "w");
+    if (out_file_prt) {
         if (true == res) {
             uint8_t reg_8bit_addr;
             for (reg_8bit_addr = 0; reg_8bit_addr <= 31; reg_8bit_addr++) {
-                parse_ksz8081_reg (reg_8bit_addr, outFilePrt);
+                parse_ksz8081_reg (reg_8bit_addr, out_file_prt);
             }
 
             printf ("\n processed %u/31 registers %f%% remain %u registers", proc_reg_cnt,
@@ -225,8 +253,8 @@ bool parse_ksz8081_regs_file (char *in_file_name, char *out_file_name) {
             printf ("\n processed %u/496 bits %f%%", proc_reg_cnt * 16,
                     cacl_percent ((float)proc_reg_cnt * 16.0, 31.0 * 16.0));
 
-            fprintf (outFilePrt, "\n\n Support: aabzele@gmail.com Alexander Barunin");
-            fclose (outFilePrt);
+            fprintf (out_file_prt, "\n\n Support: aabzele@gmail.com Alexander Barunin");
+            fclose (out_file_prt);
         }
     }
 

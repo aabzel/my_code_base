@@ -33,6 +33,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 extern char **environ;
 
@@ -57,8 +58,16 @@ void inc (char *array) {
     (*ptr2)++;
 }
 
+uint64_t GetTimeStamp() {
+    struct timeval tv;
+    gettimeofday(&tv,NULL);
+    return tv.tv_sec*(uint64_t)1000000+tv.tv_usec;
+}
+
 int main (int argc, char *argv[]) {
     printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+    //time_t t;
+	srand((unsigned) GetTimeStamp());
 #ifdef BEAM_TREAL
     char array[] = {'A', 'G', 'V', 0};
     inc (&array[0]);
@@ -205,9 +214,10 @@ int main (int argc, char *argv[]) {
 #endif
     // perform_exper ();
 #ifdef HAS_PARSE_MK
-    if (5 == argc) {
+    if (3 == argc) {
         printf ("\nin file [%s]", argv[1]);
-        bool res = proc_mk_file (argv[1], argv[2], argv[3], argv[4]);
+        printf ("\nout file [%s]", argv[2]);
+        bool res = proc_mk_file (argv[1], argv[2]);
         if (false == res) {
             printf ("\n\nError\n");
         }
