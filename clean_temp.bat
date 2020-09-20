@@ -1,3 +1,3 @@
 @echo off
 del /S *.o
-del *.exe
+del /S *.gch

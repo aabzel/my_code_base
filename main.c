@@ -34,6 +34,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <sys/time.h>
 
 extern char **environ;
 
@@ -215,11 +216,11 @@ int main (int argc, char *argv[]) {
     // perform_exper ();
 #ifdef HAS_PARSE_MK
     if (3 == argc) {
-        printf ("\nin file [%s]", argv[1]);
+        printf ("\nin  file [%s]", argv[1]);
         printf ("\nout file [%s]", argv[2]);
         bool res = proc_mk_file (argv[1], argv[2]);
         if (false == res) {
-            printf ("\n\nError\n");
+            printf ("\nUnable to proc mk file %s \n", argv[1]);
         }
     } else {
         printf ("\n[!] main args error %u\n", argc);
@@ -244,7 +245,7 @@ int main (int argc, char *argv[]) {
     }
 #endif
 
-    printf ("\n\n Done!\n\n");
+    //printf ("\n\n program finish!\n\n");
     // getchar ();
     return 0;
 }

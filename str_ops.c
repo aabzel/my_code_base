@@ -1023,7 +1023,7 @@ bool reblace_substring (char *inOutStr, char *orig, char *rep) {
 #if DEBUG_REP_STR
                 printf ("\n tempStr [%s]", tempStr);
 #endif
-                free (tempStr);
+                free (tempStr);//11 19
                 tempStr = NULL;
                 res = true;
             }

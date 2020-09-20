@@ -1,4 +1,4 @@
 @echo off
-del *.exe
+del /S *.exe
 make
 pause
