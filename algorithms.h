@@ -20,7 +20,7 @@ uint32_t factorial (uint32_t n);
 bool is_in_range (int val, int lowBound, int upBound);
 int update_max (int curMax, int newVal);
 int qselect (int *v, int len, int k);
-bool is_power_of_two (int x);
+//bool is_power_of_two (int x);
 void swap_char (char *const x, char *const y);
 
 short compare (int Data1, int Data2);

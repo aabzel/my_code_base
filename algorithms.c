@@ -173,8 +173,9 @@ bool swap_int (int *const x, int *const y) {
     }
     return res;
 }
-
+#if 0
 bool is_power_of_two (int x) { return ((0 < x) && (0 == (x & (x - 1)))); }
+#endif
 
 typedef struct xPox_t {
     int x;

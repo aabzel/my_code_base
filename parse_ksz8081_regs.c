@@ -4,6 +4,7 @@
 #include "parse_regs.h"
 #include "str_ops.h"
 #include "utils.h"
+#include "bit_utils.h"
 
 #include <stdint.h>
 #include <stdio.h>
@@ -67,8 +68,88 @@ static bool parse_interrupt_control_status_register_1bh (uint16_t reg_val, FILE 
 
 static bool parse_linkmd_control_status_register_1dh (uint16_t reg_val, FILE *out_file_prt) {
     uint8_t Cable_Fault_Counter = 0x00FF & reg_val;
-    fprintf (out_file_prt, "\n bit 8:0 RO Distance to fault [%u] %f m", Cable_Fault_Counter,
+    fprintf (out_file_prt, "\n  bit 8:0 RO Distance to fault [%u] %f m", Cable_Fault_Counter,
              0.38f * ((float_t)Cable_Fault_Counter));
+    fprintf (out_file_prt, "\n");
+}
+
+
+static const char* lan_op_mode_to_str(lantrcv_op_mode_t op_mode) {
+    const char *op_mode_name = "dflt";
+    switch (op_mode) {
+    case OP_MODE_STILL_IN_AUTO_NEGOTIATION:
+        op_mode_name = "IN_AUTO_NEGOTIATION";
+        break;
+    case OP_MODE_10BASE_T_HALF_DUPLEX:
+        op_mode_name = "10BASE_T_HALF_DUPLEX";
+        break;
+    case OP_MODE_100BASE_TX_HALF_DUPLEX:
+        op_mode_name = "100BASE_TX_HALF_DUPLEX";
+        break;
+    case OP_MODE_10BASE_T_FULL_DUPLEX:
+        op_mode_name = "10BASE_T_FULL_DUPLEX";
+        break;
+    case OP_MODE_RESERVED1:
+        op_mode_name = "RESERVED";
+        break;
+    case OP_MODE_RESERVED2:
+        op_mode_name = "RESERVED";
+        break;
+    case OP_MODE_100BASE_TX_FULL_DUPLEX:
+        op_mode_name = "100BASE_TX_FULL_DUPLEX";
+        break;
+    case OP_MODE_RESERVED3:
+        op_mode_name = "RESERVED";
+        break;
+    default:
+        op_mode_name = "undef";
+        break;
+    }
+    return op_mode_name;
+}
+
+static bool parse_phy_control_1_register_1eh (uint16_t reg_val, FILE *out_file_prt) {
+	printf ("\n%s()\n", __FUNCTION__);
+	fprintf (out_file_prt, "\n  bit 15-10:%u RO Reserved",MASK_6_BITS&(reg_val>>10));
+
+    if(KSZ8081_PHYCON1_PAUSE_EN==(KSZ8081_PHYCON1_PAUSE_EN&reg_val)){
+    	fprintf (out_file_prt, "\n  bit 9:1 RO Flow control capable");
+    }else{
+    	fprintf (out_file_prt, "\n  bit 9:0 RO No flow control capability");
+    }
+
+    if(KSZ8081_PHYCON1_LINK_STATUS==(KSZ8081_PHYCON1_LINK_STATUS&reg_val)){
+    	fprintf (out_file_prt, "\n  bit 8:1 RO Link is up");
+    }else{
+    	fprintf (out_file_prt, "\n  bit 8:0 RO Link is down");
+    }
+
+    if(KSZ8081_PHYCON1_POL_STATUS==(KSZ8081_PHYCON1_POL_STATUS&reg_val)){
+    	fprintf (out_file_prt, "\n  bit 7:1 RO Polarity is reversed");
+    }else{
+    	fprintf (out_file_prt, "\n  bit 7:0 RO Polarity is not reversed");
+    }
+    fprintf (out_file_prt, "\n  bit 6:%u RO Reserved",(1<<6)==((1<<6)&reg_val));
+
+    if(KSZ8081_PHYCON1_MDIX_STATE==(KSZ8081_PHYCON1_MDIX_STATE&reg_val)){
+    	fprintf (out_file_prt, "\n  bit 5:1 RO MDI-X");
+    }else{
+    	fprintf (out_file_prt, "\n  bit 5:0 RO MDI");
+    }
+
+    if(KSZ8081_PHYCON1_ENERGY_DETECT==(KSZ8081_PHYCON1_ENERGY_DETECT&reg_val)){
+    	fprintf (out_file_prt, "\n  bit 4:1 RO Signal present on receive differential pair");
+    }else{
+    	fprintf (out_file_prt, "\n  bit 4:0 RO No signal detected on receive differential pair");
+    }
+    if(KSZ8081_PHYCON1_PHY_ISOLATE==(KSZ8081_PHYCON1_PHY_ISOLATE&reg_val)){
+    	fprintf (out_file_prt, "\n  bit 3:1 RO PHY in isolate mode");
+    }else{
+    	fprintf (out_file_prt, "\n  bit 3:0 RO PHY in normal operation");
+    }
+    lantrcv_op_mode_t operation_Mode_Indication = (lantrcv_op_mode_t) (MASK_3_BITS&reg_val);
+    fprintf (out_file_prt, "\n  bit 2-0:%u RO %s",operation_Mode_Indication, lan_op_mode_to_str ((lantrcv_op_mode_t) operation_Mode_Indication));
+
     fprintf (out_file_prt, "\n");
 }
 
@@ -182,7 +263,8 @@ static bool parse_ksz8081_reg (uint8_t reg_addr, FILE *out_file_prt) {
         res = parse_linkmd_control_status_register_1dh (reg16_val, out_file_prt);
         proc_reg_cnt++;
         break;
-    case 30:
+    case KSZ8081_PHYCON1:
+    	res = parse_phy_control_1_register_1eh (reg16_val, out_file_prt);
         proc_reg_cnt++;
         break;
     case 31:
