@@ -44,6 +44,9 @@ bool parse_holder_name (char *inStr, uint16_t inStrLen, char *holderName);
 
 bool compare_strings (char *stra, char *strb);
 int myAtoi (char *str);
+
+bool lower_case_str(char *str);
+
 int replace_char (char *str, char orig, char rep);
 bool try_strl2int64_dec (const char s64_dec_str[], int32_t s64_dec_str_len, int64_t *s64_dec_value);
 bool try_strl2int32_dec (const char s32_dec_str[], int32_t s32_dec_str_len, int32_t *const s32_dec_value);

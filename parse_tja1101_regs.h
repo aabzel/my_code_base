@@ -24,30 +24,6 @@ bool parse_tja1101_reg (uint8_t regAddr, uint16_t regVal, FILE *outFilePrt);
 
 bool parse_16bit_val (char *in_str_val, uint32_t len, uint16_t *reg_addr);
 
-#if 0
-bool parse_basic_control_register (uint16_t regVal, FILE *outFilePrt);
-bool parse_basic_status_register (uint16_t regVal, FILE *outFilePrt);
-bool parse_phy_identifier_1_register (uint16_t regVal, FILE *outFilePrt);
-bool parse_phy_identifier_2_register (uint16_t regVal, FILE *outFilePrt);
-bool parse_extended_status_register (uint16_t regVal, FILE *outFilePrt);
-bool parse_phy_identifier_3_register (uint16_t regVal, FILE *outFilePrt);
-bool parse_extended_control_register (uint16_t regVal, FILE *outFilePrt);
-bool parse_configuration_register_1 (uint16_t regVal, FILE *outFilePrt);
-bool parse_configuration_register_2 (uint16_t regVal, FILE *outFilePrt);
-bool parse_symbol_error_counter_register (uint16_t regVal, FILE *outFilePrt);
-bool parse_interrupt_status_register (uint16_t regVal, FILE *outFilePrt);
-bool parse_interrupt_source_register (uint16_t regVal, FILE *outFilePrt);
-bool parse_interrupt_enable_register (uint16_t regVal, FILE *outFilePrt);
-bool parse_communication_status_register (uint16_t regVal, FILE *outFilePrt);
-bool parse_general_status_register (uint16_t regVal, FILE *outFilePrt);
-bool parse_external_status_register (uint16_t regVal, FILE *outFilePrt);
-bool parse_link_fail_counter_register (uint16_t regVal, FILE *outFilePrt);
-bool parse_common_configuration_register (uint16_t regVal, FILE *outFilePrt);
-bool parse_configuration_register_3 (uint16_t regVal, FILE *outFilePrt);
-#endif
-
-
-
 bool parse_phy_state (uint8_t phyState, FILE *outFilePrt, uint8_t reg_addr);
 bool parse_sqi (uint8_t sqi, FILE *outFilePrt, uint8_t reg_addr);
 bool parse_mii_mode (uint8_t mii_mode, FILE *outFilePrt, uint8_t reg_addr);

@@ -113,6 +113,7 @@ typedef enum {
     PARSE_PHY_REG_VALS_ERROR = 95,
     STR_OPS_ERROR = 96,
     TEST_MK_2_DOT_ERROR = 97,
+	GENERATE_REG_PARSER_ERROR = 98,
     NUM_ERROR = 100
 } utError_t;
 

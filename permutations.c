@@ -338,9 +338,7 @@ void assemble_from_alph (int *in_remain_alphabet, int size_of_alphabet, int *in_
                 free (new_remain_alphabet);
             }
         }
-        // if (in_remain_alphabet) {
-        //    free (in_remain_alphabet);
-        //}
+
 #if DEBUG_PERMUT
         printf ("\n");
 #endif

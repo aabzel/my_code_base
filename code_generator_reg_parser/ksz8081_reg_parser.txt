@@ -1,0 +1,61 @@
+
+static bool parse_basic_control_register_0 (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {
+    bool res = false;
+    if (reg16b_val & (1<<15)) {
+        fprintf (out_file_prt,"\n reg %02u bit15:1", reg_addr);
+    }
+    if (0==(reg16b_val & (1<<15))) {
+        fprintf (out_file_prt,"\n reg %02u bit15:0", reg_addr);
+    }
+    if (reg16b_val & (1<<14)) {
+        fprintf (out_file_prt,"\n reg %02u bit14:1", reg_addr);
+    }
+    if (0==(reg16b_val & (1<<14))) {
+        fprintf (out_file_prt,"\n reg %02u bit14:0", reg_addr);
+    }
+    if (reg16b_val & (1<<13)) {
+        fprintf (out_file_prt,"\n reg %02u bit13:1", reg_addr);
+    }
+    if (0==(reg16b_val & (1<<13))) {
+        fprintf (out_file_prt,"\n reg %02u bit13:0", reg_addr);
+    }
+    if (reg16b_val & (1<<12)) {
+        fprintf (out_file_prt,"\n reg %02u bit12:1", reg_addr);
+    }
+    if (0==(reg16b_val & (1<<12))) {
+        fprintf (out_file_prt,"\n reg %02u bit12:0", reg_addr);
+    }
+    if (reg16b_val & (1<<11)) {
+        fprintf (out_file_prt,"\n reg %02u bit11:1", reg_addr);
+    }
+    if (0==(reg16b_val & (1<<11))) {
+        fprintf (out_file_prt,"\n reg %02u bit11:0", reg_addr);
+    }
+    if (reg16b_val & (1<<10)) {
+        fprintf (out_file_prt,"\n reg %02u bit10:1", reg_addr);
+    }
+    if (0==(reg16b_val & (1<<10))) {
+        fprintf (out_file_prt,"\n reg %02u bit10:0", reg_addr);
+    }
+    if (reg16b_val & (1<<9)) {
+        fprintf (out_file_prt,"\n reg %02u bit9:1", reg_addr);
+    }
+    if (0==(reg16b_val & (1<<9))) {
+        fprintf (out_file_prt,"\n reg %02u bit9:0", reg_addr);
+    }
+    if (reg16b_val & (1<<8)) {
+        fprintf (out_file_prt,"\n reg %02u bit8:1", reg_addr);
+    }
+    if (0==(reg16b_val & (1<<8))) {
+        fprintf (out_file_prt,"\n reg %02u bit8:0", reg_addr);
+    }
+    if (reg16b_val & (1<<7)) {
+        fprintf (out_file_prt,"\n reg %02u bit7:1", reg_addr);
+    }
+    if (0==(reg16b_val & (1<<7))) {
+        fprintf (out_file_prt,"\n reg %02u bit7:0", reg_addr);
+    }
+    return res;
+}
+
+ // Support: aabzele@gmail.com Alexander Barunin

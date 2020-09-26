@@ -1,0 +1,20 @@
+< REG="Basic Control" Addr=0
+0 bit=15 val=1 RW/SC| Reset | Software reset
+0.bit=15 val=0 RW/SC| Reset | Normal operation
+0.bit=14 val=1 RW |Loopback | Loopback mode
+0.bit=14 val=0 RW |Loopback | Normal operation
+0.bit=13 val=1 RW |Speed Select | 100 Mbps
+0.bit=13 val=0 RW |Speed Select | 10 Mbps
+0.bit=12 val=1 RW |Auto-Negotiation Enable | Enable auto-negotiation process
+0.bit=12 val=0 RW |Auto-Negotiation Enable | Disable auto-negotiation process
+0.bit=11 val=1 RW |Power-Down | Power-down mode
+0.bit=11 val=0 RW |Power-Down | Normal operation
+0.bit=10 val=1 RW |Isolate | Electrical isolation of PHY from MII
+0.bit=10 val=0 RW |Isolate | Normal operation
+0.bit=09 val=1 RW/SC| Restart | Auto-Negotiation  Restart auto-negotiation process
+0.bit=09 val=0 RW/SC| Restart | Auto-Negotiation Normal operation.
+0.bit=08 val=1 RW |Duplex Mode | Full-duplex
+0.bit=08 val=0 RW |Duplex Mode | Half-duplex
+0.bit=07 val=1 RW |Collision | Test Enable COL test
+0.bit=07 val=0 RW |Collision | Test Disable COL test
+>

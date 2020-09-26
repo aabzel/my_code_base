@@ -11,6 +11,12 @@
 #ifdef HAS_PARSE_REG
 #include "parse_regs.h"
 #endif
+
+#ifdef HAS_GENERATE_REG_PARSER
+#include "generate_parser.h"
+#endif
+
+
 #include "permutations.h"
 #include "tcp_client.h"
 #include "uTests.h"
@@ -105,7 +111,6 @@ int main (int argc, char *argv[]) {
 #endif
 
 #ifdef HAS_UTESTS
-
     int ret = unit_test ();
     if (0 != ret) {
         printf ("\n\nUnit Test Error: %d\n", ret);
@@ -195,7 +200,23 @@ int main (int argc, char *argv[]) {
 
 #endif
 
+
+#ifdef HAS_GENERATE_REG_PARSER
+    printf ("\n Generate rarser for registers\n");
+    if (3 == argc) {
+        bool res;
+        res = generate_reg_parser (argv[1], argv[2]);
+        if (false == res) {
+            printf ("\nError generate_reg_parser\n");
+        }
+    } else {
+        printf ("\n wrong command options\n");
+    }
+#endif
+
+
 #ifdef HAS_PARSE_REG
+
     printf ("\n Parse registers\n");
     if (3 == argc) {
         bool res;

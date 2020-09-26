@@ -48,7 +48,7 @@ bool parse_tja1101_regs_file (char *inFileName, char *outFileName) {
             // printf ("\n[%x] [%x]", reg_addr, reg16b_val);
             line++;
         }
-        fprintf (out_file_prt, "\n\n Support: aabzele@gmail.com");
+        fprintf (out_file_prt, "\n\n Support: aabzele@gmail.com Alexander Barunin");
         fclose (inFilePrt);
         fclose (out_file_prt);
         res = true;
@@ -56,8 +56,6 @@ bool parse_tja1101_regs_file (char *inFileName, char *outFileName) {
     printf ("\n%s(): processed registers %u/32 \n", __FUNCTION__, reg_cnt);
     return res;
 }
-
-
 
 static bool parse_basic_control_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = false;
@@ -438,17 +436,28 @@ bool parse_phy_state (uint8_t phyState, FILE *out_file_prt, uint8_t reg_addr) {
     }
     return res;
 }
-
-
+//TODO
 static bool parse_configuration_register_2 (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr)  {
     bool res = false;
     uint16_t phyAddr = extract_subval_from_16bit (reg16b_val, 15, 11);
-    fprintf (out_file_prt, "\n  reg %02u bit15..11: r 5bit PHY address: [%d]", reg_addr,phyAddr);
+    fprintf (out_file_prt, "\n  reg %02u bit15..11: R 5bit PHY address: [%d]", reg_addr,phyAddr);
+    uint16_t sqi_averaging = extract_subval_from_16bit (reg16b_val, 10, 9);
+    fprintf (out_file_prt, "\n  reg %02u bit10..9:%u RW Signal Quality Indicator (SQI) averaging:", reg_addr,sqi_averaging);
+
+	uint16_t sqi_wlimit = extract_subval_from_16bit (reg16b_val, 8, 6);
+	fprintf (out_file_prt, "\n  reg %02u bit8..6:%u RW ", reg_addr, sqi_wlimit);
+
+	uint16_t sqi_faillimit = extract_subval_from_16bit (reg16b_val, 5, 3);
+	fprintf (out_file_prt, "\n  reg %02u bit5..3:%u RW ", reg_addr, sqi_faillimit);
+
     if (reg16b_val & JUMBO_ENABLE_2) {
         fprintf (out_file_prt, "\n  reg %02u bit2: rw packets up to 16 kB supported", reg_addr);
     } else {
         fprintf (out_file_prt, "\n  reg %02u bit2: rw packets up to 4 kB supported", reg_addr);
     }
+	uint16_t sleep_request_to = extract_subval_from_16bit (reg16b_val, 1, 0);
+	fprintf (out_file_prt, "\n  reg %02u bit1..0:%u RW sleep request/acknowledge timeout: ", reg_addr, sleep_request_to);
+
     fprintf (out_file_prt, "\n");
     return res;
 }

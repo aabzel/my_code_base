@@ -19,6 +19,10 @@
 #include "parse_tja1101_regs.h"
 #endif
 
+#ifdef HAS_GENERATE_REG_PARSER_TEST
+#include "generate_parser_test.h"
+#endif
+
 #if HAS_BIN_HEAP
 #include "bin_heap.h"
 #include "bin_heap_array.h"
@@ -274,6 +278,14 @@ int unit_test (void) {
     if (false == res) {
         printf ("test_convert error");
         return CONVERT_ERROR;
+    }
+#endif
+
+#ifdef HAS_GENERATE_REG_PARSER_TEST
+    res = test_generate_reg_parser( );
+    if(false == res){
+    	printf ("generate reg parser error");
+    	return GENERATE_REG_PARSER_ERROR;
     }
 #endif
 
