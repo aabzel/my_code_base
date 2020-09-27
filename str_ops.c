@@ -1400,8 +1400,13 @@ bool parse_serial (char *inStr, uint16_t inStrLen, uint64_t *outSerial64bNumber)
 }
 
 
-bool lower_case_str(char *str){
-	for(int i = 0; str[i]; i++){
-	  str[i] = tolower(str[i]);
+bool lower_case_str(char *str) {
+	bool res = false;
+	if (str) {
+		res = true;
+	    for (int i = 0; str[i]; i++) {
+	        str[i] = (char) tolower((int )str[i]);
+    	}
 	}
+	return res;
 }

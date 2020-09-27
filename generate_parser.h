@@ -1,9 +1,22 @@
 #ifndef GENERATE_REG_PARSER_H
 #define GENERATE_REG_PARSER_H
 
+
+#include <stdbool.h>
 #include <stdio.h>
 
 #include "custom_type.h"
+
+typedef struct xReg_map_t{
+	uint8_t reg_addr;
+	char reg_name[100];
+	bool valid;
+}xReg_map_t;
+
+
+#define MAX_NUM_REG 255
+
+extern xReg_map_t RegMap[MAX_NUM_REG];
 
 bool parse_uint8_after_prefix(char *cur_file_str, int in_str_len, uint8_t *val, char *prefix);
 bool parse_text_after_prefix(char *cur_file_str, int strlen,char *out_text, char *prefix);

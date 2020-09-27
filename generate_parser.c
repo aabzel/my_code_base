@@ -8,6 +8,8 @@
 #include "convert.h"
 #include "str_ops.h"
 
+xReg_map_t RegMap[MAX_NUM_REG];
+
 //< REG="Basic Control" Addr=0
 
 bool parse_text_after_prefix(char *cur_file_str, int in_str_len,char *out_text, char *prefix) {
@@ -40,9 +42,9 @@ bool parse_uint8_after_prefix(char *cur_file_str, int in_str_len, uint8_t *val, 
     char *ptr = strstr(cur_file_str, prefix);
     if (ptr) {
     	printf("\n spot prefix [%s]", prefix);
-    	res = try_strl2uint8 ( ptr+prefix_len,2, val);
-    	if (false==res) {
-    		printf("\n unable to parse uint8 in [%s] \n", ptr+prefix_len);
+    	res = try_strl2uint8 ( ptr+prefix_len,4, val);
+    	if (false == res) {
+    		printf("\n unable to parse uint8 in [%s] val %u \n", ptr+prefix_len, *val);
     	}
     }
     return res;
@@ -85,18 +87,54 @@ bool parse_bit_val(char *cur_file_str, int strlen, uint8_t *bit_val){
 	return res;
 }
 
+static bool compose_case( FILE *out_file_prt) {
+	bool res = false;
+	if(out_file_prt){
+		res = true;
+	}
+	fprintf(out_file_prt, "\n\nstatic bool parse_ksz8081_reg (uint8_t reg_addr, FILE *out_file_prt) {");
+		fprintf(out_file_prt, "\n    bool res = false;");
+	    fprintf(out_file_prt, "\n    uint16_t reg16b_val = ksz8081RegMap[reg_addr].reg_val;");
+	fprintf(out_file_prt, "\n    switch ( reg_addr ) {");
+    for (int i = 0; i < 255; i++) {
+    	if ( true==RegMap[i].valid ) {
+    		fprintf(out_file_prt, "\n        case %u: ",i);
+    		fprintf(out_file_prt, "\n            proc_reg_cnt++;");
+    		fprintf(out_file_prt, "\n            res = parse_%s_register_%u (reg16b_val, out_file_prt, reg_addr);",RegMap[i].reg_name,i);
+    		fprintf(out_file_prt, "\n        break;");
+    	}
+    }
+    fprintf(out_file_prt, "\n        default:");
+    fprintf(out_file_prt, "\n            fprintf (out_file_prt, \"\n Lack of parser for reg %%s addr 0x%%x val 0x%%x\", ksz8081_reg_2_name[reg_addr], reg_addr, reg16_val);");
+    fprintf(out_file_prt, "\n        break;");
+    fprintf(out_file_prt, "\n    }");
+    fprintf(out_file_prt, "\n    return res;");
+    fprintf(out_file_prt, "\n}");
+    return res;
+}
+
+static bool init_reg_map (void) {
+    for (int i = 0; i < MAX_NUM_REG; i++) {
+        RegMap[i].valid=false;
+    }
+    return true;
+}
 
 bool generate_reg_parser(char *in_file_name, char *out_file_name) {
 	printf("\n%s()\n", __FUNCTION__);
 	bool res = false;
 	char cur_file_str[500];
 	char reg_name[500];
+	init_reg_map();
 	memset(cur_file_str, 0, sizeof(cur_file_str));
 	memset(reg_name, 0, sizeof(reg_name));
 	FILE *inFilePrt = NULL;
 	FILE *out_file_prt = NULL;
 	out_file_prt = fopen (out_file_name, "w");
 	inFilePrt = fopen(in_file_name, "r");
+	if(NULL==inFilePrt ){
+		printf("\n lack of input file [%s]\n", in_file_name);
+	}
 	if ((NULL != inFilePrt) && (NULL!=out_file_prt)) {
 		//int line = 0;
 		while (NULL != fgets(cur_file_str, sizeof(cur_file_str), inFilePrt)) {
@@ -105,12 +143,21 @@ bool generate_reg_parser(char *in_file_name, char *out_file_name) {
             bool res_name = parse_text_after_prefix(cur_file_str, strlen(cur_file_str), reg_name,"REG=\"");
             bool res_addr = parse_uint8_after_prefix(cur_file_str, strlen(cur_file_str), &reg_addr,"Addr=");
             if((true==res_addr)  && (true==res_name)) {
+            	RegMap[reg_addr].reg_addr=reg_addr;
+            	RegMap[reg_addr].valid = true;
             	printf("\n Reg %s addr [%u]",reg_name, reg_addr);
             	replace_char (reg_name, ' ', '_');
+            	replace_char (reg_name, '/', '_');
+            	replace_char (reg_name, '-', '_');
             	lower_case_str(reg_name);
+
+            	strncpy(RegMap[reg_addr].reg_name,reg_name, sizeof(RegMap[reg_addr].reg_name));
             	//static bool parse_basic_control_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {
-        		fprintf(out_file_prt, "\nstatic bool parse_%s_register_%u (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {",reg_name,reg_addr);
+        		fprintf(out_file_prt, "\n\nstatic bool parse_%s_register_%u (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {",reg_name,reg_addr);
         		fprintf(out_file_prt, "\n    bool res = false;");
+        		fprintf(out_file_prt, "\n    if ( %u == reg_addr ) {",reg_addr);
+        		fprintf(out_file_prt, "\n        res = true;");
+        		fprintf(out_file_prt, "\n    }");
             } else {
             	if(false==res_name){
                 	printf("\n Unable to parse register name in [%s]",cur_file_str);
@@ -145,6 +192,9 @@ bool generate_reg_parser(char *in_file_name, char *out_file_name) {
             //line++;
             memset(cur_file_str, 0, sizeof(cur_file_str));
 		}
+
+		res = compose_case(out_file_prt);
+
 		fclose(inFilePrt);
 		res = true;
 		fprintf(out_file_prt,

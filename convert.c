@@ -150,7 +150,10 @@ bool try_strl2uint64_hex (const char u64_hex_str[], int32_t u64_hex_str_len, uin
             for (u64_hex_str_index = 0; u64_hex_str_index < u64_hex_len; u64_hex_str_index++) {
                 uint8_t u64_hex_str_char = (uint8_t)u64_hex_str[u64_hex_str_index];
                 uint8_t u64_hex_str_number = 0U;
-
+                if (' '==u64_hex_str_char) {
+                	u64_hex_success = true;
+                	break;
+                }
                 if (true == try_hex_char_to_u8 (u64_hex_str_char, &u64_hex_str_number)) {
                     u64_hex_result = (u64_hex_result * 16U) + u64_hex_str_number;
                 } else {
@@ -1356,12 +1359,17 @@ bool is_hex_str (const char str_to_check[], int32_t str_to_check_len, uint8_t *c
                 }
 
                 int32_t i = 0;
+                int32_t space=0;
                 for (i = ((int32_t)out_shift_loc); i < str_to_check_len; i++) {
-                    if (true == is_hex_digit (str_to_check[i])) {
-                        validHexCnt++;
-                    }
+                     if(' '!=str_to_check[i]) {
+                          if (true == is_hex_digit (str_to_check[i])) {
+                              validHexCnt++;
+                          }
+                     }else{
+                    	 space++;
+                     }
                 }
-                if ((str_to_check_len - ((int32_t)out_shift_loc)) == validHexCnt) {
+                if ((str_to_check_len - ((int32_t)out_shift_loc)-space) == validHexCnt) {
                     (*out_shift) = out_shift_loc;
                     is_hex_str_result = true;
                 }

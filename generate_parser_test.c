@@ -64,6 +64,15 @@ static bool test_parse_reg_addr(void) {
     }
     EXPECT_EQ(1, reg_addr);
 
+	strncpy(cur_file_str,"< REG=\"PHY Control 1\"  Addr=0x1E ", sizeof(cur_file_str));
+    res = parse_uint8_after_prefix(cur_file_str, strlen(cur_file_str), &reg_addr, "Addr=");
+    if(false==res){
+    	printf ("\nparse_reg_name Error \n");
+    	return false;
+    }
+    EXPECT_EQ(0x1E, reg_addr);
+
+
 	return true;
 }
 
