@@ -19,5 +19,14 @@ bool test_convert (void) {
     bool res;
     res = test_assemble_uint32 ();
     EXPECT_EQ (true, res);
+
+	uint8_t value;
+
+    EXPECT_TRUE(try_str2uint8 ("1", &value));
+    EXPECT_EQ(1, value);
+
+    EXPECT_TRUE(try_str2uint8 ("1 ", &value));
+    EXPECT_EQ(1, value);
+
     return true;
 }

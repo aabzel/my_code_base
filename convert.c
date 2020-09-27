@@ -223,14 +223,17 @@ bool try_strl2uint64_dec (const char u64_dec_str[], int32_t u64_dec_str_len, uin
             uint8_t u64l_dec_str_char = (uint8_t)u64_dec_str[u64l_dec_str_index];
             uint8_t u64l_dec_str_number = 0U;
             uint64_t u64l_dec_temp_value = 0U;
-
-            u64l_dec_success = try_dec_char_to_u8 (u64l_dec_str_char, &u64l_dec_str_number);
-            if (u64l_dec_success == true) {
-                u64l_dec_temp_value = (u64l_dec_result * 10U) + u64l_dec_str_number;
-                if (u64l_dec_temp_value < u64l_dec_result) {
-                    u64l_dec_success = false;
-                }
+            if (' '==u64l_dec_str_char) {
+            	break;
             }
+                u64l_dec_success = try_dec_char_to_u8 (u64l_dec_str_char, &u64l_dec_str_number);
+                if (u64l_dec_success == true) {
+                    u64l_dec_temp_value = (u64l_dec_result * 10U) + u64l_dec_str_number;
+                    if (u64l_dec_temp_value < u64l_dec_result) {
+                        u64l_dec_success = false;
+                    }
+                }
+
             if (u64l_dec_success == false) {
                 u64l_dec_result = 0U;
                 break;

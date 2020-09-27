@@ -273,13 +273,12 @@ int unit_test (void) {
 
     bool res = false;
 
-#ifdef TEST_CONVERT
     res = test_convert ();
     if (false == res) {
         printf ("test_convert error");
         return CONVERT_ERROR;
     }
-#endif
+
 
 #ifdef HAS_GENERATE_REG_PARSER_TEST
     res = test_generate_reg_parser( );

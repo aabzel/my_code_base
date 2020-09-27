@@ -43,21 +43,26 @@ static bool test_parse_bit_val(void) {
 	return true;
 }
 
-
 static bool test_parse_reg_addr(void) {
 	printf("\n%s()\n", __FUNCTION__);
     bool res =false;
     uint8_t reg_addr;
 	char cur_file_str[500];
-	strncpy(cur_file_str,"< REG=\"Basic Control\" Addr=0",sizeof(cur_file_str));
-    res = parse_reg_addr(cur_file_str, strlen(cur_file_str), &reg_addr);
+	strncpy(cur_file_str,"< REG=\"Basic Control\" Addr=0 t",sizeof(cur_file_str));
+    res = parse_uint8_after_prefix(cur_file_str, strlen(cur_file_str), &reg_addr, "Addr=");
     if(false==res){
     	printf ("\nparse_reg_name Error \n");
     	return false;
     }
     EXPECT_EQ(0, reg_addr);
 
-
+	strncpy(cur_file_str,"REG=\"Basic Status\" Addr=1 ",sizeof(cur_file_str));
+    res = parse_uint8_after_prefix(cur_file_str, strlen(cur_file_str), &reg_addr, "Addr=");
+    if(false==res){
+    	printf ("\nparse_reg_name Error \n");
+    	return false;
+    }
+    EXPECT_EQ(1, reg_addr);
 
 	return true;
 }
@@ -69,7 +74,7 @@ static bool test_parse_reg_name(void) {
 	char cur_file_str[500];
 	strncpy(cur_file_str,"< REG=\"Basic Control\" Addr=0",sizeof(cur_file_str));
 	char reg_nane[500];
-    res = parse_reg_name(cur_file_str, strlen(cur_file_str), reg_nane);
+    res = parse_text_after_prefix(cur_file_str, strlen(cur_file_str), reg_nane,"REG=\"");
     if(false==res){
     	printf ("\nparse_reg_name Error \n");
     	return false;
