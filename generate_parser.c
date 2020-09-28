@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "bit_utils.h"
 #include "convert.h"
 #include "str_ops.h"
 
@@ -36,13 +37,13 @@ bool parse_text_after_prefix(char *cur_file_str, int in_str_len,char *out_text, 
     return res;
 }
 
-bool parse_uint8_after_prefix(char *cur_file_str, int in_str_len, uint8_t *val, char *prefix) {
+bool parse_uint8_after_prefix(char *cur_file_str, int in_str_len, uint16_t *val, char *prefix) {
     bool res = false;
     int prefix_len = strlen(prefix);
     char *ptr = strstr(cur_file_str, prefix);
     if (ptr) {
     	printf("\n spot prefix [%s]", prefix);
-    	res = try_strl2uint8 ( ptr+prefix_len,4, val);
+    	res = try_strl2uint16 ( ptr+prefix_len,4, val);
     	if (false == res) {
     		printf("\n unable to parse uint8 in [%s] val %u \n", ptr+prefix_len, *val);
     	}
@@ -52,7 +53,7 @@ bool parse_uint8_after_prefix(char *cur_file_str, int in_str_len, uint8_t *val, 
 
 //< REG="Basic Control" Addr=0
 //TODO parse int after prefix
-bool parse_reg_addr(char *cur_file_str, int strlen, uint8_t *reg_addr){
+bool parse_reg_addr(char *cur_file_str, int str_len, uint8_t *reg_addr){
     bool res = false;
     char *ptr = strstr(cur_file_str,"Addr=");
     if (ptr) {
@@ -74,12 +75,36 @@ bool parse_bit_num(char *cur_file_str, int strlen, uint8_t *bit_num){
 	return res;
 }
 
+bool parse_bit_range(char *cur_file_str, int str_len, uint8_t *bit_old, uint8_t *bit_little, char *prefix) {
+	bool res = false;
+	char copy_string[500];
+	memset(copy_string, 0x00, sizeof(copy_string));
+	strcpy(copy_string,cur_file_str);
+	int prefix_len = strlen(prefix);
+	char *ptr = strstr(copy_string, prefix);
+    if (ptr) {
+    	res = try_strl2uint8 ( ptr+prefix_len, 2, bit_old);
+    	if (true == res) {
+    		ptr = strstr(ptr, ":");
+    		res = try_strl2uint8 ( ptr+1, 2, bit_little);
+    		if(false==res){
+    			printf("\n Unable to parse little bit");
+    		}
+
+    	}else{
+    		printf("\n Unable to parse old bit");
+    	}
+    }
+	return res;
+}
+
 //0.bit=13 val=0 RW |Speed Select | 10 Mbps
-bool parse_bit_val(char *cur_file_str, int strlen, uint8_t *bit_val){
+//TODO replase
+bool parse_bit_val(char *cur_file_str, int str_len, uint16_t *bit_val){
 	bool res = false;
 	char *ptr = strstr(cur_file_str,"val=");
     if (ptr) {
-    	res = try_strl2uint8 ( ptr+4, 1, bit_val);
+    	res = try_strl2uint16 ( ptr+4, 1, bit_val);
     	if(false==res){
     		printf("\n in str %s",ptr+4);
     	}
@@ -92,9 +117,10 @@ static bool compose_case( FILE *out_file_prt) {
 	if(out_file_prt){
 		res = true;
 	}
-	fprintf(out_file_prt, "\n\nstatic bool parse_ksz8081_reg (uint8_t reg_addr, FILE *out_file_prt) {");
-		fprintf(out_file_prt, "\n    bool res = false;");
-	    fprintf(out_file_prt, "\n    uint16_t reg16b_val = ksz8081RegMap[reg_addr].reg_val;");
+	fprintf(out_file_prt, "\n\nstatic bool parse_"CHIP_NAME"_reg (uint8_t reg_addr, FILE *out_file_prt) {");
+	fprintf(out_file_prt, "\n    bool res = false;");
+	fprintf(out_file_prt, "\n    uint16_t reg16b_val = "CHIP_NAME"RegMap[reg_addr].reg_val;");
+	fprintf(out_file_prt, "\n    fprintf (out_file_prt, \"\\n\\nReg: [%%s] reg_addr: 0x%%02x val: 0x%%04x 0b_%%s\", "CHIP_NAME"RegMap[reg_addr].reg_name, reg_addr, reg16b_val, utoa_bin24 (reg16b_val));");
 	fprintf(out_file_prt, "\n    switch ( reg_addr ) {");
     for (int i = 0; i < 255; i++) {
     	if ( true==RegMap[i].valid ) {
@@ -105,7 +131,7 @@ static bool compose_case( FILE *out_file_prt) {
     	}
     }
     fprintf(out_file_prt, "\n        default:");
-    fprintf(out_file_prt, "\n            fprintf (out_file_prt, \"\n Lack of parser for reg %%s addr 0x%%x val 0x%%x\", ksz8081_reg_2_name[reg_addr], reg_addr, reg16_val);");
+    fprintf(out_file_prt, "\n            fprintf (out_file_prt, \"\\n Lack of parser for reg %%s addr 0x%%x val 0x%%x\", "CHIP_NAME"_reg_2_name[reg_addr], reg_addr, reg16b_val);");
     fprintf(out_file_prt, "\n        break;");
     fprintf(out_file_prt, "\n    }");
     fprintf(out_file_prt, "\n    return res;");
@@ -139,7 +165,7 @@ bool generate_reg_parser(char *in_file_name, char *out_file_name) {
 		//int line = 0;
 		while (NULL != fgets(cur_file_str, sizeof(cur_file_str), inFilePrt)) {
 			memset(reg_name, 0, sizeof(reg_name));
-        	uint8_t reg_addr=0xFF;
+        	uint16_t reg_addr = 0xFF;
             bool res_name = parse_text_after_prefix(cur_file_str, strlen(cur_file_str), reg_name,"REG=\"");
             bool res_addr = parse_uint8_after_prefix(cur_file_str, strlen(cur_file_str), &reg_addr,"Addr=");
             if((true==res_addr)  && (true==res_name)) {
@@ -166,22 +192,30 @@ bool generate_reg_parser(char *in_file_name, char *out_file_name) {
                 	printf("\n Unable to parse register addr in [%s]",cur_file_str);
             	}
             }
-            uint8_t bit_num = 0;
-            uint8_t bit_val = 0;
+            uint8_t bit_num = 0, bit_old=0, bit_little=0;
+            uint16_t bit_val = 0;
             char bit_type[10];
             char bit_text[1000];
+            bool res_bit_range = parse_bit_range(cur_file_str, sizeof(cur_file_str), &bit_old, &bit_little,"range=");
             bool res_bit_num = parse_bit_num(cur_file_str, sizeof(cur_file_str),  &bit_num);
             bool res_bit_val = parse_bit_val(cur_file_str, sizeof(cur_file_str), &bit_val);
             bool res_bit_type = parse_text_after_prefix(cur_file_str, sizeof(cur_file_str), bit_type,"type=\"");
             bool res_bit_text = parse_text_after_prefix(cur_file_str, sizeof(cur_file_str), bit_text,"text=\"");
             if ((res_bit_type)&&(res_bit_text)&&(true==res_bit_num)  && (true==res_bit_val) && (1==bit_val)) {
             	fprintf(out_file_prt, "\n    if (reg16b_val & (1<<%u)) {", bit_num);
-            	fprintf(out_file_prt, "\n        fprintf (out_file_prt,\"\\n reg %%02u bit%02u:1  %s %s\", reg_addr);", bit_num ,bit_type,bit_text);
+            	fprintf(out_file_prt, "\n        fprintf (out_file_prt,\"\\n    reg %%02u bit %2u:1  %s %s\", reg_addr);", bit_num ,bit_type,bit_text);
             	fprintf(out_file_prt, "\n    }");
             }
             if ((res_bit_type)&&(res_bit_text)&&(true==res_bit_num)  && (true==res_bit_val) && (0==bit_val)) {
             	fprintf(out_file_prt, "\n    if (0==(reg16b_val & (1<<%u))) {", bit_num);
-            	fprintf(out_file_prt, "\n        fprintf (out_file_prt,\"\\n reg %%02u bit%02u:0  %s %s\", reg_addr);", bit_num ,bit_type,bit_text);
+            	fprintf(out_file_prt, "\n        fprintf (out_file_prt,\"\\n    reg %%02u bit %2u:0  %s %s\", reg_addr);", bit_num ,bit_type,bit_text);
+            	fprintf(out_file_prt, "\n    }");
+            }
+            if (res_bit_range && res_bit_text &&  res_bit_val && res_bit_type) {
+            	uint8_t mask_lengt = bit_old-bit_little + 1;
+            	uint16_t mask16b =calc_16_mask(mask_lengt);
+            	fprintf(out_file_prt, "\n    if(%u==(%u & (reg16b_val>>%u))){",bit_val,mask16b,bit_little);
+            	fprintf (out_file_prt,"\n        fprintf (out_file_prt,\"\\n    reg %%02u bit %u-%u:%u %s %s\"); ",bit_old,bit_little,bit_val,bit_type, bit_text);
             	fprintf(out_file_prt, "\n    }");
             }
 

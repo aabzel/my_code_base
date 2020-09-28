@@ -114,6 +114,7 @@ typedef enum {
     STR_OPS_ERROR = 96,
     TEST_MK_2_DOT_ERROR = 97,
 	GENERATE_REG_PARSER_ERROR = 98,
+	BIT_UTILS_ERROR = 99,
     NUM_ERROR = 100
 } utError_t;
 

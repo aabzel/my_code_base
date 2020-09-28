@@ -4,7 +4,9 @@
 
 #include "algorithms.h"
 #include "algorithms_test.h"
+#include "bit_utils.h"
 #include "test_mk_2_dot.h"
+
 
 //#include "amount_of_uio_states.h"
 #ifdef HAS_ARRAY
@@ -269,16 +271,45 @@ static bool test_parse_phy_reg_vals (void) {
 }
 #endif
 
-int unit_test (void) {
 
+static bool test_bit_utils (void) {
+	EXPECT_EQ(MASK_0_BITS,calc_16_mask (0));
+	EXPECT_EQ(MASK_1_BITS,calc_16_mask (1));
+	EXPECT_EQ(MASK_2_BITS,calc_16_mask (2));
+	EXPECT_EQ(MASK_3_BITS,calc_16_mask (3));
+	EXPECT_EQ(MASK_4_BITS,calc_16_mask (4));
+	EXPECT_EQ(MASK_5_BITS,calc_16_mask (5));
+	EXPECT_EQ(MASK_6_BITS,calc_16_mask (6));
+	EXPECT_EQ(MASK_7_BITS,calc_16_mask (7));
+	EXPECT_EQ(MASK_8_BITS,calc_16_mask (8));
+	EXPECT_EQ(MASK_9_BITS,calc_16_mask (9));
+	EXPECT_EQ(MASK_10_BITS,calc_16_mask (10));
+	EXPECT_EQ(MASK_11_BITS,calc_16_mask (11));
+	EXPECT_EQ(MASK_12_BITS,calc_16_mask (12));
+	EXPECT_EQ(MASK_13_BITS,calc_16_mask (13));
+	EXPECT_EQ(MASK_14_BITS,calc_16_mask (14));
+	EXPECT_EQ(MASK_15_BITS,calc_16_mask (15));
+	EXPECT_EQ(MASK_16_BITS,calc_16_mask (16));
+	return true;
+}
+
+
+int unit_test (void) {
     bool res = false;
 
+    res = test_bit_utils ();
+    if (false == res) {
+        printf ("test_bit_utils error");
+        return BIT_UTILS_ERROR;
+    }
+
+#ifdef TEST_CONVERT
     res = test_convert ();
     if (false == res) {
         printf ("test_convert error");
         return CONVERT_ERROR;
     }
-
+#endif
 
 #ifdef HAS_GENERATE_REG_PARSER_TEST
     res = test_generate_reg_parser( );

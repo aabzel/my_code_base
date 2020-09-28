@@ -1,20 +1,297 @@
-< REG="Basic Control" Addr=0
-0 bit=15 val=1 RW/SC| Reset | Software reset
-0.bit=15 val=0 RW/SC| Reset | Normal operation
-0.bit=14 val=1 RW |Loopback | Loopback mode
-0.bit=14 val=0 RW |Loopback | Normal operation
-0.bit=13 val=1 RW |Speed Select | 100 Mbps
-0.bit=13 val=0 RW |Speed Select | 10 Mbps
-0.bit=12 val=1 RW |Auto-Negotiation Enable | Enable auto-negotiation process
-0.bit=12 val=0 RW |Auto-Negotiation Enable | Disable auto-negotiation process
-0.bit=11 val=1 RW |Power-Down | Power-down mode
-0.bit=11 val=0 RW |Power-Down | Normal operation
-0.bit=10 val=1 RW |Isolate | Electrical isolation of PHY from MII
-0.bit=10 val=0 RW |Isolate | Normal operation
-0.bit=09 val=1 RW/SC| Restart | Auto-Negotiation  Restart auto-negotiation process
-0.bit=09 val=0 RW/SC| Restart | Auto-Negotiation Normal operation.
-0.bit=08 val=1 RW |Duplex Mode | Full-duplex
-0.bit=08 val=0 RW |Duplex Mode | Half-duplex
-0.bit=07 val=1 RW |Collision | Test Enable COL test
-0.bit=07 val=0 RW |Collision | Test Disable COL test
+< REG="PHY Control 2"  Addr=0x1F t
+bit=15 val=1 type="RW" text="HP Auto MDI/MDI-X mode"
+bit=15 val=0 type="RW" text="Microchip Auto MDI/MDI-X mode"
+bit=14 val=1 type="RW" text="MDI-X mode Transmit on RXP, RXM (Pins 10, 9) and Receive on TXP, TXM (Pins 12, 11)"
+bit=14 val=0 type="RW" text="MDI mode Transmit on TXP, TXM (Pins 12, 11) and Receive on RXP, RXM (Pins 10, 9)"
+bit=13 val=1 type="RW" text="Disable Auto MDI/MDI-X"
+bit=13 val=0 type="RW" text="Enable Auto MDI/MDI-X"
+bit=12 val=1 type="RW" text="Reserved"
+bit=12 val=0 type="RW" text="Reserved"
+bit=11 val=1 type="RW" text="Force link pass"
+bit=11 val=0 type="RW" text="Normal link operation"
+bit=10 val=1 type="RW" text="Enable power saving"
+bit=10 val=0 type="RW" text="Disable power saving"
+bit=09 val=1 type="RW" text="Interrupt pin active high"
+bit=09 val=0 type="RW" text="Interrupt pin active low"
+bit=08 val=1 type="RW" text="Enable jabber counter"
+bit=08 val=0 type="RW" text="Disable jabber counter"
+bit=03 val=1 type="RW" text="Disable transmitter"
+bit=03 val=0 type="RW" text="Enable transmitter"
+bit=02 val=1 type="RW" text="Remote (analog) loopback is enabled"
+bit=02 val=0 type="RW" text="Normal mode"
+bit=01 val=1 type="RW" text="Enable SQE test"
+bit=01 val=0 type="RW" text="Disable SQE test"
+bit=00 val=1 type="RW" text="Disable scrambler"
+bit=00 val=0 type="RW" text="Enable scrambler" 
 >
+
+
+
+< REG="Basic Control"  Addr=0 t
+ bit=15 val=1 type="RW/SC" name="Reset"         text="Software reset"
+ bit=15 val=0 type="RW/SC" name="Reset"         text="Normal operation"
+ bit=14 val=1 type="RW"    name="Loopback"      text="Loopback mode"
+ bit=14 val=0 type="RW"    name="Loopback"      text="Normal operation"
+ bit=13 val=1 type="RW"    name="Speed Select"  text="100 Mbps"
+ bit=13 val=0 type="RW"    name="Speed Select"  text="10 Mbps"
+ bit=12 val=1 type="RW"    name="Auto-Negotiation Enable"  text="Enable auto-negotiation process"
+ bit=12 val=0 type="RW"    name="Auto-Negotiation Enable"  text="Disable auto-negotiation process"
+ bit=11 val=1 type="RW"    name="Power-Down"    text="Power-down mode"
+ bit=11 val=0 type="RW"    name="Power-Down"    text="Normal operation"
+ bit=10 val=1 type="RW"    name="Isolate"       text="Electrical isolation of PHY from MII"
+ bit=10 val=0 type="RW"    name="Isolate"       text="Normal operation"
+ bit=09 val=1 type="RW/SC" name="Restart"       text="Auto-Negotiation  Restart auto-negotiation process"
+ bit=09 val=0 type="RW/SC" name="Restart"       text="Auto-Negotiation Normal operation"
+ bit=08 val=1 type="RW"    name="Duplex Mode"   text="Full-duplex"
+ bit=08 val=0 type="RW"    name="Duplex Mode"   text="Half-duplex"
+ bit=07 val=1 type="RW"    name="Collision"     text="Test Enable COL test"
+ bit=07 val=0 type="RW"    name="Collision"     text="Test Disable COL test"
+>
+
+< REG="Basic Status" Addr=1 t
+bit=15 val=1 type="RO" text="T4 capable"
+bit=15 val=0 type="RO" text="Not T4 capable"
+bit=14 val=1 type="RO" text="Capable of 100 Mbps full-duplex"
+bit=14 val=0 type="RO" text="Not capable of 100 Mbps full-duplex"
+bit=13 val=1 type="RO" text="Capable of 100 Mbps half-duplex"
+bit=13 val=0 type="RO" text="Not capable of 100 Mbps half-duplex"
+bit=12 val=1 type="RO" text="Capable of 10 Mbps full-duplex"
+bit=12 val=0 type="RO" text="Not capable of 10 Mbps full-duplex"
+bit=11 val=1 type="RO" text="Capable of 10 Mbps half-duplex"
+bit=11 val=0 type="RO" text="Not capable of 10 Mbps half-duplex"
+bit=06 val=1 type="RO" text="Preamble suppression"
+bit=06 val=0 type="RO" text="Normal preamble"
+bit=05 val=1 type="RO" text="Auto-negotiation process completed"
+bit=05 val=0 type="RO" text="Auto-negotiation process not completed"
+bit=04 val=1 type="RO/LH" text="Remote fault"
+bit=04 val=0 type="RO/LH" text="No remote fault"
+bit=03 val=1 type="RO" text="Can perform auto-negotiation"
+bit=03 val=0 type="RO" text="Cannot perform auto-negotiation"
+bit=02 val=1 type="RO/LH" text="Link is up"
+bit=02 val=0 type="RO/LH" text="Link is down"
+bit=01 val=1 type="RO/LH" text="Jabber detected"
+bit=01 val=0 type="RO/LH" text="Jabber not detected (default is low)"
+bit=00 val=1 type="RO" text="Supports extended capability registers"
+bit=00 val=0 type="RO" text="do not supports extended capability registers"
+
+>
+
+
+
+< REG="Auto-Negotiation Advertisement" Addr=4 t
+ bit=15 val=1 type="RW" text="Next page capable"
+ bit=15 val=0 type="RW" text="No next page capability"
+ bit=13 val=1 type="RW" text="Remote fault supported"
+ bit=13 val=0 type="RW" text="No remote fault"
+ bit=09 val=1 type="RO" text="T4 capable"
+ bit=09 val=0 type="RO" text="No T4 capability"
+ bit=08 val=1 type="RW" text="100 Mbps full-duplex capable"
+ bit=08 val=0 type="RW" text="No 100 Mbps full-duplex capability"
+ bit=07 val=1 type="RW" text="100 Mbps half-duplex capable"
+ bit=07 val=0 type="RW" text="No 100 Mbps half-duplex capability"
+ bit=06 val=1 type="RW" text="10 Mbps full-duplex capable"
+ bit=06 val=0 type="RW" text="No 10 Mbps full-duplex capability"
+ bit=05 val=1 type="RW" text="10 Mbps half-duplex capable"
+ bit=05 val=0 type="RW" text="No 10 Mbps half-duplex capability"
+>
+
+< REG="Auto-Negotiation Link Partner Ability"  Addr=5  t 
+bit=15 val=1 type="RO" text="Next page capable"  
+bit=15 val=0 type="RO" text="No next page capability"  
+bit=14 val=1 type="RO" text="Link code word received from partner "
+bit=14 val=0 type="RO" text="Link code word not yet received "
+bit=13 val=1 type="RO" text="Remote fault detected" 
+range=11:10 val=0 type="RO"  text="No pause"
+range=11:10 val=1 type="RO"  text="Symmetric pause"
+range=11:10 val=2 type="RO"  text="Asymmetric pause"
+range=11:10 val=3 type="RO"  text="Asymmetric and symmetric pause"
+bit=13 val=0 type="RO" text="No remote fault" 
+bit=09 val=1 type="RO" text="T4 capable"
+bit=09 val=0 type="RO" text="No T4 capability"
+bit=08 val=1 type="RO" text="100 Mbps full-duplex capable"
+bit=08 val=0 type="RO" text="No 100 Mbps full-duplex capability"
+bit=07 val=1 type="RO" text="100 Mbps half-duplex capable"
+bit=07 val=0 type="RO" text="No 100 Mbps half-duplex capability"
+bit=06 val=1 type="RO" text="10 Mbps full-duplex capable"
+bit=06 val=0 type="RO" text="No 10 Mbps full-duplex capability"
+bit=05 val=1 type="RO" text="10 Mbps half-duplex capable"
+bit=05 val=0 type="RO" text="No 10 Mbps half-duplex capability"
+> 
+
+< REG="Auto-Negotiation Expansion"  Addr=6  t
+bit=04 val=1  type="RO/LH" text="Fault detected by parallel detection"
+bit=04 val=0  type="RO/LH" text="No fault detected by parallel detection"
+bit=03 val=1  type="RO" text="Link partner has next page capability"
+bit=03 val=0  type="RO" text="Link partner does not have next page capability"
+bit=02 val=1  type="RO" text="Local device has next page capability"
+bit=02 val=0  type="RO" text="Local device does not have next page capability"
+bit=01 val=1  type="RO/LH" text="New page received"
+bit=01 val=0  type="RO/LH" text="New page not received yet"
+bit=00 val=1  type="RO" text="Link partner has auto-negotiation capability"
+bit=00 val=0  type="RO" text="Link partner does not have auto-negotiation capability"
+>
+
+< REG="Auto-Negotiation Next Page"  Addr=7  t
+bit=15 val=1  type="RW" text="Additional next pages will follow"
+bit=15 val=0  type="RW" text="Last page"
+bit=14 val=1  type="RO" text="Reserved"
+bit=14 val=0  type="RO" text="Reserved"
+bit=13 val=1  type="RW" text="Message page"
+bit=13 val=0  type="RW" text="Unformatted page"
+bit=12 val=1  type="RW" text="Will comply with message"
+bit=12 val=0  type="RW" text="Cannot comply with message"
+bit=11 val=1  type="RO" text="Previous value of the transmitted link code word equaled logic 1"
+bit=11 val=0  type="RO" text="Previous value of the transmitted link code word equaled logic 0"
+>
+
+< REG="Link Partner Next Page Ability"  Addr=8 r
+bit=15 val=1  type="RO" text="Additional next pages will follow"
+bit=15 val=0  type="RO" text="Last page"
+bit=14 val=1  type="RO" text="Successful receipt of link word"
+bit=14 val=0  type="RO" text="No successful receipt of link word"
+bit=13 val=1  type="RO" text="Message page"
+bit=13 val=0  type="RO" text="Unformatted page"
+bit=12 val=1  type="RO" text="Can act on the information"
+bit=12 val=0  type="RO" text="Cannot act on the information"
+bit=11 val=1  type="RO" text="Previous value of transmitted link code word equal to logic 0"
+bit=11 val=0  type="RO" text="Previous value of transmitted link code word equal to logic 1"
+>
+
+< REG="Digital Reserved Control"  Addr=0x10  t
+bit=04 val=1  type="RW" text="Turn PLL off automatically in EDPD mode"
+bit=04 val=0  type="RW" text="Keep PLL on in EDPD mode"
+>
+
+< REG="AFE Control 1"  Addr=0x11  t
+bit=05 val=1 type="RW"  text="Slow-oscillator mode Enable"
+bit=05 val=0 type="RW"  text="Slow-oscillator mode Disable"
+>
+
+< REG="Operation Mode Strap Override"  Addr=0x16  t
+bit=15 val=1 type="RW" text="Normal operation"
+bit=15 val=0 type="RW" text="Factory test mode"
+bit=09 val=1 type="RW" text="Override strap-in for B-CAST_OFF"
+bit=09 val=0 type="RW" text="Unclear"
+bit=08 val=1 type="RW" text="Reserved"
+bit=08 val=0 type="RW" text="Reserved"
+bit=07 val=1 type="RW" text="Override strap-in for MII back-to-back mode"
+bit=07 val=0 type="RW" text="Unclear"
+bit=05 val=1 type="RW" text=" Override strap-in for NAND tree mode"
+bit=05 val=0 type="RW" text="Unclear"
+bit=00 val=1 type="RW" text="Override strap-in for MII mode"
+bit=00 val=0 type="RW" 
+>
+
+< REG="Operation Mode Strap Status"  Addr=0x17 t
+bit=09 val=1 type="RO" text="Strap to B-CAST_OFF"
+bit=09 val=0 type="RO" text="unclear"
+bit=07 val=1 type="RO" text="Strap to MII back-to-back mode"
+bit=07 val=0 type="RO" text="unclear"
+bit=05 val=1 type="RO" text="Strap to NAND tree mode"
+bit=05 val=0 type="RO" text="unclear"
+bit=00 val=1 type="RO" text="Strap to MII mode"
+bit=00 val=0 type="RO" text="unclear"
+> 
+
+< REG="Expanded Control"  Addr=0x18 t
+bit=11 val=1 type="RW" text="Energy-detect power-down mode Disable"
+bit=11 val=0 type="RW" text="Energy-detect power-down mode Enable"
+bit=10 val=1 type="RW" text="MII output is random latency"
+bit=10 val=0 type="RW" text="MII output is fixed latency"
+bit=06 val=1 type="RW" text="Restore received preamble to MII output"
+bit=06 val=0 type="RW" text="Remove all seven bytes of preamble before"
+>
+< REG="Interrupt Control/Status"  Addr=0x1B t
+bit=15 val=1 type="RW"  text="Enable jabber interrupt"
+bit=15 val=0  type="RW" text="Disable jabber interrupt"
+bit=14 val=1  type="RW" text="Enable receive error interrupt"
+bit=14 val=0  type="RW" text="Disable receive error interrupt"
+bit=13 val=1  type="RW" text="Enable page received interrupt"
+bit=13 val=0  type="RW" text="Disable page received interrupt"
+bit=12 val=1  type="RW" text="Enable parallel detect fault interrupt"
+bit=12 val=0  type="RW" text="Disable parallel detect fault interrupt"
+bit=11 val=1  type="RW" text="Enable link partner acknowledge interrupt"
+bit=11 val=0  type="RW" text="Disable link partner acknowledge interrupt"
+bit=10 val=1  type="RW" text="Enable link-down interrupt"
+bit=10 val=0  type="RW" text="Disable link-down interrupt"
+bit=09 val=1  type="RW" text="Enable remote fault interrupt"
+bit=09 val=0  type="RW" text="Disable remote fault interrupt"
+bit=08 val=1  type="RW" text="Enable link-up interrupt"
+bit=08 val=0  type="RW" text="Disable link-up interrupt"
+bit=07 val=1 type="RO/SC" text="Jabber occurred"
+bit=07 val=0 type="RO/SC" text="Jabber did not occur"
+bit=06 val=1 type="RO/SC" text="Receive error occurred"
+bit=06 val=0 type="RO/SC" text="Receive error did not occur"
+bit=05 val=1 type="RO/SC" text="Page receive occurred"
+bit=05 val=0 type="RO/SC" text="Page receive did not occur"
+bit=04 val=1 type="RO/SC" text="Parallel detect fault occurred"
+bit=04 val=0 type="RO/SC" text="Parallel detect fault did not occur"
+bit=03 val=1 type="RO/SC" text="Link partner acknowledge occurred"
+bit=03 val=0 type="RO/SC" text="Link partner acknowledge did not occur"
+bit=02 val=1 type="RO/SC" text="Link-down occurred"
+bit=02 val=0 type="RO/SC" text="Link-down did not occur"
+bit=01 val=1 type="RO/SC" text="Remote fault occurred"
+bit=01 val=0 type="RO/SC" text="Remote fault did not occur"
+bit=00 val=1 type="RO/SC" text="Link-up occurred"
+bit=00 val=0 type="RO/SC" text="Link-up did not occur"
+>
+
+< REG="LinkMD Control/Status"  Addr=0x1D t
+bit=15 val=1 type="RW/SC" text="Enable cable diagnostic test."
+bit=15 val=0 type="RW/SC" text="Indicates cable diagnostic test (if enabled) has completed and the status information is valid for read."
+bit=12 val=1 type="RO" text="Short cable (<10 meter) has been detected by LinkMD"
+bit=12 val=0 type="RO" text="unclear cable"
+>
+
+< REG="PHY Control 1"  Addr=0x1E t
+bit=09 val=1 type="RO" text="Flow control capable"
+bit=09 val=0 type="RO" text="No flow control capability"
+bit=08 val=1 type="RO" text="Link is up"
+bit=08 val=0 type="RO" text="Link is down"
+bit=07 val=1 type="RO" text="Polarity is reversed"
+bit=07 val=0 type="RO" text="Polarity is not reversed"
+bit=06 val=1 type="RO" text="Reserved"
+bit=06 val=0 type="RO" text="Reserved"
+bit=05 val=1 type="RO" text="MDI-X"
+bit=05 val=0 type="RO" text="MDI"
+bit=04 val=1 type="RO" text="Signal present on receive differential pair" 
+bit=04 val=0 type="RO" text="No signal detected on receive differential pair"
+bit=03 val=1 type="RW" text="PHY in isolate mode"
+bit=03 val=0 type="RW" text="PHY in normal operation"
+>
+
+< REG="PHY Control 2"  Addr=0x1F t
+bit=15 val=1 type="RW" text="HP Auto MDI/MDI-X mode"
+bit=15 val=0 type="RW" text="Microchip Auto MDI/MDI-X mode"
+bit=14 val=1 type="RW" text="MDI-X mode Transmit on RXP, RXM (Pins 10, 9) and Receive on TXP, TXM (Pins 12, 11)"
+bit=14 val=0 type="RW" text="MDI mode Transmit on TXP, TXM (Pins 12, 11) and Receive on RXP, RXM (Pins 10, 9)"
+bit=13 val=1 type="RW" text="Disable Auto MDI/MDI-X"
+bit=13 val=0 type="RW" text="Enable Auto MDI/MDI-X"
+bit=12 val=1 type="RW" text="Reserved"
+bit=12 val=0 type="RW" text="Reserved"
+bit=11 val=1 type="RW" text="Force link pass"
+bit=11 val=0 type="RW" text="Normal link operation"
+bit=10 val=1 type="RW" text="Enable power saving"
+bit=10 val=0 type="RW" text="Disable power saving"
+bit=09 val=1 type="RW" text="Interrupt pin active high"
+bit=09 val=0 type="RW" text="Interrupt pin active low"
+bit=08 val=1 type="RW" text="Enable jabber counter"
+bit=08 val=0 type="RW" text="Disable jabber counter"
+bit=03 val=1 type="RW" text="Disable transmitter"
+bit=03 val=0 type="RW" text="Enable transmitter"
+bit=02 val=1 type="RW" text="Remote (analog) loopback is enabled"
+bit=02 val=0 type="RW" text="Normal mode"
+bit=01 val=1 type="RW" text="Enable SQE test"
+bit=01 val=0 type="RW" text="Disable SQE test"
+bit=00 val=1 type="RW" text="Disable scrambler"
+bit=00 val=0 type="RW" text="Enable scrambler" 
+>
+
+
+
+
+
+
+
+
+

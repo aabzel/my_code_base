@@ -23,7 +23,7 @@ static bool test_parse_bit(void) {
 static bool test_parse_bit_val(void) {
 	char cur_file_str[500];
 	bool res =false;
-	uint8_t bit_val;
+	uint16_t bit_val;
 	strncpy(cur_file_str,"0.bit=11 val=0 RW |Power-Down | Normal operation",sizeof(cur_file_str));
 	res =  parse_bit_val(cur_file_str, strlen(cur_file_str), &bit_val);
     if(false==res){
@@ -46,7 +46,7 @@ static bool test_parse_bit_val(void) {
 static bool test_parse_reg_addr(void) {
 	printf("\n%s()\n", __FUNCTION__);
     bool res =false;
-    uint8_t reg_addr;
+    uint16_t reg_addr;
 	char cur_file_str[500];
 	strncpy(cur_file_str,"< REG=\"Basic Control\" Addr=0 t",sizeof(cur_file_str));
     res = parse_uint8_after_prefix(cur_file_str, strlen(cur_file_str), &reg_addr, "Addr=");
@@ -76,6 +76,17 @@ static bool test_parse_reg_addr(void) {
 	return true;
 }
 
+static bool test_parse_bit_range(void) {
+	printf("\n%s()\n", __FUNCTION__);
+	uint8_t bit_old;
+	uint8_t bit_little;
+	char cur_file_str[500];
+	strncpy(cur_file_str,"range=11:10 val=2 type=\"RO\"  text=\"Asymmetric pause\"",sizeof(cur_file_str));
+	EXPECT_TRUE( parse_bit_range(cur_file_str, strlen(cur_file_str), &bit_old, &bit_little,"range="));
+	EXPECT_EQ(11, bit_old);
+	EXPECT_EQ(10, bit_little);
+	return true;
+}
 
 static bool test_parse_reg_name(void) {
 	printf("\n%s()\n", __FUNCTION__);
@@ -121,5 +132,11 @@ bool test_generate_reg_parser(void) {
 		return false;
 	}
     
+    res = test_parse_bit_range() ;
+    if (false==res) {
+      	printf("\n Error test_parse_bit_range\n");
+   		return false;
+   	}
+
 	return true;
 }
