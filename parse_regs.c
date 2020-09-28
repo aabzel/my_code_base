@@ -17,6 +17,7 @@ bool parse_regs_file (char *in_file_name, char *out_file_name) {
     printf ("\n%s()\n", __FUNCTION__);
     bool res = false;
     char *ch;
+#ifdef HAS_TJA1101
     ch = strstr (in_file_name, "tja1101");
     if (NULL != ch) {
         res = parse_tja1101_regs_file (in_file_name, out_file_name);
@@ -24,7 +25,10 @@ bool parse_regs_file (char *in_file_name, char *out_file_name) {
             printf ("\nError in parsing tja1101 register blob");
         }
     }
+#endif
 
+
+#ifdef HAS_TIC12400
     ch = strstr (in_file_name, "tic12400");
     if (NULL != ch) {
         res = parse_tic12400_regs_file (in_file_name, out_file_name);
@@ -32,6 +36,8 @@ bool parse_regs_file (char *in_file_name, char *out_file_name) {
             printf ("\nError in parsing tic12400 register blob");
         }
     }
+#endif
+
 #ifdef HAS_KSZ8081
     ch = strstr (in_file_name, "ksz8081");
     if (NULL != ch) {

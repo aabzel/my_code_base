@@ -52,7 +52,6 @@ bool try_strl2int64_dec (const char s64_dec_str[], int32_t s64_dec_str_len, int6
 bool try_strl2int32_dec (const char s32_dec_str[], int32_t s32_dec_str_len, int32_t *const s32_dec_value);
 int find_max_sec (char *string, char sripChar);
 int lengthOfLongestSubstring (char *s);
-int replace_char (char *str, char orig, char rep);
 
 char *mac_to_str (uint8_t *mac_addr);
 char *ip_to_str (uint8_t *ip_addr);
@@ -64,7 +63,7 @@ bool is_diff_chars (char *inStr, uint32_t len);
 bool is_number (char letter);
 bool is_valid_ip (char *inIpStr, unsigned char *outOctets);
 
-bool reblace_substring (char *inOutStr, char *orig, char *rep);
+bool replace_substring (char *inOutStr, char *orig, char *rep);
 uint16_t count_substring (char *inStr, char *substr);
 bool try_dec_char_to_u8 (uint8_t dec_char, uint8_t *dec_char_to_u8_value);
 void reverse_string (char *inOutStr);

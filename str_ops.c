@@ -992,7 +992,7 @@ int replace_char (char *out_str, char orig, char rep) {
 // qwe ZXC uioo
 // concatenate
 // qweZXCuioo
-bool reblace_substring (char *inOutStr, char *orig, char *rep) {
+bool replace_substring (char *inOutStr, char *orig, char *rep) {
     bool res = false;
     int textLen = strlen (inOutStr);
     int pattLen = strlen (orig);

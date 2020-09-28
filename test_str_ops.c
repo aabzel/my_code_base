@@ -371,28 +371,32 @@ bool test_Valid_Parentheses(void) {
 static bool test_replace_substr (void) {
     char text[100];
 
+    strncpy (text, "ksz8081_reg_parser.c", sizeof (text));
+    EXPECT_TRUE (replace_substring (text, ".c", ".h"));
+    EXPECT_EQ_STR (text, "ksz8081_reg_parser.h");
+
     strncpy (text, "aabzelaabzelaabzelaabzel", sizeof (text));
-    EXPECT_TRUE (reblace_substring (text, "bz", "MOS"));
+    EXPECT_TRUE (replace_substring (text, "bz", "MOS"));
     EXPECT_EQ_STR (text, "aaMOSelaaMOSelaaMOSelaaMOSel");
 
     strncpy (text, "aabzelaabzel", sizeof (text));
-    EXPECT_TRUE (reblace_substring (text, "bz", "MOS"));
+    EXPECT_TRUE (replace_substring (text, "bz", "MOS"));
     EXPECT_EQ_STR (text, "aaMOSelaaMOSel");
 
     strncpy (text, "aabzel", sizeof (text));
-    EXPECT_FALSE (reblace_substring (text, "spb", "mos"));
+    EXPECT_FALSE (replace_substring (text, "spb", "mos"));
     EXPECT_EQ_STR (text, "aabzel");
 
     strncpy (text, "qwertyuioo", sizeof (text));
-    EXPECT_TRUE (reblace_substring (text, "rty", "ZXC"));
+    EXPECT_TRUE (replace_substring (text, "rty", "ZXC"));
     EXPECT_EQ_STR (text, "qweZXCuioo");
 
     strncpy (text, "qwertyuiop", sizeof (text));
-    EXPECT_TRUE (reblace_substring (text, "qwe", "ASD"));
+    EXPECT_TRUE (replace_substring (text, "qwe", "ASD"));
     EXPECT_EQ_STR (text, "ASDrtyuiop");
 
     strncpy (text, "asdfghjkl", sizeof (text));
-    EXPECT_TRUE (reblace_substring (text, "jkl", "BNM"));
+    EXPECT_TRUE (replace_substring (text, "jkl", "BNM"));
     EXPECT_EQ_STR (text, "asdfghBNM");
 
     return true;
