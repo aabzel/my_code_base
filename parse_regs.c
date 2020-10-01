@@ -1,7 +1,13 @@
 #include "parse_regs.h"
 
+#ifdef HAS_TIC12400
 #include "parse_tic12400_regs.h"
+#endif
+
+#ifdef HAS_TJA1101
 #include "parse_tja1101_regs.h"
+#endif
+
 #ifdef HAS_KSZ8081
 #include "parse_ksz8081_regs.h"
 #endif
@@ -26,7 +32,6 @@ bool parse_regs_file (char *in_file_name, char *out_file_name) {
         }
     }
 #endif
-
 
 #ifdef HAS_TIC12400
     ch = strstr (in_file_name, "tic12400");

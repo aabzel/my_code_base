@@ -1,29 +1,4 @@
-< REG="PHY Control 2"  Addr=0x1F t
-bit=15 val=1 type="RW" text="HP Auto MDI/MDI-X mode"
-bit=15 val=0 type="RW" text="Microchip Auto MDI/MDI-X mode"
-bit=14 val=1 type="RW" text="MDI-X mode Transmit on RXP, RXM (Pins 10, 9) and Receive on TXP, TXM (Pins 12, 11)"
-bit=14 val=0 type="RW" text="MDI mode Transmit on TXP, TXM (Pins 12, 11) and Receive on RXP, RXM (Pins 10, 9)"
-bit=13 val=1 type="RW" text="Disable Auto MDI/MDI-X"
-bit=13 val=0 type="RW" text="Enable Auto MDI/MDI-X"
-bit=12 val=1 type="RW" text="Reserved"
-bit=12 val=0 type="RW" text="Reserved"
-bit=11 val=1 type="RW" text="Force link pass"
-bit=11 val=0 type="RW" text="Normal link operation"
-bit=10 val=1 type="RW" text="Enable power saving"
-bit=10 val=0 type="RW" text="Disable power saving"
-bit=09 val=1 type="RW" text="Interrupt pin active high"
-bit=09 val=0 type="RW" text="Interrupt pin active low"
-bit=08 val=1 type="RW" text="Enable jabber counter"
-bit=08 val=0 type="RW" text="Disable jabber counter"
-bit=03 val=1 type="RW" text="Disable transmitter"
-bit=03 val=0 type="RW" text="Enable transmitter"
-bit=02 val=1 type="RW" text="Remote (analog) loopback is enabled"
-bit=02 val=0 type="RW" text="Normal mode"
-bit=01 val=1 type="RW" text="Enable SQE test"
-bit=01 val=0 type="RW" text="Disable SQE test"
-bit=00 val=1 type="RW" text="Disable scrambler"
-bit=00 val=0 type="RW" text="Enable scrambler" 
->
+
 
 
 
@@ -46,6 +21,7 @@ bit=00 val=0 type="RW" text="Enable scrambler"
  bit=08 val=0 type="RW"    name="Duplex Mode"   text="Half-duplex"
  bit=07 val=1 type="RW"    name="Collision"     text="Test Enable COL test"
  bit=07 val=0 type="RW"    name="Collision"     text="Test Disable COL test"
+ range=06:00 type="RO" text="Reserved"
 >
 
 < REG="Basic Status" Addr=1 t
@@ -59,6 +35,7 @@ bit=12 val=1 type="RO" text="Capable of 10 Mbps full-duplex"
 bit=12 val=0 type="RO" text="Not capable of 10 Mbps full-duplex"
 bit=11 val=1 type="RO" text="Capable of 10 Mbps half-duplex"
 bit=11 val=0 type="RO" text="Not capable of 10 Mbps half-duplex"
+range=10:07 type="RO" text="Reserved"
 bit=06 val=1 type="RO" text="Preamble suppression"
 bit=06 val=0 type="RO" text="Normal preamble"
 bit=05 val=1 type="RO" text="Auto-negotiation process completed"
@@ -76,13 +53,29 @@ bit=00 val=0 type="RO" text="do not supports extended capability registers"
 
 >
 
+< REG="PHY Identifier 1" Addr=2 t
+range=15:00 type="RO" text="PHY ID Number"
+>
 
+< REG="PHY Identifier 2" Addr=3 t
+range=15:10 type="RO" text="Assigned to the 19th through 24th bits of the Organizationally Unique Identifier (OUI). KENDIN Communication’s OUI is 0010A1 (hex)."
+range=09:04 type="RO" text="Six-bit manufacturer’s model number"
+range=03:00 type="RO" text="Four-bit manufacturer’s revision number"
+>
 
 < REG="Auto-Negotiation Advertisement" Addr=4 t
  bit=15 val=1 type="RW" text="Next page capable"
  bit=15 val=0 type="RW" text="No next page capability"
+ bit=14 val=1 type="RO" text="Reserved"
+ bit=14 val=0 type="RO" text="Reserved"
  bit=13 val=1 type="RW" text="Remote fault supported"
  bit=13 val=0 type="RW" text="No remote fault"
+ bit=12 val=1 type="RO" text="Reserved"
+ bit=12 val=0 type="RR" text="Reserved"
+ range=11:10 val=0 type="RW" text="No pause"
+ range=11:10 val=1 type="RW" text="Symmetric pause"
+ range=11:10 val=2 type="RW" text="Asymmetric pause"
+ range=11:10 val=3 type="RW" text="Asymmetric and symmetric pause"
  bit=09 val=1 type="RO" text="T4 capable"
  bit=09 val=0 type="RO" text="No T4 capability"
  bit=08 val=1 type="RW" text="100 Mbps full-duplex capable"
@@ -93,6 +86,7 @@ bit=00 val=0 type="RO" text="do not supports extended capability registers"
  bit=06 val=0 type="RW" text="No 10 Mbps full-duplex capability"
  bit=05 val=1 type="RW" text="10 Mbps half-duplex capable"
  bit=05 val=0 type="RW" text="No 10 Mbps half-duplex capability"
+ range=04:00  val=1  type="RO"  text="IEEE 802.3"
 >
 
 < REG="Auto-Negotiation Link Partner Ability"  Addr=5  t 
@@ -101,11 +95,13 @@ bit=15 val=0 type="RO" text="No next page capability"
 bit=14 val=1 type="RO" text="Link code word received from partner "
 bit=14 val=0 type="RO" text="Link code word not yet received "
 bit=13 val=1 type="RO" text="Remote fault detected" 
+bit=13 val=0 type="RO" text="No remote fault" 
+bit=12 val=1 type="RO" text="Reserved" 
+bit=12 val=0 type="RO" text="Reserved" 
 range=11:10 val=0 type="RO"  text="No pause"
 range=11:10 val=1 type="RO"  text="Symmetric pause"
 range=11:10 val=2 type="RO"  text="Asymmetric pause"
 range=11:10 val=3 type="RO"  text="Asymmetric and symmetric pause"
-bit=13 val=0 type="RO" text="No remote fault" 
 bit=09 val=1 type="RO" text="T4 capable"
 bit=09 val=0 type="RO" text="No T4 capability"
 bit=08 val=1 type="RO" text="100 Mbps full-duplex capable"
@@ -116,9 +112,11 @@ bit=06 val=1 type="RO" text="10 Mbps full-duplex capable"
 bit=06 val=0 type="RO" text="No 10 Mbps full-duplex capability"
 bit=05 val=1 type="RO" text="10 Mbps half-duplex capable"
 bit=05 val=0 type="RO" text="No 10 Mbps half-duplex capability"
+range=04:00  val=1  type="RO"  text="IEEE 802.3"
 > 
 
 < REG="Auto-Negotiation Expansion"  Addr=6  t
+range=15:05   type="RO"  text="Reserved"
 bit=04 val=1  type="RO/LH" text="Fault detected by parallel detection"
 bit=04 val=0  type="RO/LH" text="No fault detected by parallel detection"
 bit=03 val=1  type="RO" text="Link partner has next page capability"
@@ -142,6 +140,7 @@ bit=12 val=1  type="RW" text="Will comply with message"
 bit=12 val=0  type="RW" text="Cannot comply with message"
 bit=11 val=1  type="RO" text="Previous value of the transmitted link code word equaled logic 1"
 bit=11 val=0  type="RO" text="Previous value of the transmitted link code word equaled logic 0"
+range=10:00   type="RW" text="11-bit wide field to encode 2048 messages"
 >
 
 < REG="Link Partner Next Page Ability"  Addr=8 r
@@ -155,11 +154,14 @@ bit=12 val=1  type="RO" text="Can act on the information"
 bit=12 val=0  type="RO" text="Cannot act on the information"
 bit=11 val=1  type="RO" text="Previous value of transmitted link code word equal to logic 0"
 bit=11 val=0  type="RO" text="Previous value of transmitted link code word equal to logic 1"
+range=10:00   type="RO" text="11-bit wide field to encode 2048 messages"
 >
 
 < REG="Digital Reserved Control"  Addr=0x10  t
+range=15:05   type="RW" text="Reserved"
 bit=04 val=1  type="RW" text="Turn PLL off automatically in EDPD mode"
 bit=04 val=0  type="RW" text="Keep PLL on in EDPD mode"
+range=03:00   type="RW" text="Reserved"
 >
 
 < REG="AFE Control 1"  Addr=0x11  t
@@ -167,39 +169,59 @@ bit=05 val=1 type="RW"  text="Slow-oscillator mode Enable"
 bit=05 val=0 type="RW"  text="Slow-oscillator mode Disable"
 >
 
+< REG="RXER Counter"  Addr=0x15  t
+range=15:00   type="RO/SC" text="Receive error counter for symbol error frames"
+>
+
 < REG="Operation Mode Strap Override"  Addr=0x16  t
 bit=15 val=1 type="RW" text="Normal operation"
 bit=15 val=0 type="RW" text="Factory test mode"
+range=14:11  type="RW" text="Reserved"
+bit=10 val=1 type="RO" text="Reserved"
+bit=10 val=0 type="RO" text="Reserved"
 bit=09 val=1 type="RW" text="Override strap-in for B-CAST_OFF"
 bit=09 val=0 type="RW" text="Unclear"
 bit=08 val=1 type="RW" text="Reserved"
 bit=08 val=0 type="RW" text="Reserved"
 bit=07 val=1 type="RW" text="Override strap-in for MII back-to-back mode"
 bit=07 val=0 type="RW" text="Unclear"
+bit=06 val=1 type="RW" text="Reserved"
+bit=06 val=0 type="RW" text="Reserved"
 bit=05 val=1 type="RW" text=" Override strap-in for NAND tree mode"
 bit=05 val=0 type="RW" text="Unclear"
+range=04:01  type="RW" text="Reserved"
 bit=00 val=1 type="RW" text="Override strap-in for MII mode"
 bit=00 val=0 type="RW" 
 >
 
 < REG="Operation Mode Strap Status"  Addr=0x17 t
+range=15:13  type="RO" text="Strap to PHY Address"
+range=12:10  type="RW" text="Reserved"
 bit=09 val=1 type="RO" text="Strap to B-CAST_OFF"
 bit=09 val=0 type="RO" text="unclear"
+bit=08 val=1 type="RW" text="Reserved"
+bit=08 val=0 type="RW" text="Reserved"
 bit=07 val=1 type="RO" text="Strap to MII back-to-back mode"
 bit=07 val=0 type="RO" text="unclear"
+bit=06 val=1 type="RW" text="Reserved"
+bit=06 val=0 type="RW" text="Reserved"
 bit=05 val=1 type="RO" text="Strap to NAND tree mode"
 bit=05 val=0 type="RO" text="unclear"
+range=04:01  type="RW" text="Reserved"
 bit=00 val=1 type="RO" text="Strap to MII mode"
 bit=00 val=0 type="RO" text="unclear"
 > 
 
 < REG="Expanded Control"  Addr=0x18 t
+range=15:12  type="RW" text="Reserved"
 bit=11 val=1 type="RW" text="Energy-detect power-down mode Disable"
 bit=11 val=0 type="RW" text="Energy-detect power-down mode Enable"
 bit=10 val=1 type="RW" text="MII output is random latency"
 bit=10 val=0 type="RW" text="MII output is fixed latency"
+range=09:07  type="RW" text="Reserved"
 bit=06 val=1 type="RW" text="Restore received preamble to MII output"
 bit=06 val=0 type="RW" text="Remove all seven bytes of preamble before"
+range=05:00  type="RW" text="Reserved"
 >
 < REG="Interrupt Control/Status"  Addr=0x1B t
 bit=15 val=1 type="RW"  text="Enable jabber interrupt"
@@ -239,11 +261,18 @@ bit=00 val=0 type="RO/SC" text="Link-up did not occur"
 < REG="LinkMD Control/Status"  Addr=0x1D t
 bit=15 val=1 type="RW/SC" text="Enable cable diagnostic test."
 bit=15 val=0 type="RW/SC" text="Indicates cable diagnostic test (if enabled) has completed and the status information is valid for read."
+range=14:13 val=0  type="RO" text="Normal condition"
+range=14:13 val=1  type="RO" text="Open condition has been detected in cable"
+range=14:13 val=2  type="RO" text="Short condition has been detected in cable"
+range=14:13 val=3  type="RO" text="Cable diagnostic test has failed"
 bit=12 val=1 type="RO" text="Short cable (<10 meter) has been detected by LinkMD"
 bit=12 val=0 type="RO" text="unclear cable"
+range=11:09  type="RW" text="Reserved"
+range=08:00  type="RO" text="Distance to fault"
 >
 
 < REG="PHY Control 1"  Addr=0x1E t
+range=15:10  type="RO" text="Reserved"
 bit=09 val=1 type="RO" text="Flow control capable"
 bit=09 val=0 type="RO" text="No flow control capability"
 bit=08 val=1 type="RO" text="Link is up"
@@ -258,6 +287,14 @@ bit=04 val=1 type="RO" text="Signal present on receive differential pair"
 bit=04 val=0 type="RO" text="No signal detected on receive differential pair"
 bit=03 val=1 type="RW" text="PHY in isolate mode"
 bit=03 val=0 type="RW" text="PHY in normal operation"
+range=02:00 val=0  type="RO" text="Still in auto-negotiation"
+range=02:00 val=1  type="RO" text="10BASE-T half-duplex"
+range=02:00 val=2  type="RO" text="100BASE-TX half-duplex"
+range=02:00 val=3  type="RO" text="Reserved"
+range=02:00 val=4  type="RO" text="Reserved"
+range=02:00 val=5  type="RO" text="10BASE-T full-duplex"
+range=02:00 val=6  type="RO" text="100BASE-TX full-duplex"
+range=02:00 val=7  type="RO" text="Reserved"
 >
 
 < REG="PHY Control 2"  Addr=0x1F t
@@ -277,6 +314,11 @@ bit=09 val=1 type="RW" text="Interrupt pin active high"
 bit=09 val=0 type="RW" text="Interrupt pin active low"
 bit=08 val=1 type="RW" text="Enable jabber counter"
 bit=08 val=0 type="RW" text="Disable jabber counter"
+range=07:06  type="RW" text="Reserved"
+range=05:04 val=0  type="RW" text="LED1: Speed LED0: Link/Activity"
+range=05:04 val=1  type="RW" text="LED1: Activity LED0: Link"
+range=05:04 val=2  type="RW" text="Reserved"
+range=05:04 val=3  type="RW" text="Reserved"
 bit=03 val=1 type="RW" text="Disable transmitter"
 bit=03 val=0 type="RW" text="Enable transmitter"
 bit=02 val=1 type="RW" text="Remote (analog) loopback is enabled"
@@ -286,11 +328,6 @@ bit=01 val=0 type="RW" text="Disable SQE test"
 bit=00 val=1 type="RW" text="Disable scrambler"
 bit=00 val=0 type="RW" text="Enable scrambler" 
 >
-
-
-
-
-
 
 
 

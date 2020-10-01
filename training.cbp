@@ -12,7 +12,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="tja1101_reg_blob.txt tja1101_config.txt" />
+				<Option parameters='&quot;C:/Job/IO_V4/1_FW/controllers_abarunin_io_040/projects/IO_V4/IO_V4_A_bootloader/Makefile&quot; files_tree.dot ' />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -38,7 +38,9 @@
 			<Add option="-Wall" />
 			<Add option="-DTEST_FIFO" />
 			<Add option="-DHAS_UTESTS" />
-			<Add option="-DHAS_PARSE_REG" />
+			<Add option="-DHAS_PARSE_MK" />
+			<Add option="-DHAS_TEST_PARSE_C" />
+			<Add option="-DHAS_TEST_PARSE_MK" />
 			<Add option="-DTEST_ARRAY" />
 			<Add option="-DHAS_ARRAY" />
 			<Add option="-DTEST_CONVERT" />
@@ -57,6 +59,8 @@
 		<Unit filename="arrays.h" />
 		<Unit filename="avl_tree.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
 		</Unit>
 		<Unit filename="avl_tree.h" />
 		<Unit filename="bin_heap.c">
@@ -67,6 +71,8 @@
 		<Unit filename="bin_heap.h" />
 		<Unit filename="bin_heap_array.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
 		</Unit>
 		<Unit filename="bin_heap_array.h" />
 		<Unit filename="bin_search_tree.c">
@@ -81,6 +87,8 @@
 		<Unit filename="bin_tree.h" />
 		<Unit filename="bin_tree_draw.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
 		</Unit>
 		<Unit filename="bin_tree_draw.h" />
 		<Unit filename="combinations.c">
@@ -189,14 +197,20 @@
 		<Unit filename="simulate_rocket_2d.h" />
 		<Unit filename="slidingWindowMax.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
 		</Unit>
 		<Unit filename="slidingWindowMax.h" />
 		<Unit filename="slidingWindowMid.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
 		</Unit>
 		<Unit filename="slidingWindowMid.h" />
 		<Unit filename="sort_linked_list.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
 		</Unit>
 		<Unit filename="sort_linked_list.h" />
 		<Unit filename="str_ops.c">
@@ -237,6 +251,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="test_lifo_char.h" />
+		<Unit filename="test_mk_2_dot.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="test_str_ops.c">
 			<Option compilerVar="CC" />
 		</Unit>

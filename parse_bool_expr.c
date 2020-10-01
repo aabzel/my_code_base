@@ -1349,49 +1349,6 @@ bool is_hex_number (char letter) {
     return res;
 }
 
-/// reg addr: 0x04 reg val: 0x0000 Ob_0000_0000_0000_0000
-bool try_canch_hex_uint8 (char *inStr, int strLen, uint8_t *val8b) {
-    int i = 0;
-    int startIndex = 0;
-    bool res = false;
-    int catch = 0;
-    int hexValCnt = 0;
-    int valLen = 0;
-    for (i = 0; i < strLen; i++) {
-        if (0 == catch) {
-            if ('0' == inStr[i]) {
-                valLen = 1;
-                catch = 1;
-                startIndex = i;
-            }
-        } else {
-            if (1 == valLen) {
-                if ('x' != inStr[i]) {
-                    catch = 0;
-                    valLen = 0;
-                }
-                valLen++;
-            } else {
-                if (true == is_hex_number (inStr[i])) {
-                    valLen++;
-                } else {
-                    if ((' ' == inStr[i]) || (']' == inStr[i])) {
-                        hexValCnt++;
-
-                        if (4 == valLen) {
-                            res = try_strl2uint8_hex (&inStr[startIndex + 2], 2, val8b);
-                            return res;
-                        }
-                        catch = 0;
-                        valLen = 0;
-                    }
-                }
-            }
-        }
-    }
-    return res;
-}
-
 ///      DEVICE_ID[0x01]: 0x00000020 0b_0000_0000_0000_0000_0000_0000_0010_0000
 bool try_canch_hex_uint32 (char *inStr, int strLen, uint32_t *val32b) {
     int i = 0;

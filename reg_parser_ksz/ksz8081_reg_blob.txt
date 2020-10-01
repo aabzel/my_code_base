@@ -1,13 +1,12 @@
-rmim 0 2
 reg addr: 00 reg val: 0x3000 Ob_0011_0000_0000_0000
-reg addr: 01 reg val: 0x7849 Ob_0111_1000_0100_1001
+reg addr: 01 reg val: 0x786D Ob_0111_1000_0110_1101
 reg addr: 02 reg val: 0x0022 Ob_0000_0000_0010_0010
 reg addr: 03 reg val: 0x1560 Ob_0001_0101_0110_0000
 reg addr: 04 reg val: 0x81E1 Ob_1000_0001_1110_0001
-reg addr: 05 reg val: 0x0000 Ob_0000_0000_0000_0000
-reg addr: 06 reg val: 0x0004 Ob_0000_0000_0000_0100
+reg addr: 05 reg val: 0xC1E1 Ob_1100_0001_1110_0001
+reg addr: 06 reg val: 0x000F Ob_0000_0000_0000_1111
 reg addr: 07 reg val: 0x2001 Ob_0010_0000_0000_0001
-reg addr: 08 reg val: 0x0000 Ob_0000_0000_0000_0000
+reg addr: 08 reg val: 0x4D8D Ob_0100_1101_1000_1101
 reg addr: 09 reg val: 0x0000 Ob_0000_0000_0000_0000
 reg addr: 10 reg val: 0x0000 Ob_0000_0000_0000_0000
 reg addr: 11 reg val: 0x0000 Ob_0000_0000_0000_0000
@@ -21,14 +20,13 @@ reg addr: 18 reg val: 0x0000 Ob_0000_0000_0000_0000
 reg addr: 19 reg val: 0x0000 Ob_0000_0000_0000_0000
 reg addr: 20 reg val: 0x0000 Ob_0000_0000_0000_0000
 reg addr: 21 reg val: 0x0000 Ob_0000_0000_0000_0000
-reg addr: 22 reg val: 0x0001 Ob_0000_0000_0000_0001
+reg addr: 22 reg val: 0x8201 Ob_1000_0010_0000_0001
 reg addr: 23 reg val: 0x5C01 Ob_0101_1100_0000_0001
 reg addr: 24 reg val: 0x0801 Ob_0000_1000_0000_0001
 reg addr: 25 reg val: 0x7777 Ob_0111_0111_0111_0111
 reg addr: 26 reg val: 0x7777 Ob_0111_0111_0111_0111
 reg addr: 27 reg val: 0x0000 Ob_0000_0000_0000_0000
-reg addr: 28 reg val: 0x0000 Ob_0000_0000_0000_0000
+reg addr: 28 reg val: 0x0003 Ob_0000_0000_0000_0011
 reg addr: 29 reg val: 0x0000 Ob_0000_0000_0000_0000
-reg addr: 30 reg val: 0x0000 Ob_0000_0000_0000_0000
-reg addr: 31 reg val: 0x8100 Ob_1000_0001_0000_0000
-Read ok counter: 32 read error counter: 0
+reg addr: 30 reg val: 0x0116 Ob_0000_0001_0001_0110
+reg addr: 31 reg val: 0x8110 Ob_1000_0001_0001_0000

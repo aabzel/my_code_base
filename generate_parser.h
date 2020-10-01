@@ -7,7 +7,6 @@
 
 #include "custom_type.h"
 
-#define CHIP_NAME "ksz8081"
 #define MAX_NUM_REG 255
 
 typedef struct xReg_map_t{
@@ -30,7 +29,7 @@ bool parse_bit_val(char *cur_file_str, int strlen, uint16_t *bit_val);
 bool parse_bit_num(char *cur_file_str, int strlen, uint8_t *bit_num);
 bool parse_reg_addr(char *cur_file_str, int strlen, uint8_t *reg_addr);
 
-bool generate_reg_parser (char *in_file_name, char *out_file_name) ;
+bool generate_reg_parser(char *in_file_name, char *out_file_name, char *chip_name, char *reg_bitness);
 
 #endif /* GENERATE_REG_PARSER_H */
 

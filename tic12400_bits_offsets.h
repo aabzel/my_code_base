@@ -3,6 +3,8 @@
 
 #define CHANNEL_AMOUNT (24U)
 
+#define AMOUNT_OF_REGISTERS 47U
+
 typedef enum {
     REG_RESERVED_00H = 0x00U,    /* Reserved Register address*/
     REG_DEVICE_ID = 0x01U,       /* Device ID Register */
@@ -56,7 +58,7 @@ typedef enum {
     REG_MATRIX = 0x31U,          /* Matrix Setting Register */
     REG_MODE = 0x32U,            /* Mode Setting Register */
 
-    REG_AMOUNT = 0x33U
+    REG_ADDR_NUM = 0x33U
 } tic12400_reg_t;
 
 #define CONFIG_VS_RATIO_23 (1 << 23)

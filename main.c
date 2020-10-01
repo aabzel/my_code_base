@@ -203,9 +203,9 @@ int main (int argc, char *argv[]) {
 
 #ifdef HAS_GENERATE_REG_PARSER
     printf ("\n Generate rarser for registers\n");
-    if (3 == argc) {
+    if (5 == argc) {
         bool res;
-        res = generate_reg_parser (argv[1], argv[2]);
+        res = generate_reg_parser (argv[1], argv[2], argv[3], argv[4]);
         if (false == res) {
             printf ("\nError generate_reg_parser\n");
         }
@@ -216,7 +216,6 @@ int main (int argc, char *argv[]) {
 
 
 #ifdef HAS_PARSE_REG
-
     printf ("\n Parse registers\n");
     if (3 == argc) {
         bool res;

@@ -1,67 +1,221 @@
 
 
-reg                            Basic Control addr 0x00 val 0x3000 0b_0011_0000_0000_0000
+Reg: [Basic Control] reg_addr: 0x00 val: 0x3000 0b_0000_0000_0011_0000_0000_0000
+    reg 00 bit 15:0  RW/SC Normal operation
+    reg 00 bit 14:0  RW Normal operation
+    reg 00 bit 13:1  RW 100 Mbps
+    reg 00 bit 12:1  RW Enable auto-negotiation process
+    reg 00 bit 11:0  RW Normal operation
+    reg 00 bit 10:0  RW Normal operation
+    reg 00 bit  9:0  RW/SC Auto-Negotiation Normal operation
+    reg 00 bit  8:0  RW Half-duplex
+    reg 00 bit  7:0  RW Test Disable COL test
+    reg 00 bit 6-0: 0=0x0  RO Reserved
 
-reg                             Basic Status addr 0x01 val 0x7849 0b_0111_1000_0100_1001
+Reg: [Basic Status] reg_addr: 0x01 val: 0x786d 0b_0000_0000_0111_1000_0110_1101
+    reg 01 bit 15:0  RO Not T4 capable
+    reg 01 bit 14:1  RO Capable of 100 Mbps full-duplex
+    reg 01 bit 13:1  RO Capable of 100 Mbps half-duplex
+    reg 01 bit 12:1  RO Capable of 10 Mbps full-duplex
+    reg 01 bit 11:1  RO Capable of 10 Mbps half-duplex
+    reg 01 bit 10-7: 0=0x0  RO Reserved
+    reg 01 bit  6:1  RO Preamble suppression
+    reg 01 bit  5:1  RO Auto-negotiation process completed
+    reg 01 bit  4:0  RO/LH No remote fault
+    reg 01 bit  3:1  RO Can perform auto-negotiation
+    reg 01 bit  2:1  RO/LH Link is up
+    reg 01 bit  1:0  RO/LH Jabber not detected (default is low)
+    reg 01 bit  0:1  RO Supports extended capability registers
 
-reg                         PHY Identifier 1 addr 0x02 val 0x0022 0b_0000_0000_0010_0010
+Reg: [PHY Identifier 1] reg_addr: 0x02 val: 0x0022 0b_0000_0000_0000_0000_0010_0010
+    reg 02 bit 15-0: 34=0x22  RO PHY ID Number
 
-reg                         PHY Identifier 2 addr 0x03 val 0x1560 0b_0001_0101_0110_0000
+Reg: [PHY Identifier 2] reg_addr: 0x03 val: 0x1560 0b_0000_0000_0001_0101_0110_0000
+    reg 03 bit 15-10: 5=0x5  RO Assigned to the 19th through 24th bits of the Organizationally Unique Identifier (OUI). KENDIN Communication’s OUI is 0010A1 (hex).
+    reg 03 bit 9-4: 22=0x16  RO Six-bit manufacturer’s model number
+    reg 03 bit 3-0: 0=0x0  RO Four-bit manufacturer’s revision number
 
-reg           Auto-Negotiation Advertisement addr 0x04 val 0x81e1 0b_1000_0001_1110_0001
+Reg: [Auto-Negotiation Advertisement] reg_addr: 0x04 val: 0x81e1 0b_0000_0000_1000_0001_1110_0001
+    reg 04 bit 15:1  RW Next page capable
+    reg 04 bit 14:0  RO Reserved
+    reg 04 bit 13:0  RW No remote fault
+    reg 04 bit 12:0  RR Reserved
+    reg 04 bit 11-10:0 RW No pause
+    reg 04 bit  9:0  RO No T4 capability
+    reg 04 bit  8:1  RW 100 Mbps full-duplex capable
+    reg 04 bit  7:1  RW 100 Mbps half-duplex capable
+    reg 04 bit  6:1  RW 10 Mbps full-duplex capable
+    reg 04 bit  5:1  RW 10 Mbps half-duplex capable
+    reg 04 bit 4-0:1 RO IEEE 802.3
 
-reg    Auto-Negotiation Link Partner Ability addr 0x05 val 0x0000 0b_0000_0000_0000_0000
+Reg: [Auto-Negotiation Link Partner Ability] reg_addr: 0x05 val: 0xc1e1 0b_0000_0000_1100_0001_1110_0001
+    reg 05 bit 15:1  RO Next page capable
+    reg 05 bit 14:1  RO Link code word received from partner 
+    reg 05 bit 13:0  RO No remote fault
+    reg 05 bit 12:0  RO Reserved
+    reg 05 bit 11-10:0 RO No pause
+    reg 05 bit  9:0  RO No T4 capability
+    reg 05 bit  8:1  RO 100 Mbps full-duplex capable
+    reg 05 bit  7:1  RO 100 Mbps half-duplex capable
+    reg 05 bit  6:1  RO 10 Mbps full-duplex capable
+    reg 05 bit  5:1  RO 10 Mbps half-duplex capable
+    reg 05 bit 4-0:1 RO IEEE 802.3
 
-reg               Auto-Negotiation Expansion addr 0x06 val 0x0004 0b_0000_0000_0000_0100
+Reg: [Auto-Negotiation Expansion] reg_addr: 0x06 val: 0x000f 0b_0000_0000_0000_0000_0000_1111
+    reg 06 bit 15-5: 0=0x0  RO Reserved
+    reg 06 bit  4:0  RO/LH No fault detected by parallel detection
+    reg 06 bit  3:1  RO Link partner has next page capability
+    reg 06 bit  2:1  RO Local device has next page capability
+    reg 06 bit  1:1  RO/LH New page received
+    reg 06 bit  0:1  RO Link partner has auto-negotiation capability
 
-reg               Auto-Negotiation Next Page addr 0x07 val 0x2001 0b_0010_0000_0000_0001
+Reg: [Auto-Negotiation Next Page] reg_addr: 0x07 val: 0x2001 0b_0000_0000_0010_0000_0000_0001
+    reg 07 bit 15:0  RW Last page
+    reg 07 bit 14:0  RO Reserved
+    reg 07 bit 13:1  RW Message page
+    reg 07 bit 12:0  RW Cannot comply with message
+    reg 07 bit 11:0  RO Previous value of the transmitted link code word equaled logic 0
+    reg 07 bit 10-0: 1=0x1  RW 11-bit wide field to encode 2048 messages
 
-reg           Link Partner Next Page Ability addr 0x08 val 0x0000 0b_0000_0000_0000_0000
+Reg: [Link Partner Next Page Ability] reg_addr: 0x08 val: 0x4d8d 0b_0000_0000_0100_1101_1000_1101
+    reg 08 bit 15:0  RO Last page
+    reg 08 bit 14:1  RO Successful receipt of link word
+    reg 08 bit 13:0  RO Unformatted page
+    reg 08 bit 12:0  RO Cannot act on the information
+    reg 08 bit 11:1  RO Previous value of transmitted link code word equal to logic 0
+    reg 08 bit 10-0: 1421=0x58d  RO 11-bit wide field to encode 2048 messages
 
-reg                                 Reserved addr 0x09 val 0x0000 0b_0000_0000_0000_0000
+Reg: [Reserved] reg_addr: 0x09 val: 0x0000 0b_0000_0000_0000_0000_0000_0000
+ Lack of parser for reg Reserved addr 0x9 val 0x0
 
-reg                                 Reserved addr 0x0a val 0x0000 0b_0000_0000_0000_0000
+Reg: [Reserved] reg_addr: 0x0a val: 0x0000 0b_0000_0000_0000_0000_0000_0000
+ Lack of parser for reg Reserved addr 0xa val 0x0
 
-reg                                 Reserved addr 0x0b val 0x0000 0b_0000_0000_0000_0000
+Reg: [Reserved] reg_addr: 0x0b val: 0x0000 0b_0000_0000_0000_0000_0000_0000
+ Lack of parser for reg Reserved addr 0xb val 0x0
 
-reg                                 Reserved addr 0x0c val 0x0000 0b_0000_0000_0000_0000
+Reg: [Reserved] reg_addr: 0x0c val: 0x0000 0b_0000_0000_0000_0000_0000_0000
+ Lack of parser for reg Reserved addr 0xc val 0x0
 
-reg                                 Reserved addr 0x0d val 0x0000 0b_0000_0000_0000_0000
+Reg: [Reserved] reg_addr: 0x0d val: 0x0000 0b_0000_0000_0000_0000_0000_0000
+ Lack of parser for reg Reserved addr 0xd val 0x0
 
-reg                                 Reserved addr 0x0e val 0x0000 0b_0000_0000_0000_0000
+Reg: [Reserved] reg_addr: 0x0e val: 0x0000 0b_0000_0000_0000_0000_0000_0000
+ Lack of parser for reg Reserved addr 0xe val 0x0
 
-reg                                 Reserved addr 0x0f val 0x0000 0b_0000_0000_0000_0000
+Reg: [Reserved] reg_addr: 0x0f val: 0x0000 0b_0000_0000_0000_0000_0000_0000
+ Lack of parser for reg Reserved addr 0xf val 0x0
 
-reg                 Digital Reserved Control addr 0x10 val 0x0000 0b_0000_0000_0000_0000
+Reg: [Digital Reserved Control] reg_addr: 0x10 val: 0x0000 0b_0000_0000_0000_0000_0000_0000
+    reg 16 bit 15-5: 0=0x0  RW Reserved
+    reg 16 bit  4:0  RW Keep PLL on in EDPD mode
+    reg 16 bit 3-0: 0=0x0  RW Reserved
 
-reg                            AFE Control 1 addr 0x11 val 0x0000 0b_0000_0000_0000_0000
+Reg: [AFE Control 1] reg_addr: 0x11 val: 0x0000 0b_0000_0000_0000_0000_0000_0000
+    reg 17 bit  5:0  RW Slow-oscillator mode Disable
 
-reg                                 Reserved addr 0x12 val 0x0000 0b_0000_0000_0000_0000
+Reg: [Reserved] reg_addr: 0x12 val: 0x0000 0b_0000_0000_0000_0000_0000_0000
+ Lack of parser for reg Reserved addr 0x12 val 0x0
 
-reg                                 Reserved addr 0x13 val 0x0000 0b_0000_0000_0000_0000
+Reg: [Reserved] reg_addr: 0x13 val: 0x0000 0b_0000_0000_0000_0000_0000_0000
+ Lack of parser for reg Reserved addr 0x13 val 0x0
 
-reg                                 Reserved addr 0x14 val 0x0000 0b_0000_0000_0000_0000
+Reg: [Reserved] reg_addr: 0x14 val: 0x0000 0b_0000_0000_0000_0000_0000_0000
+ Lack of parser for reg Reserved addr 0x14 val 0x0
 
-reg                             RXER Counter addr 0x15 val 0x0000 0b_0000_0000_0000_0000
+Reg: [RXER Counter] reg_addr: 0x15 val: 0x0000 0b_0000_0000_0000_0000_0000_0000
+    reg 21 bit 15-0: 0=0x0  RO/SC Receive error counter for symbol error frames
 
-reg            Operation Mode Strap Override addr 0x16 val 0x0001 0b_0000_0000_0000_0001
+Reg: [Operation Mode Strap Override] reg_addr: 0x16 val: 0x8201 0b_0000_0000_1000_0010_0000_0001
+    reg 22 bit 15:1  RW Normal operation
+    reg 22 bit 14-11: 0=0x0  RW Reserved
+    reg 22 bit 10:0  RO Reserved
+    reg 22 bit  9:1  RW Override strap-in for B-CAST_OFF
+    reg 22 bit  8:0  RW Reserved
+    reg 22 bit  7:0  RW Unclear
+    reg 22 bit  6:0  RW Reserved
+    reg 22 bit  5:0  RW Unclear
+    reg 22 bit 4-1: 0=0x0  RW Reserved
+    reg 22 bit  0:1  RW Override strap-in for MII mode
 
-reg              Operation Mode Strap Status addr 0x17 val 0x5c01 0b_0101_1100_0000_0001
+Reg: [Operation Mode Strap Status] reg_addr: 0x17 val: 0x5c01 0b_0000_0000_0101_1100_0000_0001
+    reg 23 bit 15-13: 2=0x2  RO Strap to PHY Address
+    reg 23 bit 12-10: 7=0x7  RW Reserved
+    reg 23 bit  9:0  RO unclear
+    reg 23 bit  8:0  RW Reserved
+    reg 23 bit  7:0  RO unclear
+    reg 23 bit  6:0  RW Reserved
+    reg 23 bit  5:0  RO unclear
+    reg 23 bit 4-1: 0=0x0  RW Reserved
+    reg 23 bit  0:1  RO Strap to MII mode
 
-reg                         Expanded Control addr 0x18 val 0x0801 0b_0000_1000_0000_0001
+Reg: [Expanded Control] reg_addr: 0x18 val: 0x0801 0b_0000_0000_0000_1000_0000_0001
+    reg 24 bit 15-12: 0=0x0  RW Reserved
+    reg 24 bit 11:1  RW Energy-detect power-down mode Disable
+    reg 24 bit 10:0  RW MII output is fixed latency
+    reg 24 bit 9-7: 0=0x0  RW Reserved
+    reg 24 bit  6:0  RW Remove all seven bytes of preamble before
+    reg 24 bit 5-0: 1=0x1  RW Reserved
 
-reg                                 Reserved addr 0x19 val 0x7777 0b_0111_0111_0111_0111
+Reg: [Reserved] reg_addr: 0x19 val: 0x7777 0b_0000_0000_0111_0111_0111_0111
+ Lack of parser for reg Reserved addr 0x19 val 0x7777
 
-reg                                 Reserved addr 0x1a val 0x7777 0b_0111_0111_0111_0111
+Reg: [Reserved] reg_addr: 0x1a val: 0x7777 0b_0000_0000_0111_0111_0111_0111
+ Lack of parser for reg Reserved addr 0x1a val 0x7777
 
-reg                 Interrupt Control/Status addr 0x1b val 0x0000 0b_0000_0000_0000_0000
+Reg: [Interrupt Control/Status] reg_addr: 0x1b val: 0x0000 0b_0000_0000_0000_0000_0000_0000
+    reg 27 bit 15:0  RW Disable jabber interrupt
+    reg 27 bit 14:0  RW Disable receive error interrupt
+    reg 27 bit 13:0  RW Disable page received interrupt
+    reg 27 bit 12:0  RW Disable parallel detect fault interrupt
+    reg 27 bit 11:0  RW Disable link partner acknowledge interrupt
+    reg 27 bit 10:0  RW Disable link-down interrupt
+    reg 27 bit  9:0  RW Disable remote fault interrupt
+    reg 27 bit  8:0  RW Disable link-up interrupt
+    reg 27 bit  7:0  RO/SC Jabber did not occur
+    reg 27 bit  6:0  RO/SC Receive error did not occur
+    reg 27 bit  5:0  RO/SC Page receive did not occur
+    reg 27 bit  4:0  RO/SC Parallel detect fault did not occur
+    reg 27 bit  3:0  RO/SC Link partner acknowledge did not occur
+    reg 27 bit  2:0  RO/SC Link-down did not occur
+    reg 27 bit  1:0  RO/SC Remote fault did not occur
+    reg 27 bit  0:0  RO/SC Link-up did not occur
 
-reg                                 Reserved addr 0x1c val 0x0000 0b_0000_0000_0000_0000
+Reg: [Reserved] reg_addr: 0x1c val: 0x0003 0b_0000_0000_0000_0000_0000_0011
+ Lack of parser for reg Reserved addr 0x1c val 0x3
 
-reg                    LinkMD Control/Status addr 0x1d val 0x0000 0b_0000_0000_0000_0000
+Reg: [LinkMD Control/Status] reg_addr: 0x1d val: 0x0000 0b_0000_0000_0000_0000_0000_0000
+    reg 29 bit 15:0  RW/SC Indicates cable diagnostic test (if enabled) has completed and the status information is valid for read.
+    reg 29 bit 14-13:0 RO Normal condition
+    reg 29 bit 12:0  RO unclear cable
+    reg 29 bit 11-9: 0=0x0  RW Reserved
+    reg 29 bit 8-0: 0=0x0  RO Distance to fault
 
-reg                            PHY Control 1 addr 0x1e val 0x0000 0b_0000_0000_0000_0000
+Reg: [PHY Control 1] reg_addr: 0x1e val: 0x0116 0b_0000_0000_0000_0001_0001_0110
+    reg 30 bit 15-10: 0=0x0  RO Reserved
+    reg 30 bit  9:0  RO No flow control capability
+    reg 30 bit  8:1  RO Link is up
+    reg 30 bit  7:0  RO Polarity is not reversed
+    reg 30 bit  6:0  RO Reserved
+    reg 30 bit  5:0  RO MDI
+    reg 30 bit  4:1  RO Signal present on receive differential pair
+    reg 30 bit  3:0  RW PHY in normal operation
+    reg 30 bit 2-0:6 RO 100BASE-TX full-duplex
 
-reg                            PHY Control 2 addr 0x1f val 0x8100 0b_1000_0001_0000_0000
+Reg: [PHY Control 2] reg_addr: 0x1f val: 0x8110 0b_0000_0000_1000_0001_0001_0000
+    reg 31 bit 15:1  RW HP Auto MDI/MDI-X mode
+    reg 31 bit 14:0  RW MDI mode Transmit on TXP, TXM (Pins 12, 11) and Receive on RXP, RXM (Pins 10, 9)
+    reg 31 bit 13:0  RW Enable Auto MDI/MDI-X
+    reg 31 bit 12:0  RW Reserved
+    reg 31 bit 11:0  RW Normal link operation
+    reg 31 bit 10:0  RW Disable power saving
+    reg 31 bit  9:0  RW Interrupt pin active low
+    reg 31 bit  8:1  RW Enable jabber counter
+    reg 31 bit 7-6: 0=0x0  RW Reserved
+    reg 31 bit 5-4:1 RW LED1: Activity LED0: Link
+    reg 31 bit  3:0  RW Enable transmitter
+    reg 31 bit  2:0  RW Normal mode
+    reg 31 bit  1:0  RW Disable SQE test
+    reg 31 bit  0:0  RW Enable scrambler
 
  Support: aabzele@gmail.com Alexander Barunin

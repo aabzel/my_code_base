@@ -271,7 +271,6 @@ static bool test_parse_phy_reg_vals (void) {
 }
 #endif
 
-
 static bool test_bit_utils (void) {
 	EXPECT_EQ(MASK_0_BITS,calc_16_mask (0));
 	EXPECT_EQ(MASK_1_BITS,calc_16_mask (1));
@@ -419,10 +418,7 @@ int unit_test (void) {
         return PARSE_MAC_ERROR;
     }
 
-    res = test_extract_sub_string ();
-    if (false == res) {
-        return PARSE_EXTRACT_SUB_ERROR;
-    }
+
 #ifdef TEST_PARSE_REG
     res = test_parse_phy_addr ();
     if (false == res) {
@@ -471,10 +467,6 @@ int unit_test (void) {
     }
 #endif
 
-    res = test_count_substring ();
-    if (false == res) {
-        return SUB_STR_CNT_ERROR;
-    }
 
 #if TEST_FLOATS
     print_biggest_mantissa ();

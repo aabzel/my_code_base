@@ -1,2 +1,7 @@
 https://www.codeproject.com/articles/794764/creating-a-basic-make-file-for-compiling-c-code
+https://github.com/Velleman/VM204-Firmware/blob/master/cyclone_tcp/drivers/ksz8081.c
+https://elixir.bootlin.com/linux/latest/source/drivers/net/phy/micrel.c
+https://os.mbed.com/users/Sergunb/code/1/docs/tip/ksz8081_8c_source.html
+
+
 

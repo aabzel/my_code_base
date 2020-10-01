@@ -12,7 +12,6 @@
 xReg_map_t RegMap[MAX_NUM_REG];
 
 //< REG="Basic Control" Addr=0
-
 bool parse_text_after_prefix(char *cur_file_str, int in_str_len,char *out_text, char *prefix) {
     bool res = false;
     int prefix_len = strlen(prefix);
@@ -112,7 +111,7 @@ bool parse_bit_val(char *cur_file_str, int str_len, uint16_t *bit_val){
     return res;
 }
 
-static bool generate_header(char *out_file_name) {
+static bool generate_header(char *out_file_name, char *chip_name) {
     char header_file_name[100];
     strcpy(header_file_name,out_file_name);
     bool res=false;
@@ -120,13 +119,13 @@ static bool generate_header(char *out_file_name) {
     out_file_prt = fopen (header_file_name, "w");
     if (out_file_prt) {
         res = true;
-        fprintf(out_file_prt, "\n#ifndef GENERATED_PARSER_"CHIP_NAME"_H");
-        fprintf(out_file_prt, "\n#define GENERATED_PARSER_"CHIP_NAME"_H");
+        fprintf(out_file_prt, "\n#ifndef GENERATED_PARSER_%s_H",chip_name);
+        fprintf(out_file_prt, "\n#define GENERATED_PARSER_%s_H",chip_name);
         fprintf(out_file_prt, "\n\n#include <stdbool.h>");
         fprintf(out_file_prt, "\n#include <stdint.h>");
         fprintf(out_file_prt, "\n#include <stdio.h>");
-        fprintf(out_file_prt, "\n\nbool parse_"CHIP_NAME"_reg (uint8_t reg_addr, FILE *out_file_prt);");
-        fprintf(out_file_prt, "\n#endif /*GENERATED_PARSER_"CHIP_NAME"_H*/");
+        fprintf(out_file_prt, "\n\nbool parse_%s_reg (uint8_t reg_addr, FILE *out_file_prt);",chip_name);
+        fprintf(out_file_prt, "\n#endif /*GENERATED_PARSER_%s_H*/",chip_name);
 
         fclose (out_file_prt);
     }
@@ -135,26 +134,26 @@ static bool generate_header(char *out_file_name) {
     return res;
 }
 
-static bool compose_case( FILE *out_file_prt) {
+static bool compose_case( FILE *out_file_prt, char* chip_name, uint8_t bitness) {
     bool res = false;
     if (out_file_prt) {
         res = true;
     }
-    fprintf(out_file_prt, "\n\nbool parse_"CHIP_NAME"_reg (uint8_t reg_addr, FILE *out_file_prt) {");
+    fprintf(out_file_prt, "\n\nbool parse_%s_reg (uint8_t reg_addr, FILE *out_file_prt) {", chip_name);
     fprintf(out_file_prt, "\n    bool res = false;");
-    fprintf(out_file_prt, "\n    uint16_t reg16b_val = "CHIP_NAME"RegMap[reg_addr].reg_val;");
-    fprintf(out_file_prt, "\n    fprintf (out_file_prt, \"\\n\\nReg: [%%s] reg_addr: 0x%%02x val: 0x%%04x 0b_%%s\", "CHIP_NAME"RegMap[reg_addr].reg_name, reg_addr, reg16b_val, utoa_bin16 (reg16b_val));");
+    fprintf(out_file_prt, "\n    uint%u_t reg_val = %sRegMap[reg_addr].reg_val;",bitness, chip_name);
+    fprintf(out_file_prt, "\n    fprintf (out_file_prt, \"\\n\\nReg: [%%s] reg_addr: 0x%%02x val: 0x%%04x 0b_%%s\", %sRegMap[reg_addr].reg_name, reg_addr, reg_val, utoa_bin%u (reg_val));",chip_name, bitness);
     fprintf(out_file_prt, "\n    switch ( reg_addr ) {");
     for (int i = 0; i < 255; i++) {
         if ( true==RegMap[i].valid ) {
             fprintf(out_file_prt, "\n        case %u: ",i);
             fprintf(out_file_prt, "\n            proc_reg_cnt++;");
-            fprintf(out_file_prt, "\n            res = parse_%s_register_%u (reg16b_val, out_file_prt, reg_addr);",RegMap[i].reg_name,i);
+            fprintf(out_file_prt, "\n            res = parse_%s_%s_register_%u (reg_val, out_file_prt, reg_addr);",chip_name, RegMap[i].reg_name,i);
             fprintf(out_file_prt, "\n            break;");
         }
     }
     fprintf(out_file_prt, "\n        default:");
-    fprintf(out_file_prt, "\n            fprintf (out_file_prt, \"\\n Lack of parser for reg %%s addr 0x%%x val 0x%%x\", "CHIP_NAME"_reg_2_name[reg_addr], reg_addr, reg16b_val);");
+    fprintf(out_file_prt, "\n            fprintf (out_file_prt, \"\\n Lack of parser for reg %%s addr 0x%%x val 0x%%x\", %s_reg_2_name[reg_addr], reg_addr, reg_val);",chip_name);
     fprintf(out_file_prt, "\n        break;");
     fprintf(out_file_prt, "\n    }");
     fprintf(out_file_prt, "\n    return res;");
@@ -169,9 +168,15 @@ static bool init_reg_map (void) {
     return true;
 }
 
-bool generate_reg_parser(char *in_file_name, char *out_file_name) {
+bool generate_reg_parser(char *in_file_name, char *out_file_name, char *chip_name, char *reg_bitness) {
     printf("\n%s()\n", __FUNCTION__);
     bool res = false;
+    uint8_t bitness = 0;
+    res = try_str2uint8(reg_bitness, &bitness);
+    if (false == res) {
+    	printf("\nUndef bitness");
+    	return false;
+    }
     char header_file_name[500];
     strcpy(header_file_name,out_file_name);
     res = replace_substring (header_file_name, ".c", ".h");
@@ -190,7 +195,7 @@ bool generate_reg_parser(char *in_file_name, char *out_file_name) {
     if ((NULL != inFilePrt) && (NULL!=out_file_prt)) {
         //int line = 0;
         fprintf(out_file_prt, "\n#include \"%s\"",header_file_name);
-        fprintf(out_file_prt, "\n#include \"str_ops.h\"",);
+        fprintf(out_file_prt, "\n\n#include \"str_ops.h\"");
         while (NULL != fgets(cur_file_str, sizeof(cur_file_str), inFilePrt)) {
             memset(reg_name, 0, sizeof(reg_name));
             uint16_t reg_addr = 0xFF;
@@ -206,8 +211,8 @@ bool generate_reg_parser(char *in_file_name, char *out_file_name) {
                 lower_case_str(reg_name);
 
                 strncpy(RegMap[reg_addr].reg_name,reg_name, sizeof(RegMap[reg_addr].reg_name));
-                //static bool parse_basic_control_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {
-                fprintf (out_file_prt, "\n\nstatic bool parse_%s_register_%u (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {",reg_name,reg_addr);
+                //static bool parse_basic_control_register (uint16_t reg_val, FILE *out_file_prt, uint8_t reg_addr) {
+                fprintf (out_file_prt, "\n\nstatic bool parse_%s_%s_register_%u (uint%u_t reg_val, FILE *out_file_prt, uint8_t reg_addr) {",chip_name, reg_name,reg_addr, bitness);
                 fprintf (out_file_prt, "\n    bool res = false;");
                 fprintf (out_file_prt, "\n    uint16_t code = 0U;");
                 fprintf (out_file_prt, "\n    (void) code;");
@@ -222,7 +227,7 @@ bool generate_reg_parser(char *in_file_name, char *out_file_name) {
                     printf("\n Unable to parse register addr in [%s]",cur_file_str);
                 }
             }
-            uint8_t bit_num = 0, bit_old=0, bit_little=0;
+            uint8_t bit_num = 0, bit_old = 0, bit_little = 0;
             uint16_t bit_val = 0;
             char bit_type[10];
             char bit_text[1000];
@@ -232,26 +237,26 @@ bool generate_reg_parser(char *in_file_name, char *out_file_name) {
             bool res_bit_type = parse_text_after_prefix(cur_file_str, sizeof(cur_file_str), bit_type,"type=\"");
             bool res_bit_text = parse_text_after_prefix(cur_file_str, sizeof(cur_file_str), bit_text,"text=\"");
             if ((res_bit_type)&&(res_bit_text)&&(true==res_bit_num)  && (true==res_bit_val) && (1==bit_val)) {
-                fprintf(out_file_prt, "\n    if (reg16b_val & (1<<%u)) {", bit_num);
+                fprintf(out_file_prt, "\n    if (reg_val & (1<<%u)) {", bit_num);
                 fprintf(out_file_prt, "\n        fprintf (out_file_prt,\"\\n    reg %%02u bit %2u:1  %s %s\", reg_addr);", bit_num ,bit_type,bit_text);
                 fprintf(out_file_prt, "\n    }");
             }
             if ((res_bit_type)&&(res_bit_text)&&(true==res_bit_num)  && (true==res_bit_val) && (0==bit_val)) {
-                fprintf(out_file_prt, "\n    if (0==(reg16b_val & (1<<%u))) {", bit_num);
+                fprintf(out_file_prt, "\n    if (0==(reg_val & (1<<%u))) {", bit_num);
                 fprintf(out_file_prt, "\n        fprintf (out_file_prt,\"\\n    reg %%02u bit %2u:0  %s %s\", reg_addr);", bit_num ,bit_type,bit_text);
                 fprintf(out_file_prt, "\n    }");
             }
             if (res_bit_range && res_bit_text &&  res_bit_val && res_bit_type) {
                 uint8_t mask_lengt = bit_old-bit_little + 1;
                 uint16_t mask16b =calc_16_mask(mask_lengt);
-                fprintf(out_file_prt, "\n    if(%u==(0x%x & (reg16b_val>>%u))){",bit_val,mask16b,bit_little);
+                fprintf(out_file_prt, "\n    if(%u==(0x%x & (reg_val>>%u))){",bit_val,mask16b,bit_little);
                 fprintf (out_file_prt,"\n        fprintf (out_file_prt,\"\\n    reg %%02u bit %u-%u:%u %s %s\", reg_addr); ",bit_old,bit_little,bit_val,bit_type, bit_text);
                 fprintf(out_file_prt, "\n    }");
             }
             if (res_bit_range && res_bit_text && (false==res_bit_val) && res_bit_type) {
                 uint8_t mask_lengt = bit_old-bit_little + 1;
                 uint16_t mask16b = calc_16_mask(mask_lengt);
-                fprintf (out_file_prt, "\n    code = (0x%x & (reg16b_val>>%u));", mask16b, bit_little);
+                fprintf (out_file_prt, "\n    code = (0x%x & (reg_val>>%u));", mask16b, bit_little);
                 fprintf (out_file_prt, "\n    fprintf (out_file_prt,\"\\n    reg %%02u bit %u-%u: %%u=0x%%x  %s %s\", reg_addr, code, code); ",bit_old, bit_little, bit_type, bit_text);
             }
 
@@ -263,8 +268,8 @@ bool generate_reg_parser(char *in_file_name, char *out_file_name) {
             memset(cur_file_str, 0, sizeof(cur_file_str));
         }
 
-        res = compose_case(out_file_prt);
-        res = generate_header(header_file_name);
+        res = compose_case(out_file_prt, chip_name, bitness);
+        res = generate_header(header_file_name, chip_name);
 
         fclose(inFilePrt);
         res = true;
