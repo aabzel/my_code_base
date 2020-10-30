@@ -1,12 +1,27 @@
 #include "code_config.h"
 
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/time.h>
+#include <time.h>
+
 #include "algorithms.h"
 #include "combinations.h"
 #include "convert.h"
 #include "hash_table.h"
 #include "linked_list.h"
 
+#ifdef HAS_LS
+#include "ls_l.h"
+#endif
+
 #include "compare_version.h"
+
+#ifdef HAS_EVAL_CACHE
+#include "evaluate_cache.h"
+#endif
 
 #ifdef HAS_PARSE_REG
 #include "parse_regs.h"
@@ -16,9 +31,14 @@
 #include "generate_parser.h"
 #endif
 
-
+#ifdef HAS_PERMUTATION
 #include "permutations.h"
+#endif
+
+#ifdef HAS_TCP_CLIENT
 #include "tcp_client.h"
+#endif
+
 #include "uTests.h"
 #include "utils.h"
 #ifdef DEPLOY_TCP_SERVER
@@ -35,12 +55,6 @@
 #include "parse_keepass.h"
 #endif
 
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/time.h>
-#include <time.h>
 
 extern char **environ;
 
@@ -65,16 +79,21 @@ void inc (char *array) {
     (*ptr2)++;
 }
 
+#ifdef RAND_GENERATOR
 uint64_t GetTimeStamp () {
     struct timeval tv;
     gettimeofday (&tv, NULL);
     return tv.tv_sec * (uint64_t)1000000 + tv.tv_usec;
 }
+#endif
 
 int main (int argc, char *argv[]) {
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+    printf ("\n[d] %s(): addr of main 0x%p", __FUNCTION__,  main);
     // time_t t;
+#ifdef RAND_GENERATOR
     srand ((unsigned)GetTimeStamp ());
+#endif
+
 #ifdef BEAM_TREAL
     char array[] = {'A', 'G', 'V', 0};
     inc (&array[0]);
@@ -94,13 +113,13 @@ int main (int argc, char *argv[]) {
     printf ("\na [%x]\n", (unsigned int)(a));
     printf ("\nb [%x]\n", (unsigned int)(b));
 #endif
-
+#ifdef HAS_VERBOSE
     printf ("\n[-] Argc: [%u]", argc);
-    printf ("\n[d] 1");
     for (int i = 0; i < argc; i++) {
         printf ("\n[d] 1");
         printf ("\n[-]  argv[%d] [%s]", i, argv[i]);
     }
+#endif
 
     // IPTCP server port tcp server
 #if HIDE_CONSOLE
@@ -117,6 +136,24 @@ int main (int argc, char *argv[]) {
         exit (ret);
     } else {
         printf ("\n\nUnit Test fine\n");
+    }
+#endif
+
+#ifdef HAS_EVAL_CACHE
+    if (2 == argc) {
+        uint64_t byte_max = 0;
+        bool res = try_strl2uint64 (argv[1], strlen (argv[1]), &byte_max);
+        if (true==res) {
+            evaluate_cache(byte_max);
+        }
+    }
+
+#endif
+
+    #ifdef HAS_LS
+    bool res_ls = explore_dir ();
+    if(false==res_ls) {
+    	printf ("\n\nError explore_dir\n");
     }
 #endif
 
@@ -200,8 +237,8 @@ int main (int argc, char *argv[]) {
 
 #endif
 
-
 #ifdef HAS_GENERATE_REG_PARSER
+    //  #error dfdfd
     printf ("\n Generate rarser for registers\n");
     if (5 == argc) {
         bool res;
@@ -214,10 +251,15 @@ int main (int argc, char *argv[]) {
     }
 #endif
 
-
 #ifdef HAS_PARSE_REG
     printf ("\n Parse registers\n");
-    if (3 == argc) {
+    if(2 == argc){
+        bool res;
+        res = parse_regs_file (argv[1], NULL);
+        if (false == res) {
+            printf ("\nError in parsing PHY regs\n");
+        }
+    }else if (3 == argc) {
         bool res;
         res = parse_regs_file (argv[1], argv[2]);
         if (false == res) {

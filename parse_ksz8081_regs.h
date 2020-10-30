@@ -14,7 +14,7 @@ typedef struct xRegChip16bit_t {
     char reg_name[100];
 } reg_chip16bit_t;
 
-extern char *ksz8081_reg_2_name[] ;
+extern char *ksz8081_reg_2_name[];
 
 extern reg_chip16bit_t ksz8081RegMap[KSZ8081_REG_NUM];
 

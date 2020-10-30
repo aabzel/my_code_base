@@ -14,19 +14,23 @@ extern "C" {
 #define DEBUG_ARG 0
 
 //#define F_EPSILON 0.0005f
+int sum_digits (int val);
 void print_terms (int total_num, int *alf, int alf_size, int sum, int *syllables);
 bool swap_int (int *const x, int *const y);
 uint32_t factorial (uint32_t n);
 bool is_in_range (int val, int lowBound, int upBound);
 int update_max (int curMax, int newVal);
 int qselect (int *v, int len, int k);
-//bool is_power_of_two (int x);
+// bool is_power_of_two (int x);
 void swap_char (char *const x, char *const y);
 
 short compare (int Data1, int Data2);
 int max_int (int val1, int val2);
 int min_int (int val1, int val2);
 int min3 (int val1, int val2, int val3);
+
+uint32_t average_slow (uint32_t a, uint32_t b);
+uint32_t average_quick (uint32_t a, uint32_t b);
 
 int partition_int (int *arr, int l, int r);
 int qselect (int *v, int len, int k);

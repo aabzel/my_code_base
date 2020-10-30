@@ -1,6 +1,7 @@
 #include "combinations_test.h"
 
 #include "combinations.h"
+#include "uTests.h"
 
 bool test_combinations (void) {
     printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);

@@ -1178,7 +1178,7 @@ bool try_canch_hex_uint8 (char *inStr, int strLen, uint8_t *val8b) {
 
                         if (4 == valLen) {
                             res = try_strl2uint8_hex (&inStr[startIndex + 2], 2, val8b);
-                            //res = try_str2uint8 (&inStr[startIndex], val8b);
+                            // res = try_str2uint8 (&inStr[startIndex], val8b);
                             return res;
                         }
                         catch = 0;
@@ -1399,14 +1399,25 @@ bool parse_serial (char *inStr, uint16_t inStrLen, uint64_t *outSerial64bNumber)
     return res;
 }
 
+bool lower_case_str (char *str) {
+    bool res = false;
+    if (str) {
+        res = true;
+        for (int i = 0; str[i]; i++) {
+            str[i] = (char)tolower ((int)str[i]);
+        }
+    }
+    return res;
+}
 
-bool lower_case_str(char *str) {
-	bool res = false;
-	if (str) {
-		res = true;
-	    for (int i = 0; str[i]; i++) {
-	        str[i] = (char) tolower((int )str[i]);
-    	}
-	}
-	return res;
+char *upper_case_str (char *str) {
+    static char out_str[100];
+    strncpy (out_str, str, sizeof (out_str));
+    int i = 0;
+    for (i = 0; out_str[i] != '\0'; i++) {
+        if (('a' <= out_str[i]) && (out_str[i] <= 'z')) {
+            out_str[i] = out_str[i] - 32;
+        }
+    }
+    return out_str;
 }

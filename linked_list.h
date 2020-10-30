@@ -22,7 +22,7 @@ typedef struct xListNode {
 #endif
 
 bool push_val (list_node_t **pInHead, int newVal);
-void show_list (list_node_t *headNode);
+
 
 #if 0
 bool linked_list_deinit (list_node_t *pInHead);
@@ -32,7 +32,8 @@ bool delete_node (ListNode* node);
 ListNode* middle_node (ListNode* head);
 void print_array_to_file (FILE * filePointer, int *array, int size);
 // reverse list
-void print_list (list_node_t *pHead);
+void print_list1 (list_node_t *pHead);
+void print_list2 (ListNode* headNode);
 int list_num_of_elements (list_node_t *pHead);
 int list_num_of_data_byte (list_node_t *pHead);
 list_node_t *get_node_by_index (list_node_t *pHead, int desInd);
@@ -41,7 +42,6 @@ list_node_t* sortList (list_node_t* head);
 list_node_t *list_get_elem_by_index (int index);
 void save_list_to_file (list_node_t *pInHead, char *filename);
 
-void show_list (ListNode* headNode);
 void list_add_node_front (ListNode** headNode, int new_data);
 ListNode* reverseList (ListNode* head);
 void reverse_rec (ListNode** head);

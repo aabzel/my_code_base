@@ -20,26 +20,26 @@ bool test_convert (void) {
     res = test_assemble_uint32 ();
     EXPECT_EQ (true, res);
     uint8_t out_shift;
-	uint8_t value;
+    uint8_t value;
 
-	EXPECT_TRUE( is_hex_str ("0x1E ", 5, &out_shift));
-	EXPECT_EQ(2, out_shift);
+    EXPECT_TRUE (is_hex_str ("0x1E ", 5, &out_shift));
+    EXPECT_EQ (2, out_shift);
 
-    EXPECT_TRUE(try_str2uint8 ("1", &value));
-    EXPECT_EQ(1, value);
+    EXPECT_TRUE (try_str2uint8 ("1", &value));
+    EXPECT_EQ (1, value);
 
-    EXPECT_TRUE(try_str2uint8 ("1 ", &value));
-    EXPECT_EQ(1, value);
+    EXPECT_TRUE (try_str2uint8 ("1 ", &value));
+    EXPECT_EQ (1, value);
 
-    EXPECT_TRUE(try_str2uint8 ("0x1E", &value));
-    EXPECT_EQ(0x1E, value);
+    EXPECT_TRUE (try_str2uint8 ("0x1E", &value));
+    EXPECT_EQ (0x1E, value);
 
     uint64_t u64_hex_value;
-    EXPECT_TRUE( try_strl2uint64_hex ("1E ", 5, &u64_hex_value));
-    EXPECT_EQ(0x1E, value);
+    EXPECT_TRUE (try_strl2uint64_hex ("1E ", 5, &u64_hex_value));
+    EXPECT_EQ (0x1E, value);
 
-    EXPECT_TRUE(try_str2uint8 ("0x1E ", &value));
-    EXPECT_EQ(0x1E, value);
+    EXPECT_TRUE (try_str2uint8 ("0x1E ", &value));
+    EXPECT_EQ (0x1E, value);
 
     return true;
 }

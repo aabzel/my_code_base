@@ -2,11 +2,22 @@
 
 #include <time.h>
 
+#ifdef HAS_AURIGA_TASK
+#include "test_auriga_task.h"
+#endif
+
+//#ifdef DHAS_ALGORITHMS
 #include "algorithms.h"
 #include "algorithms_test.h"
+#include "test_algorithms.h"
+//#endif
+
 #include "bit_utils.h"
 #include "test_mk_2_dot.h"
 
+#ifdef HAS_EVAL_CACHE
+#include "test_evaluate_cache.h"
+#endif
 
 //#include "amount_of_uio_states.h"
 #ifdef HAS_ARRAY
@@ -74,7 +85,9 @@
 #include "str_ops.h"
 #include "test_str_ops.h"
 //#include "test_avl_tree.h"
+#ifdef TEST_FIFO
 #include "test_fifo_char.h"
+#endif
 //#include "test_lifo_char.h"
 #include "utils.h"
 
@@ -271,36 +284,54 @@ static bool test_parse_phy_reg_vals (void) {
 }
 #endif
 
-static bool test_bit_utils (void) {
-	EXPECT_EQ(MASK_0_BITS,calc_16_mask (0));
-	EXPECT_EQ(MASK_1_BITS,calc_16_mask (1));
-	EXPECT_EQ(MASK_2_BITS,calc_16_mask (2));
-	EXPECT_EQ(MASK_3_BITS,calc_16_mask (3));
-	EXPECT_EQ(MASK_4_BITS,calc_16_mask (4));
-	EXPECT_EQ(MASK_5_BITS,calc_16_mask (5));
-	EXPECT_EQ(MASK_6_BITS,calc_16_mask (6));
-	EXPECT_EQ(MASK_7_BITS,calc_16_mask (7));
-	EXPECT_EQ(MASK_8_BITS,calc_16_mask (8));
-	EXPECT_EQ(MASK_9_BITS,calc_16_mask (9));
-	EXPECT_EQ(MASK_10_BITS,calc_16_mask (10));
-	EXPECT_EQ(MASK_11_BITS,calc_16_mask (11));
-	EXPECT_EQ(MASK_12_BITS,calc_16_mask (12));
-	EXPECT_EQ(MASK_13_BITS,calc_16_mask (13));
-	EXPECT_EQ(MASK_14_BITS,calc_16_mask (14));
-	EXPECT_EQ(MASK_15_BITS,calc_16_mask (15));
-	EXPECT_EQ(MASK_16_BITS,calc_16_mask (16));
-	return true;
-}
 
+static bool test_static(void) {
+	static int a;
+	printf("\n static a a=%d &a=%p",a,&a);
+	bool res=false;
+	if(0==a){
+		res = true;
+	}
+	a++;
+	return res;
+}
 
 int unit_test (void) {
     bool res = false;
-
-    res = test_bit_utils ();
+#ifdef HAS_AURIGA_TASK
+    res = test_auriga_task ();
     if (false == res) {
-        printf ("test_bit_utils error");
-        return BIT_UTILS_ERROR;
+        printf ("test_auriga_task error");
+        return AURIGA_TASK_ERROR;
     }
+#endif
+
+    res = test_bin_utils ();
+    if (false == res) {
+        printf ("bin utils error");
+        return BIN_UTILS_ERROR;
+    }
+#ifdef TEST_MATRIX_ACCESS
+    res = test_matrix_accsess();
+    if (false == res) {
+        printf ("matrix_accsess error");
+        return MATRIX_ACCSESS_ERROR;
+    }
+#endif
+
+    res = test_static ();
+    if (false == res) {
+        printf ("test_static error");
+        return STATIC_LOCAL_ERROR;
+    }
+
+//#ifdef DHAS_ALGORITHMS
+    res = test_algorithms ();
+    if (false == res) {
+        printf ("test_algorithms error");
+        return ALGOTITHMS_ERROR;
+    }
+//#endif
 
 #ifdef TEST_CONVERT
     res = test_convert ();
@@ -311,10 +342,11 @@ int unit_test (void) {
 #endif
 
 #ifdef HAS_GENERATE_REG_PARSER_TEST
-    res = test_generate_reg_parser( );
-    if(false == res){
-    	printf ("generate reg parser error");
-    	return GENERATE_REG_PARSER_ERROR;
+    //#error test_build
+    res = test_generate_reg_parser ();
+    if (false == res) {
+        printf ("generate reg parser error");
+        return GENERATE_REG_PARSER_ERROR;
     }
 #endif
 
@@ -418,7 +450,6 @@ int unit_test (void) {
         return PARSE_MAC_ERROR;
     }
 
-
 #ifdef TEST_PARSE_REG
     res = test_parse_phy_addr ();
     if (false == res) {
@@ -466,7 +497,6 @@ int unit_test (void) {
         return FLOAR_TO_SAMPLE_ERROR;
     }
 #endif
-
 
 #if TEST_FLOATS
     print_biggest_mantissa ();
@@ -1398,23 +1428,7 @@ bool test_heap (void) {
     return true;
 }
 
-bool test_algo (void) {
-    int min3val;
-    min3val = min3 (2, 3, 5);
-    if (2 != min3val) {
-        return false;
-    }
-    min3val = min3 (42, 33, 75);
-    if (33 != min3val) {
-        return false;
-    }
-    min3val = min3 (42, 533, 5);
-    if (5 != min3val) {
-        return false;
-    }
 
-    return true;
-}
 
 bool test_stsstr (void) {
     char text[100];
@@ -1746,32 +1760,8 @@ bool test_valid_float_number (void) {
     return true;
 }
 
-bool test_k_smallest (void) {
-    int numsSize;
-    int val;
-    int arr1[] = {1, 3, -1};
-    numsSize = sizeof (arr1) / sizeof (arr1[0]);
 
-    val = qselect (arr1, numsSize, 1);
-    if (1 != val) {
-        return false;
-    }
-    int arr2[] = {3, -1, -3};
-    numsSize = sizeof (arr2) / sizeof (arr2[0]);
-    val = qselect (arr2, numsSize, 1);
-    if (-1 != val) {
-        return false;
-    }
-    int arr3[] = {-1, -3, 5};
-    numsSize = sizeof (arr3) / sizeof (arr2[0]);
 
-    val = qselect (arr3, numsSize, 1);
-    if (-1 != val) {
-        return false;
-    }
-
-    return true;
-}
 #if 0
 bool test_medianSlidingWindow (void) {
     bool res = false;

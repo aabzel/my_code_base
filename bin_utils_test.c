@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "bin_utils.h"
+#include "uTests.h"
 
 bool test_binary_gap (void) {
     int gap;
@@ -27,4 +28,21 @@ bool test_binary_gap (void) {
         return false;
     }
     return true;
+}
+
+bool test_binary_swap (void) {
+	EXPECT_EQ(swap_bits(0), 0);
+	EXPECT_EQ(swap_bits(1), 0x8000000000000000);
+	EXPECT_EQ(swap_bits(0x8000000000000000), 1);
+	EXPECT_EQ(swap_bits(0xF), 0xF000000000000000);
+	EXPECT_EQ(swap_bits(0xAAAAAAAAAAAAAAAA), 0x5555555555555555);
+	EXPECT_EQ(swap_bits(0xFFFFFFFFFFFFFFFF), 0xFFFFFFFFFFFFFFFF);
+
+    return true;
+}
+
+bool test_bin_utils (void) {
+	EXPECT_TRUE( test_binary_swap ());
+	EXPECT_TRUE( test_binary_gap ());
+	return true;
 }

@@ -41,5 +41,4 @@ bool parse_tic12400_regs_file (char *inFileName, char *outFileName);
 bool parse_tic12400_reg (uint8_t regAddr, FILE *outFilePrt);
 bool load_tic12400_reg (uint8_t regAddr, uint32_t regVal);
 
-
 #endif /* PARSE_TIC12400_REGS_H */

@@ -113,9 +113,14 @@ typedef enum {
     PARSE_PHY_REG_VALS_ERROR = 95,
     STR_OPS_ERROR = 96,
     TEST_MK_2_DOT_ERROR = 97,
-	GENERATE_REG_PARSER_ERROR = 98,
-	BIT_UTILS_ERROR = 99,
-    NUM_ERROR = 100
+    GENERATE_REG_PARSER_ERROR = 98,
+    BIT_UTILS_ERROR = 99,
+    ALGOTITHMS_ERROR = 100,
+    AURIGA_TASK_ERROR = 101,
+	STATIC_LOCAL_ERROR = 102,
+	MATRIX_ACCSESS_ERROR = 103,
+	BIN_UTILS_ERROR=104,
+    NUM_ERROR = 120
 } utError_t;
 
 int unit_test (void);
@@ -133,7 +138,7 @@ bool test_bin_heap_rand_add_and_del_one (void);
 // bool test_bin_heap_dec_add (void);
 // bool test_heap (void);
 // int qselect (int *v, int len, int k);
-bool test_k_smallest (void);
+
 bool test_valid_float_number (void);
 bool test_stsstr (void);
 // bool test_bin_heap_par_ind_arr (void);
@@ -149,7 +154,7 @@ bool test_linked_list (void);
 bool test_grey_conversation (void);
 bool test_reverse_list (void);
 bool test_float (void);
-bool test_algo (void);
+
 bool test_min_diag_scale_summ (void);
 bool test_min_path_diag (void);
 bool test_min_path (void);
@@ -186,9 +191,9 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
 #define EXPECT_EQ(val1, val2)                                                                                          \
     do {                                                                                                               \
         if (val1 != val2) {                                                                                            \
-            printf ("\n%s:Line: %d %d in val1: %d val2: %d ", __FUNCTION__, __LINE__, __COUNTER__, (int)val1,          \
-                    (int)val2);                                                                                        \
-            printf ("\n%s:Line: %d %d in val1: %x val2: %x ", __FUNCTION__, __LINE__, __COUNTER__, (int)val1,          \
+            printf ("\n%s:Line: %d in val1: %u val2: %u ", __FUNCTION__, __LINE__, val1,          \
+                    val2);                                                                                        \
+            printf ("\n%s:Line: %d in val1: %x val2: %x ", __FUNCTION__, __LINE__, (int)val1,          \
                     (int)val2);                                                                                        \
             return false;                                                                                              \
         }                                                                                                              \

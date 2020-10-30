@@ -150,9 +150,9 @@ bool try_strl2uint64_hex (const char u64_hex_str[], int32_t u64_hex_str_len, uin
             for (u64_hex_str_index = 0; u64_hex_str_index < u64_hex_len; u64_hex_str_index++) {
                 uint8_t u64_hex_str_char = (uint8_t)u64_hex_str[u64_hex_str_index];
                 uint8_t u64_hex_str_number = 0U;
-                if (' '==u64_hex_str_char) {
-                	u64_hex_success = true;
-                	break;
+                if (' ' == u64_hex_str_char) {
+                    u64_hex_success = true;
+                    break;
                 }
                 if (true == try_hex_char_to_u8 (u64_hex_str_char, &u64_hex_str_number)) {
                     u64_hex_result = (u64_hex_result * 16U) + u64_hex_str_number;
@@ -226,16 +226,16 @@ bool try_strl2uint64_dec (const char u64_dec_str[], int32_t u64_dec_str_len, uin
             uint8_t u64l_dec_str_char = (uint8_t)u64_dec_str[u64l_dec_str_index];
             uint8_t u64l_dec_str_number = 0U;
             uint64_t u64l_dec_temp_value = 0U;
-            if (' '==u64l_dec_str_char) {
-            	break;
+            if (' ' == u64l_dec_str_char) {
+                break;
             }
-                u64l_dec_success = try_dec_char_to_u8 (u64l_dec_str_char, &u64l_dec_str_number);
-                if (u64l_dec_success == true) {
-                    u64l_dec_temp_value = (u64l_dec_result * 10U) + u64l_dec_str_number;
-                    if (u64l_dec_temp_value < u64l_dec_result) {
-                        u64l_dec_success = false;
-                    }
+            u64l_dec_success = try_dec_char_to_u8 (u64l_dec_str_char, &u64l_dec_str_number);
+            if (u64l_dec_success == true) {
+                u64l_dec_temp_value = (u64l_dec_result * 10U) + u64l_dec_str_number;
+                if (u64l_dec_temp_value < u64l_dec_result) {
+                    u64l_dec_success = false;
                 }
+            }
 
             if (u64l_dec_success == false) {
                 u64l_dec_result = 0U;
@@ -1359,17 +1359,17 @@ bool is_hex_str (const char str_to_check[], int32_t str_to_check_len, uint8_t *c
                 }
 
                 int32_t i = 0;
-                int32_t space=0;
+                int32_t space = 0;
                 for (i = ((int32_t)out_shift_loc); i < str_to_check_len; i++) {
-                     if(' '!=str_to_check[i]) {
-                          if (true == is_hex_digit (str_to_check[i])) {
-                              validHexCnt++;
-                          }
-                     }else{
-                    	 space++;
-                     }
+                    if (' ' != str_to_check[i]) {
+                        if (true == is_hex_digit (str_to_check[i])) {
+                            validHexCnt++;
+                        }
+                    } else {
+                        space++;
+                    }
                 }
-                if ((str_to_check_len - ((int32_t)out_shift_loc)-space) == validHexCnt) {
+                if ((str_to_check_len - ((int32_t)out_shift_loc) - space) == validHexCnt) {
                     (*out_shift) = out_shift_loc;
                     is_hex_str_result = true;
                 }
@@ -1558,6 +1558,26 @@ static bool is_false (const char *false_str_to_check) {
     }
 
     return is_false_result;
+}
+
+const char *utoa_bin8 (uint8_t u8_bin_data) {
+    uint8_t cell8 = 0u;
+    uint8_t mask8 = 0x80U;
+    static char outBitStr8[sizeof ("0000_0000") + 1U] = "0000_0000";
+    while (mask8 != 0U) {
+        if (outBitStr8[cell8] == '_') {
+            cell8++;
+        }
+        if (0u != (u8_bin_data & mask8)) {
+            outBitStr8[cell8] = '1';
+        } else {
+            outBitStr8[cell8] = '0';
+        }
+        mask8 >>= 1U;
+        cell8++;
+    }
+    outBitStr8[sizeof (outBitStr8) - 1u] = '\0';
+    return outBitStr8;
 }
 
 const char *utoa_bin16 (uint16_t u16_bin_data) {

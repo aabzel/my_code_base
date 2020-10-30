@@ -1,11 +1,11 @@
 #include "parse_ksz8081_regs.h"
 #include "ksz8081_register_parser.h"
 
+#include "bit_utils.h"
 #include "convert.h"
 #include "parse_regs.h"
 #include "str_ops.h"
 #include "utils.h"
-#include "bit_utils.h"
 
 #include <stdint.h>
 #include <stdio.h>
@@ -48,8 +48,6 @@ char *ksz8081_reg_2_name[] = {
     /*30 1Eh*/ "PHY Control 1",
     /*31 1Fh*/ "PHY Control 2"};
 // 19 registers
-
-
 
 #if 0
 static bool parse_linkmd_control_status_register_1dh (uint16_t reg_val, FILE *out_file_prt) {

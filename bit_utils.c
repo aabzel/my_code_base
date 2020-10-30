@@ -26,15 +26,14 @@ uint8_t count_set_bits (uint32_t const inVal32bit) {
 
 /*num_of_bit 0......16*/
 uint16_t calc_16_mask (uint8_t num_of_bit) {
-	uint16_t mask = 0;
-	if (num_of_bit<=16) {
-	    for (int i=0; i<num_of_bit ;i++) {
-		    mask |= (1<<i);
-	    }
-	}
-	return mask;
+    uint16_t mask = 0;
+    if (num_of_bit <= 16) {
+        for (int i = 0; i < num_of_bit; i++) {
+            mask |= (1 << i);
+        }
+    }
+    return mask;
 }
-
 
 /*
  *  Odd (Amount of 1 bits is 1 3 5 7 9 and so 31)

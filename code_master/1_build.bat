@@ -1,4 +1,5 @@
 @echo off
 del  *.exe
 make
-sleep 10
+rem sleep 30
+

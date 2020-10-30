@@ -1,27 +1,25 @@
 #ifndef KSZ8081_BIT_OFFSETS_H
 #define KSZ8081_BIT_OFFSETS_H
 
- #define KSZ8081_BMCR                        0x00
- #define KSZ8081_BMSR                        0x01 /*REG Number for Basic Status*/
- #define KSZ8081_PHYID1                      0x02  /*REG Number for PHY ID 1 register*/
- #define KSZ8081_PHYID2                      0x03
- #define KSZ8081_ANAR                        0x04
- #define KSZ8081_ANLPAR                      0x05
- #define KSZ8081_ANER                        0x06
- #define KSZ8081_ANNPR                       0x07
- #define KSZ8081_ANLPNPR                     0x08
- #define KSZ8081_DRCON                       0x10
- #define KSZ8081_AFECON1                     0x11
- #define KSZ8081_RXERCTR                     0x15
- #define KSZ8081_OMSO                        0x16
- #define KSZ8081_OMSS                        0x17
- #define KSZ8081_EXCON                       0x18
- #define KSZ8081_ICSR                        0x1B
- #define KSZ8081_LINKMD                      0x1D /*Register 1Dh – LinkMD Control/Status*/
- #define KSZ8081_PHYCON1                     0x1E /*Reg 30 PHY Control 1*/
- #define KSZ8081_PHYCON2                     0x1F /*Reg 31 PHY Control 2*/
-
-
+#define KSZ8081_BMCR 0x00
+#define KSZ8081_BMSR 0x01   /*REG Number for Basic Status*/
+#define KSZ8081_PHYID1 0x02 /*REG Number for PHY ID 1 register*/
+#define KSZ8081_PHYID2 0x03
+#define KSZ8081_ANAR 0x04
+#define KSZ8081_ANLPAR 0x05
+#define KSZ8081_ANER 0x06
+#define KSZ8081_ANNPR 0x07
+#define KSZ8081_ANLPNPR 0x08
+#define KSZ8081_DRCON 0x10
+#define KSZ8081_AFECON1 0x11
+#define KSZ8081_RXERCTR 0x15
+#define KSZ8081_OMSO 0x16
+#define KSZ8081_OMSS 0x17
+#define KSZ8081_EXCON 0x18
+#define KSZ8081_ICSR 0x1B
+#define KSZ8081_LINKMD 0x1D  /*Register 1Dh – LinkMD Control/Status*/
+#define KSZ8081_PHYCON1 0x1E /*Reg 30 PHY Control 1*/
+#define KSZ8081_PHYCON2 0x1F /*Reg 31 PHY Control 2*/
 
 // Basic Control
 #define RESET_BIT_15 (1 << 15)
@@ -65,20 +63,18 @@
 // Register 1Eh – PHY Control 1
 // Register 1Fh – PHY Control 2
 
-
- //PHY Control 1 register
- #define KSZ8081_PHYCON1_PAUSE_EN            (1<<9)
- #define KSZ8081_PHYCON1_LINK_STATUS         (1<<8)
- #define KSZ8081_PHYCON1_POL_STATUS          (1<<7)
- #define KSZ8081_PHYCON1_MDIX_STATE          (1<<5)
- #define KSZ8081_PHYCON1_ENERGY_DETECT       (1<<4)
- #define KSZ8081_PHYCON1_PHY_ISOLATE         (1<<3)
- #define KSZ8081_PHYCON1_OP_MODE             0x0007
- #define KSZ8081_PHYCON1_OP_MODE_AN          0x0000
- #define KSZ8081_PHYCON1_OP_MODE_10BT_HD     (1<<0)
- #define KSZ8081_PHYCON1_OP_MODE_100BTX_HD   (1<<1)
- #define KSZ8081_PHYCON1_OP_MODE_10BT_FD     0x0005
- #define KSZ8081_PHYCON1_OP_MODE_100BTX_FD   0x0006
-
+// PHY Control 1 register
+#define KSZ8081_PHYCON1_PAUSE_EN (1 << 9)
+#define KSZ8081_PHYCON1_LINK_STATUS (1 << 8)
+#define KSZ8081_PHYCON1_POL_STATUS (1 << 7)
+#define KSZ8081_PHYCON1_MDIX_STATE (1 << 5)
+#define KSZ8081_PHYCON1_ENERGY_DETECT (1 << 4)
+#define KSZ8081_PHYCON1_PHY_ISOLATE (1 << 3)
+#define KSZ8081_PHYCON1_OP_MODE 0x0007
+#define KSZ8081_PHYCON1_OP_MODE_AN 0x0000
+#define KSZ8081_PHYCON1_OP_MODE_10BT_HD (1 << 0)
+#define KSZ8081_PHYCON1_OP_MODE_100BTX_HD (1 << 1)
+#define KSZ8081_PHYCON1_OP_MODE_10BT_FD 0x0005
+#define KSZ8081_PHYCON1_OP_MODE_100BTX_FD 0x0006
 
 #endif /* KSZ8081_BIT_OFFSETS_H */

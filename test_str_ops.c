@@ -403,7 +403,7 @@ static bool test_replace_substr (void) {
 }
 
 static bool test_str_char_replace (void) {
-    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+    //printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
     char fileName[100];
     int cmpRes = 0;
     strncpy (fileName, "spc58_pass.mk", sizeof (fileName));
@@ -423,36 +423,43 @@ static bool test_count_substring (void) {
 }
 
 static bool test_try_canch_hex_uint8 (void) {
-	uint8_t val8b = 0;
-	char inStr[400];
-    strncpy (inStr, "       INT_STAT[0x02]: 0x00000600 0b_0000_0000_0000_0000_0000_0110_0000_0000",sizeof(inStr));
-    EXPECT_TRUE ( try_canch_hex_uint8 (inStr, strlen(inStr), &val8b));
+    uint8_t val8b = 0;
+    char inStr[400];
+    strncpy (inStr, "       INT_STAT[0x02]: 0x00000600 0b_0000_0000_0000_0000_0000_0110_0000_0000", sizeof (inStr));
+    EXPECT_TRUE (try_canch_hex_uint8 (inStr, strlen (inStr), &val8b));
     EXPECT_EQ (0x02, val8b);
 
-    strncpy (inStr, "      ANA_STAT1[0x0b]: 0x00000000 0b_0000_0000_0000_0000_0000_0000_0000_0000",sizeof(inStr));
-    EXPECT_TRUE ( try_canch_hex_uint8 (inStr, strlen(inStr), &val8b));
+    strncpy (inStr, "      ANA_STAT1[0x0b]: 0x00000000 0b_0000_0000_0000_0000_0000_0000_0000_0000", sizeof (inStr));
+    EXPECT_TRUE (try_canch_hex_uint8 (inStr, strlen (inStr), &val8b));
     EXPECT_EQ (0x0b, val8b);
     return true;
 }
 
 static bool test_try_canch_hex_uint32 (void) {
-	uint32_t val32b = 0;
-	char inStr[400];
-    strncpy (inStr, "       INT_STAT[0x02]: 0x00000600 0b_0000_0000_0000_0000_0000_0110_0000_0000",sizeof(inStr));
-    EXPECT_TRUE ( try_canch_hex_uint32 (inStr, strlen(inStr), &val32b));
+    uint32_t val32b = 0;
+    char inStr[400];
+    strncpy (inStr, "       INT_STAT[0x02]: 0x00000600 0b_0000_0000_0000_0000_0000_0110_0000_0000", sizeof (inStr));
+    EXPECT_TRUE (try_canch_hex_uint32 (inStr, strlen (inStr), &val32b));
     EXPECT_EQ (0x00000600, val32b);
 
-    strncpy (inStr, "         CONFIG[0x1a]: 0x00832800 0b_0000_0000_1000_0011_0010_1000_0000_0000",sizeof(inStr));
-    EXPECT_TRUE ( try_canch_hex_uint32 (inStr, strlen(inStr), &val32b));
+    strncpy (inStr, "         CONFIG[0x1a]: 0x00832800 0b_0000_0000_1000_0011_0010_1000_0000_0000", sizeof (inStr));
+    EXPECT_TRUE (try_canch_hex_uint32 (inStr, strlen (inStr), &val32b));
     EXPECT_EQ (0x00832800, val32b);
     return true;
 }
 
+static bool test_2_upper_case (void) {
+    EXPECT_EQ_STR ("TJA1145", upper_case_str ("tja1145"));
+    EXPECT_EQ_STR ("KSZ8081", upper_case_str ("ksz8081"));
+    return true;
+}
+
 bool test_str_ops (void) {
-	EXPECT_TRUE ( test_count_substring());
-	EXPECT_TRUE ( test_extract_sub_string());
-	EXPECT_EQ (true, test_try_canch_hex_uint8 ());
-	EXPECT_EQ (true, test_try_canch_hex_uint32 ());
+    EXPECT_TRUE (test_2_upper_case ());
+    EXPECT_TRUE (test_count_substring ());
+    EXPECT_TRUE (test_extract_sub_string ());
+    EXPECT_EQ (true, test_try_canch_hex_uint8 ());
+    EXPECT_EQ (true, test_try_canch_hex_uint32 ());
     EXPECT_EQ (true, test_replace_substr ());
     EXPECT_EQ (true, test_str_char_replace ());
     return true;

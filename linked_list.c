@@ -80,7 +80,7 @@ bool push_val (list_node_t **pInHead, int newVal) {
 }
 
 /* Function to print linked list */
-void show_list (list_node_t *headNode) {
+void print_list2 (list_node_t *headNode) {
     list_node_t *curNode = headNode;
     printf ("\n Start of list\n");
     while (curNode != NULL) {
@@ -227,7 +227,7 @@ int list_num_of_elements (list_node_t *pHead) {
     return amountOfElem;
 }
 
-void print_list (list_node_t *pHead) {
+void print_list1 (list_node_t *pHead) {
     int numElem = list_num_of_elements (pHead);
     printf ("\nList content: amount of item: [%d]\n", numElem);
     if (pHead) {

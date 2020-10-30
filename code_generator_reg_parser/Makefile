@@ -17,7 +17,6 @@ CFLAGS  = -g -Wall
 CFLAGS  += -DHAS_GENERATE_REG_PARSER
 CFLAGS  += -DHAS_GENERATE_REG_PARSER_TEST
 CFLAGS  += -DHAS_UTESTS
-CFLAGS  += -DHAS_KSZ8081
 CFLAGS  += -DTEST_CONVERT
 #files to link:
 LFLAGS =
@@ -30,7 +29,8 @@ EXECUTABLE=generate_reg_paraser
 SOURCES = $(SRC_PATH)/main.c 
 SOURCES += $(SRC_PATH)/utils.c 
 SOURCES += $(SRC_PATH)/arrays.c  
-SOURCES += $(SRC_PATH)/test_arrays.c  
+SOURCES += $(SRC_PATH)/test_arrays.c
+SOURCES += $(SRC_PATH)/test_algorithms.c
 SOURCES += $(SRC_PATH)/convert.c  
 SOURCES += $(SRC_PATH)/bit_utils.c  
 SOURCES += $(SRC_PATH)/uTests.c   

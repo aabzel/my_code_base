@@ -30,11 +30,9 @@ SOURCES += $(SRC_PATH)/utils.c
 SOURCES += $(SRC_PATH)/arrays.c 
 SOURCES += $(SRC_PATH)/convert.c
 SOURCES += $(SRC_PATH)/bit_utils.c
-SOURCES += $(SRC_PATH)/test_arrays.c
 SOURCES += $(SRC_PATH)/fifo_char.c
 SOURCES += $(SRC_PATH)/fifo_index.c
 SOURCES += $(SRC_PATH)/test_fifo_char.c
-SOURCES += $(SRC_PATH)/test_convert.c  
 SOURCES += $(SRC_PATH)/float_utils.c  
 SOURCES += $(SRC_PATH)/parse_regs.c
 SOURCES += $(SRC_PATH)/parse_ksz8081_regs.c
@@ -42,6 +40,8 @@ SOURCES += $(SRC_PATH)/ksz8081_register_parser.c
 SOURCES += $(SRC_PATH)/uTests.c   
 SOURCES += $(SRC_PATH)/str_ops.c
 SOURCES += $(SRC_PATH)/test_str_ops.c    
+SOURCES += $(SRC_PATH)/test_arrays.c
+SOURCES += $(SRC_PATH)/test_convert.c  
 SOURCES += $(SRC_PATH)/algorithms.c 
 
 

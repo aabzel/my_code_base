@@ -15,7 +15,7 @@ extern regTJA1101_t tja1101RegMap[TJA1101_REG_NUM];
 bool parse_tja1101_regs_file (char *inFileName, char *outFileName) {
     printf ("\n%s()\n", __FUNCTION__);
     char curFileStr[500];
-    bool res = false;
+    bool res = true;
     FILE *inFilePrt = NULL;
     FILE *out_file_prt = NULL;
     inFilePrt = fopen (inFileName, "r");
@@ -37,7 +37,7 @@ bool parse_tja1101_regs_file (char *inFileName, char *outFileName) {
                     if (true == res) {
                         reg_cnt++;
                     } else {
-                        printf ("\n%s(): parse phy reg [%u] error", __FUNCTION__, reg_addr);
+                        printf ("\nUnable to parse phy reg addr  [%2u=0x%02x] val 0x%04x ", reg_addr,reg_addr, reg16b_val);
                     }
                 } else {
                     printf ("\n%s(): parse reg 16bit value from [%s] error", __FUNCTION__, curFileStr);
@@ -58,7 +58,7 @@ bool parse_tja1101_regs_file (char *inFileName, char *outFileName) {
 }
 
 static bool parse_basic_control_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {
-    bool res = false;
+    bool res = true;
     if (reg16b_val & RESET_BIT_15) {
         fprintf (out_file_prt, "\n  reg %02u bit15: RW PHY reset", reg_addr);
     } else {
@@ -71,30 +71,41 @@ static bool parse_basic_control_register (uint16_t reg16b_val, FILE *out_file_pr
     }
 
     if (reg16b_val & SPEED_SELECT_13) {
-        fprintf (out_file_prt, "\n  reg %02u bit13: RW 100 Mbit/s if SPEED_SELECT (MSB) = 0 reserved if SPEED_SELECT (MSB) = 1", reg_addr);
+        fprintf (out_file_prt,
+                 "\n  reg %02u bit13: RW 100 Mbit/s if SPEED_SELECT (MSB) = 0 reserved if SPEED_SELECT (MSB) = 1",
+                 reg_addr);
     } else {
         fprintf (out_file_prt,
-                 "\n  reg %02u bit 13: RW 10 Mbit/s if SPEED_SELECT (MSB) = 0 1000 Mbit/s if SPEED_SELECT (MSB) = 1", reg_addr);
+                 "\n  reg %02u bit 13: RW 10 Mbit/s if SPEED_SELECT (MSB) = 0 1000 Mbit/s if SPEED_SELECT (MSB) = 1",
+                 reg_addr);
     }
 
     if (reg16b_val & AUTONEG_EN_12) {
         fprintf (out_file_prt, "\n  reg %02u bit12: RW Error", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n  reg %02u bit12: RW Auto negotiation not supported; always 0; a write access is ignored ", reg_addr);
+        fprintf (out_file_prt,
+                 "\n  reg %02u bit12: RW Auto negotiation not supported; always 0; a write access is ignored ",
+                 reg_addr);
     }
 
     if (reg16b_val & POWER_DOWN_11) {
-        fprintf (out_file_prt, "\n  reg %02u bit11: RW power down and switch to Standby mode (provided ISOLATE = 0; ignored if "
-                             "ISOLATE = 1 and CONTROL_ERR interrupt generated) ", reg_addr);
-    } else {
         fprintf (out_file_prt,
-                 "\n  reg %02u bit 11:RW  normal operation (clearing this bit automatically triggers a transition to Normal "
-                 "mode, provided control bits POWER_MODE are set to 0011 Normal mode, see Table 18) ", reg_addr);
+                 "\n  reg %02u bit11: RW power down and switch to Standby mode (provided ISOLATE = 0; ignored if "
+                 "ISOLATE = 1 and CONTROL_ERR interrupt generated) ",
+                 reg_addr);
+    } else {
+        fprintf (
+            out_file_prt,
+            "\n  reg %02u bit 11:RW  normal operation (clearing this bit automatically triggers a transition to Normal "
+            "mode, provided control bits POWER_MODE are set to 0011 Normal mode, see Table 18) ",
+            reg_addr);
     }
 
     if (reg16b_val & ISOLATE_10) {
-        fprintf (out_file_prt, "\n  reg %02u bit10: RW isolate PHY from MII/RMII (provided POWER_DOWN = 0; ignored if POWER_DOWN "
-                             "= 1 and CONTROL_ERR interrupt generated) ", reg_addr);
+        fprintf (out_file_prt,
+                 "\n  reg %02u bit10: RW isolate PHY from MII/RMII (provided POWER_DOWN = 0; ignored if POWER_DOWN "
+                 "= 1 and CONTROL_ERR interrupt generated) ",
+                 reg_addr);
     } else {
         fprintf (out_file_prt, "\n  reg %02u bit10: RW normal operation ", reg_addr);
     }
@@ -102,11 +113,14 @@ static bool parse_basic_control_register (uint16_t reg16b_val, FILE *out_file_pr
     if (reg16b_val & RE_AUTONEG_9) {
         fprintf (out_file_prt, "\n  reg %02u bit9: RW Error ", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n  reg %02u bit9:  RW Auto negotiation not supported; always 0; a write access is ignored.", reg_addr);
+        fprintf (out_file_prt,
+                 "\n  reg %02u bit9:  RW Auto negotiation not supported; always 0; a write access is ignored.",
+                 reg_addr);
     }
 
     if (reg16b_val & DUPLEX_MODE_8) {
-        fprintf (out_file_prt, "\n  reg %02u bit8: RW  only full duplex supported; always 1; a write access is ignored ", reg_addr);
+        fprintf (out_file_prt,
+                 "\n  reg %02u bit8: RW  only full duplex supported; always 1; a write access is ignored ", reg_addr);
     } else {
         fprintf (out_file_prt, "\n  reg %02u bit8: RW  Error ", reg_addr);
     }
@@ -114,29 +128,39 @@ static bool parse_basic_control_register (uint16_t reg16b_val, FILE *out_file_pr
     if (reg16b_val & COLLISION_TEST_7) {
         fprintf (out_file_prt, "\n  reg %02u bit7: RW  error! ", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n  reg %02u bit7: RW  COL signal test not supported; always 0; a write access is ignored ", reg_addr);
+        fprintf (out_file_prt,
+                 "\n  reg %02u bit7: RW  COL signal test not supported; always 0; a write access is ignored ",
+                 reg_addr);
     }
 
     if (reg16b_val & SPEED_SELECT_6) {
-        fprintf (out_file_prt, "\n  reg %02u bit6: RW 1000 Mbit/s if SPEED_SELECT (LSB) = 0 reserved if SPEED_SELECT (LSB) = 1", reg_addr);
+        fprintf (out_file_prt,
+                 "\n  reg %02u bit6: RW 1000 Mbit/s if SPEED_SELECT (LSB) = 0 reserved if SPEED_SELECT (LSB) = 1",
+                 reg_addr);
     } else {
-        fprintf (out_file_prt, "\n  reg %02u bit6: RW 10 Mbit/s if SPEED_SELECT (LSB) = 0 100 Mbit/s if SPEED_SELECT (LSB) = 1 ", reg_addr);
+        fprintf (out_file_prt,
+                 "\n  reg %02u bit6: RW 10 Mbit/s if SPEED_SELECT (LSB) = 0 100 Mbit/s if SPEED_SELECT (LSB) = 1 ",
+                 reg_addr);
     }
     if (reg16b_val & UNIDIRECT_EN_5) {
-        fprintf (out_file_prt, "\n  reg %02u bit5: RW enable transmit from MII regardless of whether the PHY has determined that "
-                             "a valid link has been established", reg_addr);
+        fprintf (out_file_prt,
+                 "\n  reg %02u bit5: RW enable transmit from MII regardless of whether the PHY has determined that "
+                 "a valid link has been established",
+                 reg_addr);
     } else {
-        fprintf (out_file_prt, "\n  reg %02u bit5: RW enable transmit from MII only when the PHY has determined that a valid "
-                             "link has been established ", reg_addr);
+        fprintf (out_file_prt,
+                 "\n  reg %02u bit5: RW enable transmit from MII only when the PHY has determined that a valid "
+                 "link has been established ",
+                 reg_addr);
     }
     fprintf (out_file_prt, "\n");
     return res;
 }
 
-static bool parse_basic_status_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr)  {
-    bool res = false;
+static bool parse_basic_status_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {
+    bool res = true;
     if (reg16b_val & S100BASE_T4_15) {
-        fprintf (out_file_prt, "\n  reg %02u bit 15: PHY able to perform 100BASE-T4 ",reg_addr);
+        fprintf (out_file_prt, "\n  reg %02u bit 15: PHY able to perform 100BASE-T4 ", reg_addr);
     } else {
         fprintf (out_file_prt, "\n  reg %02u bit15: PHY not able to perform 100BASE-T4 ", reg_addr);
     }
@@ -176,16 +200,22 @@ static bool parse_basic_status_register (uint16_t reg16b_val, FILE *out_file_prt
         fprintf (out_file_prt, "\n  reg %02u bit8: no extended status information in register 15h", reg_addr);
     }
     if (reg16b_val & UNIDIRECT_ABILITY_7) {
-        fprintf (out_file_prt, "\n  reg %02u bit7: PHY able to transmit from MII regardless of whether the PHY has determined "
-                             "that a valid link has been established", reg_addr);
+        fprintf (out_file_prt,
+                 "\n  reg %02u bit7: PHY able to transmit from MII regardless of whether the PHY has determined "
+                 "that a valid link has been established",
+                 reg_addr);
     } else {
-        fprintf (out_file_prt, "\n  reg %02u bit7: PHY able to transmit from MII only when the PHY has determined that a valid "
-                             "link has been established", reg_addr);
+        fprintf (out_file_prt,
+                 "\n  reg %02u bit7: PHY able to transmit from MII only when the PHY has determined that a valid "
+                 "link has been established",
+                 reg_addr);
     }
     if (reg16b_val & MF_PREAMBLE_SUPPRESSION_6) {
-        fprintf (out_file_prt, "\n  reg %02u bit6: PHY will accept management frames with preamble suppressed", reg_addr);
+        fprintf (out_file_prt, "\n  reg %02u bit6: PHY will accept management frames with preamble suppressed",
+                 reg_addr);
     } else {
-        fprintf (out_file_prt, "\n  reg %02u bit6: PHY will not accept management frames with preamble suppressed", reg_addr);
+        fprintf (out_file_prt, "\n  reg %02u bit6: PHY will not accept management frames with preamble suppressed",
+                 reg_addr);
     }
     if (reg16b_val & AUTONEG_COMPLETE_5) {
         fprintf (out_file_prt, "\n  reg %02u bit5: Autonegotiation process completed", reg_addr);
@@ -221,27 +251,31 @@ static bool parse_basic_status_register (uint16_t reg16b_val, FILE *out_file_prt
     return res;
 }
 
-static bool parse_phy_identifier_1_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr)  {
-    bool res = false;
-    fprintf (out_file_prt, "\n  reg %02u bit15..0: Organizationally Unique Identifier 0x%04x",reg_addr, reg16b_val);
+static bool parse_phy_identifier_1_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {
+    bool res = true;
+    fprintf (out_file_prt, "\n  reg %02u bit15..0: Organizationally Unique Identifier 0x%04x", reg_addr, reg16b_val);
     fprintf (out_file_prt, "\n");
+    if(0x0180!=reg16b_val){
+    	fprintf (out_file_prt, "\n It is not tja1101 value blob");
+        exit(1);
+    }
     return res;
 }
 
-static bool parse_phy_identifier_2_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr)  {
-    bool res = false;
+static bool parse_phy_identifier_2_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {
+    bool res = true;
     uint8_t phyId = extract_subval_from_16bit (reg16b_val, 15, 10);
-    fprintf (out_file_prt, "\n  reg %02u bit15..10: phyId 0x%02x (19 to 24 of the OUI)",reg_addr, phyId);
+    fprintf (out_file_prt, "\n  reg %02u bit15..10: phyId 0x%02x (19 to 24 of the OUI)", reg_addr, phyId);
     uint8_t typeNo = extract_subval_from_16bit (reg16b_val, 9, 4);
-    fprintf (out_file_prt, "\n  reg %02u bit9..4: manufacturer type number 0x%02x",reg_addr, typeNo);
+    fprintf (out_file_prt, "\n  reg %02u bit9..4: manufacturer type number 0x%02x", reg_addr, typeNo);
     uint8_t revNo = extract_subval_from_16bit (reg16b_val, 3, 0);
-    fprintf (out_file_prt, "\n  reg %02u bit3..0: manufacturer  revision number 0x%02x",reg_addr, revNo);
+    fprintf (out_file_prt, "\n  reg %02u bit3..0: manufacturer  revision number 0x%02x", reg_addr, revNo);
     fprintf (out_file_prt, "\n");
     return res;
 }
 
-static bool parse_extended_status_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr)  {
-    bool res = false;
+static bool parse_extended_status_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {
+    bool res = true;
     if (reg16b_val & S1000BASE_X_FD_15) {
         fprintf (out_file_prt, "\n  reg %02u bit15: PHY able to perform 1000BASE-X full-duplex", reg_addr);
     } else {
@@ -278,7 +312,7 @@ static bool parse_extended_status_register (uint16_t reg16b_val, FILE *out_file_
 }
 
 static bool parse_power_mode (uint8_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {
-    bool res = false;
+    bool res = true;
     switch (reg16b_val) {
     case 0:
         fprintf (out_file_prt, "\n  reg %02u bit14..11: operating mode: no change", reg_addr);
@@ -306,7 +340,7 @@ static bool parse_power_mode (uint8_t reg16b_val, FILE *out_file_prt, uint8_t re
 }
 
 static bool parse_test_mode (uint8_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {
-    bool res = false;
+    bool res = true;
     switch (reg16b_val) {
     case 0:
         fprintf (out_file_prt, "\n  reg %02u bit8..6: R/W test mode selection: no test mode", reg_addr);
@@ -327,7 +361,8 @@ static bool parse_test_mode (uint8_t reg16b_val, FILE *out_file_prt, uint8_t reg
         fprintf (out_file_prt, "\n  reg %02u bit8..6: R/W test mode selection 100BASE-T1 test mode 5", reg_addr);
         break;
     case 6:
-        fprintf (out_file_prt, "\n  reg %02u bit8..6: R/W test mode selection scrambler and descrambler bypassed", reg_addr);
+        fprintf (out_file_prt, "\n  reg %02u bit8..6: R/W test mode selection scrambler and descrambler bypassed",
+                 reg_addr);
         break;
     case 7:
         fprintf (out_file_prt, "\n  reg %02u bit8..6: R/W test mode selection reserved", reg_addr);
@@ -340,7 +375,7 @@ static bool parse_test_mode (uint8_t reg16b_val, FILE *out_file_prt, uint8_t reg
 }
 
 static bool parse_loopback_mode (uint8_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {
-    bool res = false;
+    bool res = true;
     switch (reg16b_val) {
     case 0:
         fprintf (out_file_prt, "\n  reg %02u bit4..3: R/W internal loopback", reg_addr);
@@ -362,8 +397,8 @@ static bool parse_loopback_mode (uint8_t reg16b_val, FILE *out_file_prt, uint8_t
     return res;
 }
 
-static bool parse_extended_control_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr)  {
-    bool res = false;
+static bool parse_extended_control_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {
+    bool res = true;
     if (reg16b_val & LINK_CONTROL_15) {
         fprintf (out_file_prt, "\n  reg %02u bit15: link control enabled", reg_addr);
     } else {
@@ -401,10 +436,8 @@ static bool parse_extended_control_register (uint16_t reg16b_val, FILE *out_file
     return res;
 }
 
-
-
 bool parse_phy_state (uint8_t phyState, FILE *out_file_prt, uint8_t reg_addr) {
-    bool res = false;
+    bool res = true;
     switch (phyState) {
     case 0:
         fprintf (out_file_prt, "\n  reg %02u bit2..0: r PHY Idle", reg_addr);
@@ -436,33 +469,35 @@ bool parse_phy_state (uint8_t phyState, FILE *out_file_prt, uint8_t reg_addr) {
     }
     return res;
 }
-//TODO
-static bool parse_configuration_register_2 (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr)  {
-    bool res = false;
+// TODO
+static bool parse_configuration_register_2 (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {
+    bool res = true;
     uint16_t phyAddr = extract_subval_from_16bit (reg16b_val, 15, 11);
-    fprintf (out_file_prt, "\n  reg %02u bit15..11: R 5bit PHY address: [%d]", reg_addr,phyAddr);
+    fprintf (out_file_prt, "\n  reg %02u bit15..11: R 5bit PHY address: [%d]", reg_addr, phyAddr);
     uint16_t sqi_averaging = extract_subval_from_16bit (reg16b_val, 10, 9);
-    fprintf (out_file_prt, "\n  reg %02u bit10..9:%u RW Signal Quality Indicator (SQI) averaging:", reg_addr,sqi_averaging);
+    fprintf (out_file_prt, "\n  reg %02u bit10..9:%u RW Signal Quality Indicator (SQI) averaging:", reg_addr,
+             sqi_averaging);
 
-	uint16_t sqi_wlimit = extract_subval_from_16bit (reg16b_val, 8, 6);
-	fprintf (out_file_prt, "\n  reg %02u bit8..6:%u RW ", reg_addr, sqi_wlimit);
+    uint16_t sqi_wlimit = extract_subval_from_16bit (reg16b_val, 8, 6);
+    fprintf (out_file_prt, "\n  reg %02u bit8..6:%u RW ", reg_addr, sqi_wlimit);
 
-	uint16_t sqi_faillimit = extract_subval_from_16bit (reg16b_val, 5, 3);
-	fprintf (out_file_prt, "\n  reg %02u bit5..3:%u RW ", reg_addr, sqi_faillimit);
+    uint16_t sqi_faillimit = extract_subval_from_16bit (reg16b_val, 5, 3);
+    fprintf (out_file_prt, "\n  reg %02u bit5..3:%u RW ", reg_addr, sqi_faillimit);
 
     if (reg16b_val & JUMBO_ENABLE_2) {
         fprintf (out_file_prt, "\n  reg %02u bit2: rw packets up to 16 kB supported", reg_addr);
     } else {
         fprintf (out_file_prt, "\n  reg %02u bit2: rw packets up to 4 kB supported", reg_addr);
     }
-	uint16_t sleep_request_to = extract_subval_from_16bit (reg16b_val, 1, 0);
-	fprintf (out_file_prt, "\n  reg %02u bit1..0:%u RW sleep request/acknowledge timeout: ", reg_addr, sleep_request_to);
+    uint16_t sleep_request_to = extract_subval_from_16bit (reg16b_val, 1, 0);
+    fprintf (out_file_prt, "\n  reg %02u bit1..0:%u RW sleep request/acknowledge timeout: ", reg_addr,
+             sleep_request_to);
 
     fprintf (out_file_prt, "\n");
     return res;
 }
 
-static bool parse_communication_status_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr)  {
+static bool parse_communication_status_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res;
     if (reg16b_val & LINK_UP_15) {
         fprintf (out_file_prt, "\n  reg %02u bit15: r link OK", reg_addr);
@@ -495,7 +530,7 @@ static bool parse_communication_status_register (uint16_t reg16b_val, FILE *out_
         fprintf (out_file_prt, "\n  reg %02u bit8: r no ESD error detected", reg_addr);
     }
     uint16_t sqi = extract_subval_from_16bit (reg16b_val, 7, 5);
-    res = parse_sqi (sqi, out_file_prt ,reg_addr);
+    res = parse_sqi (sqi, out_file_prt, reg_addr);
     if (reg16b_val & RECEIVE_ERR_4) {
         fprintf (out_file_prt, "\n  reg %02u bit4: r receive error detected since register last read", reg_addr);
     } else {
@@ -507,12 +542,12 @@ static bool parse_communication_status_register (uint16_t reg16b_val, FILE *out_
         fprintf (out_file_prt, "\n  reg %02u bit3: r no transmit error detected", reg_addr);
     }
     uint16_t phyState = extract_subval_from_16bit (reg16b_val, 2, 0);
-    res = parse_phy_state (phyState, out_file_prt , reg_addr);
+    res = parse_phy_state (phyState, out_file_prt, reg_addr);
     fprintf (out_file_prt, "\n");
     return res;
 }
 
-static bool parse_configuration_register_3 (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr)  {
+static bool parse_configuration_register_3 (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {
     fprintf (out_file_prt, "\n  reg %02u bit15:2: RW reserved", reg_addr);
     if (reg16b_val & FORCE_SLEEP_1) {
         fprintf (out_file_prt, "\n  reg %02u bit1: RW force PHY to Sleep mode", reg_addr);
@@ -524,15 +559,15 @@ static bool parse_configuration_register_3 (uint16_t reg16b_val, FILE *out_file_
     fprintf (out_file_prt, "\n");
     return true;
 }
-static bool parse_phy_identifier_3_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr)  {
+static bool parse_phy_identifier_3_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {
     (void)reg16b_val;
     (void)out_file_prt;
     fprintf (out_file_prt, "\n  reg %02u Lack of detalisation in datasheet", reg_addr);
     fprintf (out_file_prt, "\n");
     return true;
 }
-static bool parse_configuration_register_1 (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr)  {
-    bool res = false;
+static bool parse_configuration_register_1 (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {
+    bool res = true;
     (void)out_file_prt;
     if (reg16b_val & MASTER_SLAVE_15) {
         fprintf (out_file_prt, "\n  reg %02u bit15: rw PHY configured as Master", reg_addr);
@@ -555,16 +590,18 @@ static bool parse_configuration_register_1 (uint16_t reg16b_val, FILE *out_file_
         fprintf (out_file_prt, "\n  reg %02u bit14: rw PHY does not react to a local wake-up", reg_addr);
     }
     uint16_t mii_mode = extract_subval_from_16bit (reg16b_val, 9, 8);
-    res = parse_mii_mode (mii_mode, out_file_prt,reg_addr );
+    res = parse_mii_mode (mii_mode, out_file_prt, reg_addr);
     if (reg16b_val & MII_DRIVER_7) {
         fprintf (out_file_prt, "\n  reg %02u bit7: rw MII output driver reduced strength", reg_addr);
     } else {
         fprintf (out_file_prt, "\n  reg %02u bit7: MII output driver standard strength", reg_addr);
     }
     if (reg16b_val & SLEEP_CONFIRM_6) {
-        fprintf (out_file_prt, "\n  reg %02u bit6: confirmation needed from another PHY before going to sleep", reg_addr);
+        fprintf (out_file_prt, "\n  reg %02u bit6: confirmation needed from another PHY before going to sleep",
+                 reg_addr);
     } else {
-        fprintf (out_file_prt, "\n  reg %02u bit6: no confirmation needed from another PHY before going to sleep", reg_addr);
+        fprintf (out_file_prt, "\n  reg %02u bit6: no confirmation needed from another PHY before going to sleep",
+                 reg_addr);
     }
 
     if (reg16b_val & LPS_WUR_DIS_5) {
@@ -574,11 +611,15 @@ static bool parse_configuration_register_1 (uint16_t reg16b_val, FILE *out_file_
     }
 
     if (reg16b_val & SLEEP_ACK_4) {
-        fprintf (out_file_prt, "\n  reg %02u bit4: sleep acknowledge timer enabled; auto-transition back from Sleep Request mode "
-                             "to Normal mode disabled during data transmission on MII or MDI", reg_addr);
+        fprintf (out_file_prt,
+                 "\n  reg %02u bit4: sleep acknowledge timer enabled; auto-transition back from Sleep Request mode "
+                 "to Normal mode disabled during data transmission on MII or MDI",
+                 reg_addr);
     } else {
-        fprintf (out_file_prt, "\n  reg %02u bit4: sleep acknowledge timer disabled; auto-transition back from Sleep Request "
-                             "mode to Normal mode enabled during data transmission on MII or MDI", reg_addr);
+        fprintf (out_file_prt,
+                 "\n  reg %02u bit4: sleep acknowledge timer disabled; auto-transition back from Sleep Request "
+                 "mode to Normal mode enabled during data transmission on MII or MDI",
+                 reg_addr);
     }
 
     if (reg16b_val & FWDPHYREM_2) {
@@ -593,29 +634,35 @@ static bool parse_configuration_register_1 (uint16_t reg16b_val, FILE *out_file_
     }
     if (reg16b_val & LPS_ACTIVE_0) {
         fprintf (out_file_prt,
-                 "\n  reg %02u bit 0: automatic transition from Normal to Sleep Request when LPS code group received enabled ", reg_addr);
+                 "\n  reg %02u bit 0: automatic transition from Normal to Sleep Request when LPS code group received "
+                 "enabled ",
+                 reg_addr);
     } else {
         fprintf (out_file_prt,
-                 "\n  reg %02u bit 0: automatic transition from Normal to Sleep Request when LPS code group received disabled ", reg_addr);
+                 "\n  reg %02u bit 0: automatic transition from Normal to Sleep Request when LPS code group received "
+                 "disabled ",
+                 reg_addr);
     }
 
     fprintf (out_file_prt, "\n");
     return res;
 }
-static bool parse_symbol_error_counter_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr)  {
+static bool parse_symbol_error_counter_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {
     (void)reg16b_val;
     (void)out_file_prt;
     uint16_t sym_err_cnt = reg16b_val;
     fprintf (out_file_prt,
-             "\n  reg %02u bit 15-0: [%u] R The symbol error counter is incremented when an invalid code symbol is received (including idle "
+             "\n  reg %02u bit 15-0: [%u] R The symbol error counter is incremented when an invalid code symbol is "
+             "received (including idle "
              "symbols). The counter is incremented only once per packet, even when the received packet contains more "
              "than one symbol error. This counter increments up to 216. When the counter overflows, the value FFFFh is "
-             "retained. The counter is reset when the register is read.",reg_addr, sym_err_cnt);
+             "retained. The counter is reset when the register is read.",
+             reg_addr, sym_err_cnt);
     fprintf (out_file_prt, "\n");
     return true;
 }
 
-static bool parse_interrupt_status_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr)  {
+static bool parse_interrupt_status_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {
     if (reg16b_val & PWON_15) {
         fprintf (out_file_prt, "\n  reg %02u bit15: R power-on detected", reg_addr);
     } else {
@@ -642,12 +689,16 @@ static bool parse_interrupt_status_register (uint16_t reg16b_val, FILE *out_file
         fprintf (out_file_prt, "\n  reg %02u bit11: R no PHY initialization error detected", reg_addr);
     }
     if (reg16b_val & LINK_STATUS_FAIL_10) {
-        fprintf (out_file_prt, "\n  reg %02u bit10: R link status bit LINK_UP changed from вЂ�link OKвЂ™ to вЂ�link failвЂ™", reg_addr);
+        fprintf (out_file_prt,
+                 "\n  reg %02u bit10: R link status bit LINK_UP changed from вЂ�link OKвЂ™ to вЂ�link failвЂ™",
+                 reg_addr);
     } else {
         fprintf (out_file_prt, "\n  reg %02u bit10: R link status not changed", reg_addr);
     }
     if (reg16b_val & LINK_STATUS_UP_9) {
-        fprintf (out_file_prt, "\n  reg %02u bit9: R link status bit LINK_UP changed from вЂ�link failвЂ™ to вЂ�link OKвЂ™", reg_addr);
+        fprintf (out_file_prt,
+                 "\n  reg %02u bit9: R link status bit LINK_UP changed from вЂ�link failвЂ™ to вЂ�link OKвЂ™",
+                 reg_addr);
     } else {
         fprintf (out_file_prt, "\n  reg %02u bit9: R link status not changed", reg_addr);
     }
@@ -672,7 +723,8 @@ static bool parse_interrupt_status_register (uint16_t reg16b_val, FILE *out_file
         fprintf (out_file_prt, "\n  reg %02u bit5: R no SMI control error detected", reg_addr);
     }
     if (reg16b_val & UV_ERR_3) {
-        fprintf (out_file_prt, "\n  reg %02u bit3: R undervoltage detected on VDD(IO), VDDD(3V3), VDDD(1V8) or VDDA(3V3);", reg_addr);
+        fprintf (out_file_prt,
+                 "\n  reg %02u bit3: R undervoltage detected on VDD(IO), VDDD(3V3), VDDD(1V8) or VDDA(3V3);", reg_addr);
     } else {
         fprintf (out_file_prt, "\n  reg %02u bit3: R no undervoltage detected", reg_addr);
     }
@@ -687,17 +739,21 @@ static bool parse_interrupt_status_register (uint16_t reg16b_val, FILE *out_file
         fprintf (out_file_prt, "\n  reg %02u bit1: R no overtemperature error detected", reg_addr);
     }
     if (reg16b_val & SLEEP_ABORT_0) {
-        fprintf (out_file_prt, "\n  reg %02u bit0: R transition from Sleep Request back to Normal as a result of the Sleep "
-                             "Request timer expiring", reg_addr);
+        fprintf (out_file_prt,
+                 "\n  reg %02u bit0: R transition from Sleep Request back to Normal as a result of the Sleep "
+                 "Request timer expiring",
+                 reg_addr);
     } else {
-        fprintf (out_file_prt, "\n  reg %02u bit0: R no transition from Sleep Request back to Normal as a result of the Sleep "
-                             "Request timer expiring", reg_addr);
+        fprintf (out_file_prt,
+                 "\n  reg %02u bit0: R no transition from Sleep Request back to Normal as a result of the Sleep "
+                 "Request timer expiring",
+                 reg_addr);
     }
     fprintf (out_file_prt, "\n");
     return true;
 }
 
-static bool parse_interrupt_enable_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr)  {
+static bool parse_interrupt_enable_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {
     (void)reg16b_val;
     (void)out_file_prt;
     if (reg16b_val & PWON_EN_15) {
@@ -779,7 +835,7 @@ static bool parse_interrupt_enable_register (uint16_t reg16b_val, FILE *out_file
     fprintf (out_file_prt, "\n");
     return true;
 }
-static bool parse_general_status_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr)  {
+static bool parse_general_status_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {
 
     if (reg16b_val & INT_STATUS_15) {
         fprintf (out_file_prt, "\n  reg %02u bit15  R unmasked interrupt pending", reg_addr);
@@ -802,10 +858,13 @@ static bool parse_general_status_register (uint16_t reg16b_val, FILE *out_file_p
         fprintf (out_file_prt, "\n  reg %02u bit12 R no remote wake-up detected", reg_addr);
     }
     if (reg16b_val & DATA_DET_WU_11) {
-        fprintf (out_file_prt, "\n  reg %02u bit11  R 100BASE-T1 data detected at MDI (pcs_rx_dv = TRUE; see Ref. 1) or MII "
-                             "(TXEN = 1) in Sleep Request mode", reg_addr);
+        fprintf (out_file_prt,
+                 "\n  reg %02u bit11  R 100BASE-T1 data detected at MDI (pcs_rx_dv = TRUE; see Ref. 1) or MII "
+                 "(TXEN = 1) in Sleep Request mode",
+                 reg_addr);
     } else {
-        fprintf (out_file_prt, "\n  reg %02u bit11 R no 100BASE-T1 data detected at MDI or MII in Sleep Request mode", reg_addr);
+        fprintf (out_file_prt, "\n  reg %02u bit11 R no 100BASE-T1 data detected at MDI or MII in Sleep Request mode",
+                 reg_addr);
     }
     if (reg16b_val & EN_STATUS_10) {
         fprintf (out_file_prt, "\n  reg %02u bit10 R EN switched LOW since register last read", reg_addr);
@@ -824,7 +883,7 @@ static bool parse_general_status_register (uint16_t reg16b_val, FILE *out_file_p
     fprintf (out_file_prt, "\n");
     return true;
 }
-static bool parse_external_status_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr)  {
+static bool parse_external_status_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {
     if (reg16b_val & UV_VDDD_3V3_15) {
         fprintf (out_file_prt, "\n  reg %02u bit15: R undervoltage detected on pin VDDD(3V3)", reg_addr);
     } else {
@@ -879,22 +938,22 @@ static bool parse_external_status_register (uint16_t reg16b_val, FILE *out_file_
     return true;
 }
 
-static bool parse_link_fail_counter_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr)  {
+static bool parse_link_fail_counter_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {
     uint16_t loc_rcvr_cnt = extract_subval_from_16bit (reg16b_val, 15, 8);
     fprintf (out_file_prt,
              "\n  reg %02u bit 15:8 R [%u] The counter is incremented when local receiver is NOT_OK; when the counter "
-             "overflows, the value FFh is retained. The counter is reset when the register is read.",reg_addr,
-             loc_rcvr_cnt);
+             "overflows, the value FFh is retained. The counter is reset when the register is read.",
+             reg_addr, loc_rcvr_cnt);
     uint16_t rem_rcvr_cnt = extract_subval_from_16bit (reg16b_val, 7, 0);
     fprintf (out_file_prt,
              "\n  reg %02u bit 7:0  R [%u] The counter is incremented when remote receiver is NOT_OK; when the counter "
-             "overflows, the value FFh is retained. The counter is reset when the register is read.",reg_addr,
-             rem_rcvr_cnt);
+             "overflows, the value FFh is retained. The counter is reset when the register is read.",
+             reg_addr, rem_rcvr_cnt);
     fprintf (out_file_prt, "\n");
     return true;
 }
-static bool parse_common_configuration_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr)  {
-    bool res = false;
+static bool parse_common_configuration_register (uint16_t reg16b_val, FILE *out_file_prt, uint8_t reg_addr) {
+    bool res = true;
     if (reg16b_val & AUTO_OP_15) {
         fprintf (out_file_prt, "\n  reg %02u bit15: R/W autonomous operation", reg_addr);
     } else {
@@ -908,15 +967,20 @@ static bool parse_common_configuration_register (uint16_t reg16b_val, FILE *out_
         fprintf (out_file_prt, "\n  reg %02u bit11: R/W internal 1.8 V LDO enabled", reg_addr);
     }
     if (reg16b_val & CLK_DRIVER_10) {
-        fprintf (out_file_prt, "\n  reg %02u bit10:  R/W reduced output driver strength at output of CLK_IN_OUT ", reg_addr);
+        fprintf (out_file_prt, "\n  reg %02u bit10:  R/W reduced output driver strength at output of CLK_IN_OUT ",
+                 reg_addr);
     } else {
-        fprintf (out_file_prt, "\n  reg %02u bit10:  R/W standard output driver strength at output of CLK_IN_OUT", reg_addr);
+        fprintf (out_file_prt, "\n  reg %02u bit10:  R/W standard output driver strength at output of CLK_IN_OUT",
+                 reg_addr);
     }
     if (reg16b_val & CLK_HOLD_9) {
         fprintf (out_file_prt,
-                 "\n  reg %02u bit 9: R/W XTAL and CLK_IN_OUT output remain active until device switched to Sleep mode via SMI", reg_addr);
+                 "\n  reg %02u bit 9: R/W XTAL and CLK_IN_OUT output remain active until device switched to Sleep mode "
+                 "via SMI",
+                 reg_addr);
     } else {
-        fprintf (out_file_prt, "\n  reg %02u bit9: R/W XTAL and CLK_IN_OUT output switched off in Sleep mode", reg_addr);
+        fprintf (out_file_prt, "\n  reg %02u bit9: R/W XTAL and CLK_IN_OUT output switched off in Sleep mode",
+                 reg_addr);
     }
     uint16_t loc_wu_tim = extract_subval_from_16bit (reg16b_val, 8, 7);
     res = parse_loc_wu_tim (loc_wu_tim, out_file_prt, reg_addr);
@@ -937,7 +1001,7 @@ static bool parse_common_configuration_register (uint16_t reg16b_val, FILE *out_
 }
 
 bool parse_sqi (uint8_t sqi, FILE *out_file_prt, uint8_t reg_addr) {
-    bool res = false;
+    bool res = true;
     switch (sqi) {
     case 0:
         fprintf (out_file_prt, "\n  reg %02u bit7..5: r worse than class A SQI (unstable link)", reg_addr);
@@ -971,7 +1035,7 @@ bool parse_sqi (uint8_t sqi, FILE *out_file_prt, uint8_t reg_addr) {
 }
 
 bool parse_mii_mode (uint8_t mii_mode, FILE *out_file_prt, uint8_t reg_addr) {
-    bool res = false;
+    bool res = true;
     switch (mii_mode) {
     case 0:
         fprintf (out_file_prt, "\n  reg %02u bit9:8: RW MII mode enabled", reg_addr);
@@ -993,7 +1057,7 @@ bool parse_mii_mode (uint8_t mii_mode, FILE *out_file_prt, uint8_t reg_addr) {
 }
 
 bool parse_clk_mode (uint8_t clk_mode, FILE *out_file_prt, uint8_t reg_addr) {
-    bool res = false;
+    bool res = true;
     switch (clk_mode) {
     case 0:
         fprintf (out_file_prt, "\n  reg %02u bit13:12 RW 25 MHz XTAL; no clock at CLK_IN_OUT", reg_addr);
@@ -1006,7 +1070,8 @@ bool parse_clk_mode (uint8_t clk_mode, FILE *out_file_prt, uint8_t reg_addr) {
         break;
     case 3:
         fprintf (out_file_prt,
-                 "\n  reg %02u bit 13:12 RW 50 MHz input at REF_CLK; RMII mode only; no XTAL; no clock at CLK_IN_OUT", reg_addr);
+                 "\n  reg %02u bit 13:12 RW 50 MHz input at REF_CLK; RMII mode only; no XTAL; no clock at CLK_IN_OUT",
+                 reg_addr);
         break;
     default:
         fprintf (out_file_prt, "\n  reg %02u bit13:12 RW ", reg_addr);
@@ -1016,7 +1081,7 @@ bool parse_clk_mode (uint8_t clk_mode, FILE *out_file_prt, uint8_t reg_addr) {
 }
 
 bool parse_loc_wu_tim (uint8_t loc_wu_tim, FILE *out_file_prt, uint8_t reg_addr) {
-    bool res = false;
+    bool res = true;
     switch (loc_wu_tim) {
     case 0:
         fprintf (out_file_prt, "\n  reg %02u bit8:7 RW local wake-up timer: longest (10 ms to 20 ms)", reg_addr);
@@ -1126,7 +1191,6 @@ bool parse_16bit_val (char *in_str_val, uint32_t len, uint16_t *reg_addr) {
     return false;
 }
 
-
 bool parse_tja1101_reg (uint8_t reg_addr, uint16_t reg16b_val, FILE *out_file_prt) {
     bool res = false;
     char curRegName[100] = "";
@@ -1169,7 +1233,7 @@ bool parse_tja1101_reg (uint8_t reg_addr, uint16_t reg16b_val, FILE *out_file_pr
             res = parse_symbol_error_counter_register (reg16b_val, out_file_prt, reg_addr);
             break;
         case 21:
-        	res = parse_interrupt_status_register (reg16b_val, out_file_prt, reg_addr);
+            res = parse_interrupt_status_register (reg16b_val, out_file_prt, reg_addr);
             break;
         case 22:
             res = parse_interrupt_enable_register (reg16b_val, out_file_prt, reg_addr);

@@ -83,6 +83,7 @@ const char *utoa_hex32 (uint32_t u32_hex_data);
 const char *utoa_hex64 (uint64_t u64_hex_data);
 const char *ltoa_hex32 (int32_t s32_hex_data);
 const char *ltoa_hex64 (int64_t s64_hex_data);
+const char *utoa_bin8 (uint8_t u8_bin_data);
 const char *utoa_bin16 (uint16_t u16_bin_data);
 const char *utoa_bin24 (uint32_t u32_bin_data);
 const char *utoa_bin32 (uint32_t u32_bin_data);

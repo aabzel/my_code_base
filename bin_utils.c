@@ -58,3 +58,14 @@ int binary_gap (int N) {
     // write your code in C99 (gcc 6.2.0)
     return max_gap;
 }
+
+uint64_t swap_bits(uint64_t in_val) {
+    uint64_t out_val = 0U;
+    for (uint16_t i = 0U; i<64U; i++) {
+        if ( (((uint64_t)1U)<<i)==((((uint64_t)1U)<<i)&in_val) ) {
+            out_val |= (((uint64_t)1)<<(63U-i));
+        }
+    }
+
+    return out_val;
+}

@@ -14,6 +14,31 @@
 #include <stdlib.h>
 #include <string.h>
 
+uint32_t average_quick (uint32_t a, uint32_t b){
+	uint32_t res;
+	res = (a|b)-((a^b)>>1);
+	return res;
+}
+
+uint32_t average_slow (uint32_t a, uint32_t b){
+	uint32_t res;
+	uint64_t temp = a+b;
+	temp = temp>>1;
+	res = (uint32_t) temp;
+	return res;
+}
+
+int sum_digits (int val) {
+    int t, sum = 0, remainder;
+    t = val;
+    while (t != 0) {
+        remainder = t % 10;
+        sum = sum + remainder;
+        t = t / 10;
+    }
+    return sum;
+}
+
 void print_permut_terms (int *in_current_array, int in_curr_arr_size, int pos, int *alf, int alf_size, int total_num,
                          int sum, int *syllables) {
     if (in_curr_arr_size == total_num) {

@@ -14,7 +14,6 @@ Reg32bit_t tic12400RegMap[REG_ADDR_NUM];
 float g_one_bit_voltage = 0.0;
 uint8_t procRegCnd = 0;
 
-
 static bool write_channel_table (FILE *out_file_prt) {
     bool res = false;
     uint8_t channel;
@@ -44,51 +43,50 @@ static bool write_channel_table (FILE *out_file_prt) {
     return res;
 }
 
-
 static bool parse_poll_act_time_val (uint8_t pollTime, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = true;
     switch (pollTime) {
     case 0x0:
-        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 64us", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 64us", reg_addr);
         break;
     case 0x1:
-        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 128us", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 128us", reg_addr);
         break;
     case 0x2:
-        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 192us", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 192us", reg_addr);
         break;
     case 0x3:
-        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 256us", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 256us", reg_addr);
         break;
     case 0x4:
-        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 320us", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 320us", reg_addr);
         break;
     case 0x5:
-        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 384us", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 384us", reg_addr);
         break;
     case 0x6:
-        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 448us", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 448us", reg_addr);
         break;
     case 0x7:
-        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 512us", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 512us", reg_addr);
         break;
     case 0x8:
-        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 640us", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 640us", reg_addr);
         break;
     case 0x9:
-        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 768us", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 768us", reg_addr);
         break;
     case 0xA:
-        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 896us", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 896us", reg_addr);
         break;
     case 0xB:
-        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 1024us", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 1024us", reg_addr);
         break;
     case 0xC:
-        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 2048us", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 2048us", reg_addr);
         break;
     default:
-        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 512us ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  8- 5: Poll Act time 512us ", reg_addr);
         break;
     }
     return res;
@@ -98,68 +96,69 @@ static bool parse_poll_time_val (uint8_t pollTime, FILE *out_file_prt, uint8_t r
     bool res = true;
     switch (pollTime) {
     case 0x0:
-        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 2ms", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 2ms", reg_addr);
         break;
     case 0x1:
-        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 4ms", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 4ms", reg_addr);
         break;
     case 0x2:
-        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 8ms", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 8ms", reg_addr);
         break;
     case 0x3:
-        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 16ms", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 16ms", reg_addr);
         break;
     case 0x4:
-        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 32ms", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 32ms", reg_addr);
         break;
     case 0x5:
-        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 48ms", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 48ms", reg_addr);
         break;
     case 0x6:
-        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 64ms", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 64ms", reg_addr);
         break;
     case 0x7:
-        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 128ms", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 128ms", reg_addr);
         break;
     case 0x8:
-        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 256ms", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 256ms", reg_addr);
         break;
     case 0x9:
-        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 512ms", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 512ms", reg_addr);
         break;
     case 0xA:
-        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 1024ms", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 1024ms", reg_addr);
         break;
     case 0xB:
-        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 2048ms", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 2048ms", reg_addr);
         break;
     case 0xC:
-        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 4096ms", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 4096ms", reg_addr);
         break;
     default:
-        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 2ms", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  4- 1: Poll time 2ms", reg_addr);
         break;
     }
     return res;
 }
 
-
 static bool parse_tic12400_vs1_stat (uint8_t val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = true;
     switch (val) {
     case 0:
-        fprintf (out_file_prt, "\n    reg %2u bit  7- 6: R VS voltage is below threshold VS1_THRES2A", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  7- 6: R VS voltage is below threshold VS1_THRES2A", reg_addr);
         break;
     case 1:
-        fprintf (
-            out_file_prt,
-            "\n    reg %2u bit  7- 6: R VS voltage is below threshold VS1_THRES2B and equal to or above threshold VS1_THRES2A", reg_addr );
+        fprintf (out_file_prt,
+                 "\n    reg %2u bit  7- 6: R VS voltage is below threshold VS1_THRES2B and equal to or above threshold "
+                 "VS1_THRES2A",
+                 reg_addr);
         break;
     case 2:
-        fprintf (out_file_prt, "\n    reg %2u bit  7- 6: R VS voltage is equal to or above threshold VS1_THRES2B", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  7- 6: R VS voltage is equal to or above threshold VS1_THRES2B",
+                 reg_addr);
         break;
     case 3:
-        fprintf (out_file_prt, "\n    reg %2u bit  7- 6: R N/A ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  7- 6: R N/A ", reg_addr);
         break;
     }
     return res;
@@ -169,24 +168,24 @@ static bool parse_tic12400_vs0_stat (uint8_t val, FILE *out_file_prt, uint8_t re
     bool res = false;
     switch (val) {
     case 0:
-        fprintf (out_file_prt, "\n    reg %2u bit  5- 4: R VS voltage is below threshold VS0_THRES2A ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  5- 4: R VS voltage is below threshold VS0_THRES2A ", reg_addr);
         break;
     case 1:
-        fprintf (
-            out_file_prt,
-            "\n    reg %2u bit  5- 4: R VS voltage is below threshold VS0_THRES2B and equal to or above threshold VS0_THRES2A", reg_addr );
+        fprintf (out_file_prt,
+                 "\n    reg %2u bit  5- 4: R VS voltage is below threshold VS0_THRES2B and equal to or above threshold "
+                 "VS0_THRES2A",
+                 reg_addr);
         break;
     case 2:
-        fprintf (out_file_prt, "\n    reg %2u bit  5- 4: R VS voltage is equal to or above threshold VS0_THRES2B", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  5- 4: R VS voltage is equal to or above threshold VS0_THRES2B",
+                 reg_addr);
         break;
     case 3:
-        fprintf (out_file_prt, "\n    reg %2u bit  5- 4: R N/A ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  5- 4: R N/A ", reg_addr);
         break;
     }
     return res;
 }
-
-
 
 static float calc_vs_voltage (void) {
     float vs_voltage = 0;
@@ -202,33 +201,37 @@ static float calc_vs_voltage (void) {
     return vs_voltage;
 }
 
-
-
-static bool parse_wetting_current (uint8_t reg_val, FILE *out_file_prt, uint8_t oldBit, uint8_t littleBit, uint8_t reg_addr) {
+static bool parse_wetting_current (uint8_t reg_val, FILE *out_file_prt, uint8_t oldBit, uint8_t littleBit,
+                                   uint8_t reg_addr) {
     bool res = true;
     switch (reg_val) {
     case 0:
-        fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R/W no wetting current", reg_addr, oldBit, littleBit, reg_val);
+        fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R/W no wetting current", reg_addr, oldBit, littleBit,
+                 reg_val);
         break;
     case 1:
-        fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R/W 1mA (typ.) wetting current", reg_addr, oldBit, littleBit, reg_val);
+        fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R/W 1mA (typ.) wetting current", reg_addr, oldBit,
+                 littleBit, reg_val);
         break;
     case 2:
-        fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R/W 2mA (typ.) wetting current", reg_addr, oldBit, littleBit, reg_val);
+        fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R/W 2mA (typ.) wetting current", reg_addr, oldBit,
+                 littleBit, reg_val);
         break;
     case 3:
-        fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R/W 5mA (typ.) wetting current", reg_addr, oldBit, littleBit, reg_val);
+        fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R/W 5mA (typ.) wetting current", reg_addr, oldBit,
+                 littleBit, reg_val);
         break;
     case 4:
-        fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R/W 10mA (typ.) wetting current", reg_addr, oldBit, littleBit, reg_val);
+        fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R/W 10mA (typ.) wetting current", reg_addr, oldBit,
+                 littleBit, reg_val);
         break;
     default:
-        fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R/W 15mA (typ.) wetting current", reg_addr, oldBit, littleBit, reg_val);
+        fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R/W 15mA (typ.) wetting current", reg_addr, oldBit,
+                 littleBit, reg_val);
         break;
     }
     return res;
 }
-
 
 static float num2wett_current (uint8_t wcCode) {
     float wettingCurrentMa = 0;
@@ -255,8 +258,6 @@ static float num2wett_current (uint8_t wcCode) {
     return wettingCurrentMa;
 }
 
-
-
 static float interpretation_comparator_threshold_code (uint8_t trCode) {
     float comparatorThreshold = 0;
     switch (trCode) {
@@ -279,35 +280,33 @@ static float interpretation_comparator_threshold_code (uint8_t trCode) {
     return comparatorThreshold;
 }
 
-
-
 static bool parse_interrupt_en_comp_mode (uint8_t reg_val, FILE *out_file_prt, uint8_t oldBit, uint8_t littleBit,
-                                   uint8_t channel, uint8_t reg_addr) {
+                                          uint8_t channel, uint8_t reg_addr) {
     bool res = true;
     switch (reg_val) {
     case 0:
-        fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R/W no interrupt generation for IN%u", reg_addr, oldBit, littleBit, reg_val,
-                 channel);
-        break;
-    case 1:
-        fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R/W interrupt generation on rising edge for IN%u", reg_addr, oldBit, littleBit,
-                 reg_val, channel);
-        break;
-    case 2:
-        fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R/W interrupt generation on falling edge for IN%u", reg_addr, oldBit,
+        fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R/W no interrupt generation for IN%u", reg_addr, oldBit,
                  littleBit, reg_val, channel);
         break;
+    case 1:
+        fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R/W interrupt generation on rising edge for IN%u",
+                 reg_addr, oldBit, littleBit, reg_val, channel);
+        break;
+    case 2:
+        fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R/W interrupt generation on falling edge for IN%u",
+                 reg_addr, oldBit, littleBit, reg_val, channel);
+        break;
     case 3:
-        fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R/W interrupt generation on falling and rising edge for IN%u", reg_addr,
-                 oldBit, littleBit, reg_val, channel);
+        fprintf (out_file_prt,
+                 "\n    reg %2u bit %02u-%02u:%u R/W interrupt generation on falling and rising edge for IN%u",
+                 reg_addr, oldBit, littleBit, reg_val, channel);
         break;
     }
     return res;
 }
 
-
-
-static bool parse_in_a_code (uint8_t ina_code, FILE *out_file_prt, uint8_t oldBit, uint8_t littleBit, uint8_t channel, uint8_t reg_addr) {
+static bool parse_in_a_code (uint8_t ina_code, FILE *out_file_prt, uint8_t oldBit, uint8_t littleBit, uint8_t channel,
+                             uint8_t reg_addr) {
     bool res = false;
     if (channel <= 17) {
         if (0 < (oldBit - littleBit)) {
@@ -316,26 +315,28 @@ static bool parse_in_a_code (uint8_t ina_code, FILE *out_file_prt, uint8_t oldBi
             case 0:
                 snprintf (tic12400channelList[channel].inputADCLevel,
                           sizeof (tic12400channelList[channel].inputADCLevel), "below");
-                fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R Input IN%u is below threshold 2A.", reg_addr, oldBit, littleBit,
-                         ina_code, channel);
+                fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R Input IN%u is below threshold 2A.", reg_addr,
+                         oldBit, littleBit, ina_code, channel);
                 break;
             case 1:
                 snprintf (tic12400channelList[channel].inputADCLevel,
                           sizeof (tic12400channelList[channel].inputADCLevel), "middle");
                 fprintf (out_file_prt,
-                         "\n    reg %2u bit %02u-%02u:%u R Input IN%u is below threshold 2B and equal to or above threshold 2A", reg_addr,
-                         oldBit, littleBit, ina_code, channel);
+                         "\n    reg %2u bit %02u-%02u:%u R Input IN%u is below threshold 2B and equal to or above "
+                         "threshold 2A",
+                         reg_addr, oldBit, littleBit, ina_code, channel);
                 break;
             case 2:
                 snprintf (tic12400channelList[channel].inputADCLevel,
                           sizeof (tic12400channelList[channel].inputADCLevel), "above");
-                fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R Input IN%u is equal to or above threshold 2B", reg_addr, oldBit,
-                         littleBit, ina_code, channel);
+                fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R Input IN%u is equal to or above threshold 2B",
+                         reg_addr, oldBit, littleBit, ina_code, channel);
                 break;
             case 3:
                 snprintf (tic12400channelList[channel].inputADCLevel,
                           sizeof (tic12400channelList[channel].inputADCLevel), "N/A");
-                fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R IN%u N/A", reg_addr, oldBit, littleBit, ina_code, channel);
+                fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R IN%u N/A", reg_addr, oldBit, littleBit,
+                         ina_code, channel);
                 break;
             default:
                 res = false;
@@ -348,15 +349,15 @@ static bool parse_in_a_code (uint8_t ina_code, FILE *out_file_prt, uint8_t oldBi
                     res = true;
                     snprintf (tic12400channelList[channel].inputADCLevel,
                               sizeof (tic12400channelList[channel].inputADCLevel), "aboveThres");
-                    fprintf (out_file_prt, "\n    reg %2u bit    %02u:%u R Input IN%02u is above configured threshold", reg_addr, littleBit,
-                             ina_code, channel);
+                    fprintf (out_file_prt, "\n    reg %2u bit    %02u:%u R Input IN%02u is above configured threshold",
+                             reg_addr, littleBit, ina_code, channel);
                 }
                 if (0 == ina_code) {
                     res = true;
                     snprintf (tic12400channelList[channel].inputADCLevel,
                               sizeof (tic12400channelList[channel].inputADCLevel), "below");
-                    fprintf (out_file_prt, "\n    reg %2u bit    %02u:%u R Input IN%02u is below configured threshold", reg_addr, littleBit,
-                             ina_code, channel);
+                    fprintf (out_file_prt, "\n    reg %2u bit    %02u:%u R Input IN%02u is below configured threshold",
+                             reg_addr, littleBit, ina_code, channel);
                 }
             }
             return res;
@@ -367,28 +368,30 @@ static bool parse_in_a_code (uint8_t ina_code, FILE *out_file_prt, uint8_t oldBi
         case 0:
             snprintf (tic12400channelList[channel].inputADCLevel, sizeof (tic12400channelList[channel].inputADCLevel),
                       "below");
-            fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R Input IN%u is below threshold 3A.", reg_addr, oldBit, littleBit,
-                     ina_code, channel);
+            fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R Input IN%u is below threshold 3A.", reg_addr,
+                     oldBit, littleBit, ina_code, channel);
             break;
         case 1:
             snprintf (tic12400channelList[channel].inputADCLevel, sizeof (tic12400channelList[channel].inputADCLevel),
                       "middle");
-            fprintf (out_file_prt,
-                     "\n    reg %2u bit %02u-%02u:%u R Input IN%u is below threshold 3B and equal to or above threshold 3A", reg_addr,
-                     oldBit, littleBit, ina_code, channel);
+            fprintf (
+                out_file_prt,
+                "\n    reg %2u bit %02u-%02u:%u R Input IN%u is below threshold 3B and equal to or above threshold 3A",
+                reg_addr, oldBit, littleBit, ina_code, channel);
             break;
         case 2:
             snprintf (tic12400channelList[channel].inputADCLevel, sizeof (tic12400channelList[channel].inputADCLevel),
                       "edge");
-            fprintf (out_file_prt,
-                     "\n    reg %2u bit %02u-%02u:%u R Input IN%u is below threshold 3C and equal to or above threshold 3B", reg_addr,
-                     oldBit, littleBit, ina_code, channel);
+            fprintf (
+                out_file_prt,
+                "\n    reg %2u bit %02u-%02u:%u R Input IN%u is below threshold 3C and equal to or above threshold 3B",
+                reg_addr, oldBit, littleBit, ina_code, channel);
             break;
         case 3:
             snprintf (tic12400channelList[channel].inputADCLevel, sizeof (tic12400channelList[channel].inputADCLevel),
                       "N/A");
-            fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R Input is IN%u is equal to or above threshold 3C", reg_addr, oldBit,
-                     littleBit, ina_code, channel);
+            fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R Input is IN%u is equal to or above threshold 3C",
+                     reg_addr, oldBit, littleBit, ina_code, channel);
             break;
         default:
             res = false;
@@ -399,42 +402,46 @@ static bool parse_in_a_code (uint8_t ina_code, FILE *out_file_prt, uint8_t oldBi
         case 0:
             snprintf (tic12400channelList[channel].inputADCLevel, sizeof (tic12400channelList[channel].inputADCLevel),
                       "below");
-            fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u Input IN23 is below threshold 3A.", reg_addr, oldBit, littleBit, ina_code);
+            fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u Input IN23 is below threshold 3A.", reg_addr, oldBit,
+                     littleBit, ina_code);
             break;
         case 1:
             snprintf (tic12400channelList[channel].inputADCLevel, sizeof (tic12400channelList[channel].inputADCLevel),
                       "mid");
-            fprintf (out_file_prt,
-                     "\n    reg %2u bit %02u-%02u:%u R Input IN23 is below threshold 3B and equal to or above threshold 3A.", reg_addr,
-                     oldBit, littleBit, ina_code);
+            fprintf (
+                out_file_prt,
+                "\n    reg %2u bit %02u-%02u:%u R Input IN23 is below threshold 3B and equal to or above threshold 3A.",
+                reg_addr, oldBit, littleBit, ina_code);
             break;
         case 2:
             snprintf (tic12400channelList[channel].inputADCLevel, sizeof (tic12400channelList[channel].inputADCLevel),
                       "mid");
-            fprintf (out_file_prt,
-                     "\n    reg %2u bit %02u-%02u:%u R Input IN23 is below threshold 3C and equal to or above threshold 3B.", reg_addr,
-                     oldBit, littleBit, ina_code);
+            fprintf (
+                out_file_prt,
+                "\n    reg %2u bit %02u-%02u:%u R Input IN23 is below threshold 3C and equal to or above threshold 3B.",
+                reg_addr, oldBit, littleBit, ina_code);
             break;
         case 3:
             snprintf (tic12400channelList[channel].inputADCLevel, sizeof (tic12400channelList[channel].inputADCLevel),
                       "mid");
             fprintf (out_file_prt,
-                     "\n    reg %2u bit %02u-%02u:%u R Input IN23 is below threshold THRES8 and equal to or above threshold 3C.", reg_addr,
-                     oldBit, littleBit, ina_code);
+                     "\n    reg %2u bit %02u-%02u:%u R Input IN23 is below threshold THRES8 and equal to or above "
+                     "threshold 3C.",
+                     reg_addr, oldBit, littleBit, ina_code);
             break;
         case 4:
             snprintf (tic12400channelList[channel].inputADCLevel, sizeof (tic12400channelList[channel].inputADCLevel),
                       "mid");
-            fprintf (
-                out_file_prt,
-                "\n    reg %2u bit %02u-%02u:%u R Input IN23 is below threshold THRES9 and equal to or above threshold THRES8.", reg_addr,
-                oldBit, littleBit, ina_code);
+            fprintf (out_file_prt,
+                     "\n    reg %2u bit %02u-%02u:%u R Input IN23 is below threshold THRES9 and equal to or above "
+                     "threshold THRES8.",
+                     reg_addr, oldBit, littleBit, ina_code);
             break;
         case 5:
             snprintf (tic12400channelList[channel].inputADCLevel, sizeof (tic12400channelList[channel].inputADCLevel),
                       "above");
-            fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R Input IN23 is equal to or above threshold THRES9", reg_addr, oldBit,
-                     littleBit, ina_code);
+            fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R Input IN23 is equal to or above threshold THRES9",
+                     reg_addr, oldBit, littleBit, ina_code);
             break;
         default:
             res = false;
@@ -446,23 +453,25 @@ static bool parse_in_a_code (uint8_t ina_code, FILE *out_file_prt, uint8_t oldBi
     return res;
 }
 
-
-
-
-static bool parse_comparator_threshold (uint8_t reg_val, FILE *out_file_prt, uint8_t oldBit, uint8_t littleBit, uint8_t reg_addr) {
+static bool parse_comparator_threshold (uint8_t reg_val, FILE *out_file_prt, uint8_t oldBit, uint8_t littleBit,
+                                        uint8_t reg_addr) {
     bool res = true;
     switch (reg_val) {
     case 0:
-        fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R/W comparator threshold set to 2V", reg_addr, oldBit, littleBit, reg_val);
+        fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R/W comparator threshold set to 2V", reg_addr, oldBit,
+                 littleBit, reg_val);
         break;
     case 1:
-        fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R/W comparator threshold set to 2.7V", reg_addr, oldBit, littleBit, reg_val);
+        fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R/W comparator threshold set to 2.7V", reg_addr, oldBit,
+                 littleBit, reg_val);
         break;
     case 2:
-        fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R/W comparator threshold set to 3V", reg_addr, oldBit, littleBit, reg_val);
+        fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R/W comparator threshold set to 3V", reg_addr, oldBit,
+                 littleBit, reg_val);
         break;
     case 3:
-        fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R/W comparator threshold set to 4V", reg_addr, oldBit, littleBit, reg_val);
+        fprintf (out_file_prt, "\n    reg %2u bit %02u-%02u:%u R/W comparator threshold set to 4V", reg_addr, oldBit,
+                 littleBit, reg_val);
         break;
     default:
         break;
@@ -582,144 +591,160 @@ typedef struct xCollomn_t {
     uint8_t width;
 } collomn_t;
 
-static bool parse_tic12400_thresmap_cfg0_register_46 (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr){
-	uint8_t code;
-	code = extract_subval_from_32bit (reg32_val, 23, 21);
-	fprintf (out_file_prt, "\n    reg %2u bit 23-21:%u RW THRESMAP_IN7 THRES%u",reg_addr, code, code);
-	code = extract_subval_from_32bit (reg32_val, 20, 18);
-	fprintf (out_file_prt, "\n    reg %2u bit 20-18:%u RW THRESMAP_IN6 THRES%u",reg_addr, code, code);
-	code = extract_subval_from_32bit (reg32_val, 17, 15);
-	fprintf (out_file_prt, "\n    reg %2u bit 17-15:%u RW THRESMAP_IN5 THRES%u",reg_addr, code, code);
-	code = extract_subval_from_32bit (reg32_val, 14, 12);
-	fprintf (out_file_prt, "\n    reg %2u bit 14-12:%u RW THRESMAP_IN4 THRES%u",reg_addr, code, code);
-	code = extract_subval_from_32bit (reg32_val, 11, 9);
-	fprintf (out_file_prt, "\n    reg %2u bit 11- 9:%u RW THRESMAP_IN3 THRES%u",reg_addr, code, code);
-	code = extract_subval_from_32bit (reg32_val, 8, 6);
-	fprintf (out_file_prt, "\n    reg %2u bit  8- 6:%u RW THRESMAP_IN2 THRES%u",reg_addr, code, code);
-	code = extract_subval_from_32bit (reg32_val, 5, 3);
-	fprintf (out_file_prt, "\n    reg %2u bit  5- 3:%u RW THRESMAP_IN1 THRES%u",reg_addr, code, code);
-	code = extract_subval_from_32bit (reg32_val, 2, 0);
-	fprintf (out_file_prt, "\n    reg %2u bit  2- 0:%u RW THRESMAP_IN0 THRES%u",reg_addr, code, code);
+static bool parse_tic12400_thresmap_cfg0_register_46 (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+    uint8_t code;
+    code = extract_subval_from_32bit (reg32_val, 23, 21);
+    fprintf (out_file_prt, "\n    reg %2u bit 23-21:%u RW THRESMAP_IN7 THRES%u", reg_addr, code, code);
+    code = extract_subval_from_32bit (reg32_val, 20, 18);
+    fprintf (out_file_prt, "\n    reg %2u bit 20-18:%u RW THRESMAP_IN6 THRES%u", reg_addr, code, code);
+    code = extract_subval_from_32bit (reg32_val, 17, 15);
+    fprintf (out_file_prt, "\n    reg %2u bit 17-15:%u RW THRESMAP_IN5 THRES%u", reg_addr, code, code);
+    code = extract_subval_from_32bit (reg32_val, 14, 12);
+    fprintf (out_file_prt, "\n    reg %2u bit 14-12:%u RW THRESMAP_IN4 THRES%u", reg_addr, code, code);
+    code = extract_subval_from_32bit (reg32_val, 11, 9);
+    fprintf (out_file_prt, "\n    reg %2u bit 11- 9:%u RW THRESMAP_IN3 THRES%u", reg_addr, code, code);
+    code = extract_subval_from_32bit (reg32_val, 8, 6);
+    fprintf (out_file_prt, "\n    reg %2u bit  8- 6:%u RW THRESMAP_IN2 THRES%u", reg_addr, code, code);
+    code = extract_subval_from_32bit (reg32_val, 5, 3);
+    fprintf (out_file_prt, "\n    reg %2u bit  5- 3:%u RW THRESMAP_IN1 THRES%u", reg_addr, code, code);
+    code = extract_subval_from_32bit (reg32_val, 2, 0);
+    fprintf (out_file_prt, "\n    reg %2u bit  2- 0:%u RW THRESMAP_IN0 THRES%u", reg_addr, code, code);
     return true;
 }
 
-static bool parse_tic12400_thresmap_cfg1_register_47 (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr){
-	uint8_t code;
-	code = extract_subval_from_32bit (reg32_val, 23, 21);
-	fprintf (out_file_prt, "\n    reg %2u bit 23-18:%u R Reserved",reg_addr, code);
+static bool parse_tic12400_thresmap_cfg1_register_47 (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+    uint8_t code;
+    code = extract_subval_from_32bit (reg32_val, 23, 21);
+    fprintf (out_file_prt, "\n    reg %2u bit 23-18:%u R Reserved", reg_addr, code);
 
-	code = extract_subval_from_32bit (reg32_val, 17, 15);
-	fprintf (out_file_prt, "\n    reg %2u bit 17-15:%u RW THRESMAP_IN12_IN17_THRES2B THRES%u",reg_addr, code, code);
+    code = extract_subval_from_32bit (reg32_val, 17, 15);
+    fprintf (out_file_prt, "\n    reg %2u bit 17-15:%u RW THRESMAP_IN12_IN17_THRES2B THRES%u", reg_addr, code, code);
 
-	code = extract_subval_from_32bit (reg32_val, 14, 12);
-	fprintf (out_file_prt, "\n    reg %2u bit 14-12:%u RW THRESMAP_IN12_IN17_THRES2A THRES%u",reg_addr, code, code);
+    code = extract_subval_from_32bit (reg32_val, 14, 12);
+    fprintf (out_file_prt, "\n    reg %2u bit 14-12:%u RW THRESMAP_IN12_IN17_THRES2A THRES%u", reg_addr, code, code);
 
-	code = extract_subval_from_32bit (reg32_val, 11, 9);
-	fprintf (out_file_prt, "\n    reg %2u bit 11- 9:%u RW THRESMAP_IN11 THRES%u",reg_addr, code, code);
+    code = extract_subval_from_32bit (reg32_val, 11, 9);
+    fprintf (out_file_prt, "\n    reg %2u bit 11- 9:%u RW THRESMAP_IN11 THRES%u", reg_addr, code, code);
 
-	code = extract_subval_from_32bit (reg32_val, 9, 6);
-	fprintf (out_file_prt, "\n    reg %2u bit  8- 6:%u RW THRESMAP_IN10 THRES%u",reg_addr, code, code);
+    code = extract_subval_from_32bit (reg32_val, 9, 6);
+    fprintf (out_file_prt, "\n    reg %2u bit  8- 6:%u RW THRESMAP_IN10 THRES%u", reg_addr, code, code);
 
-	code = extract_subval_from_32bit (reg32_val, 5, 3);
-	fprintf (out_file_prt, "\n    reg %2u bit  5- 3:%u RW THRESMAP_IN9 THRES%u",reg_addr, code, code);
+    code = extract_subval_from_32bit (reg32_val, 5, 3);
+    fprintf (out_file_prt, "\n    reg %2u bit  5- 3:%u RW THRESMAP_IN9 THRES%u", reg_addr, code, code);
 
-	code = extract_subval_from_32bit (reg32_val, 2, 0);
-	fprintf (out_file_prt, "\n    reg %2u bit  2- 0:%u RW THRESMAP_IN8 THRES%u",reg_addr, code, code);
+    code = extract_subval_from_32bit (reg32_val, 2, 0);
+    fprintf (out_file_prt, "\n    reg %2u bit  2- 0:%u RW THRESMAP_IN8 THRES%u", reg_addr, code, code);
     return true;
 }
 
-static bool parse_tic12400_thresmap_cfg2_register_48 (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr){
-	uint8_t code;
-	code = extract_subval_from_32bit (reg32_val, 23, 21);
-	fprintf (out_file_prt, "\n    reg %2u bit 23-21:%u R Reserved",reg_addr, code);
+static bool parse_tic12400_thresmap_cfg2_register_48 (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+    uint8_t code;
+    code = extract_subval_from_32bit (reg32_val, 23, 21);
+    fprintf (out_file_prt, "\n    reg %2u bit 23-21:%u R Reserved", reg_addr, code);
 
-	code = extract_subval_from_32bit (reg32_val, 20, 18);
-	fprintf (out_file_prt, "\n    reg %2u bit 20-18:%u RW THRESMAP_VS1_THRES2B", reg_addr, code);
+    code = extract_subval_from_32bit (reg32_val, 20, 18);
+    fprintf (out_file_prt, "\n    reg %2u bit 20-18:%u RW THRESMAP_VS1_THRES2B", reg_addr, code);
 
-	code = extract_subval_from_32bit (reg32_val, 17, 15);
-	fprintf (out_file_prt, "\n    reg %2u bit 17-15:%u RW THRESMAP_VS1_THRES2A THRES%u",reg_addr, code, code);
+    code = extract_subval_from_32bit (reg32_val, 17, 15);
+    fprintf (out_file_prt, "\n    reg %2u bit 17-15:%u RW THRESMAP_VS1_THRES2A THRES%u", reg_addr, code, code);
 
-	code = extract_subval_from_32bit (reg32_val, 14, 12);
-	fprintf (out_file_prt, "\n    reg %2u bit 14-12:%u RW THRESMAP_VS0_THRES2B THRES%u",reg_addr, code, code);
+    code = extract_subval_from_32bit (reg32_val, 14, 12);
+    fprintf (out_file_prt, "\n    reg %2u bit 14-12:%u RW THRESMAP_VS0_THRES2B THRES%u", reg_addr, code, code);
 
-	code = extract_subval_from_32bit (reg32_val, 11, 9);
-	fprintf (out_file_prt, "\n    reg %2u bit 11- 9:%u RW THRESMAP_VS0_THRES2A THRES%u",reg_addr, code, code);
+    code = extract_subval_from_32bit (reg32_val, 11, 9);
+    fprintf (out_file_prt, "\n    reg %2u bit 11- 9:%u RW THRESMAP_VS0_THRES2A THRES%u", reg_addr, code, code);
 
-	code = extract_subval_from_32bit (reg32_val, 8, 6);
-	fprintf (out_file_prt, "\n    reg %2u bit  9- 6:%u RW THRESMAP_IN18_IN23_THRES3C THRES%u",reg_addr, code, code);
+    code = extract_subval_from_32bit (reg32_val, 8, 6);
+    fprintf (out_file_prt, "\n    reg %2u bit  9- 6:%u RW THRESMAP_IN18_IN23_THRES3C THRES%u", reg_addr, code, code);
 
-	code = extract_subval_from_32bit (reg32_val, 5, 3);
-	fprintf (out_file_prt, "\n    reg %2u bit  5- 3:%u RW THRESMAP_IN18_IN23_THRES3B THRES%u",reg_addr, code, code);
+    code = extract_subval_from_32bit (reg32_val, 5, 3);
+    fprintf (out_file_prt, "\n    reg %2u bit  5- 3:%u RW THRESMAP_IN18_IN23_THRES3B THRES%u", reg_addr, code, code);
 
-	code = extract_subval_from_32bit (reg32_val, 2, 0);
-	fprintf (out_file_prt, "\n    reg %2u bit  2- 0:%u RW THRESMAP_IN18_IN23_THRES3A THRES%u",reg_addr, code, code);
+    code = extract_subval_from_32bit (reg32_val, 2, 0);
+    fprintf (out_file_prt, "\n    reg %2u bit  2- 0:%u RW THRESMAP_IN18_IN23_THRES3A THRES%u", reg_addr, code, code);
     return true;
 }
 
-static bool parse_tic12400_matrix_register_49(uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr){
-	uint8_t code;
-	code = extract_subval_from_32bit (reg32_val, 23, 17);
-	fprintf (out_file_prt, "\n    reg %2u bit 23-17:%u R Reserved", reg_addr, code);
-	code = extract_subval_from_32bit (reg32_val, 16, 15);
-	if ( 0 == code) {
-     	fprintf (out_file_prt, "\n    reg %2u bit 16-15:%u RW no interrupt generation for w.r.t. threshold THRES_COM", reg_addr, code);
-	}
-	if ( 1 == code) {
-     	fprintf (out_file_prt, "\n    reg %2u bit 16-15:%u RW interrupt generation on rising edge above threshold THRES_COM", reg_addr, code);
-	}
-	if ( 2 == code) {
-     	fprintf (out_file_prt, "\n    reg %2u bit 16-15:%u RW interrupt generation on falling edge below threshold THRES_COM", reg_addr, code);
-	}
-	if ( 3 == code) {
-     	fprintf (out_file_prt, "\n    reg %2u bit 16-15:%u RW interrupt generation on falling and rising edge of threshold THRES_COM", reg_addr, code);
-	}
-	code = extract_subval_from_32bit (reg32_val, 14, 5);
-	fprintf (out_file_prt, "\n    reg %2u bit 14- 5:%u RW THRES_COM", reg_addr, code);
+static bool parse_tic12400_matrix_register_49 (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+    uint8_t code;
+    code = extract_subval_from_32bit (reg32_val, 23, 17);
+    fprintf (out_file_prt, "\n    reg %2u bit 23-17:%u R Reserved", reg_addr, code);
+    code = extract_subval_from_32bit (reg32_val, 16, 15);
+    if (0 == code) {
+        fprintf (out_file_prt, "\n    reg %2u bit 16-15:%u RW no interrupt generation for w.r.t. threshold THRES_COM",
+                 reg_addr, code);
+    }
+    if (1 == code) {
+        fprintf (out_file_prt,
+                 "\n    reg %2u bit 16-15:%u RW interrupt generation on rising edge above threshold THRES_COM",
+                 reg_addr, code);
+    }
+    if (2 == code) {
+        fprintf (out_file_prt,
+                 "\n    reg %2u bit 16-15:%u RW interrupt generation on falling edge below threshold THRES_COM",
+                 reg_addr, code);
+    }
+    if (3 == code) {
+        fprintf (out_file_prt,
+                 "\n    reg %2u bit 16-15:%u RW interrupt generation on falling and rising edge of threshold THRES_COM",
+                 reg_addr, code);
+    }
+    code = extract_subval_from_32bit (reg32_val, 14, 5);
+    fprintf (out_file_prt, "\n    reg %2u bit 14- 5:%u RW THRES_COM", reg_addr, code);
 
-	code = extract_subval_from_32bit (reg32_val, 4, 3);
-	if (0==code) {
-		fprintf (out_file_prt, "\n    reg %2u bit  4- 3:%u RW no matrix, regular inputs only", reg_addr, code);
-	}
-	if (1==code) {
-		fprintf (out_file_prt, "\n    reg %2u bit  4- 3:%u RW 4x4 matrix", reg_addr, code);
-	}
-	if (2==code) {
-		fprintf (out_file_prt, "\n    reg %2u bit  4- 3:%u RW 5x5 matrix", reg_addr, code);
-	}
-	if (3==code) {
-		fprintf (out_file_prt, "\n    reg %2u bit  4- 3:%u RW 6x6 matrix", reg_addr, code);
-	}
+    code = extract_subval_from_32bit (reg32_val, 4, 3);
+    if (0 == code) {
+        fprintf (out_file_prt, "\n    reg %2u bit  4- 3:%u RW no matrix, regular inputs only", reg_addr, code);
+    }
+    if (1 == code) {
+        fprintf (out_file_prt, "\n    reg %2u bit  4- 3:%u RW 4x4 matrix", reg_addr, code);
+    }
+    if (2 == code) {
+        fprintf (out_file_prt, "\n    reg %2u bit  4- 3:%u RW 5x5 matrix", reg_addr, code);
+    }
+    if (3 == code) {
+        fprintf (out_file_prt, "\n    reg %2u bit  4- 3:%u RW 6x6 matrix", reg_addr, code);
+    }
 
-	code = extract_subval_from_32bit (reg32_val, 2, 0);
-	if (0==code) {
-		fprintf (out_file_prt, "\n    reg %2u bit  2- 0:%u RW Polling active time setting for the matrix inputs: 64μs", reg_addr, code);
-	}
-	if (1==code) {
-		fprintf (out_file_prt, "\n    reg %2u bit  2- 0:%u RW Polling active time setting for the matrix inputs: 128μs", reg_addr, code);
-	}
-	if (2==code) {
-		fprintf (out_file_prt, "\n    reg %2u bit  2- 0:%u RW Polling active time setting for the matrix inputs: 256μs", reg_addr, code);
-	}
-	if (3==code) {
-		fprintf (out_file_prt, "\n    reg %2u bit  2- 0:%u RW Polling active time setting for the matrix inputs: 384μs", reg_addr, code);
-	}
-	if (4==code) {
-		fprintf (out_file_prt, "\n    reg %2u bit  2- 0:%u RW Polling active time setting for the matrix inputs: 512μs", reg_addr, code);
-	}
-	if (5==code) {
-		fprintf (out_file_prt, "\n    reg %2u bit  2- 0:%u RW Polling active time setting for the matrix inputs: 768μs", reg_addr, code);
-	}
-	if (6==code) {
-		fprintf (out_file_prt, "\n    reg %2u bit  2- 0:%u RW Polling active time setting for the matrix inputs: 1024μs", reg_addr, code);
-	}
-	if (7==code) {
-		fprintf (out_file_prt, "\n    reg %2u bit  2- 0:%u RW Polling active time setting for the matrix inputs: 1360μs", reg_addr, code);
-	}
+    code = extract_subval_from_32bit (reg32_val, 2, 0);
+    if (0 == code) {
+        fprintf (out_file_prt, "\n    reg %2u bit  2- 0:%u RW Polling active time setting for the matrix inputs: 64μs",
+                 reg_addr, code);
+    }
+    if (1 == code) {
+        fprintf (out_file_prt, "\n    reg %2u bit  2- 0:%u RW Polling active time setting for the matrix inputs: 128μs",
+                 reg_addr, code);
+    }
+    if (2 == code) {
+        fprintf (out_file_prt, "\n    reg %2u bit  2- 0:%u RW Polling active time setting for the matrix inputs: 256μs",
+                 reg_addr, code);
+    }
+    if (3 == code) {
+        fprintf (out_file_prt, "\n    reg %2u bit  2- 0:%u RW Polling active time setting for the matrix inputs: 384μs",
+                 reg_addr, code);
+    }
+    if (4 == code) {
+        fprintf (out_file_prt, "\n    reg %2u bit  2- 0:%u RW Polling active time setting for the matrix inputs: 512μs",
+                 reg_addr, code);
+    }
+    if (5 == code) {
+        fprintf (out_file_prt, "\n    reg %2u bit  2- 0:%u RW Polling active time setting for the matrix inputs: 768μs",
+                 reg_addr, code);
+    }
+    if (6 == code) {
+        fprintf (out_file_prt,
+                 "\n    reg %2u bit  2- 0:%u RW Polling active time setting for the matrix inputs: 1024μs", reg_addr,
+                 code);
+    }
+    if (7 == code) {
+        fprintf (out_file_prt,
+                 "\n    reg %2u bit  2- 0:%u RW Polling active time setting for the matrix inputs: 1360μs", reg_addr,
+                 code);
+    }
     return true;
 }
 
-
-static bool parse_tic12400_crc_register_03h  (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+static bool parse_tic12400_crc_register_03h (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
     uint32_t code;
     code = extract_subval_from_32bit (reg32_val, 23, 16);
     fprintf (out_file_prt, "\n    reg %2u bit 22-16:%u R Reserved", 3, code);
@@ -730,118 +755,118 @@ static bool parse_tic12400_crc_register_03h  (uint32_t reg32_val, FILE *out_file
     return res;
 }
 
-static bool parse_tic12400_int_en_comp1_register_22h  (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+static bool parse_tic12400_int_en_comp1_register_22h (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
     (void)reg32_val;
     (void)out_file_prt;
     uint8_t inc_en_11, inc_en_10, inc_en_9, inc_en_8;
     uint8_t inc_en_7, inc_en_6, inc_en_5, inc_en_4;
     uint8_t inc_en_3, inc_en_2, inc_en_1, inc_en_0;
     inc_en_11 = extract_subval_from_32bit (reg32_val, 23, 22);
-    parse_interrupt_en_comp_mode (inc_en_11, out_file_prt, 23, 22, 11,reg_addr);
+    parse_interrupt_en_comp_mode (inc_en_11, out_file_prt, 23, 22, 11, reg_addr);
     tic12400channelList[11].interruptMode = interpret_int_code (inc_en_11);
 
     inc_en_10 = extract_subval_from_32bit (reg32_val, 21, 20);
-    parse_interrupt_en_comp_mode (inc_en_10, out_file_prt, 21, 20, 10,reg_addr);
+    parse_interrupt_en_comp_mode (inc_en_10, out_file_prt, 21, 20, 10, reg_addr);
     tic12400channelList[10].interruptMode = interpret_int_code (inc_en_10);
 
     inc_en_9 = extract_subval_from_32bit (reg32_val, 19, 18);
-    parse_interrupt_en_comp_mode (inc_en_9, out_file_prt, 19, 18, 9,reg_addr);
+    parse_interrupt_en_comp_mode (inc_en_9, out_file_prt, 19, 18, 9, reg_addr);
     tic12400channelList[9].interruptMode = interpret_int_code (inc_en_9);
 
     inc_en_8 = extract_subval_from_32bit (reg32_val, 17, 16);
-    parse_interrupt_en_comp_mode (inc_en_8, out_file_prt, 17, 16, 8,reg_addr);
+    parse_interrupt_en_comp_mode (inc_en_8, out_file_prt, 17, 16, 8, reg_addr);
     tic12400channelList[8].interruptMode = interpret_int_code (inc_en_8);
 
     inc_en_7 = extract_subval_from_32bit (reg32_val, 15, 14);
-    parse_interrupt_en_comp_mode (inc_en_7, out_file_prt, 15, 14, 7,reg_addr);
+    parse_interrupt_en_comp_mode (inc_en_7, out_file_prt, 15, 14, 7, reg_addr);
     tic12400channelList[7].interruptMode = interpret_int_code (inc_en_7);
 
     inc_en_6 = extract_subval_from_32bit (reg32_val, 13, 12);
-    parse_interrupt_en_comp_mode (inc_en_6, out_file_prt, 13, 12, 6,reg_addr);
+    parse_interrupt_en_comp_mode (inc_en_6, out_file_prt, 13, 12, 6, reg_addr);
     tic12400channelList[6].interruptMode = interpret_int_code (inc_en_6);
 
     inc_en_5 = extract_subval_from_32bit (reg32_val, 11, 10);
-    parse_interrupt_en_comp_mode (inc_en_5, out_file_prt, 11, 10, 5,reg_addr);
+    parse_interrupt_en_comp_mode (inc_en_5, out_file_prt, 11, 10, 5, reg_addr);
     tic12400channelList[5].interruptMode = interpret_int_code (inc_en_5);
 
     inc_en_4 = extract_subval_from_32bit (reg32_val, 9, 8);
-    parse_interrupt_en_comp_mode (inc_en_4, out_file_prt, 9, 8, 4,reg_addr);
+    parse_interrupt_en_comp_mode (inc_en_4, out_file_prt, 9, 8, 4, reg_addr);
     tic12400channelList[4].interruptMode = interpret_int_code (inc_en_4);
 
     inc_en_3 = extract_subval_from_32bit (reg32_val, 7, 6);
-    parse_interrupt_en_comp_mode (inc_en_3, out_file_prt, 7, 6, 3,reg_addr);
+    parse_interrupt_en_comp_mode (inc_en_3, out_file_prt, 7, 6, 3, reg_addr);
     tic12400channelList[3].interruptMode = interpret_int_code (inc_en_3);
 
     inc_en_2 = extract_subval_from_32bit (reg32_val, 5, 4);
-    parse_interrupt_en_comp_mode (inc_en_2, out_file_prt, 5, 4, 2,reg_addr);
+    parse_interrupt_en_comp_mode (inc_en_2, out_file_prt, 5, 4, 2, reg_addr);
     tic12400channelList[2].interruptMode = interpret_int_code (inc_en_2);
 
     inc_en_1 = extract_subval_from_32bit (reg32_val, 3, 2);
-    parse_interrupt_en_comp_mode (inc_en_1, out_file_prt, 3, 2, 1,reg_addr);
+    parse_interrupt_en_comp_mode (inc_en_1, out_file_prt, 3, 2, 1, reg_addr);
     tic12400channelList[1].interruptMode = interpret_int_code (inc_en_1);
 
     inc_en_0 = extract_subval_from_32bit (reg32_val, 1, 0);
-    parse_interrupt_en_comp_mode (inc_en_0, out_file_prt, 1, 0, 0,reg_addr);
+    parse_interrupt_en_comp_mode (inc_en_0, out_file_prt, 1, 0, 0, reg_addr);
     tic12400channelList[0].interruptMode = interpret_int_code (inc_en_0);
     bool res = true;
     return res;
 }
 
-static bool parse_tic12400_int_en_comp2_register_23h  (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+static bool parse_tic12400_int_en_comp2_register_23h (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = true;
     uint8_t inc_en_23, inc_en_22, inc_en_21, inc_en_20, inc_en_19, inc_en_18;
     uint8_t inc_en_17, inc_en_16, inc_en_15, inc_en_14, inc_en_13, inc_en_12;
     inc_en_23 = extract_subval_from_32bit (reg32_val, 23, 22);
-    parse_interrupt_en_comp_mode (inc_en_23, out_file_prt, 23, 22, 23,reg_addr);
+    parse_interrupt_en_comp_mode (inc_en_23, out_file_prt, 23, 22, 23, reg_addr);
     tic12400channelList[23].interruptMode = interpret_int_code (inc_en_23);
 
     inc_en_22 = extract_subval_from_32bit (reg32_val, 21, 20);
-    parse_interrupt_en_comp_mode (inc_en_22, out_file_prt, 21, 20, 22,reg_addr);
+    parse_interrupt_en_comp_mode (inc_en_22, out_file_prt, 21, 20, 22, reg_addr);
     tic12400channelList[22].interruptMode = interpret_int_code (inc_en_22);
 
     inc_en_21 = extract_subval_from_32bit (reg32_val, 19, 18);
-    parse_interrupt_en_comp_mode (inc_en_21, out_file_prt, 19, 18, 21,reg_addr);
+    parse_interrupt_en_comp_mode (inc_en_21, out_file_prt, 19, 18, 21, reg_addr);
     tic12400channelList[21].interruptMode = interpret_int_code (inc_en_21);
 
     inc_en_20 = extract_subval_from_32bit (reg32_val, 17, 16);
-    parse_interrupt_en_comp_mode (inc_en_20, out_file_prt, 17, 16, 20,reg_addr);
+    parse_interrupt_en_comp_mode (inc_en_20, out_file_prt, 17, 16, 20, reg_addr);
     tic12400channelList[20].interruptMode = interpret_int_code (inc_en_20);
 
     inc_en_19 = extract_subval_from_32bit (reg32_val, 15, 14);
-    parse_interrupt_en_comp_mode (inc_en_19, out_file_prt, 15, 14, 19,reg_addr);
+    parse_interrupt_en_comp_mode (inc_en_19, out_file_prt, 15, 14, 19, reg_addr);
     tic12400channelList[19].interruptMode = interpret_int_code (inc_en_19);
 
     inc_en_18 = extract_subval_from_32bit (reg32_val, 13, 12);
-    parse_interrupt_en_comp_mode (inc_en_18, out_file_prt, 13, 12, 18,reg_addr);
+    parse_interrupt_en_comp_mode (inc_en_18, out_file_prt, 13, 12, 18, reg_addr);
     tic12400channelList[18].interruptMode = interpret_int_code (inc_en_18);
 
     inc_en_17 = extract_subval_from_32bit (reg32_val, 11, 10);
-    parse_interrupt_en_comp_mode (inc_en_17, out_file_prt, 11, 10, 17,reg_addr);
+    parse_interrupt_en_comp_mode (inc_en_17, out_file_prt, 11, 10, 17, reg_addr);
     tic12400channelList[17].interruptMode = interpret_int_code (inc_en_17);
 
     inc_en_16 = extract_subval_from_32bit (reg32_val, 9, 8);
-    parse_interrupt_en_comp_mode (inc_en_16, out_file_prt, 9, 8, 16,reg_addr);
+    parse_interrupt_en_comp_mode (inc_en_16, out_file_prt, 9, 8, 16, reg_addr);
     tic12400channelList[16].interruptMode = interpret_int_code (inc_en_16);
 
     inc_en_15 = extract_subval_from_32bit (reg32_val, 7, 6);
-    parse_interrupt_en_comp_mode (inc_en_15, out_file_prt, 7, 6, 15,reg_addr);
+    parse_interrupt_en_comp_mode (inc_en_15, out_file_prt, 7, 6, 15, reg_addr);
     tic12400channelList[15].interruptMode = interpret_int_code (inc_en_15);
 
     inc_en_14 = extract_subval_from_32bit (reg32_val, 5, 4);
-    parse_interrupt_en_comp_mode (inc_en_14, out_file_prt, 5, 4, 14,reg_addr);
+    parse_interrupt_en_comp_mode (inc_en_14, out_file_prt, 5, 4, 14, reg_addr);
     tic12400channelList[14].interruptMode = interpret_int_code (inc_en_14);
 
     inc_en_13 = extract_subval_from_32bit (reg32_val, 3, 2);
-    parse_interrupt_en_comp_mode (inc_en_13, out_file_prt, 3, 2, 13,reg_addr);
+    parse_interrupt_en_comp_mode (inc_en_13, out_file_prt, 3, 2, 13, reg_addr);
     tic12400channelList[13].interruptMode = interpret_int_code (inc_en_13);
 
     inc_en_12 = extract_subval_from_32bit (reg32_val, 1, 0);
-    parse_interrupt_en_comp_mode (inc_en_12, out_file_prt, 1, 0, 12,reg_addr);
+    parse_interrupt_en_comp_mode (inc_en_12, out_file_prt, 1, 0, 12, reg_addr);
     tic12400channelList[12].interruptMode = interpret_int_code (inc_en_12);
     return res;
 }
 
-static bool parse_tic12400_thres_comp_register_21h  (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+static bool parse_tic12400_thres_comp_register_21h (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = true;
     uint32_t reserved;
     uint8_t thres_comp_in20_in23, thres_comp_in16_in19;
@@ -895,91 +920,107 @@ static bool parse_tic12400_thres_comp_register_21h  (uint32_t reg32_val, FILE *o
     return res;
 }
 
-static bool parse_tic12400_interrupt_status_register_02h  (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+static bool parse_tic12400_interrupt_status_register_02h (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = true;
     if (reg32_val & INT_STAT_CHK_FAIL_13) {
-        fprintf (out_file_prt, "\n    reg %2u bit 13:1 RC An error is detected when loading factory settings into the device upon "
-                             "device initialization", reg_addr );
+        fprintf (out_file_prt,
+                 "\n    reg %2u bit 13:1 RC An error is detected when loading factory settings into the device upon "
+                 "device initialization",
+                 reg_addr);
     } else {
         fprintf (out_file_prt,
-                 "\n    reg %2u bit 13:0 RC Default factory setting is successfully loaded upon device initialization", reg_addr );
+                 "\n    reg %2u bit 13:0 RC Default factory setting is successfully loaded upon device initialization",
+                 reg_addr);
     }
     if (reg32_val & INT_STAT_ADC_DIAG_12) {
-        fprintf (out_file_prt, "\n    reg %2u bit 12:1 RC ADC self-diagnostic error is detected", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit 12:1 RC ADC self-diagnostic error is detected", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit 12:0 RC No ADC self-diagnostic error is detected", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit 12:0 RC No ADC self-diagnostic error is detected", reg_addr);
     }
     if (reg32_val & INT_STAT_WET_DIAG_11) {
-        fprintf (out_file_prt, "\n    reg %2u bit 11:1 RC Wetting current error is detected ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit 11:1 RC Wetting current error is detected ", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit 11:0 RC No wetting current error is detected ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit 11:0 RC No wetting current error is detected ", reg_addr);
     }
     if (reg32_val & INT_STAT_VS1_10) {
-        fprintf (out_file_prt,
-                 "\n    reg %2u bit 10:1 RC VS voltage state change occurred with respect to VS1_THRES2A or VS1_THRES2B ", reg_addr );
+        fprintf (
+            out_file_prt,
+            "\n    reg %2u bit 10:1 RC VS voltage state change occurred with respect to VS1_THRES2A or VS1_THRES2B ",
+            reg_addr);
     } else {
-        fprintf (out_file_prt,
-                 "\n    reg %2u bit 10:0 RC No VS voltage state change occurred with respect to VS1_THRES2A or VS1_THRES2B ", reg_addr );
+        fprintf (
+            out_file_prt,
+            "\n    reg %2u bit 10:0 RC No VS voltage state change occurred with respect to VS1_THRES2A or VS1_THRES2B ",
+            reg_addr);
     }
     if (reg32_val & INT_STAT_VS0_9) {
-        fprintf (out_file_prt,
-                 "\n    reg %2u bit  9:1 RC VS voltage state change occurred with respect to VS0_THRES2A or VS0_THRES2B", reg_addr );
+        fprintf (
+            out_file_prt,
+            "\n    reg %2u bit  9:1 RC VS voltage state change occurred with respect to VS0_THRES2A or VS0_THRES2B",
+            reg_addr);
     } else {
-        fprintf (out_file_prt,
-                 "\n    reg %2u bit  9:0 RC No VS voltage state change occurred with respect to VS0_THRES2A or VS0_THRES2B ", reg_addr );
+        fprintf (
+            out_file_prt,
+            "\n    reg %2u bit  9:0 RC No VS voltage state change occurred with respect to VS0_THRES2A or VS0_THRES2B ",
+            reg_addr);
     }
     if (reg32_val & INT_STAT_CRC_CALC_8) {
-        fprintf (out_file_prt, "\n    reg %2u bit  8:1 RC CRC calculation is finished ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  8:1 RC CRC calculation is finished ", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit  8:0 RC CRC calculation is running, not started ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  8:0 RC CRC calculation is running, not started ", reg_addr);
     }
     if (reg32_val & INT_STAT_UV_7) {
-        fprintf (out_file_prt, "\n    reg %2u bit  7:1 RC Under-voltage condition occurred or cleared on the VS pin", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  7:1 RC Under-voltage condition occurred or cleared on the VS pin",
+                 reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit  7:0 RC No under-voltage condition occurred", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  7:0 RC No under-voltage condition occurred", reg_addr);
     }
     if (reg32_val & INT_STAT_OV_6) {
-        fprintf (out_file_prt, "\n    reg %2u bit  6:1 RC Over-voltage condition occurred or cleared on the VS pin ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  6:1 RC Over-voltage condition occurred or cleared on the VS pin ",
+                 reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit  6:0 RC No over-voltage condition occurred or cleared on the VS pin,", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  6:0 RC No over-voltage condition occurred or cleared on the VS pin,",
+                 reg_addr);
     }
 
     if (reg32_val & INT_STAT_TW_5) {
-        fprintf (out_file_prt, "\n    reg %2u bit  5:1 RC Temperature warning event occurred or cleared ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  5:1 RC Temperature warning event occurred or cleared ", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit  5:0 RC No temperature warning event occurred ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  5:0 RC No temperature warning event occurred ", reg_addr);
     }
     if (reg32_val & INT_STAT_TSD_4) {
-        fprintf (out_file_prt, "\n    reg %2u bit  4:1 RC Temperature Shutdown event occurred or cleared ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  4:1 RC Temperature Shutdown event occurred or cleared ", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit  4:0 RC No temperature Shutdown event occurred ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  4:0 RC No temperature Shutdown event occurred ", reg_addr);
     }
     if (reg32_val & INT_STAT_SSC_3) {
-        fprintf (out_file_prt, "\n    reg %2u bit  3:1 RC Switch state change occurred ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  3:1 RC Switch state change occurred ", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit  3:0 RC No switch state change occurred ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  3:0 RC No switch state change occurred ", reg_addr);
     }
     if (reg32_val & INT_STAT_PRTY_FAIL_2) {
-        fprintf (out_file_prt, "\n    reg %2u bit  2:1 RC Parity error occurred", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  2:1 RC Parity error occurred", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit  2:0 RC No parity error occurred in the last received SI stream", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  2:0 RC No parity error occurred in the last received SI stream",
+                 reg_addr);
     }
 
     if (reg32_val & INT_STAT_SPI_FAIL_1) {
-        fprintf (out_file_prt, "\n    reg %2u bit  1:1 RC SPI error occurred ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  1:1 RC SPI error occurred ", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit  1:0 RC 32 clock pulse during a CS = low sequence was detected", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  1:0 RC 32 clock pulse during a CS = low sequence was detected",
+                 reg_addr);
     }
     if (reg32_val & INT_STAT_POR_0) {
-        fprintf (out_file_prt, "\n    reg %2u bit  0:1 RC Power-On-Reset (POR) event occurred", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  0:1 RC Power-On-Reset (POR) event occurred", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit  0:0 RC no Power-On-Reset (POR) event occurred", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  0:0 RC no Power-On-Reset (POR) event occurred", reg_addr);
     }
 
     return res;
 }
 
-static bool parse_tic12400_wc_cfg0_register_1dh  (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+static bool parse_tic12400_wc_cfg0_register_1dh (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = true;
     uint32_t wc_in0_in1;
     uint32_t wc_in2_in3;
@@ -1028,7 +1069,7 @@ static bool parse_tic12400_wc_cfg0_register_1dh  (uint32_t reg32_val, FILE *out_
     return res;
 }
 
-static bool parse_tic12400_wc_cfg1_register_1eh  (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+static bool parse_tic12400_wc_cfg1_register_1eh (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = true;
     uint8_t reserved;
     uint8_t wc_in23;
@@ -1043,19 +1084,27 @@ static bool parse_tic12400_wc_cfg1_register_1eh  (uint32_t reg32_val, FILE *out_
     fprintf (out_file_prt, "\n    reg %2u bit  23:22: %u", reg_addr, reserved);
 
     if (reg32_val & WC_CFG1_AUTO_SCALE_DIS_CSI_22) {
-        fprintf (out_file_prt, "\n    reg %2u bit  22:1 RW Disable wetting current auto-scaling (to 2mA) in continuous mode for "
-                             "10mA and 15mA settings upon switch closure for all inputs enabled with CS", reg_addr );
+        fprintf (out_file_prt,
+                 "\n    reg %2u bit  22:1 RW Disable wetting current auto-scaling (to 2mA) in continuous mode for "
+                 "10mA and 15mA settings upon switch closure for all inputs enabled with CS",
+                 reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit  22:0 RW Enable wetting current auto-scaling (to 2mA) in continuous mode for "
-                             "10mA and 15mA settings upon switch closure for all inputs enabled with CSI", reg_addr );
+        fprintf (out_file_prt,
+                 "\n    reg %2u bit  22:0 RW Enable wetting current auto-scaling (to 2mA) in continuous mode for "
+                 "10mA and 15mA settings upon switch closure for all inputs enabled with CSI",
+                 reg_addr);
     }
 
     if (reg32_val & WC_CFG1_AUTO_SCALE_DIS_CSO_21) {
-        fprintf (out_file_prt, "\n    reg %2u bit  21:1 RW Disable wetting current auto-scaling (to 2mA) in continuous mode for "
-                             "10mA and 15mA settings upon switch closure for all inputs enabled with CSO", reg_addr );
+        fprintf (out_file_prt,
+                 "\n    reg %2u bit  21:1 RW Disable wetting current auto-scaling (to 2mA) in continuous mode for "
+                 "10mA and 15mA settings upon switch closure for all inputs enabled with CSO",
+                 reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit  21:0 RW Enable wetting current auto-scaling (to 2mA) in continuous mode for "
-                             "10mA and 15mA settings upon switch closure for all inputs enabled with CSO", reg_addr );
+        fprintf (out_file_prt,
+                 "\n    reg %2u bit  21:0 RW Enable wetting current auto-scaling (to 2mA) in continuous mode for "
+                 "10mA and 15mA settings upon switch closure for all inputs enabled with CSO",
+                 reg_addr);
     }
 
     wc_in23 = extract_subval_from_32bit (reg32_val, 20, 18);
@@ -1094,35 +1143,35 @@ static bool parse_tic12400_wc_cfg1_register_1eh  (uint32_t reg32_val, FILE *out_
     return res;
 }
 
-static bool parse_tic12400_in_stat_misc_register_04h  (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+static bool parse_tic12400_in_stat_misc_register_04h (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = true;
     uint8_t vs1_stat = 0;
     uint8_t vs0_stat = 0;
 
     if (reg32_val & IN_STAT_MISC_ADC_D_12) {
-        fprintf (out_file_prt, "\n    reg %2u bit 12: R An error is identified from ADC self-diagnostic.", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit 12: R An error is identified from ADC self-diagnostic.", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit 12: R No error is identified from ADC self-diagnostic.", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit 12: R No error is identified from ADC self-diagnostic.", reg_addr);
     }
     if (reg32_val & IN_STAT_MISC_IN3_D_11) {
-        fprintf (out_file_prt, "\n    reg %2u bit 11: R Current sink on IN3 is abnormal", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit 11: R Current sink on IN3 is abnormal", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit 11: R Current sink on IN3 is operational", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit 11: R Current sink on IN3 is operational", reg_addr);
     }
     if (reg32_val & IN_STAT_MISC_IN2_D_10) {
-        fprintf (out_file_prt, "\n    reg %2u bit 10: R Current sink on IN2 is abnormal", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit 10: R Current sink on IN2 is abnormal", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit 10: R Current sink on IN2 is operational", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit 10: R Current sink on IN2 is operational", reg_addr);
     }
     if (reg32_val & IN_STAT_MISC_IN1_D_9) {
-        fprintf (out_file_prt, "\n    reg %2u bit  9: R Current source on IN1 is abnormal", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  9: R Current source on IN1 is abnormal", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit  9: R Current source on IN1 is operational", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  9: R Current source on IN1 is operational", reg_addr);
     }
     if (reg32_val & IN_STAT_MISC_IN0_D_8) {
-        fprintf (out_file_prt, "\n    reg %2u bit  8: R Current source on IN0 is abnormal", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  8: R Current source on IN0 is abnormal", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit  8: R Current source on IN0 is operational", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  8: R Current source on IN0 is operational", reg_addr);
     }
     vs1_stat = extract_subval_from_32bit (reg32_val, 7, 6);
     parse_tic12400_vs1_stat (vs1_stat, out_file_prt, reg_addr);
@@ -1130,194 +1179,239 @@ static bool parse_tic12400_in_stat_misc_register_04h  (uint32_t reg32_val, FILE 
     parse_tic12400_vs0_stat (vs0_stat, out_file_prt, reg_addr);
 
     if (reg32_val & IN_STAT_MISC_UV_STAT_3) {
-        fprintf (out_file_prt, "\n    reg %2u bit  3: R VS voltage is below the under-voltage condition threshold", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  3: R VS voltage is below the under-voltage condition threshold",
+                 reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit  3: R VS voltage is above the under-voltage condition threshold", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  3: R VS voltage is above the under-voltage condition threshold",
+                 reg_addr);
     }
     if (reg32_val & IN_STAT_MISC_OV_STAT_2) {
-        fprintf (out_file_prt, "\n    reg %2u bit  2: R VS voltage is above the over-voltage condition threshold", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  2: R VS voltage is above the over-voltage condition threshold",
+                 reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit  2: R VS voltage is below the over-voltage condition threshold", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  2: R VS voltage is below the over-voltage condition threshold",
+                 reg_addr);
     }
     if (reg32_val & IN_STAT_MISC_TW_STAT_1) {
         fprintf (out_file_prt,
-                 "\n    reg %2u bit  1: R Device junction temperature is above the temperature warning threshold TTW.", reg_addr );
+                 "\n    reg %2u bit  1: R Device junction temperature is above the temperature warning threshold TTW.",
+                 reg_addr);
     } else {
         fprintf (out_file_prt,
-                 "\n    reg %2u bit  1: R Device junction temperature is below the temperature warning threshold TTW.", reg_addr );
+                 "\n    reg %2u bit  1: R Device junction temperature is below the temperature warning threshold TTW.",
+                 reg_addr);
     }
     if (reg32_val & IN_STAT_MISC_TSD_STAT_0) {
         fprintf (out_file_prt,
-                 "\n    reg %2u bit  0:1 R Device junction temperature is above the temperature warning threshold TTW", reg_addr );
+                 "\n    reg %2u bit  0:1 R Device junction temperature is above the temperature warning threshold TTW",
+                 reg_addr);
     } else {
         fprintf (out_file_prt,
-                 "\n    reg %2u bit  0:0 R Device junction temperature is below the temperature warning threshold TTW", reg_addr );
+                 "\n    reg %2u bit  0:0 R Device junction temperature is below the temperature warning threshold TTW",
+                 reg_addr);
     }
 
     return res;
 }
 
-static bool parse_tic12400_int_en_cfg0_register_24h  (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+static bool parse_tic12400_int_en_cfg0_register_24h (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
     uint32_t reserved;
     reserved = extract_subval_from_32bit (reg32_val, 23, 12);
     fprintf (out_file_prt, "\n    reg %2u bit 23-12: %u R Reserved", reg_addr, reserved);
 
     if (reg32_val & INT_EN_CFG0_ADC_DIAG_EN_11) {
-        fprintf (out_file_prt, "\n    reg %2u bit 11:1 RW INT pin assertion due to ADC error enabled. ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit 11:1 RW INT pin assertion due to ADC error enabled. ", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit 11:0 RW INT pin assertion due to ADC error disabled ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit 11:0 RW INT pin assertion due to ADC error disabled ", reg_addr);
     }
     if (reg32_val & INT_EN_CFG0_WET_DIAG_EN_10) {
-        fprintf (out_file_prt, "\n    reg %2u bit 10:1 RW INT pin assertion due to wetting current error enabled", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit 10:1 RW INT pin assertion due to wetting current error enabled",
+                 reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit 10:0 RW INT pin assertion due to wetting current error disabled. ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit 10:0 RW INT pin assertion due to wetting current error disabled. ",
+                 reg_addr);
     }
     if (reg32_val & INT_EN_CFG0_VS1_EN_9) {
-        fprintf (out_file_prt, "\n    reg %2u bit  9:1 RW INT pin assertion due to VS1 threshold crossing enabled ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  9:1 RW INT pin assertion due to VS1 threshold crossing enabled ",
+                 reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit  9:0 RW INT pin assertion due to VS1 threshold crossing disabled. ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  9:0 RW INT pin assertion due to VS1 threshold crossing disabled. ",
+                 reg_addr);
     }
     if (reg32_val & INT_EN_CFG0_VS0_EN_8) {
-        fprintf (out_file_prt, "\n    reg %2u bit  8:1 RW INT pin assertion due to VS0 threshold crossing enabled ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  8:1 RW INT pin assertion due to VS0 threshold crossing enabled ",
+                 reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit  8:0 RW INT pin assertion due to VS0 threshold crossing disabled ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  8:0 RW INT pin assertion due to VS0 threshold crossing disabled ",
+                 reg_addr);
     }
     if (reg32_val & INT_EN_CFG0_CRC_CALC_EN_7) {
-        fprintf (out_file_prt, "\n    reg %2u bit  7:1 RW INT pin assertion due to CRC calculation completion enabled  ", reg_addr );
+        fprintf (out_file_prt,
+                 "\n    reg %2u bit  7:1 RW INT pin assertion due to CRC calculation completion enabled  ", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit  7:0 RW INT pin assertion due to CRC calculation completion disabled ", reg_addr );
+        fprintf (out_file_prt,
+                 "\n    reg %2u bit  7:0 RW INT pin assertion due to CRC calculation completion disabled ", reg_addr);
     }
     if (reg32_val & INT_EN_CFG0_UV_EN_6) {
-        fprintf (out_file_prt, "\n    reg %2u bit  6:1 RW INT pin assertion due to UV event enabled. ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  6:1 RW INT pin assertion due to UV event enabled. ", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit  6:0 RW INT pin assertion due to UV event disabled ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  6:0 RW INT pin assertion due to UV event disabled ", reg_addr);
     }
     if (reg32_val & INT_EN_CFG0_OV_EN_5) {
-        fprintf (out_file_prt, "\n    reg %2u bit  5:1 RW INT pin assertion due to OV event enabled ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  5:1 RW INT pin assertion due to OV event enabled ", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit  5:0 RW INT pin assertion due to OV event disabled ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  5:0 RW INT pin assertion due to OV event disabled ", reg_addr);
     }
     if (reg32_val & INT_EN_CFG0_TW_EN_4) {
-        fprintf (out_file_prt, "\n    reg %2u bit  4:1 RW INT pin assertion due to TW event enabled ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  4:1 RW INT pin assertion due to TW event enabled ", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit  4:0 RW INT pin assertion due to TW event disabled", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  4:0 RW INT pin assertion due to TW event disabled", reg_addr);
     }
 
     if (reg32_val & INT_EN_CFG0_TSD_EN_3) {
-        fprintf (out_file_prt, "\n    reg %2u bit  3:1 RW INT pin assertion due to TSD event enabled  ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  3:1 RW INT pin assertion due to TSD event enabled  ", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit  3:0 RW INT pin assertion due to TSD event disabled ", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  3:0 RW INT pin assertion due to TSD event disabled ", reg_addr);
     }
 
     if (reg32_val & INT_EN_CFG0_SSC_EN_2) {
-        fprintf (out_file_prt, "\n    reg %2u bit  2:1 RW INT pin assertion due to SSC event enabled", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  2:1 RW INT pin assertion due to SSC event enabled", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit  2:0 RW INT pin assertion due to SSC event disabled", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  2:0 RW INT pin assertion due to SSC event disabled", reg_addr);
     }
     if (reg32_val & INT_EN_CFG0_PRTY_FAIL_EN_1) {
-        fprintf (out_file_prt, "\n    reg %2u bit  1:1 RW INT pin assertion due to parity fail event enabled.", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  1:1 RW INT pin assertion due to parity fail event enabled.",
+                 reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit  1:0 RW INT pin assertion due to parity fail event disabled", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  1:0 RW INT pin assertion due to parity fail event disabled",
+                 reg_addr);
     }
     if (reg32_val & INT_EN_CFG0_SPI_FAIL_EN_0) {
-        fprintf (out_file_prt, "\n    reg %2u bit  0:1 RW INT pin assertion due to SPI fail event enabled", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  0:1 RW INT pin assertion due to SPI fail event enabled", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit  0:0 RW INT pin assertion due to SPI fail event disabled.", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  0:0 RW INT pin assertion due to SPI fail event disabled.", reg_addr);
     }
     return true;
 }
 
-
 static bool parse_tic12400_int_en_cfg1_register_37 (uint32_t reg_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = false;
     uint16_t code = 0U;
-    (void) code;
-    if ( 37 == reg_addr ) {
+    (void)code;
+    if (37 == reg_addr) {
         res = true;
     }
-    if(0==(0x3 & (reg_val>>22))){
-        fprintf (out_file_prt,"\n    reg %02u bit 23-22:0 RW no interrupt generation for IN11", reg_addr);
+    if (0 == (0x3 & (reg_val >> 22))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 23-22:0 RW no interrupt generation for IN11", reg_addr);
     }
-    if(1==(0x3 & (reg_val>>22))){
-        fprintf (out_file_prt,"\n    reg %02u bit 23-22:1 RW interrupt generation on rising edge above THRESx for IN11", reg_addr);
+    if (1 == (0x3 & (reg_val >> 22))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 23-22:1 RW interrupt generation on rising edge above THRESx for IN11", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>22))){
-        fprintf (out_file_prt,"\n    reg %02u bit 23-22:2 RW interrupt generation on falling edge below THRESx for IN11", reg_addr);
+    if (2 == (0x3 & (reg_val >> 22))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 23-22:2 RW interrupt generation on falling edge below THRESx for IN11", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>22))){
-        fprintf (out_file_prt,"\n    reg %02u bit 23-22:3 RW interrupt generation on falling and rising edge of THRESx for IN11", reg_addr);
+    if (3 == (0x3 & (reg_val >> 22))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 23-22:3 RW interrupt generation on falling and rising edge of THRESx for IN11",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>20))){
-        fprintf (out_file_prt,"\n    reg %02u bit 21-20:0 RW no interrupt generation for IN10", reg_addr);
+    if (0 == (0x3 & (reg_val >> 20))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 21-20:0 RW no interrupt generation for IN10", reg_addr);
     }
-    if(1==(0x3 & (reg_val>>20))){
-        fprintf (out_file_prt,"\n    reg %02u bit 21-20:1 RW interrupt generation on rising edge above THRESx for IN10", reg_addr);
+    if (1 == (0x3 & (reg_val >> 20))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 21-20:1 RW interrupt generation on rising edge above THRESx for IN10", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>20))){
-        fprintf (out_file_prt,"\n    reg %02u bit 21-20:2 RW interrupt generation on falling edge below THRESx for IN10", reg_addr);
+    if (2 == (0x3 & (reg_val >> 20))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 21-20:2 RW interrupt generation on falling edge below THRESx for IN10", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>20))){
-        fprintf (out_file_prt,"\n    reg %02u bit 21-20:3 RW interrupt generation on falling and rising edge of THRESx for IN10", reg_addr);
+    if (3 == (0x3 & (reg_val >> 20))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 21-20:3 RW interrupt generation on falling and rising edge of THRESx for IN10",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>18))){
-        fprintf (out_file_prt,"\n    reg %02u bit 19-18:0 RW no interrupt generation for IN9", reg_addr);
+    if (0 == (0x3 & (reg_val >> 18))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 19-18:0 RW no interrupt generation for IN9", reg_addr);
     }
-    if(1==(0x3 & (reg_val>>18))){
-        fprintf (out_file_prt,"\n    reg %02u bit 19-18:1 RW interrupt generation on rising edge above THRESx for IN9", reg_addr);
+    if (1 == (0x3 & (reg_val >> 18))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 19-18:1 RW interrupt generation on rising edge above THRESx for IN9",
+                 reg_addr);
     }
-    if(2==(0x3 & (reg_val>>18))){
-        fprintf (out_file_prt,"\n    reg %02u bit 19-18:2 RW interrupt generation on falling edge below THRESx for IN9", reg_addr);
+    if (2 == (0x3 & (reg_val >> 18))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 19-18:2 RW interrupt generation on falling edge below THRESx for IN9", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>18))){
-        fprintf (out_file_prt,"\n    reg %02u bit 19-18:3 RW interrupt generation on falling and rising edge of THRESx for IN9", reg_addr);
+    if (3 == (0x3 & (reg_val >> 18))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 19-18:3 RW interrupt generation on falling and rising edge of THRESx for IN9",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>16))){
-        fprintf (out_file_prt,"\n    reg %02u bit 17-16:0 RW no interrupt generation for IN8", reg_addr);
+    if (0 == (0x3 & (reg_val >> 16))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 17-16:0 RW no interrupt generation for IN8", reg_addr);
     }
-    if(1==(0x3 & (reg_val>>16))){
-        fprintf (out_file_prt,"\n    reg %02u bit 17-16:1 RW interrupt generation on rising edge above THRESx for IN8", reg_addr);
+    if (1 == (0x3 & (reg_val >> 16))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 17-16:1 RW interrupt generation on rising edge above THRESx for IN8",
+                 reg_addr);
     }
-    if(2==(0x3 & (reg_val>>16))){
-        fprintf (out_file_prt,"\n    reg %02u bit 17-16:2 RW interrupt generation on falling edge below THRESx for IN8", reg_addr);
+    if (2 == (0x3 & (reg_val >> 16))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 17-16:2 RW interrupt generation on falling edge below THRESx for IN8", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>16))){
-        fprintf (out_file_prt,"\n    reg %02u bit 17-16:3 RW interrupt generation on falling and rising edge of THRESx for IN8", reg_addr);
+    if (3 == (0x3 & (reg_val >> 16))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 17-16:3 RW interrupt generation on falling and rising edge of THRESx for IN8",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>14))){
-        fprintf (out_file_prt,"\n    reg %02u bit 15-14:0 RW no interrupt generation for IN7", reg_addr);
+    if (0 == (0x3 & (reg_val >> 14))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 15-14:0 RW no interrupt generation for IN7", reg_addr);
     }
-    if(1==(0x3 & (reg_val>>14))){
-        fprintf (out_file_prt,"\n    reg %02u bit 15-14:1 RW interrupt generation on rising edge above THRESx for IN7", reg_addr);
+    if (1 == (0x3 & (reg_val >> 14))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 15-14:1 RW interrupt generation on rising edge above THRESx for IN7",
+                 reg_addr);
     }
-    if(2==(0x3 & (reg_val>>14))){
-        fprintf (out_file_prt,"\n    reg %02u bit 15-14:2 RW interrupt generation on falling edge below THRESx for IN7", reg_addr);
+    if (2 == (0x3 & (reg_val >> 14))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 15-14:2 RW interrupt generation on falling edge below THRESx for IN7", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>14))){
-        fprintf (out_file_prt,"\n    reg %02u bit 15-14:3 RW interrupt generation on falling and rising edge of THRESx for IN7", reg_addr);
+    if (3 == (0x3 & (reg_val >> 14))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 15-14:3 RW interrupt generation on falling and rising edge of THRESx for IN7",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>12))){
-        fprintf (out_file_prt,"\n    reg %02u bit 13-12:0 RW no interrupt generation for IN6", reg_addr);
+    if (0 == (0x3 & (reg_val >> 12))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 13-12:0 RW no interrupt generation for IN6", reg_addr);
     }
-    if(1==(0x3 & (reg_val>>12))){
-        fprintf (out_file_prt,"\n    reg %02u bit 13-12:1 RW interrupt generation on rising edge above THRESx for IN6", reg_addr);
+    if (1 == (0x3 & (reg_val >> 12))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 13-12:1 RW interrupt generation on rising edge above THRESx for IN6",
+                 reg_addr);
     }
-    if(2==(0x3 & (reg_val>>12))){
-        fprintf (out_file_prt,"\n    reg %02u bit 13-12:2 RW interrupt generation on falling edge below THRESx for IN6", reg_addr);
+    if (2 == (0x3 & (reg_val >> 12))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 13-12:2 RW interrupt generation on falling edge below THRESx for IN6", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>12))){
-        fprintf (out_file_prt,"\n    reg %02u bit 13-12:3 RW interrupt generation on falling and rising edge of THRESx for IN6", reg_addr);
+    if (3 == (0x3 & (reg_val >> 12))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 13-12:3 RW interrupt generation on falling and rising edge of THRESx for IN6",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>10))){
-        fprintf (out_file_prt,"\n    reg %02u bit 11-10:0 RW no interrupt generation for IN5", reg_addr);
+    if (0 == (0x3 & (reg_val >> 10))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 11-10:0 RW no interrupt generation for IN5", reg_addr);
     }
-    if(1==(0x3 & (reg_val>>10))){
-        fprintf (out_file_prt,"\n    reg %02u bit 11-10:1 RW interrupt generation on rising edge above THRESx for IN5", reg_addr);
+    if (1 == (0x3 & (reg_val >> 10))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 11-10:1 RW interrupt generation on rising edge above THRESx for IN5",
+                 reg_addr);
     }
-    if(2==(0x3 & (reg_val>>10))){
-        fprintf (out_file_prt,"\n    reg %02u bit 11-10:2 RW interrupt generation on falling edge below THRESx for IN5", reg_addr);
+    if (2 == (0x3 & (reg_val >> 10))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 11-10:2 RW interrupt generation on falling edge below THRESx for IN5", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>10))){
-        fprintf (out_file_prt,"\n    reg %02u bit 11-10:3 RW interrupt generation on falling and rising edge of THRESx for IN5", reg_addr);
+    if (3 == (0x3 & (reg_val >> 10))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 11-10:3 RW interrupt generation on falling and rising edge of THRESx for IN5",
+                 reg_addr);
     }
     return res;
 }
@@ -1325,153 +1419,213 @@ static bool parse_tic12400_int_en_cfg1_register_37 (uint32_t reg_val, FILE *out_
 static bool parse_tic12400_int_en_cfg2_register_38 (uint32_t reg_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = false;
     uint16_t code = 0U;
-    (void) code;
-    if ( 38 == reg_addr ) {
+    (void)code;
+    if (38 == reg_addr) {
         res = true;
     }
-    if(0==(0x3 & (reg_val>>22))){
-        fprintf (out_file_prt,"\n    reg %02u bit 23-22:0 RW no interrupt generation for IN17 w.r.t. THRES2B", reg_addr);
+    if (0 == (0x3 & (reg_val >> 22))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 23-22:0 RW no interrupt generation for IN17 w.r.t. THRES2B",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>22))){
-        fprintf (out_file_prt,"\n    reg %02u bit 23-22:1 RW interrupt generation on rising edge above THRES2B for IN17", reg_addr);
+    if (1 == (0x3 & (reg_val >> 22))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 23-22:1 RW interrupt generation on rising edge above THRES2B for IN17", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>22))){
-        fprintf (out_file_prt,"\n    reg %02u bit 23-22:2 RW interrupt generation on falling edge below THRES2B for IN17", reg_addr);
+    if (2 == (0x3 & (reg_val >> 22))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 23-22:2 RW interrupt generation on falling edge below THRES2B for IN17", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>22))){
-        fprintf (out_file_prt,"\n    reg %02u bit 23-22:3 RW interrupt generation on falling and rising edge of THRES2B for IN17", reg_addr);
+    if (3 == (0x3 & (reg_val >> 22))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 23-22:3 RW interrupt generation on falling and rising edge of THRES2B for IN17",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>20))){
-        fprintf (out_file_prt,"\n    reg %02u bit 21-20:0 RW no interrupt generation for IN17 w.r.t. THRES2A", reg_addr);
+    if (0 == (0x3 & (reg_val >> 20))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 21-20:0 RW no interrupt generation for IN17 w.r.t. THRES2A",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>20))){
-        fprintf (out_file_prt,"\n    reg %02u bit 21-20:1 RW interrupt generation on rising edge above THRES2A for IN17", reg_addr);
+    if (1 == (0x3 & (reg_val >> 20))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 21-20:1 RW interrupt generation on rising edge above THRES2A for IN17", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>20))){
-        fprintf (out_file_prt,"\n    reg %02u bit 21-20:2 RW interrupt generation on falling edge below THRES2A for IN17", reg_addr);
+    if (2 == (0x3 & (reg_val >> 20))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 21-20:2 RW interrupt generation on falling edge below THRES2A for IN17", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>20))){
-        fprintf (out_file_prt,"\n    reg %02u bit 21-20:3 RW interrupt generation on falling and rising edge of THRES2A for IN17", reg_addr);
+    if (3 == (0x3 & (reg_val >> 20))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 21-20:3 RW interrupt generation on falling and rising edge of THRES2A for IN17",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>18))){
-        fprintf (out_file_prt,"\n    reg %02u bit 19-18:0 RW no interrupt generation for IN16 w.r.t. THRES2B", reg_addr);
+    if (0 == (0x3 & (reg_val >> 18))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 19-18:0 RW no interrupt generation for IN16 w.r.t. THRES2B",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>18))){
-        fprintf (out_file_prt,"\n    reg %02u bit 19-18:1 RW interrupt generation on rising edge above THRES2B for IN16", reg_addr);
+    if (1 == (0x3 & (reg_val >> 18))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 19-18:1 RW interrupt generation on rising edge above THRES2B for IN16", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>18))){
-        fprintf (out_file_prt,"\n    reg %02u bit 19-18:2 RW interrupt generation on falling edge below THRES2B for IN16", reg_addr);
+    if (2 == (0x3 & (reg_val >> 18))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 19-18:2 RW interrupt generation on falling edge below THRES2B for IN16", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>18))){
-        fprintf (out_file_prt,"\n    reg %02u bit 19-18:3 RW interrupt generation on falling and rising edge of THRES2B for IN16", reg_addr);
+    if (3 == (0x3 & (reg_val >> 18))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 19-18:3 RW interrupt generation on falling and rising edge of THRES2B for IN16",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>16))){
-        fprintf (out_file_prt,"\n    reg %02u bit 17-16:0 RW no interrupt generation for IN16 w.r.t. THRES2A", reg_addr);
+    if (0 == (0x3 & (reg_val >> 16))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 17-16:0 RW no interrupt generation for IN16 w.r.t. THRES2A",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>16))){
-        fprintf (out_file_prt,"\n    reg %02u bit 17-16:1 RW interrupt generation on rising edge above THRES2A for IN16", reg_addr);
+    if (1 == (0x3 & (reg_val >> 16))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 17-16:1 RW interrupt generation on rising edge above THRES2A for IN16", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>16))){
-        fprintf (out_file_prt,"\n    reg %02u bit 17-16:2 RW interrupt generation on falling edge below THRES2A for IN16", reg_addr);
+    if (2 == (0x3 & (reg_val >> 16))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 17-16:2 RW interrupt generation on falling edge below THRES2A for IN16", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>16))){
-        fprintf (out_file_prt,"\n    reg %02u bit 17-16:3 RW interrupt generation on falling and rising edge of THRES2A for IN16", reg_addr);
+    if (3 == (0x3 & (reg_val >> 16))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 17-16:3 RW interrupt generation on falling and rising edge of THRES2A for IN16",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>14))){
-        fprintf (out_file_prt,"\n    reg %02u bit 15-14:0 RW no interrupt generation for IN15 w.r.t. THRES2B", reg_addr);
+    if (0 == (0x3 & (reg_val >> 14))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 15-14:0 RW no interrupt generation for IN15 w.r.t. THRES2B",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>14))){
-        fprintf (out_file_prt,"\n    reg %02u bit 15-14:1 RW interrupt generation on rising edge above THRES2B for IN15", reg_addr);
+    if (1 == (0x3 & (reg_val >> 14))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 15-14:1 RW interrupt generation on rising edge above THRES2B for IN15", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>14))){
-        fprintf (out_file_prt,"\n    reg %02u bit 15-14:2 RW interrupt generation on falling edge below THRES2B for IN15", reg_addr);
+    if (2 == (0x3 & (reg_val >> 14))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 15-14:2 RW interrupt generation on falling edge below THRES2B for IN15", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>14))){
-        fprintf (out_file_prt,"\n    reg %02u bit 15-14:3 RW interrupt generation on falling and rising edge of THRES2B for IN15", reg_addr);
+    if (3 == (0x3 & (reg_val >> 14))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 15-14:3 RW interrupt generation on falling and rising edge of THRES2B for IN15",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>12))){
-        fprintf (out_file_prt,"\n    reg %02u bit 13-12:0 RW no interrupt generation for IN15 w.r.t. THRES2A", reg_addr);
+    if (0 == (0x3 & (reg_val >> 12))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 13-12:0 RW no interrupt generation for IN15 w.r.t. THRES2A",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>12))){
-        fprintf (out_file_prt,"\n    reg %02u bit 13-12:1 RW interrupt generation on rising edge above THRES2A for IN15", reg_addr);
+    if (1 == (0x3 & (reg_val >> 12))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 13-12:1 RW interrupt generation on rising edge above THRES2A for IN15", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>12))){
-        fprintf (out_file_prt,"\n    reg %02u bit 13-12:2 RW interrupt generation on falling edge below THRES2A for IN15", reg_addr);
+    if (2 == (0x3 & (reg_val >> 12))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 13-12:2 RW interrupt generation on falling edge below THRES2A for IN15", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>12))){
-        fprintf (out_file_prt,"\n    reg %02u bit 13-12:3 RW interrupt generation on falling and rising edge of THRES2A for IN15", reg_addr);
+    if (3 == (0x3 & (reg_val >> 12))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 13-12:3 RW interrupt generation on falling and rising edge of THRES2A for IN15",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>10))){
-        fprintf (out_file_prt,"\n    reg %02u bit 11-10:0 RW no interrupt generation for IN14 w.r.t. THRES2B", reg_addr);
+    if (0 == (0x3 & (reg_val >> 10))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 11-10:0 RW no interrupt generation for IN14 w.r.t. THRES2B",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>10))){
-        fprintf (out_file_prt,"\n    reg %02u bit 11-10:1 RW interrupt generation on rising edge above THRES2B for IN14", reg_addr);
+    if (1 == (0x3 & (reg_val >> 10))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 11-10:1 RW interrupt generation on rising edge above THRES2B for IN14", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>10))){
-        fprintf (out_file_prt,"\n    reg %02u bit 11-10:2 RW interrupt generation on falling edge below THRES2B for IN14", reg_addr);
+    if (2 == (0x3 & (reg_val >> 10))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 11-10:2 RW interrupt generation on falling edge below THRES2B for IN14", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>10))){
-        fprintf (out_file_prt,"\n    reg %02u bit 11-10:3 RW interrupt generation on falling and rising edge of THRES2B for IN14", reg_addr);
+    if (3 == (0x3 & (reg_val >> 10))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 11-10:3 RW interrupt generation on falling and rising edge of THRES2B for IN14",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>8))){
-        fprintf (out_file_prt,"\n    reg %02u bit  9- 8:0 RW no interrupt generation for IN14 w.r.t. THRES2A", reg_addr);
+    if (0 == (0x3 & (reg_val >> 8))) {
+        fprintf (out_file_prt, "\n    reg %02u bit  9- 8:0 RW no interrupt generation for IN14 w.r.t. THRES2A",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>8))){
-        fprintf (out_file_prt,"\n    reg %02u bit  9- 8:1 RW interrupt generation on rising edge above THRES2A for IN14", reg_addr);
+    if (1 == (0x3 & (reg_val >> 8))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  9- 8:1 RW interrupt generation on rising edge above THRES2A for IN14", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>8))){
-        fprintf (out_file_prt,"\n    reg %02u bit  9- 8:2 RW interrupt generation on falling edge below THRES2A for IN14", reg_addr);
+    if (2 == (0x3 & (reg_val >> 8))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  9- 8:2 RW interrupt generation on falling edge below THRES2A for IN14", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>8))){
-        fprintf (out_file_prt,"\n    reg %02u bit  9- 8:3 RW interrupt generation on falling and rising edge of THRES2A for IN14", reg_addr);
+    if (3 == (0x3 & (reg_val >> 8))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  9- 8:3 RW interrupt generation on falling and rising edge of THRES2A for IN14",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>6))){
-        fprintf (out_file_prt,"\n    reg %02u bit  7- 6:0 RW no interrupt generation for IN13 w.r.t. THRES2B", reg_addr);
+    if (0 == (0x3 & (reg_val >> 6))) {
+        fprintf (out_file_prt, "\n    reg %02u bit  7- 6:0 RW no interrupt generation for IN13 w.r.t. THRES2B",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>6))){
-        fprintf (out_file_prt,"\n    reg %02u bit  7- 6:1 RW interrupt generation on rising edge above THRES2B for IN13", reg_addr);
+    if (1 == (0x3 & (reg_val >> 6))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  7- 6:1 RW interrupt generation on rising edge above THRES2B for IN13", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>6))){
-        fprintf (out_file_prt,"\n    reg %02u bit  7- 6:2 RW interrupt generation on falling edge below THRES2B for IN13", reg_addr);
+    if (2 == (0x3 & (reg_val >> 6))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  7- 6:2 RW interrupt generation on falling edge below THRES2B for IN13", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>6))){
-        fprintf (out_file_prt,"\n    reg %02u bit  7- 6:3 RW interrupt generation on falling and rising edge of THRES2B for IN13", reg_addr);
+    if (3 == (0x3 & (reg_val >> 6))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  7- 6:3 RW interrupt generation on falling and rising edge of THRES2B for IN13",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>4))){
-        fprintf (out_file_prt,"\n    reg %02u bit  5- 4:0 RW no interrupt generation for IN13 w.r.t. THRES2A", reg_addr);
+    if (0 == (0x3 & (reg_val >> 4))) {
+        fprintf (out_file_prt, "\n    reg %02u bit  5- 4:0 RW no interrupt generation for IN13 w.r.t. THRES2A",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>4))){
-        fprintf (out_file_prt,"\n    reg %02u bit  5- 4:1 RW interrupt generation on rising edge above THRES2A for IN13", reg_addr);
+    if (1 == (0x3 & (reg_val >> 4))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  5- 4:1 RW interrupt generation on rising edge above THRES2A for IN13", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>4))){
-        fprintf (out_file_prt,"\n    reg %02u bit  5- 4:2 RW interrupt generation on falling edge below THRES2A for IN13", reg_addr);
+    if (2 == (0x3 & (reg_val >> 4))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  5- 4:2 RW interrupt generation on falling edge below THRES2A for IN13", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>4))){
-        fprintf (out_file_prt,"\n    reg %02u bit  5- 4:3 RW interrupt generation on falling and rising edge of THRES2A for IN13", reg_addr);
+    if (3 == (0x3 & (reg_val >> 4))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  5- 4:3 RW interrupt generation on falling and rising edge of THRES2A for IN13",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>2))){
-        fprintf (out_file_prt,"\n    reg %02u bit  3- 2:0 RW no interrupt generation for IN12 w.r.t. THRES2B", reg_addr);
+    if (0 == (0x3 & (reg_val >> 2))) {
+        fprintf (out_file_prt, "\n    reg %02u bit  3- 2:0 RW no interrupt generation for IN12 w.r.t. THRES2B",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>2))){
-        fprintf (out_file_prt,"\n    reg %02u bit  3- 2:1 RW interrupt generation on rising edge above THRES2B for IN12", reg_addr);
+    if (1 == (0x3 & (reg_val >> 2))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  3- 2:1 RW interrupt generation on rising edge above THRES2B for IN12", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>2))){
-        fprintf (out_file_prt,"\n    reg %02u bit  3- 2:2 RW interrupt generation on falling edge below THRES2B for IN12", reg_addr);
+    if (2 == (0x3 & (reg_val >> 2))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  3- 2:2 RW interrupt generation on falling edge below THRES2B for IN12", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>2))){
-        fprintf (out_file_prt,"\n    reg %02u bit  3- 2:3 RW interrupt generation on falling and rising edge of THRES2B for IN12", reg_addr);
+    if (3 == (0x3 & (reg_val >> 2))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  3- 2:3 RW interrupt generation on falling and rising edge of THRES2B for IN12",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>0))){
-        fprintf (out_file_prt,"\n    reg %02u bit  1- 0:0 RW no interrupt generation for IN12 w.r.t. THRES2A", reg_addr);
+    if (0 == (0x3 & (reg_val >> 0))) {
+        fprintf (out_file_prt, "\n    reg %02u bit  1- 0:0 RW no interrupt generation for IN12 w.r.t. THRES2A",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>0))){
-        fprintf (out_file_prt,"\n    reg %02u bit  1- 0:1 RW interrupt generation on rising edge above THRES2A for IN12", reg_addr);
+    if (1 == (0x3 & (reg_val >> 0))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  1- 0:1 RW interrupt generation on rising edge above THRES2A for IN12", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>0))){
-        fprintf (out_file_prt,"\n    reg %02u bit  1- 0:2 RW interrupt generation on falling edge below THRES2A for IN12", reg_addr);
+    if (2 == (0x3 & (reg_val >> 0))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  1- 0:2 RW interrupt generation on falling edge below THRES2A for IN12", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>0))){
-        fprintf (out_file_prt,"\n    reg %02u bit  1- 0:3 RW interrupt generation on falling and rising edge of THRES2A for IN12", reg_addr);
+    if (3 == (0x3 & (reg_val >> 0))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  1- 0:3 RW interrupt generation on falling and rising edge of THRES2A for IN12",
+                 reg_addr);
     }
     return res;
 }
@@ -1479,153 +1633,213 @@ static bool parse_tic12400_int_en_cfg2_register_38 (uint32_t reg_val, FILE *out_
 static bool parse_tic12400_int_en_cfg3_register_39 (uint32_t reg_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = false;
     uint16_t code = 0U;
-    (void) code;
-    if ( 39 == reg_addr ) {
+    (void)code;
+    if (39 == reg_addr) {
         res = true;
     }
-    if(0==(0x3 & (reg_val>>22))){
-        fprintf (out_file_prt,"\n    reg %02u bit 23-22:0 RW no interrupt generation for IN21 w.r.t. THRES3C", reg_addr);
+    if (0 == (0x3 & (reg_val >> 22))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 23-22:0 RW no interrupt generation for IN21 w.r.t. THRES3C",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>22))){
-        fprintf (out_file_prt,"\n    reg %02u bit 23-22:1 RW interrupt generation on rising edge above THRES3C for IN21", reg_addr);
+    if (1 == (0x3 & (reg_val >> 22))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 23-22:1 RW interrupt generation on rising edge above THRES3C for IN21", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>22))){
-        fprintf (out_file_prt,"\n    reg %02u bit 23-22:2 RW interrupt generation on falling edge below THRES3C for IN21", reg_addr);
+    if (2 == (0x3 & (reg_val >> 22))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 23-22:2 RW interrupt generation on falling edge below THRES3C for IN21", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>22))){
-        fprintf (out_file_prt,"\n    reg %02u bit 23-22:3 RW interrupt generation on falling and rising edge of THRES3C for IN21", reg_addr);
+    if (3 == (0x3 & (reg_val >> 22))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 23-22:3 RW interrupt generation on falling and rising edge of THRES3C for IN21",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>20))){
-        fprintf (out_file_prt,"\n    reg %02u bit 21-20:0 RW no interrupt generation for IN21 w.r.t. THRES3B", reg_addr);
+    if (0 == (0x3 & (reg_val >> 20))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 21-20:0 RW no interrupt generation for IN21 w.r.t. THRES3B",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>20))){
-        fprintf (out_file_prt,"\n    reg %02u bit 21-20:1 RW interrupt generation on rising edge above THRES3B for IN21", reg_addr);
+    if (1 == (0x3 & (reg_val >> 20))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 21-20:1 RW interrupt generation on rising edge above THRES3B for IN21", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>20))){
-        fprintf (out_file_prt,"\n    reg %02u bit 21-20:2 RW interrupt generation on falling edge below THRES3B for IN21", reg_addr);
+    if (2 == (0x3 & (reg_val >> 20))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 21-20:2 RW interrupt generation on falling edge below THRES3B for IN21", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>20))){
-        fprintf (out_file_prt,"\n    reg %02u bit 21-20:3 RW interrupt generation on falling and rising edge of THRES3B for IN21", reg_addr);
+    if (3 == (0x3 & (reg_val >> 20))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 21-20:3 RW interrupt generation on falling and rising edge of THRES3B for IN21",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>18))){
-        fprintf (out_file_prt,"\n    reg %02u bit 19-18:0 RW no interrupt generation for IN21 w.r.t. THRES3A", reg_addr);
+    if (0 == (0x3 & (reg_val >> 18))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 19-18:0 RW no interrupt generation for IN21 w.r.t. THRES3A",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>18))){
-        fprintf (out_file_prt,"\n    reg %02u bit 19-18:1 RW interrupt generation on rising edge above THRES3A for IN21", reg_addr);
+    if (1 == (0x3 & (reg_val >> 18))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 19-18:1 RW interrupt generation on rising edge above THRES3A for IN21", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>18))){
-        fprintf (out_file_prt,"\n    reg %02u bit 19-18:2 RW interrupt generation on falling edge below THRES3A for IN21", reg_addr);
+    if (2 == (0x3 & (reg_val >> 18))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 19-18:2 RW interrupt generation on falling edge below THRES3A for IN21", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>18))){
-        fprintf (out_file_prt,"\n    reg %02u bit 19-18:3 RW interrupt generation on falling and rising edge of THRES3A for IN21", reg_addr);
+    if (3 == (0x3 & (reg_val >> 18))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 19-18:3 RW interrupt generation on falling and rising edge of THRES3A for IN21",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>16))){
-        fprintf (out_file_prt,"\n    reg %02u bit 17-16:0 RW no interrupt generation for IN20 w.r.t. THRES3C", reg_addr);
+    if (0 == (0x3 & (reg_val >> 16))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 17-16:0 RW no interrupt generation for IN20 w.r.t. THRES3C",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>16))){
-        fprintf (out_file_prt,"\n    reg %02u bit 17-16:1 RW interrupt generation on rising edge above THRES3C for IN20", reg_addr);
+    if (1 == (0x3 & (reg_val >> 16))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 17-16:1 RW interrupt generation on rising edge above THRES3C for IN20", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>16))){
-        fprintf (out_file_prt,"\n    reg %02u bit 17-16:2 RW interrupt generation on falling edge below THRES3C for IN20", reg_addr);
+    if (2 == (0x3 & (reg_val >> 16))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 17-16:2 RW interrupt generation on falling edge below THRES3C for IN20", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>16))){
-        fprintf (out_file_prt,"\n    reg %02u bit 17-16:3 RW interrupt generation on falling and rising edge of THRES3C for IN20", reg_addr);
+    if (3 == (0x3 & (reg_val >> 16))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 17-16:3 RW interrupt generation on falling and rising edge of THRES3C for IN20",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>14))){
-        fprintf (out_file_prt,"\n    reg %02u bit 15-14:0 RW no interrupt generation for IN20 w.r.t. THRES3B", reg_addr);
+    if (0 == (0x3 & (reg_val >> 14))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 15-14:0 RW no interrupt generation for IN20 w.r.t. THRES3B",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>14))){
-        fprintf (out_file_prt,"\n    reg %02u bit 15-14:1 RW interrupt generation on rising edge above THRES3B for IN20", reg_addr);
+    if (1 == (0x3 & (reg_val >> 14))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 15-14:1 RW interrupt generation on rising edge above THRES3B for IN20", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>14))){
-        fprintf (out_file_prt,"\n    reg %02u bit 15-14:2 RW interrupt generation on falling edge below THRES3B for IN20", reg_addr);
+    if (2 == (0x3 & (reg_val >> 14))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 15-14:2 RW interrupt generation on falling edge below THRES3B for IN20", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>14))){
-        fprintf (out_file_prt,"\n    reg %02u bit 15-14:3 RW interrupt generation on falling and rising edge of THRES3B for IN20", reg_addr);
+    if (3 == (0x3 & (reg_val >> 14))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 15-14:3 RW interrupt generation on falling and rising edge of THRES3B for IN20",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>12))){
-        fprintf (out_file_prt,"\n    reg %02u bit 13-12:0 RW no interrupt generation for IN20 w.r.t. THRES3A", reg_addr);
+    if (0 == (0x3 & (reg_val >> 12))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 13-12:0 RW no interrupt generation for IN20 w.r.t. THRES3A",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>12))){
-        fprintf (out_file_prt,"\n    reg %02u bit 13-12:1 RW interrupt generation on rising edge above THRES3A for IN20", reg_addr);
+    if (1 == (0x3 & (reg_val >> 12))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 13-12:1 RW interrupt generation on rising edge above THRES3A for IN20", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>12))){
-        fprintf (out_file_prt,"\n    reg %02u bit 13-12:2 RW interrupt generation on falling edge below THRES3A for IN20", reg_addr);
+    if (2 == (0x3 & (reg_val >> 12))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 13-12:2 RW interrupt generation on falling edge below THRES3A for IN20", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>12))){
-        fprintf (out_file_prt,"\n    reg %02u bit 13-12:3 RW interrupt generation on falling and rising edge of THRES3A for IN20", reg_addr);
+    if (3 == (0x3 & (reg_val >> 12))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 13-12:3 RW interrupt generation on falling and rising edge of THRES3A for IN20",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>10))){
-        fprintf (out_file_prt,"\n    reg %02u bit 11-10:0 RW no interrupt generation for IN19 w.r.t. THRES3C", reg_addr);
+    if (0 == (0x3 & (reg_val >> 10))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 11-10:0 RW no interrupt generation for IN19 w.r.t. THRES3C",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>10))){
-        fprintf (out_file_prt,"\n    reg %02u bit 11-10:1 RW generation on rising edge above THRES3C for IN19", reg_addr);
+    if (1 == (0x3 & (reg_val >> 10))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 11-10:1 RW generation on rising edge above THRES3C for IN19",
+                 reg_addr);
     }
-    if(2==(0x3 & (reg_val>>10))){
-        fprintf (out_file_prt,"\n    reg %02u bit 11-10:2 RW interrupt generation on falling edge below THRES3C for IN19", reg_addr);
+    if (2 == (0x3 & (reg_val >> 10))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 11-10:2 RW interrupt generation on falling edge below THRES3C for IN19", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>10))){
-        fprintf (out_file_prt,"\n    reg %02u bit 11-10:3 RW interrupt generation on falling and rising edge of THRES3C for IN19", reg_addr);
+    if (3 == (0x3 & (reg_val >> 10))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 11-10:3 RW interrupt generation on falling and rising edge of THRES3C for IN19",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>8))){
-        fprintf (out_file_prt,"\n    reg %02u bit  9- 8:0 RW no interrupt generation for IN19 w.r.t. THRES3B", reg_addr);
+    if (0 == (0x3 & (reg_val >> 8))) {
+        fprintf (out_file_prt, "\n    reg %02u bit  9- 8:0 RW no interrupt generation for IN19 w.r.t. THRES3B",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>8))){
-        fprintf (out_file_prt,"\n    reg %02u bit  9- 8:1 RW interrupt generation on rising edge above THRES3B for IN19", reg_addr);
+    if (1 == (0x3 & (reg_val >> 8))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  9- 8:1 RW interrupt generation on rising edge above THRES3B for IN19", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>8))){
-        fprintf (out_file_prt,"\n    reg %02u bit  9- 8:2 RW interrupt generation on falling edge below THRES3B for IN19", reg_addr);
+    if (2 == (0x3 & (reg_val >> 8))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  9- 8:2 RW interrupt generation on falling edge below THRES3B for IN19", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>8))){
-        fprintf (out_file_prt,"\n    reg %02u bit  9- 8:3 RW interrupt generation on falling and rising edge of THRES3B for IN19", reg_addr);
+    if (3 == (0x3 & (reg_val >> 8))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  9- 8:3 RW interrupt generation on falling and rising edge of THRES3B for IN19",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>6))){
-        fprintf (out_file_prt,"\n    reg %02u bit  7- 6:0 RW no interrupt generation for IN19 w.r.t. THRES3A", reg_addr);
+    if (0 == (0x3 & (reg_val >> 6))) {
+        fprintf (out_file_prt, "\n    reg %02u bit  7- 6:0 RW no interrupt generation for IN19 w.r.t. THRES3A",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>6))){
-        fprintf (out_file_prt,"\n    reg %02u bit  7- 6:1 RW interrupt generation on rising edge above THRES3A for IN19", reg_addr);
+    if (1 == (0x3 & (reg_val >> 6))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  7- 6:1 RW interrupt generation on rising edge above THRES3A for IN19", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>6))){
-        fprintf (out_file_prt,"\n    reg %02u bit  7- 6:2 RW interrupt generation on falling edge below THRES3A for IN19", reg_addr);
+    if (2 == (0x3 & (reg_val >> 6))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  7- 6:2 RW interrupt generation on falling edge below THRES3A for IN19", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>6))){
-        fprintf (out_file_prt,"\n    reg %02u bit  7- 6:3 RW interrupt generation on falling and rising edge of THRES3A for IN19", reg_addr);
+    if (3 == (0x3 & (reg_val >> 6))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  7- 6:3 RW interrupt generation on falling and rising edge of THRES3A for IN19",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>4))){
-        fprintf (out_file_prt,"\n    reg %02u bit  5- 4:0 RW no interrupt generation for IN18 w.r.t. THRES3C", reg_addr);
+    if (0 == (0x3 & (reg_val >> 4))) {
+        fprintf (out_file_prt, "\n    reg %02u bit  5- 4:0 RW no interrupt generation for IN18 w.r.t. THRES3C",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>4))){
-        fprintf (out_file_prt,"\n    reg %02u bit  5- 4:1 RW interrupt generation on rising edge above THRES3C for IN18", reg_addr);
+    if (1 == (0x3 & (reg_val >> 4))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  5- 4:1 RW interrupt generation on rising edge above THRES3C for IN18", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>4))){
-        fprintf (out_file_prt,"\n    reg %02u bit  5- 4:2 RW interrupt generation on falling edge below THRES3C for IN18", reg_addr);
+    if (2 == (0x3 & (reg_val >> 4))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  5- 4:2 RW interrupt generation on falling edge below THRES3C for IN18", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>4))){
-        fprintf (out_file_prt,"\n    reg %02u bit  5- 4:3 RW interrupt generation on falling and rising edge of THRES3C for IN18", reg_addr);
+    if (3 == (0x3 & (reg_val >> 4))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  5- 4:3 RW interrupt generation on falling and rising edge of THRES3C for IN18",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>2))){
-        fprintf (out_file_prt,"\n    reg %02u bit  3- 2:0 RW no interrupt generation for IN18 w.r.t. THRES3B", reg_addr);
+    if (0 == (0x3 & (reg_val >> 2))) {
+        fprintf (out_file_prt, "\n    reg %02u bit  3- 2:0 RW no interrupt generation for IN18 w.r.t. THRES3B",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>2))){
-        fprintf (out_file_prt,"\n    reg %02u bit  3- 2:1 RW interrupt generation on rising edge above THRES3B for IN18", reg_addr);
+    if (1 == (0x3 & (reg_val >> 2))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  3- 2:1 RW interrupt generation on rising edge above THRES3B for IN18", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>2))){
-        fprintf (out_file_prt,"\n    reg %02u bit  3- 2:2 RW interrupt generation on falling edge below THRES3B for IN18", reg_addr);
+    if (2 == (0x3 & (reg_val >> 2))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  3- 2:2 RW interrupt generation on falling edge below THRES3B for IN18", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>2))){
-        fprintf (out_file_prt,"\n    reg %02u bit  3- 2:3 RW interrupt generation on falling and rising edge of THRES3B for IN18", reg_addr);
+    if (3 == (0x3 & (reg_val >> 2))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  3- 2:3 RW interrupt generation on falling and rising edge of THRES3B for IN18",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>0))){
-        fprintf (out_file_prt,"\n    reg %02u bit  1- 0:0 RW no interrupt generation for IN18 w.r.t. THRES3A", reg_addr);
+    if (0 == (0x3 & (reg_val >> 0))) {
+        fprintf (out_file_prt, "\n    reg %02u bit  1- 0:0 RW no interrupt generation for IN18 w.r.t. THRES3A",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>0))){
-        fprintf (out_file_prt,"\n    reg %02u bit  1- 0:1 RW interrupt generation on rising edge above THRES3A for IN18", reg_addr);
+    if (1 == (0x3 & (reg_val >> 0))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  1- 0:1 RW interrupt generation on rising edge above THRES3A for IN18", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>0))){
-        fprintf (out_file_prt,"\n    reg %02u bit  1- 0:2 RW interrupt generation on falling edge below THRES3A for IN18", reg_addr);
+    if (2 == (0x3 & (reg_val >> 0))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  1- 0:2 RW interrupt generation on falling edge below THRES3A for IN18", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>0))){
-        fprintf (out_file_prt,"\n    reg %02u bit  1- 0:3 RW interrupt generation on falling and rising edge of THRES3A for IN18", reg_addr);
+    if (3 == (0x3 & (reg_val >> 0))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  1- 0:3 RW interrupt generation on falling and rising edge of THRES3A for IN18",
+                 reg_addr);
     }
     return res;
 }
@@ -1633,160 +1847,224 @@ static bool parse_tic12400_int_en_cfg3_register_39 (uint32_t reg_val, FILE *out_
 static bool parse_tic12400_int_en_cfg4_register_40 (uint32_t reg_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = false;
     uint16_t code = 0U;
-    (void) code;
-    if ( 40 == reg_addr ) {
+    (void)code;
+    if (40 == reg_addr) {
         res = true;
     }
-    if(0==(0x3 & (reg_val>>22))){
-        fprintf (out_file_prt,"\n    reg %02u bit 23-22:0 RW no interrupt generation for VS w.r.t. VS1_THRES2B", reg_addr);
+    if (0 == (0x3 & (reg_val >> 22))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 23-22:0 RW no interrupt generation for VS w.r.t. VS1_THRES2B",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>22))){
-        fprintf (out_file_prt,"\n    reg %02u bit 23-22:1 RW generation on rising edge above VS1_THRES2B for VS", reg_addr);
+    if (1 == (0x3 & (reg_val >> 22))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 23-22:1 RW generation on rising edge above VS1_THRES2B for VS",
+                 reg_addr);
     }
-    if(2==(0x3 & (reg_val>>22))){
-        fprintf (out_file_prt,"\n    reg %02u bit 23-22:2 RW interrupt generation on falling edge below VS1_THRES2B for VS", reg_addr);
+    if (2 == (0x3 & (reg_val >> 22))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 23-22:2 RW interrupt generation on falling edge below VS1_THRES2B for VS",
+                 reg_addr);
     }
-    if(3==(0x3 & (reg_val>>22))){
-        fprintf (out_file_prt,"\n    reg %02u bit 23-22:3 RW interrupt generation on falling and rising edge of VS1_THRES2B for VS", reg_addr);
+    if (3 == (0x3 & (reg_val >> 22))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 23-22:3 RW interrupt generation on falling and rising edge of VS1_THRES2B for VS",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>20))){
-        fprintf (out_file_prt,"\n    reg %02u bit 21-20:0 RW no interrupt generation for VS w.r.t. VS1_THRES2A", reg_addr);
+    if (0 == (0x3 & (reg_val >> 20))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 21-20:0 RW no interrupt generation for VS w.r.t. VS1_THRES2A",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>20))){
-        fprintf (out_file_prt,"\n    reg %02u bit 21-20:1 RW generation on rising edge above VS1_THRES2A for VS", reg_addr);
+    if (1 == (0x3 & (reg_val >> 20))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 21-20:1 RW generation on rising edge above VS1_THRES2A for VS",
+                 reg_addr);
     }
-    if(2==(0x3 & (reg_val>>20))){
-        fprintf (out_file_prt,"\n    reg %02u bit 21-20:2 RW interrupt generation on falling edge below VS1_THRES2A for VS", reg_addr);
+    if (2 == (0x3 & (reg_val >> 20))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 21-20:2 RW interrupt generation on falling edge below VS1_THRES2A for VS",
+                 reg_addr);
     }
-    if(3==(0x3 & (reg_val>>20))){
-        fprintf (out_file_prt,"\n    reg %02u bit 21-20:3 RW interrupt generation on falling and rising edge of VS1_THRES2A for VS", reg_addr);
+    if (3 == (0x3 & (reg_val >> 20))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 21-20:3 RW interrupt generation on falling and rising edge of VS1_THRES2A for VS",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>18))){
-        fprintf (out_file_prt,"\n    reg %02u bit 19-18:0 RW no interrupt generation for VS w.r.t. VS0_THRES2B", reg_addr);
+    if (0 == (0x3 & (reg_val >> 18))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 19-18:0 RW no interrupt generation for VS w.r.t. VS0_THRES2B",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>18))){
-        fprintf (out_file_prt,"\n    reg %02u bit 19-18:1 RW interrupt generation on rising edge above VS0_THRES2B for VS", reg_addr);
+    if (1 == (0x3 & (reg_val >> 18))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 19-18:1 RW interrupt generation on rising edge above VS0_THRES2B for VS",
+                 reg_addr);
     }
-    if(2==(0x3 & (reg_val>>18))){
-        fprintf (out_file_prt,"\n    reg %02u bit 19-18:2 RW interrupt generation on falling edge below VS0_THRES2B for VS", reg_addr);
+    if (2 == (0x3 & (reg_val >> 18))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 19-18:2 RW interrupt generation on falling edge below VS0_THRES2B for VS",
+                 reg_addr);
     }
-    if(3==(0x3 & (reg_val>>18))){
-        fprintf (out_file_prt,"\n    reg %02u bit 19-18:3 RW interrupt generation on falling and rising edge of VS0_THRES2B for VS", reg_addr);
+    if (3 == (0x3 & (reg_val >> 18))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 19-18:3 RW interrupt generation on falling and rising edge of VS0_THRES2B for VS",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>16))){
-        fprintf (out_file_prt,"\n    reg %02u bit 17-16:0 RW no interrupt generation for VS w.r.t. VS0_THRES2A", reg_addr);
+    if (0 == (0x3 & (reg_val >> 16))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 17-16:0 RW no interrupt generation for VS w.r.t. VS0_THRES2A",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>16))){
-        fprintf (out_file_prt,"\n    reg %02u bit 17-16:1 RW interrupt generation on rising edge above VS0_THRES2A for VS", reg_addr);
+    if (1 == (0x3 & (reg_val >> 16))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 17-16:1 RW interrupt generation on rising edge above VS0_THRES2A for VS",
+                 reg_addr);
     }
-    if(2==(0x3 & (reg_val>>16))){
-        fprintf (out_file_prt,"\n    reg %02u bit 17-16:2 RW interrupt generation on falling edge below VS0_THRES2A for VS", reg_addr);
+    if (2 == (0x3 & (reg_val >> 16))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 17-16:2 RW interrupt generation on falling edge below VS0_THRES2A for VS",
+                 reg_addr);
     }
-    if(3==(0x3 & (reg_val>>16))){
-        fprintf (out_file_prt,"\n    reg %02u bit 17-16:3 RW interrupt generation on falling and rising edge of VS0_THRES2A for VS", reg_addr);
+    if (3 == (0x3 & (reg_val >> 16))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 17-16:3 RW interrupt generation on falling and rising edge of VS0_THRES2A for VS",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>14))){
-        fprintf (out_file_prt,"\n    reg %02u bit 15-14:0 RW no interrupt generation for IN23 w.r.t. THRES9", reg_addr);
+    if (0 == (0x3 & (reg_val >> 14))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 15-14:0 RW no interrupt generation for IN23 w.r.t. THRES9",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>14))){
-        fprintf (out_file_prt,"\n    reg %02u bit 15-14:1 RW interrupt generation on rising edge above THRES9 for IN23", reg_addr);
+    if (1 == (0x3 & (reg_val >> 14))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 15-14:1 RW interrupt generation on rising edge above THRES9 for IN23", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>14))){
-        fprintf (out_file_prt,"\n    reg %02u bit 15-14:2 RW interrupt generation on falling edge below THRES9 for IN23", reg_addr);
+    if (2 == (0x3 & (reg_val >> 14))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 15-14:2 RW interrupt generation on falling edge below THRES9 for IN23", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>14))){
-        fprintf (out_file_prt,"\n    reg %02u bit 15-14:3 RW interrupt generation on falling and rising edge of THRES9 for IN23", reg_addr);
+    if (3 == (0x3 & (reg_val >> 14))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 15-14:3 RW interrupt generation on falling and rising edge of THRES9 for IN23",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>12))){
-        fprintf (out_file_prt,"\n    reg %02u bit 13-12:0 RW no interrupt generation for IN23 w.r.t. THRES8", reg_addr);
+    if (0 == (0x3 & (reg_val >> 12))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 13-12:0 RW no interrupt generation for IN23 w.r.t. THRES8",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>12))){
-        fprintf (out_file_prt,"\n    reg %02u bit 13-12:1 RW interrupt generation on rising edge above THRES8 for IN23", reg_addr);
+    if (1 == (0x3 & (reg_val >> 12))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 13-12:1 RW interrupt generation on rising edge above THRES8 for IN23", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>12))){
-        fprintf (out_file_prt,"\n    reg %02u bit 13-12:2 RW interrupt generation on falling edge below THRES8 for IN23", reg_addr);
+    if (2 == (0x3 & (reg_val >> 12))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 13-12:2 RW interrupt generation on falling edge below THRES8 for IN23", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>12))){
-        fprintf (out_file_prt,"\n    reg %02u bit 13-12:3 RW interrupt generation on falling and rising edge of THRES8 for IN23", reg_addr);
+    if (3 == (0x3 & (reg_val >> 12))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 13-12:3 RW interrupt generation on falling and rising edge of THRES8 for IN23",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>10))){
-        fprintf (out_file_prt,"\n    reg %02u bit 11-10:0 RW no interrupt generation for IN23 w.r.t. THRES3C", reg_addr);
+    if (0 == (0x3 & (reg_val >> 10))) {
+        fprintf (out_file_prt, "\n    reg %02u bit 11-10:0 RW no interrupt generation for IN23 w.r.t. THRES3C",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>10))){
-        fprintf (out_file_prt,"\n    reg %02u bit 11-10:1 RW interrupt generation on rising edge above THRES3C for IN23", reg_addr);
+    if (1 == (0x3 & (reg_val >> 10))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 11-10:1 RW interrupt generation on rising edge above THRES3C for IN23", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>10))){
-        fprintf (out_file_prt,"\n    reg %02u bit 11-10:2 RW interrupt generation on falling edge below THRES3C for IN23", reg_addr);
+    if (2 == (0x3 & (reg_val >> 10))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 11-10:2 RW interrupt generation on falling edge below THRES3C for IN23", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>10))){
-        fprintf (out_file_prt,"\n    reg %02u bit 11-10:3 RW interrupt generation on falling and rising edge of THRES3C for IN23", reg_addr);
+    if (3 == (0x3 & (reg_val >> 10))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit 11-10:3 RW interrupt generation on falling and rising edge of THRES3C for IN23",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>8))){
-        fprintf (out_file_prt,"\n    reg %02u bit  9- 8:0 RW no interrupt generation for IN23 w.r.t. THRES3B", reg_addr);
+    if (0 == (0x3 & (reg_val >> 8))) {
+        fprintf (out_file_prt, "\n    reg %02u bit  9- 8:0 RW no interrupt generation for IN23 w.r.t. THRES3B",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>8))){
-        fprintf (out_file_prt,"\n    reg %02u bit  9- 8:1 RW interrupt generation on rising edge above THRES3B for IN23", reg_addr);
+    if (1 == (0x3 & (reg_val >> 8))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  9- 8:1 RW interrupt generation on rising edge above THRES3B for IN23", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>8))){
-        fprintf (out_file_prt,"\n    reg %02u bit  9- 8:2 RW interrupt generation on falling edge below THRES3B for IN23", reg_addr);
+    if (2 == (0x3 & (reg_val >> 8))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  9- 8:2 RW interrupt generation on falling edge below THRES3B for IN23", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>8))){
-        fprintf (out_file_prt,"\n    reg %02u bit  9- 8:3 RW interrupt generation on falling and rising edge of THRES3B for IN23", reg_addr);
+    if (3 == (0x3 & (reg_val >> 8))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  9- 8:3 RW interrupt generation on falling and rising edge of THRES3B for IN23",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>6))){
-        fprintf (out_file_prt,"\n    reg %02u bit  7- 6:0 RW no interrupt generation for IN23 w.r.t. THRES3A", reg_addr);
+    if (0 == (0x3 & (reg_val >> 6))) {
+        fprintf (out_file_prt, "\n    reg %02u bit  7- 6:0 RW no interrupt generation for IN23 w.r.t. THRES3A",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>6))){
-        fprintf (out_file_prt,"\n    reg %02u bit  7- 6:1 RW interrupt generation on rising edge above THRES3A for IN23", reg_addr);
+    if (1 == (0x3 & (reg_val >> 6))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  7- 6:1 RW interrupt generation on rising edge above THRES3A for IN23", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>6))){
-        fprintf (out_file_prt,"\n    reg %02u bit  7- 6:2 RW interrupt generation on falling edge below THRES3A for IN23", reg_addr);
+    if (2 == (0x3 & (reg_val >> 6))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  7- 6:2 RW interrupt generation on falling edge below THRES3A for IN23", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>6))){
-        fprintf (out_file_prt,"\n    reg %02u bit  7- 6:3 RW interrupt generation on falling and rising edge of THRES3A for IN23", reg_addr);
+    if (3 == (0x3 & (reg_val >> 6))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  7- 6:3 RW interrupt generation on falling and rising edge of THRES3A for IN23",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>4))){
-        fprintf (out_file_prt,"\n    reg %02u bit  5- 4:0 RW no interrupt generation for IN22 w.r.t. THRES3C", reg_addr);
+    if (0 == (0x3 & (reg_val >> 4))) {
+        fprintf (out_file_prt, "\n    reg %02u bit  5- 4:0 RW no interrupt generation for IN22 w.r.t. THRES3C",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>4))){
-        fprintf (out_file_prt,"\n    reg %02u bit  5- 4:1 RW interrupt generation on rising edge above THRES3C for IN22", reg_addr);
+    if (1 == (0x3 & (reg_val >> 4))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  5- 4:1 RW interrupt generation on rising edge above THRES3C for IN22", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>4))){
-        fprintf (out_file_prt,"\n    reg %02u bit  5- 4:2 RW interrupt generation on falling edge below THRES3C for IN22", reg_addr);
+    if (2 == (0x3 & (reg_val >> 4))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  5- 4:2 RW interrupt generation on falling edge below THRES3C for IN22", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>4))){
-        fprintf (out_file_prt,"\n    reg %02u bit  5- 4:3 RW interrupt generation on falling and rising edge of THRES3C for IN22", reg_addr);
+    if (3 == (0x3 & (reg_val >> 4))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  5- 4:3 RW interrupt generation on falling and rising edge of THRES3C for IN22",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>2))){
-        fprintf (out_file_prt,"\n    reg %02u bit  3- 2:0 RW no interrupt generation for IN22 w.r.t. THRES3B", reg_addr);
+    if (0 == (0x3 & (reg_val >> 2))) {
+        fprintf (out_file_prt, "\n    reg %02u bit  3- 2:0 RW no interrupt generation for IN22 w.r.t. THRES3B",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>2))){
-        fprintf (out_file_prt,"\n    reg %02u bit  3- 2:1 RW interrupt generation on rising edge above THRES3B for IN22", reg_addr);
+    if (1 == (0x3 & (reg_val >> 2))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  3- 2:1 RW interrupt generation on rising edge above THRES3B for IN22", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>2))){
-        fprintf (out_file_prt,"\n    reg %02u bit  3- 2:2 RW interrupt generation on falling edge below THRES3B for IN22", reg_addr);
+    if (2 == (0x3 & (reg_val >> 2))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  3- 2:2 RW interrupt generation on falling edge below THRES3B for IN22", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>2))){
-        fprintf (out_file_prt,"\n    reg %02u bit  3- 2:3 RW interrupt generation on falling and rising edge of THRES3B for IN22", reg_addr);
+    if (3 == (0x3 & (reg_val >> 2))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  3- 2:3 RW interrupt generation on falling and rising edge of THRES3B for IN22",
+                 reg_addr);
     }
-    if(0==(0x3 & (reg_val>>0))){
-        fprintf (out_file_prt,"\n    reg %02u bit  1- 0:0 RW no interrupt generation for IN22 w.r.t. THRES3A", reg_addr);
+    if (0 == (0x3 & (reg_val >> 0))) {
+        fprintf (out_file_prt, "\n    reg %02u bit  1- 0:0 RW no interrupt generation for IN22 w.r.t. THRES3A",
+                 reg_addr);
     }
-    if(1==(0x3 & (reg_val>>0))){
-        fprintf (out_file_prt,"\n    reg %02u bit  1- 0:1 RW interrupt generation on rising edge above THRES3A for IN22", reg_addr);
+    if (1 == (0x3 & (reg_val >> 0))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  1- 0:1 RW interrupt generation on rising edge above THRES3A for IN22", reg_addr);
     }
-    if(2==(0x3 & (reg_val>>0))){
-        fprintf (out_file_prt,"\n    reg %02u bit  1- 0:2 RW interrupt generation on falling edge below THRES3A for IN22", reg_addr);
+    if (2 == (0x3 & (reg_val >> 0))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  1- 0:2 RW interrupt generation on falling edge below THRES3A for IN22", reg_addr);
     }
-    if(3==(0x3 & (reg_val>>0))){
-        fprintf (out_file_prt,"\n    reg %02u bit  1- 0:3 RW interrupt generation on falling and rising edge of THRES3A for IN22", reg_addr);
+    if (3 == (0x3 & (reg_val >> 0))) {
+        fprintf (out_file_prt,
+                 "\n    reg %02u bit  1- 0:3 RW interrupt generation on falling and rising edge of THRES3A for IN22",
+                 reg_addr);
     }
     return res;
 }
 
-
-
-static bool parse_tic12400_device_id_register_01h  (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+static bool parse_tic12400_device_id_register_01h (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = false;
     uint32_t reserv = 0;
     uint8_t minor = 0, major = 0;
@@ -1808,7 +2086,7 @@ static bool parse_tic12400_device_id_register_01h  (uint32_t reg32_val, FILE *ou
     return res;
 }
 
-static bool parse_tic12400_thres_cfg0_register_29h  (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+static bool parse_tic12400_thres_cfg0_register_29h (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = true;
     uint16_t thres0, thres1, reserv;
     reserv = extract_subval_from_32bit (reg32_val, 23, 20);
@@ -1822,7 +2100,7 @@ static bool parse_tic12400_thres_cfg0_register_29h  (uint32_t reg32_val, FILE *o
     return res;
 }
 
-static bool parse_tic12400_thres_cfg1_register_2ah  (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+static bool parse_tic12400_thres_cfg1_register_2ah (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = true;
     uint16_t thres3, thres2, reserv;
     reserv = extract_subval_from_32bit (reg32_val, 23, 20);
@@ -1837,7 +2115,7 @@ static bool parse_tic12400_thres_cfg1_register_2ah  (uint32_t reg32_val, FILE *o
     return res;
 }
 
-static bool parse_tic12400_thres_cfg2_register_2bh  (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+static bool parse_tic12400_thres_cfg2_register_2bh (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = true;
     uint16_t thres4, thres5, reserv;
     reserv = extract_subval_from_32bit (reg32_val, 23, 20);
@@ -1851,7 +2129,7 @@ static bool parse_tic12400_thres_cfg2_register_2bh  (uint32_t reg32_val, FILE *o
     return res;
 }
 
-static bool parse_tic12400_thres_cfg3_register_2ch  (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+static bool parse_tic12400_thres_cfg3_register_2ch (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = true;
     uint16_t thres6, thres7, reserv;
     reserv = extract_subval_from_32bit (reg32_val, 23, 20);
@@ -1865,7 +2143,7 @@ static bool parse_tic12400_thres_cfg3_register_2ch  (uint32_t reg32_val, FILE *o
     return res;
 }
 
-static bool parse_tic12400_ana_stat12_register_16h  (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+static bool parse_tic12400_ana_stat12_register_16h (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = true;
     float vs_voltage = 0;
     uint16_t adc_self_ana, vs_ana, reserv;
@@ -1882,7 +2160,7 @@ static bool parse_tic12400_ana_stat12_register_16h  (uint32_t reg32_val, FILE *o
     return res;
 }
 
-static bool parse_tic12400_thres_cfg4_register_2dh  (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+static bool parse_tic12400_thres_cfg4_register_2dh (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = true;
     uint16_t thres8, thres9, reserv;
     reserv = extract_subval_from_32bit (reg32_val, 23, 20);
@@ -1901,17 +2179,19 @@ uint8_t inStatMatrix0InChanLUT[24] = {10, 10, 10, 10, 10, 10, 11, 11, 11, 11, 11
 //                                   0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23
 uint8_t inStatMatrix0InChan2LUT[24] = {4, 5, 6, 7, 8, 9, 4, 5, 6, 7, 8, 9, 4, 5, 6, 7, 8, 9, 4, 5, 6, 7, 8, 9};
 
-static bool parse_tic12400_in_stat_matrix0_register_08h  (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+static bool parse_tic12400_in_stat_matrix0_register_08h (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = false;
     if (NULL != out_file_prt) {
         int16_t bit = 0;
         for (bit = 23; 0 <= bit; bit--) {
             if (reg32_val & (1 << bit)) {
-                fprintf (out_file_prt, "\n    reg %2u bit %2u:1 R Input IN%02u is above threshold while IN%u pulled to GND", reg_addr, bit,
-                         inStatMatrix0InChanLUT[bit], inStatMatrix0InChan2LUT[bit]);
+                fprintf (out_file_prt,
+                         "\n    reg %2u bit %2u:1 R Input IN%02u is above threshold while IN%u pulled to GND", reg_addr,
+                         bit, inStatMatrix0InChanLUT[bit], inStatMatrix0InChan2LUT[bit]);
             } else {
-                fprintf (out_file_prt, "\n    reg %2u bit %2u:0 R Input IN%02u is below threshold while IN%u pulled to GND", reg_addr, bit,
-                         inStatMatrix0InChanLUT[bit], inStatMatrix0InChan2LUT[bit]);
+                fprintf (out_file_prt,
+                         "\n    reg %2u bit %2u:0 R Input IN%02u is below threshold while IN%u pulled to GND", reg_addr,
+                         bit, inStatMatrix0InChanLUT[bit], inStatMatrix0InChan2LUT[bit]);
             }
         }
         res = true;
@@ -1925,27 +2205,29 @@ uint8_t inStatMatrix1InChanLUT[24] = {14, 14, 14, 14, 14, 14, 15, 15, 15, 15, 15
 //    0   1   2   3   4   5   6   7   8   9   10  11  12 13 14 15 16 17 18 19 20 21 22 23
 uint8_t inStatMatrix1InChan2LUT[24] = {4, 5, 6, 7, 8, 9, 4, 5, 6, 7, 8, 9, 4, 5, 6, 7, 8, 9, 4, 5, 6, 7, 8, 9};
 
-static bool parse_tic12400_in_stat_matrix1_register_09h  (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+static bool parse_tic12400_in_stat_matrix1_register_09h (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = false;
     if (NULL != out_file_prt) {
         int16_t bit = 0;
         for (bit = 23; 11 <= bit; bit--) {
             if (reg32_val & (1 << bit)) {
-                fprintf (out_file_prt, "\n    reg %2u bit %2u:1 R Input IN%02u equal to or above threshold THRES_COM", reg_addr, bit,
-                         inStatMatrix1InChanLUT[bit]);
+                fprintf (out_file_prt, "\n    reg %2u bit %2u:1 R Input IN%02u equal to or above threshold THRES_COM",
+                         reg_addr, bit, inStatMatrix1InChanLUT[bit]);
             } else {
-                fprintf (out_file_prt, "\n    reg %2u bit %2u:0 R Input IN%02u below threshold THRES_COM", reg_addr, bit,
-                         inStatMatrix1InChanLUT[bit]);
+                fprintf (out_file_prt, "\n    reg %2u bit %2u:0 R Input IN%02u below threshold THRES_COM", reg_addr,
+                         bit, inStatMatrix1InChanLUT[bit]);
             }
         }
 
         for (bit = 11; 0 <= bit; bit--) {
             if (reg32_val & (1 << bit)) {
-                fprintf (out_file_prt, "\n    reg %2u bit %2u:1 R Input IN%02u is above threshold while IN%u pulled to GND", reg_addr, bit,
-                         inStatMatrix1InChanLUT[bit], inStatMatrix1InChan2LUT[bit]);
+                fprintf (out_file_prt,
+                         "\n    reg %2u bit %2u:1 R Input IN%02u is above threshold while IN%u pulled to GND", reg_addr,
+                         bit, inStatMatrix1InChanLUT[bit], inStatMatrix1InChan2LUT[bit]);
             } else {
-                fprintf (out_file_prt, "\n    reg %2u bit %2u:0 R Input IN%02u is below threshold while IN%u pulled to GND", reg_addr, bit,
-                         inStatMatrix1InChanLUT[bit], inStatMatrix1InChan2LUT[bit]);
+                fprintf (out_file_prt,
+                         "\n    reg %2u bit %2u:0 R Input IN%02u is below threshold while IN%u pulled to GND", reg_addr,
+                         bit, inStatMatrix1InChanLUT[bit], inStatMatrix1InChan2LUT[bit]);
             }
         }
 
@@ -1954,7 +2236,7 @@ static bool parse_tic12400_in_stat_matrix1_register_09h  (uint32_t reg32_val, FI
     return res;
 }
 
-static bool parse_tic12400_cs_select_register_1ch  (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+static bool parse_tic12400_cs_select_register_1ch (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = true;
     int8_t chan;
     for (chan = 9; 0 <= chan; chan--) {
@@ -1973,65 +2255,80 @@ static bool parse_tic12400_cs_select_register_1ch  (uint32_t reg32_val, FILE *ou
     return res;
 }
 
-static bool parse_tic12400_config_register_1ah  (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+static bool parse_tic12400_config_register_1ah (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = true;
 
     if (reg32_val & CONFIG_VS_RATIO_23) {
-        fprintf (out_file_prt, "\n    reg %2u bit 23: RW Use voltage divider factor of 10 for the VS measurement", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit 23: RW Use voltage divider factor of 10 for the VS measurement",
+                 reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit 23: RW Use voltage divider factor of 3 for the VS measurement", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit 23: RW Use voltage divider factor of 3 for the VS measurement",
+                 reg_addr);
     }
 
     if (reg32_val & ADC_DIAG_T_22) {
-        fprintf (out_file_prt, "\n    reg %2u bit 22: RW Enable ADC self-diagnostic feature", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit 22: RW Enable ADC self-diagnostic feature", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit 22: RW Disable ADC self-diagnostic feature", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit 22: RW Disable ADC self-diagnostic feature", reg_addr);
     }
 
     if (reg32_val & VS_MEAS_EN_17) {
-        fprintf (out_file_prt, "\n    reg %2u bit 17: Enable VS measurement at the end of every polling cycle", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit 17: Enable VS measurement at the end of every polling cycle",
+                 reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit 17: Disable VS measurement at the end of every polling cycle", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit 17: Disable VS measurement at the end of every polling cycle",
+                 reg_addr);
     }
 
     if (reg32_val & TW_CUR_DIS_CSI_16) {
-        fprintf (out_file_prt, "\n    reg %2u bit 16: Disable wetting current reduction (to 2 mA) for 10mA and 15mA settings upon "
-                             "TW event for all inputs enabled with CSI.", reg_addr );
+        fprintf (out_file_prt,
+                 "\n    reg %2u bit 16: Disable wetting current reduction (to 2 mA) for 10mA and 15mA settings upon "
+                 "TW event for all inputs enabled with CSI.",
+                 reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit 16: Enable wetting current reduction (to 2 mA) for 10mA and 15mA settings upon "
-                             "TW event for all inputs enabled with CSI", reg_addr );
+        fprintf (out_file_prt,
+                 "\n    reg %2u bit 16: Enable wetting current reduction (to 2 mA) for 10mA and 15mA settings upon "
+                 "TW event for all inputs enabled with CSI",
+                 reg_addr);
     }
 
     if (reg32_val & TW_CUR_DIS_CSO_13) {
-        fprintf (out_file_prt, "\n    reg %2u bit 13: RW  Disable wetting current reduction (to 2mA) for 10mA and 15mA settings "
-                             "upon TW event for all inputs enabled with CSO", reg_addr );
+        fprintf (out_file_prt,
+                 "\n    reg %2u bit 13: RW  Disable wetting current reduction (to 2mA) for 10mA and 15mA settings "
+                 "upon TW event for all inputs enabled with CSO",
+                 reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit 13: RW  Enable wetting current reduction (to 2mA) for 10mA and 15mA settings "
-                             "upon TW event for all inputs enabled with CSO", reg_addr );
+        fprintf (out_file_prt,
+                 "\n    reg %2u bit 13: RW  Enable wetting current reduction (to 2mA) for 10mA and 15mA settings "
+                 "upon TW event for all inputs enabled with CSO",
+                 reg_addr);
     }
 
     if (reg32_val & INT_CONFIG_12) {
-        fprintf (out_file_prt, "\n    reg %2u bit 12: RW  INT pin assertion scheme set to dynamic", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit 12: RW  INT pin assertion scheme set to dynamic", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit 12: RW  INT pin assertion scheme set to static", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit 12: RW  INT pin assertion scheme set to static", reg_addr);
     }
 
     if (reg32_val & TRIGGER_11) {
-        fprintf (out_file_prt, "\n    reg %2u bit 11: RW Trigger TIC12400-Q1 normal operation", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit 11: RW Trigger TIC12400-Q1 normal operation", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit 11: RW Stop TIC12400-Q1 from normal operation", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit 11: RW Stop TIC12400-Q1 from normal operation", reg_addr);
     }
 
     if (reg32_val & POLL_EN_10) {
-        fprintf (out_file_prt, "\n    reg %2u bit 10: RW Polling enabled and the device operates in one of the polling modes", reg_addr );
+        fprintf (out_file_prt,
+                 "\n    reg %2u bit 10: RW Polling enabled and the device operates in one of the polling modes",
+                 reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit 10: RW Polling disabled. Device operates in continuous mode", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit 10: RW Polling disabled. Device operates in continuous mode",
+                 reg_addr);
     }
 
     if (reg32_val & CRC_T_9) {
-        fprintf (out_file_prt, "\n    reg %2u bit  9: RW trigger CRC calculation", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  9: RW trigger CRC calculation", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit  9: RW no CRC calculation triggered", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  9: RW no CRC calculation triggered", reg_addr);
     }
 
     uint8_t pollActTime = extract_subval_from_32bit (reg32_val, 8, 5);
@@ -2041,13 +2338,12 @@ static bool parse_tic12400_config_register_1ah  (uint32_t reg32_val, FILE *out_f
     parse_poll_time_val (pollTime, out_file_prt, reg_addr);
 
     if (reg32_val & RESET_0) {
-        fprintf (out_file_prt, "\n    reg %2u bit  0: Trigger software reset of the device.", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  0: Trigger software reset of the device.", reg_addr);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit  0: No reset", reg_addr );
+        fprintf (out_file_prt, "\n    reg %2u bit  0: No reset", reg_addr);
     }
     return res;
 }
-
 
 uint8_t getLowChannel[12] = {0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22};
 uint8_t getHiChannel[12] = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23};
@@ -2062,7 +2358,7 @@ bool get_adc_channels (uint8_t reg_addr, uint8_t *lowChannel, uint8_t *hiChannel
     return res;
 }
 
-static bool parse_tic12400_in_stat_adc0_register_06h  (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+static bool parse_tic12400_in_stat_adc0_register_06h (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = false;
     uint8_t ina_7, ina_6, ina_5, ina_4, ina_3, ina_2, ina_1, ina_0;
     uint8_t ina_13, ina_12, ina_11, ina_10, ina_9, ina_8;
@@ -2123,7 +2419,7 @@ static bool parse_tic12400_in_stat_adc0_register_06h  (uint32_t reg32_val, FILE 
     return res;
 }
 
-static bool parse_tic12400_in_stat_adc1_register_07h  (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+static bool parse_tic12400_in_stat_adc1_register_07h (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = false;
     uint32_t reserved;
     uint8_t ina_18, ina_19, ina_20, ina_21, ina_22, ina_23;
@@ -2159,14 +2455,14 @@ static bool parse_tic12400_ana_statX_register_XXh (uint32_t reg32_val, FILE *out
     res = get_adc_channels (reg_addr, &lowChannel, &hiChannel);
     if (true == res) {
         reserved = extract_subval_from_32bit (reg32_val, 23, 20);
-        fprintf (out_file_prt, "\n    reg %2u bit 23-20:%5u R Reserved",reg_addr, reserved);
+        fprintf (out_file_prt, "\n    reg %2u bit 23-20:%5u R Reserved", reg_addr, reserved);
 
         ana2nd = extract_subval_from_32bit (reg32_val, 19, 10);
-        fprintf (out_file_prt, "\n    reg %2u bit 19-10:%5u R  10-bits value of IN%u",reg_addr, ana2nd, hiChannel);
+        fprintf (out_file_prt, "\n    reg %2u bit 19-10:%5u R  10-bits value of IN%u", reg_addr, ana2nd, hiChannel);
         tic12400channelList[hiChannel].valueVoltage = ana2nd;
 
         ana1st = extract_subval_from_32bit (reg32_val, 9, 0);
-        fprintf (out_file_prt, "\n    reg %2u bit  9- 0:%5u R  10-bits value of IN%u",reg_addr, ana1st, lowChannel);
+        fprintf (out_file_prt, "\n    reg %2u bit  9- 0:%5u R  10-bits value of IN%u", reg_addr, ana1st, lowChannel);
         tic12400channelList[ana1st].valueVoltage = ana1st;
     }
 
@@ -2186,7 +2482,7 @@ static bool parse_tic12400_mode_bit (uint32_t reg32_val, uint8_t bitNum, FILE *o
     return res;
 }
 
-static bool parse_tic12400_mode_register_32h  (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+static bool parse_tic12400_mode_register_32h (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = false;
     int8_t bitNum;
     for (bitNum = 23; 0 <= bitNum; bitNum--) {
@@ -2196,13 +2492,14 @@ static bool parse_tic12400_mode_register_32h  (uint32_t reg32_val, FILE *out_fil
     return res;
 }
 
-
 static bool parse_tic12400_ccp_cfg1_bit (uint32_t reg32_val, uint8_t bitNum, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = false;
     if (reg32_val & (1U << bitNum)) {
-        fprintf (out_file_prt, "\n    reg %2u bit %02u: clean current polling wetting current activated CCP_IN%d", reg_addr, bitNum, bitNum);
+        fprintf (out_file_prt, "\n    reg %2u bit %02u: clean current polling wetting current activated CCP_IN%d",
+                 reg_addr, bitNum, bitNum);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit %02u: no clean current polling wetting current CCP_IN%d", reg_addr, bitNum, bitNum);
+        fprintf (out_file_prt, "\n    reg %2u bit %02u: no clean current polling wetting current CCP_IN%d", reg_addr,
+                 bitNum, bitNum);
     }
     return res;
 }
@@ -2210,9 +2507,11 @@ static bool parse_tic12400_ccp_cfg1_bit (uint32_t reg32_val, uint8_t bitNum, FIL
 static bool parse_tic12400_n_stat_comp_bit (uint32_t reg32_val, uint8_t bitNum, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = false;
     if (reg32_val & (1U << bitNum)) {
-        fprintf (out_file_prt, "\n    reg %2u bit %02u: Input IN%02u is above the comparator threshold.", reg_addr, bitNum, bitNum);
+        fprintf (out_file_prt, "\n    reg %2u bit %02u: Input IN%02u is above the comparator threshold.", reg_addr,
+                 bitNum, bitNum);
     } else {
-        fprintf (out_file_prt, "\n    reg %2u bit %02u: Input IN%02u is below the comparator threshold.", reg_addr, bitNum, bitNum);
+        fprintf (out_file_prt, "\n    reg %2u bit %02u: Input IN%02u is below the comparator threshold.", reg_addr,
+                 bitNum, bitNum);
     }
     return res;
 }
@@ -2224,13 +2523,14 @@ static bool parse_tic12400_in_en_bit (uint32_t reg32_val, uint8_t bitNum, FILE *
         fprintf (out_file_prt, "\n    reg %2u bit %02u: Input channel IN%u enabled", reg_addr, bitNum, bitNum);
     } else {
         tic12400channelList[bitNum].state = false;
-        fprintf (out_file_prt, "\n    reg %2u bit %02u: Input channel IN%u disabled. Polling sequence skips this channel", reg_addr, bitNum,
-                 bitNum);
+        fprintf (out_file_prt,
+                 "\n    reg %2u bit %02u: Input channel IN%u disabled. Polling sequence skips this channel", reg_addr,
+                 bitNum, bitNum);
     }
     return res;
 }
 
-static bool parse_tic12400_in_stat_comp_register_05h  (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+static bool parse_tic12400_in_stat_comp_register_05h (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = false;
     int8_t bitNum;
     for (bitNum = 23; 0 <= bitNum; bitNum--) {
@@ -2239,7 +2539,7 @@ static bool parse_tic12400_in_stat_comp_register_05h  (uint32_t reg32_val, FILE 
     return res;
 }
 
-static bool parse_tic12400_in_en_register_1bh  (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+static bool parse_tic12400_in_en_register_1bh (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = false;
     int8_t bitNum;
     for (bitNum = 23; 0 <= bitNum; bitNum--) {
@@ -2255,43 +2555,51 @@ static bool parse_ccp_time (uint8_t ccp_time, FILE *out_file_prt, uint8_t reg_ad
         switch (ccp_time) {
         case 0:
             fprintf (out_file_prt,
-                     "\n    reg %2u bit  6- 4:%u RW Wetting current activation time in CCP (Clean Current Polling) mode 64 us",
-					 reg_addr, ccp_time);
+                     "\n    reg %2u bit  6- 4:%u RW Wetting current activation time in CCP (Clean Current Polling) "
+                     "mode 64 us",
+                     reg_addr, ccp_time);
             break;
         case 1:
             fprintf (out_file_prt,
-                     "\n    reg %2u bit  6- 4:%u RW Wetting current activation time in CCP (Clean Current Polling) mode 128 us",
-					 reg_addr, ccp_time);
+                     "\n    reg %2u bit  6- 4:%u RW Wetting current activation time in CCP (Clean Current Polling) "
+                     "mode 128 us",
+                     reg_addr, ccp_time);
             break;
         case 2:
             fprintf (out_file_prt,
-                     "\n    reg %2u bit  6- 4:%u RW Wetting current activation time in CCP (Clean Current Polling) mode 192 us",
-					 reg_addr, ccp_time);
+                     "\n    reg %2u bit  6- 4:%u RW Wetting current activation time in CCP (Clean Current Polling) "
+                     "mode 192 us",
+                     reg_addr, ccp_time);
             break;
         case 3:
             fprintf (out_file_prt,
-                     "\n    reg %2u bit  6- 4:%u RW Wetting current activation time in CCP (Clean Current Polling) mode 256 us",
-					 reg_addr, ccp_time);
+                     "\n    reg %2u bit  6- 4:%u RW Wetting current activation time in CCP (Clean Current Polling) "
+                     "mode 256 us",
+                     reg_addr, ccp_time);
             break;
         case 4:
             fprintf (out_file_prt,
-                     "\n    reg %2u bit  6- 4:%u RW Wetting current activation time in CCP (Clean Current Polling) mode 320 us",
-					 reg_addr, ccp_time);
+                     "\n    reg %2u bit  6- 4:%u RW Wetting current activation time in CCP (Clean Current Polling) "
+                     "mode 320 us",
+                     reg_addr, ccp_time);
             break;
         case 5:
             fprintf (out_file_prt,
-                     "\n    reg %2u bit  6- 4:%u RW Wetting current activation time in CCP (Clean Current Polling) mode 384 us",
-					 reg_addr, ccp_time);
+                     "\n    reg %2u bit  6- 4:%u RW Wetting current activation time in CCP (Clean Current Polling) "
+                     "mode 384 us",
+                     reg_addr, ccp_time);
             break;
         case 6:
             fprintf (out_file_prt,
-                     "\n    reg %2u bit  6- 4:%u RW Wetting current activation time in CCP (Clean Current Polling) mode 448 us",
-					 reg_addr, ccp_time);
+                     "\n    reg %2u bit  6- 4:%u RW Wetting current activation time in CCP (Clean Current Polling) "
+                     "mode 448 us",
+                     reg_addr, ccp_time);
             break;
         case 7:
             fprintf (out_file_prt,
-                     "\n    reg %2u bit  6- 4:%u RW Wetting current activation time in CCP (Clean Current Polling) mode 512 us",
-					 reg_addr, ccp_time);
+                     "\n    reg %2u bit  6- 4:%u RW Wetting current activation time in CCP (Clean Current Polling) "
+                     "mode 512 us",
+                     reg_addr, ccp_time);
             break;
         default:
             res = false;
@@ -2302,50 +2610,66 @@ static bool parse_ccp_time (uint8_t ccp_time, FILE *out_file_prt, uint8_t reg_ad
     return res;
 }
 
-static bool parse_tic12400_ccp_cfg0_register_1fh  (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+static bool parse_tic12400_ccp_cfg0_register_1fh (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
     (void)reg32_val;
     (void)out_file_prt;
     uint32_t reserved;
     reserved = extract_subval_from_32bit (reg32_val, 23, 7);
-    fprintf (out_file_prt, "\n    reg %2u bit 23- 7:%u R Reserved",reg_addr,  reserved);
+    fprintf (out_file_prt, "\n    reg %2u bit 23- 7:%u R Reserved", reg_addr, reserved);
     uint32_t ccp_time;
     ccp_time = extract_subval_from_32bit (reg32_val, 6, 4);
     parse_ccp_time (ccp_time, out_file_prt, reg_addr);
 
     if (reg32_val & CCP_CFG0_WC_CCP3) {
-        fprintf (out_file_prt,
-                 "\n    reg %2u bit  3:1 Wetting current setting for IN18 to IN23 in CCP mode 15mA (typ.) wetting current", reg_addr );
+        fprintf (
+            out_file_prt,
+            "\n    reg %2u bit  3:1 Wetting current setting for IN18 to IN23 in CCP mode 15mA (typ.) wetting current",
+            reg_addr);
     } else {
-        fprintf (out_file_prt,
-                 "\n    reg %2u bit  3:0 Wetting current setting for IN18 to IN23 in CCP mode 10mA (typ.) wetting current", reg_addr );
+        fprintf (
+            out_file_prt,
+            "\n    reg %2u bit  3:0 Wetting current setting for IN18 to IN23 in CCP mode 10mA (typ.) wetting current",
+            reg_addr);
     };
     if (reg32_val & CCP_CFG0_WC_CCP2) {
-        fprintf (out_file_prt,
-                 "\n    reg %2u bit  2:1 Wetting current setting for IN12 to IN17 in CCP mode 15mA (typ.) wetting current", reg_addr );
+        fprintf (
+            out_file_prt,
+            "\n    reg %2u bit  2:1 Wetting current setting for IN12 to IN17 in CCP mode 15mA (typ.) wetting current",
+            reg_addr);
     } else {
-        fprintf (out_file_prt,
-                 "\n    reg %2u bit  2:0 Wetting current setting for IN12 to IN17 in CCP mode 10mA (typ.) wetting current", reg_addr );
+        fprintf (
+            out_file_prt,
+            "\n    reg %2u bit  2:0 Wetting current setting for IN12 to IN17 in CCP mode 10mA (typ.) wetting current",
+            reg_addr);
     };
     if (reg32_val & CCP_CFG0_WC_CCP1) {
-        fprintf (out_file_prt,
-                 "\n    reg %2u bit  1:1 Wetting current setting for IN6 to IN11 in CCP mode 15mA (typ.) wetting current", reg_addr );
+        fprintf (
+            out_file_prt,
+            "\n    reg %2u bit  1:1 Wetting current setting for IN6 to IN11 in CCP mode 15mA (typ.) wetting current",
+            reg_addr);
     } else {
-        fprintf (out_file_prt,
-                 "\n    reg %2u bit  1:0 Wetting current setting for IN6 to IN11 in CCP mode 10mA (typ.) wetting current", reg_addr );
+        fprintf (
+            out_file_prt,
+            "\n    reg %2u bit  1:0 Wetting current setting for IN6 to IN11 in CCP mode 10mA (typ.) wetting current",
+            reg_addr);
     };
     if (reg32_val & CCP_CFG0_WC_CCP0) {
-        fprintf (out_file_prt,
-                 "\n    reg %2u bit  0:1 Wetting current setting for IN0 to IN5 in CCP mode 15mA (typ.) wetting current", reg_addr );
+        fprintf (
+            out_file_prt,
+            "\n    reg %2u bit  0:1 Wetting current setting for IN0 to IN5 in CCP mode 15mA (typ.) wetting current",
+            reg_addr);
     } else {
-        fprintf (out_file_prt,
-                 "\n    reg %2u bit  0:0 Wetting current setting for IN0 to IN5 in CCP mode 10mA (typ.) wetting current", reg_addr );
+        fprintf (
+            out_file_prt,
+            "\n    reg %2u bit  0:0 Wetting current setting for IN0 to IN5 in CCP mode 10mA (typ.) wetting current",
+            reg_addr);
     };
 
     bool res = false;
     return res;
 }
 
-static bool parse_tic12400_ccp_cfg1_register_20h  (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
+static bool parse_tic12400_ccp_cfg1_register_20h (uint32_t reg32_val, FILE *out_file_prt, uint8_t reg_addr) {
     bool res = false;
     int8_t bitNum;
     for (bitNum = 23; 0 <= bitNum; bitNum--) {
@@ -2357,14 +2681,14 @@ static bool parse_tic12400_ccp_cfg1_register_20h  (uint32_t reg32_val, FILE *out
 bool parse_tic12400_reg (uint8_t reg_addr, FILE *out_file_prt) {
     bool res = false;
 
-    if(false==tic12400RegMap[reg_addr].valid){
-    	printf("\nRegister %u=0x%x is not valid\n",reg_addr, reg_addr);
-    	return false;
+    if (false == tic12400RegMap[reg_addr].valid) {
+        printf ("\nRegister %u=0x%x is not valid\n", reg_addr, reg_addr);
+        return false;
     }
     uint32_t reg32_val = tic12400RegMap[reg_addr].reg24BitVal;
     tic12400RegMap[reg_addr].reg24BitVal = reg32_val;
-    fprintf (out_file_prt, "\n\nreg [%s] addr 0x%02x val 0x%06x 0b_%s", tic12400_reg_2_name[reg_addr], reg_addr, reg32_val,
-             utoa_bin24 (reg32_val));
+    fprintf (out_file_prt, "\n\nreg [%s] addr 0x%02x val 0x%06x 0b_%s", tic12400_reg_2_name[reg_addr], reg_addr,
+             reg32_val, utoa_bin24 (reg32_val));
     switch (reg_addr) {
     case REG_DEVICE_ID:
         procRegCnd++;
@@ -2469,19 +2793,19 @@ bool parse_tic12400_reg (uint8_t reg_addr, FILE *out_file_prt) {
         res = parse_tic12400_int_en_cfg0_register_24h (reg32_val, out_file_prt, reg_addr);
         break;
     case REG_INT_EN_CFG1:
-    	procRegCnd++;
+        procRegCnd++;
         res = parse_tic12400_int_en_cfg1_register_37 (reg32_val, out_file_prt, reg_addr);
         break;
     case REG_INT_EN_CFG2:
-    	procRegCnd++;
+        procRegCnd++;
         res = parse_tic12400_int_en_cfg2_register_38 (reg32_val, out_file_prt, reg_addr);
         break;
     case REG_INT_EN_CFG3:
-    	procRegCnd++;
+        procRegCnd++;
         res = parse_tic12400_int_en_cfg3_register_39 (reg32_val, out_file_prt, reg_addr);
         break;
     case REG_INT_EN_CFG4:
-    	procRegCnd++;
+        procRegCnd++;
         res = parse_tic12400_int_en_cfg4_register_40 (reg32_val, out_file_prt, reg_addr);
         break;
     case REG_THRES_CFG3:
@@ -2509,29 +2833,29 @@ bool parse_tic12400_reg (uint8_t reg_addr, FILE *out_file_prt) {
         break;
 
     case REG_THRESMAP_CFG0:
-    	procRegCnd++;
-    	parse_tic12400_thresmap_cfg0_register_46 (reg32_val, out_file_prt, reg_addr);
-    	break;
+        procRegCnd++;
+        parse_tic12400_thresmap_cfg0_register_46 (reg32_val, out_file_prt, reg_addr);
+        break;
     case REG_THRESMAP_CFG1:
-    	procRegCnd++;
-    	parse_tic12400_thresmap_cfg1_register_47 (reg32_val, out_file_prt, reg_addr);
-    	break;
+        procRegCnd++;
+        parse_tic12400_thresmap_cfg1_register_47 (reg32_val, out_file_prt, reg_addr);
+        break;
     case REG_THRESMAP_CFG2:
-    	procRegCnd++;
-    	parse_tic12400_thresmap_cfg2_register_48 (reg32_val, out_file_prt, reg_addr);
-    	break;
+        procRegCnd++;
+        parse_tic12400_thresmap_cfg2_register_48 (reg32_val, out_file_prt, reg_addr);
+        break;
 
     case REG_MATRIX:
         procRegCnd++;
         parse_tic12400_matrix_register_49 (reg32_val, out_file_prt, reg_addr);
-	break;
+        break;
     case REG_MODE:
         procRegCnd++;
         res = parse_tic12400_mode_register_32h (reg32_val, out_file_prt, reg_addr);
         break;
     default:
-        fprintf (out_file_prt, "\n Lack of parser for reg [%s] addr 0x%x val 0x%x", tic12400_reg_2_name[reg_addr], reg_addr,
-                 reg32_val);
+        fprintf (out_file_prt, "\n Lack of parser for reg [%s] addr 0x%x val 0x%x", tic12400_reg_2_name[reg_addr],
+                 reg_addr, reg32_val);
         break;
     }
     return res;

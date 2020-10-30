@@ -11,6 +11,11 @@
 #ifdef HAS_KSZ8081
 #include "parse_ksz8081_regs.h"
 #endif
+
+#ifdef HAS_TJA1145
+#include "parse_tja1145_regs.h"
+#endif
+
 #include "str_ops.h"
 #include "utils.h"
 
@@ -23,6 +28,9 @@ bool parse_regs_file (char *in_file_name, char *out_file_name) {
     printf ("\n%s()\n", __FUNCTION__);
     bool res = false;
     char *ch;
+    if (NULL==out_file_name) {
+    	out_file_name="reg_interpretation.txt";
+    }
 #ifdef HAS_TJA1101
     ch = strstr (in_file_name, "tja1101");
     if (NULL != ch) {
@@ -49,6 +57,16 @@ bool parse_regs_file (char *in_file_name, char *out_file_name) {
         res = parse_ksz8081_regs_file (in_file_name, out_file_name);
         if (false == res) {
             printf ("\nError in parsing ksz8081 register blob");
+        }
+    }
+#endif
+
+#ifdef HAS_TJA1145
+    ch = strstr (in_file_name, "tja1145");
+    if (NULL != ch) {
+        res = parse_tja1145_regs_file (in_file_name, out_file_name);
+        if (false == res) {
+            printf ("\nError in parsing tja1145 register blob");
         }
     }
 #endif

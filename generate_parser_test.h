@@ -5,9 +5,6 @@
 
 #include <stdio.h>
 
-bool test_generate_reg_parser(void);
+bool test_generate_reg_parser (void);
 
 #endif /* GENERATE_REG_PARSER_TEST_H */
-
-
-
