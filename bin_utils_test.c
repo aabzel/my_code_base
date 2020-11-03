@@ -1,11 +1,12 @@
 #include "bin_utils_test.h"
 
+#include <stdint.h>
 #include <stdio.h>
 
 #include "bin_utils.h"
 #include "uTests.h"
 
-bool test_binary_gap (void) {
+static bool test_binary_gap (void) {
     int gap;
     gap = binary_gap (529); // 10 0001 0001
     if (4 != gap) {
@@ -30,19 +31,41 @@ bool test_binary_gap (void) {
     return true;
 }
 
-bool test_binary_swap (void) {
-	EXPECT_EQ(swap_bits(0), 0);
-	EXPECT_EQ(swap_bits(1), 0x8000000000000000);
-	EXPECT_EQ(swap_bits(0x8000000000000000), 1);
-	EXPECT_EQ(swap_bits(0xF), 0xF000000000000000);
-	EXPECT_EQ(swap_bits(0xAAAAAAAAAAAAAAAA), 0x5555555555555555);
-	EXPECT_EQ(swap_bits(0xFFFFFFFFFFFFFFFF), 0xFFFFFFFFFFFFFFFF);
+static bool test_binary_swap (void) {
+    EXPECT_EQ (swap_bits (0), 0);
+    EXPECT_EQ (swap_bits (1), 0x8000000000000000);
+    EXPECT_EQ (swap_bits (0x8000000000000000), 1);
+    EXPECT_EQ (swap_bits (0xF), 0xF000000000000000);
+    EXPECT_EQ (swap_bits (0xAAAAAAAAAAAAAAAA), 0x5555555555555555);
+    EXPECT_EQ (swap_bits (0xFFFFFFFFFFFFFFFF), 0xFFFFFFFFFFFFFFFF);
 
     return true;
 }
 
+static bool test_reverse_dec (void) {
+    printf ("\n%s()", __FUNCTION__);
+    EXPECT_EQ (sizeof (int64_t), 8);
+    EXPECT_EQ (powi (10, 9), 1000000000);
+    EXPECT_EQ (powi (10, 8), 100000000);
+    EXPECT_EQ (powi (10, 0), 1);
+    EXPECT_EQ (powi (10, 1), 10);
+    EXPECT_EQ (powi (10, 2), 100);
+    EXPECT_EQ (powi (10, 3), 1000);
+
+    EXPECT_EQ (reverse_dec (1563847412), 0);
+    EXPECT_EQ (reverse_dec (-2147483648), 0);
+    EXPECT_EQ (reverse_dec (1534236469), 0);
+    EXPECT_EQ (reverse_dec (1), 1);
+    EXPECT_EQ (reverse_dec (-123), -321);
+    EXPECT_EQ (reverse_dec (0), 0);
+    EXPECT_EQ (reverse_dec (123), 321);
+    EXPECT_EQ (reverse_dec (120), 21);
+    return true;
+}
+
 bool test_bin_utils (void) {
-	EXPECT_TRUE( test_binary_swap ());
-	EXPECT_TRUE( test_binary_gap ());
-	return true;
+    EXPECT_TRUE (test_reverse_dec ());
+    EXPECT_TRUE (test_binary_swap ());
+    EXPECT_TRUE (test_binary_gap ());
+    return true;
 }

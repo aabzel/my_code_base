@@ -117,9 +117,10 @@ typedef enum {
     BIT_UTILS_ERROR = 99,
     ALGOTITHMS_ERROR = 100,
     AURIGA_TASK_ERROR = 101,
-	STATIC_LOCAL_ERROR = 102,
-	MATRIX_ACCSESS_ERROR = 103,
-	BIN_UTILS_ERROR=104,
+    STATIC_LOCAL_ERROR = 102,
+    MATRIX_ACCSESS_ERROR = 103,
+    BIN_UTILS_ERROR = 104,
+	STACK_ERROR = 105,
     NUM_ERROR = 120
 } utError_t;
 
@@ -183,7 +184,7 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
 #define EXPECT_EQ_STR(strL, strR)                                                                                      \
     do {                                                                                                               \
         if (0 != strcmp (strL, strR)) {                                                                                \
-            printf ("\n%s:Line: %d %d in strL: %s strR: %s ", __FUNCTION__, __LINE__, __COUNTER__, strL, strR);        \
+            printf ("\n%s:Line: %d %d in strL: [%s] strR: [%s] ", __FUNCTION__, __LINE__, __COUNTER__, strL, strR);        \
             return false;                                                                                              \
         }                                                                                                              \
     } while (0);
@@ -191,10 +192,8 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
 #define EXPECT_EQ(val1, val2)                                                                                          \
     do {                                                                                                               \
         if (val1 != val2) {                                                                                            \
-            printf ("\n%s:Line: %d in val1: %u val2: %u ", __FUNCTION__, __LINE__, val1,          \
-                    val2);                                                                                        \
-            printf ("\n%s:Line: %d in val1: %x val2: %x ", __FUNCTION__, __LINE__, (int)val1,          \
-                    (int)val2);                                                                                        \
+            printf ("\n%s:Line: %d in val1: %u val2: %u ", __FUNCTION__, __LINE__, val1, val2);                        \
+            printf (" %s:Line: %d in val1: %x val2: %x ", __FUNCTION__, __LINE__, (int)val1, (int)val2);               \
             return false;                                                                                              \
         }                                                                                                              \
     } while (0);

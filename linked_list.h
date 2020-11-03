@@ -23,7 +23,6 @@ typedef struct xListNode {
 
 bool push_val (list_node_t **pInHead, int newVal);
 
-
 #if 0
 bool linked_list_deinit (list_node_t *pInHead);
 bool linked_list_add_array (list_node_t **pInHead, int *inArr, int arrSize);

@@ -37,7 +37,8 @@ bool parse_tja1101_regs_file (char *inFileName, char *outFileName) {
                     if (true == res) {
                         reg_cnt++;
                     } else {
-                        printf ("\nUnable to parse phy reg addr  [%2u=0x%02x] val 0x%04x ", reg_addr,reg_addr, reg16b_val);
+                        printf ("\nUnable to parse phy reg addr  [%2u=0x%02x] val 0x%04x ", reg_addr, reg_addr,
+                                reg16b_val);
                     }
                 } else {
                     printf ("\n%s(): parse reg 16bit value from [%s] error", __FUNCTION__, curFileStr);
@@ -255,9 +256,9 @@ static bool parse_phy_identifier_1_register (uint16_t reg16b_val, FILE *out_file
     bool res = true;
     fprintf (out_file_prt, "\n  reg %02u bit15..0: Organizationally Unique Identifier 0x%04x", reg_addr, reg16b_val);
     fprintf (out_file_prt, "\n");
-    if(0x0180!=reg16b_val){
-    	fprintf (out_file_prt, "\n It is not tja1101 value blob");
-        exit(1);
+    if (0x0180 != reg16b_val) {
+        fprintf (out_file_prt, "\n It is not tja1101 value blob");
+        exit (1);
     }
     return res;
 }

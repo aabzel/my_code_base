@@ -55,7 +55,6 @@
 #include "parse_keepass.h"
 #endif
 
-
 extern char **environ;
 
 #if PRINT_ENV
@@ -88,7 +87,7 @@ uint64_t GetTimeStamp () {
 #endif
 
 int main (int argc, char *argv[]) {
-    printf ("\n[d] %s(): addr of main 0x%p", __FUNCTION__,  main);
+    printf ("\n[d] %s(): addr of main 0x%p", __FUNCTION__, main);
     // time_t t;
 #ifdef RAND_GENERATOR
     srand ((unsigned)GetTimeStamp ());
@@ -143,17 +142,17 @@ int main (int argc, char *argv[]) {
     if (2 == argc) {
         uint64_t byte_max = 0;
         bool res = try_strl2uint64 (argv[1], strlen (argv[1]), &byte_max);
-        if (true==res) {
-            evaluate_cache(byte_max);
+        if (true == res) {
+            evaluate_cache (byte_max);
         }
     }
 
 #endif
 
-    #ifdef HAS_LS
+#ifdef HAS_LS
     bool res_ls = explore_dir ();
-    if(false==res_ls) {
-    	printf ("\n\nError explore_dir\n");
+    if (false == res_ls) {
+        printf ("\n\nError explore_dir\n");
     }
 #endif
 
@@ -253,13 +252,13 @@ int main (int argc, char *argv[]) {
 
 #ifdef HAS_PARSE_REG
     printf ("\n Parse registers\n");
-    if(2 == argc){
+    if (2 == argc) {
         bool res;
         res = parse_regs_file (argv[1], NULL);
         if (false == res) {
             printf ("\nError in parsing PHY regs\n");
         }
-    }else if (3 == argc) {
+    } else if (3 == argc) {
         bool res;
         res = parse_regs_file (argv[1], argv[2]);
         if (false == res) {

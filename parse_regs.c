@@ -28,8 +28,8 @@ bool parse_regs_file (char *in_file_name, char *out_file_name) {
     printf ("\n%s()\n", __FUNCTION__);
     bool res = false;
     char *ch;
-    if (NULL==out_file_name) {
-    	out_file_name="reg_interpretation.txt";
+    if (NULL == out_file_name) {
+        out_file_name = "reg_interpretation.txt";
     }
 #ifdef HAS_TJA1101
     ch = strstr (in_file_name, "tja1101");

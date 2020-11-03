@@ -20,14 +20,14 @@ static bool test_auriga_task_case2 (void) {
     return true;
 }
 
-static bool test_auriga_task_case4(void) {
-    list_t *head=NULL;
+static bool test_auriga_task_case4 (void) {
+    list_t *head = NULL;
     EXPECT_EQ (0, count_list_items (head));
     show_linded_list (head);
     return true;
 }
 
-static bool test_auriga_task_case1(void) {
+static bool test_auriga_task_case1 (void) {
     list_t head;
     head.data = 1;
     head.next = NULL;
@@ -70,7 +70,7 @@ static bool test_auriga_task_case3 (void) {
 }
 
 bool test_auriga_task (void) {
-	printf ("\n[d] %s()\n", __FUNCTION__);
+    printf ("\n[d] %s()\n", __FUNCTION__);
     EXPECT_TRUE (test_auriga_task_case1 ());
     EXPECT_TRUE (test_auriga_task_case2 ());
     EXPECT_TRUE (test_auriga_task_case3 ());

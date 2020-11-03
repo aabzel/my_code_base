@@ -59,7 +59,6 @@ static bool test_k_smallest (void) {
     return true;
 }
 
-
 static bool test_algo (void) {
     int min3val;
     min3val = min3 (2, 3, 5);
@@ -84,27 +83,27 @@ static bool test_sum_digits () {
     return true;
 }
 
-static bool test_avarage(void) {
-	printf ("\n[d] %s()", __FUNCTION__);
-	uint32_t average_q, average_s;
-	for (uint32_t a = 0; a <= 0xFFFFFFF0; a+=103) {
-		for (uint32_t b = 0; b <= 0xFFFFFFF0; b+=101) {
-			average_q = average_quick(a, b);
-			average_s = average_slow(a, b);
-			if(average_q!= average_s){
-				printf ("\n[!] a:%u b:%u()", a,b);
-				printf ("\n[!] aq:%u as:%u()", average_q,average_s);
-			}
-			EXPECT_EQ(average_q, average_s);
-		}
-	}
-	return true;
+static bool test_avarage (void) {
+    printf ("\n[d] %s()", __FUNCTION__);
+    uint32_t average_q, average_s;
+    for (uint32_t a = 0; a <= 0xFFFFFFF0; a += 103) {
+        for (uint32_t b = 0; b <= 0xFFFFFFF0; b += 101) {
+            average_q = average_quick (a, b);
+            average_s = average_slow (a, b);
+            if (average_q != average_s) {
+                printf ("\n[!] a:%u b:%u()", a, b);
+                printf ("\n[!] aq:%u as:%u()", average_q, average_s);
+            }
+            EXPECT_EQ (average_q, average_s);
+        }
+    }
+    return true;
 }
 
 bool test_algorithms (void) {
     printf ("\n[d] %s()", __FUNCTION__);
-    //EXPECT_TRUE (test_avarage());
-    EXPECT_TRUE (test_k_smallest ( ));
+    // EXPECT_TRUE (test_avarage());
+    EXPECT_TRUE (test_k_smallest ());
     EXPECT_TRUE (test_algo ());
     EXPECT_TRUE (test_sum_digits ());
     EXPECT_TRUE (test_bit_utils ());

@@ -14,18 +14,18 @@
 #include <stdlib.h>
 #include <string.h>
 
-uint32_t average_quick (uint32_t a, uint32_t b){
-	uint32_t res;
-	res = (a|b)-((a^b)>>1);
-	return res;
+uint32_t average_quick (uint32_t a, uint32_t b) {
+    uint32_t res;
+    res = (a | b) - ((a ^ b) >> 1);
+    return res;
 }
 
-uint32_t average_slow (uint32_t a, uint32_t b){
-	uint32_t res;
-	uint64_t temp = a+b;
-	temp = temp>>1;
-	res = (uint32_t) temp;
-	return res;
+uint32_t average_slow (uint32_t a, uint32_t b) {
+    uint32_t res;
+    uint64_t temp = a + b;
+    temp = temp >> 1;
+    res = (uint32_t)temp;
+    return res;
 }
 
 int sum_digits (int val) {

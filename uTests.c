@@ -1,5 +1,6 @@
 #include "uTests.h"
 
+#include <malloc.h>
 #include <time.h>
 
 #ifdef HAS_AURIGA_TASK
@@ -284,20 +285,69 @@ static bool test_parse_phy_reg_vals (void) {
 }
 #endif
 
+static bool test_static (void) {
+    static int a;
+    printf ("\n static a a=%d &a=%p", a, &a);
+    bool res = false;
+    if (0 == a) {
+        res = true;
+    }
+    a++;
+    return res;
+}
 
-static bool test_static(void) {
-	static int a;
-	printf("\n static a a=%d &a=%p",a,&a);
-	bool res=false;
-	if(0==a){
-		res = true;
+bool is_arr_pat(uint8_t *arr, uint32_t size, uint8_t patt){
+	bool res = true;
+	for(uint32_t i=0; i<size ;i++){
+		if(patt!=arr[i]){
+			res = false;
+	    }
 	}
-	a++;
 	return res;
 }
 
+
+static bool work_with_stack(int n,uint8_t pat){
+	//uint8_t array[n];
+	bool res = false;
+	uint8_t *array = alloca(n);
+    if (array) {
+    	memset(array,pat,n);
+    	if(is_arr_pat(array, n, pat)){
+   		   res = true;
+    	}
+
+    }
+	return res;
+}
+
+
+static char *val_2_str(int i){
+	printf ("\n%s() %d", __FUNCTION__, i);
+	static char buff[10];
+	snprintf(buff,sizeof(buff)," %d ",i);
+	return buff;
+}
+
 int unit_test (void) {
+	printf ("\n%s()", __FUNCTION__);
     bool res = false;
+#if 0
+    uint32_t nn=10;
+    while (1) {
+      nn *=2 ;
+      res = work_with_stack (nn, 0x55);
+      if (false == res) {
+          printf ("work_with_stack error %d", nn);
+          return STACK_ERROR;
+      }else{
+    	  printf ("\n stack alloc  %d", nn);
+    	  //printf (".");
+      }
+    }
+#endif
+    printf("\n%s %s",val_2_str(3),val_2_str(4));
+    //return 1;
 #ifdef HAS_AURIGA_TASK
     res = test_auriga_task ();
     if (false == res) {
@@ -312,7 +362,7 @@ int unit_test (void) {
         return BIN_UTILS_ERROR;
     }
 #ifdef TEST_MATRIX_ACCESS
-    res = test_matrix_accsess();
+    res = test_matrix_accsess ();
     if (false == res) {
         printf ("matrix_accsess error");
         return MATRIX_ACCSESS_ERROR;
@@ -325,13 +375,13 @@ int unit_test (void) {
         return STATIC_LOCAL_ERROR;
     }
 
-//#ifdef DHAS_ALGORITHMS
+    //#ifdef DHAS_ALGORITHMS
     res = test_algorithms ();
     if (false == res) {
         printf ("test_algorithms error");
         return ALGOTITHMS_ERROR;
     }
-//#endif
+    //#endif
 
 #ifdef TEST_CONVERT
     res = test_convert ();
@@ -1428,8 +1478,6 @@ bool test_heap (void) {
     return true;
 }
 
-
-
 bool test_stsstr (void) {
     char text[100];
     char pattern[100];
@@ -1759,8 +1807,6 @@ bool test_valid_float_number (void) {
 
     return true;
 }
-
-
 
 #if 0
 bool test_medianSlidingWindow (void) {

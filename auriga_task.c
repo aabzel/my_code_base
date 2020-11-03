@@ -7,10 +7,10 @@
 /* Counts the number of items in a list.
  */
 int count_list_items (const list_t *head) {
-	int cnt= 0 ;
-	list_t *cur_node =(list_t *) head;
+    int cnt = 0;
+    list_t *cur_node = (list_t *)head;
     while (cur_node != NULL) {
-    	cnt++;
+        cnt++;
         cur_node = cur_node->next;
     }
     return cnt;
@@ -37,11 +37,11 @@ void remove_next_from_list (list_t *item) {
     if (NULL != item) {
         cur_item = item;
         if (item->next) {
-        	del_item = item->next;
+            del_item = item->next;
             cur_item->next = del_item->next;
             del_item->next = NULL;
             free (del_item);
-            if(del_item){
+            if (del_item) {
                 del_item = NULL;
             }
         }
@@ -60,7 +60,7 @@ char *item_data (const list_t *list) {
 }
 
 void show_linded_list (list_t *head) {
-	list_t *cur_node = head;
+    list_t *cur_node = head;
     printf ("\n Start of list\n");
     while (cur_node != NULL) {
         printf ("%s ", item_data (cur_node));
