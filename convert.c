@@ -1654,8 +1654,9 @@ const char *bool2name (bool val) {
 
 /** Converts the string in `192.168.1.101` format to the uint32_t IP address */
 bool try_strl2ipv4 (const char str__tsl2i4[], int32_t str_len__tsl2i4, uint32_t *ipv4_ptr__tsl2i4) {
-    /* Minimal IPv4 address in correct format is: `0.0.0.0` (7 chars) */
-#define TRY_STRL2IPV4_MIN_LENGTH 7
+	printf ("\n%s() [%s] %d", __FUNCTION__, str__tsl2i4, str_len__tsl2i4);
+	/* Minimal IPv4 address in correct format is: `0.0.0.0` (7 chars) */
+#define TRY_STRL2IPV4_MIN_LENGTH 7 /*0.0.0.0*/
     bool result__tsl2i4;
 
     if (str__tsl2i4 == NULL) {
@@ -1738,6 +1739,67 @@ bool try_str2mac (const char macStr[], uint8_t *outMacAddr) {
 
     return res;
 }
+
+bool try_strl2ipv6 (const char in_ip_str[], int32_t str_len, uint16_t *ipv6_arr) {
+	printf ("\n%s() [%s] %d", __FUNCTION__, in_ip_str, str_len);
+	/* Minimal IPv4 address in correct format is: `0.0.0.0` (7 chars) */
+#define TRY_STRL2IPV6_MIN_LENGTH 15 /*0:0:0:0:0:0:0:0*/
+    bool res;
+    static uint16_t arr_ip6[8] = {0u, 0u, 0u, 0u,0u, 0u, 0u, 0u};
+
+    if (in_ip_str == NULL) {
+        /* Error: argument `in_ip_str` is NULL */
+        res = false;
+
+    } else if (str_len < TRY_STRL2IPV6_MIN_LENGTH) {
+        /* Error: The `in_ip_str` string is too short */
+        res = false;
+
+    } else {
+        uint8_t octet_n__tsl2i4 = 0u;
+        int32_t offset__tsl2i4 = 0u;
+        char hex_val[5]="";
+        res = true;
+        int32_t i= 0;
+		int32_t ip6_ind= 0;
+
+        while ((res == true) && (offset__tsl2i4 < str_len)) {
+            char char_ip6 = in_ip_str[offset__tsl2i4];
+            offset__tsl2i4++;
+			if(true==is_hex_digit(char_ip6)){
+				hex_val[i] = char_ip6;
+				i++;
+				bool temp_res = try_strl2uint16 (hex_val, 4, &arr_ip6[ip6_ind]);
+				if (false==temp_res) {
+					arr_ip6[ip6_ind] = 0x0000;
+				}
+			}else if ( ':' == char_ip6){
+				i=0;
+				strcpy(hex_val,"");
+				ip6_ind++;
+			}else if ((char_ip6 == '\0') || (char_ip6 == ' ')) {
+				offset__tsl2i4 = str_len;
+			} else {
+                /* Invalid character */
+                res = false;
+            }
+
+
+        } /* while */
+
+        if (7u != ip6_ind ) {
+            res = false;
+        }
+
+        if (res == true) {
+            if (ipv6_arr != NULL) {
+                memset (ipv6_arr,arr_ip6, 8) ;
+            }
+        }
+    }
+    return res;
+}
+
 
 uint32_t assemble_uint32 (uint8_t byte1, uint8_t byte2, uint8_t byte3, uint8_t byte4) {
     uint32_t v32 = 0;

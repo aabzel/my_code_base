@@ -332,6 +332,12 @@ static char *val_2_str(int i){
 int unit_test (void) {
 	printf ("\n%s()", __FUNCTION__);
     bool res = false;
+
+    res = test_valid_ip_address();
+    if (false == res) {
+        printf ("test_valid_ip_address error");
+        return PARSE_IP_ERROR;
+    }
 #if 0
     uint32_t nn=10;
     while (1) {
