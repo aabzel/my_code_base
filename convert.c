@@ -1654,62 +1654,72 @@ const char *bool2name (bool val) {
 
 /** Converts the string in `192.168.1.101` format to the uint32_t IP address */
 bool try_strl2ipv4 (const char str__tsl2i4[], int32_t str_len__tsl2i4, uint32_t *ipv4_ptr__tsl2i4) {
-	printf ("\n%s() [%s] %d", __FUNCTION__, str__tsl2i4, str_len__tsl2i4);
-	/* Minimal IPv4 address in correct format is: `0.0.0.0` (7 chars) */
+    // printf ("\n%s() [%s] %d", __FUNCTION__, str__tsl2i4, str_len__tsl2i4);
+    /* Minimal IPv4 address in correct format is: `0.0.0.0` (7 chars) */
 #define TRY_STRL2IPV4_MIN_LENGTH 7 /*0.0.0.0*/
-    bool result__tsl2i4;
-
+    bool out_res;
+    bool first_after_dot = true;
     if (str__tsl2i4 == NULL) {
         /* Error: argument `str__tsl2i4` is NULL */
-        result__tsl2i4 = false;
+        out_res = false;
 
     } else if (str_len__tsl2i4 < TRY_STRL2IPV4_MIN_LENGTH) {
         /* Error: The `str__tsl2i4` string is too short */
-        result__tsl2i4 = false;
+        out_res = false;
 
     } else {
+        bool val[4] = {0, 0, 0, 0};
         uint16_t value__tsl2i4[4] = {0u, 0u, 0u, 0u};
         uint8_t octet_n__tsl2i4 = 0u;
-        int32_t offset__tsl2i4 = 0u;
+        int32_t offset = 0u;
 
-        result__tsl2i4 = true;
+        out_res = true;
+        while ((out_res == true) && (offset < str_len__tsl2i4)) {
+            char chari4 = str__tsl2i4[offset];
+           	uint32_t digit_len = get_dec_digit_len (&str__tsl2i4[offset]);
+            offset += 1u;
+            if (('0' <= chari4) && (chari4 <= '9')) {
+                if ((true == first_after_dot) && ('0' == chari4) && (1 < digit_len)) {
+                    out_res = false;
+                }
+                first_after_dot = false;
+                val[octet_n__tsl2i4] = true;
 
-        while ((result__tsl2i4 == true) && (offset__tsl2i4 < str_len__tsl2i4)) {
-            char c__tsl2i4 = str__tsl2i4[offset__tsl2i4];
-            offset__tsl2i4 += 1u;
-
-            if ((c__tsl2i4 >= '0') && (c__tsl2i4 <= '9')) {
                 value__tsl2i4[octet_n__tsl2i4] *= 10u;
-                value__tsl2i4[octet_n__tsl2i4] += (uint8_t) (c__tsl2i4 - '0');
+                value__tsl2i4[octet_n__tsl2i4] += (uint8_t) (chari4 - '0');
 
                 if (value__tsl2i4[octet_n__tsl2i4] > 255u) {
                     /* Error: Octet value is too large */
-                    result__tsl2i4 = false;
+                    out_res = false;
                 }
 
-            } else if (c__tsl2i4 == '.') {
+            } else if (chari4 == '.') {
                 octet_n__tsl2i4 += 1u;
+                first_after_dot = true;
 
                 if (octet_n__tsl2i4 > 3u) {
                     /* Error: Number of octets is too large */
-                    result__tsl2i4 = false;
+                    out_res = false;
                 }
 
-            } else if ((c__tsl2i4 == '\0') || (c__tsl2i4 == ' ')) {
+            } else if ((chari4 == '\0') || (chari4 == ' ')) {
                 /* end of line */
-                offset__tsl2i4 = str_len__tsl2i4;
+                offset = str_len__tsl2i4;
 
             } else {
                 /* Invalid character */
-                result__tsl2i4 = false;
+                out_res = false;
             }
         } /* while */
 
         if (octet_n__tsl2i4 != 3u) {
-            result__tsl2i4 = false;
+            out_res = false;
+        }
+        if (4 != (val[0] + val[1] + val[2] + val[3])) {
+            out_res = false;
         }
 
-        if (result__tsl2i4 == true) {
+        if (out_res == true) {
             uint32_t ipv4__tsl2i4 = 0u;
 
             ipv4__tsl2i4 |= (uint32_t) ((uint32_t) (value__tsl2i4[0] & 0xFFu) << 24u);
@@ -1723,7 +1733,7 @@ bool try_strl2ipv4 (const char str__tsl2i4[], int32_t str_len__tsl2i4, uint32_t 
         }
     }
 
-    return result__tsl2i4;
+    return out_res;
 }
 
 bool try_str2mac (const char macStr[], uint8_t *outMacAddr) {
@@ -1741,65 +1751,82 @@ bool try_str2mac (const char macStr[], uint8_t *outMacAddr) {
 }
 
 bool try_strl2ipv6 (const char in_ip_str[], int32_t str_len, uint16_t *ipv6_arr) {
-	printf ("\n%s() [%s] %d", __FUNCTION__, in_ip_str, str_len);
-	/* Minimal IPv4 address in correct format is: `0.0.0.0` (7 chars) */
+    // printf ("\n%s() [%s] %d", __FUNCTION__, in_ip_str, str_len);
+    /* Minimal IPv4 address in correct format is: `0.0.0.0` (7 chars) */
 #define TRY_STRL2IPV6_MIN_LENGTH 15 /*0:0:0:0:0:0:0:0*/
+    // bool first_after_sep = true;
     bool res;
-    static uint16_t arr_ip6[8] = {0u, 0u, 0u, 0u,0u, 0u, 0u, 0u};
-
+    static uint16_t arr_ip6[8] = {0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u};
+    uint8_t val_ip6[8] = {0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u};
     if (in_ip_str == NULL) {
         /* Error: argument `in_ip_str` is NULL */
         res = false;
-
     } else if (str_len < TRY_STRL2IPV6_MIN_LENGTH) {
         /* Error: The `in_ip_str` string is too short */
         res = false;
-
     } else {
         uint8_t octet_n__tsl2i4 = 0u;
-        int32_t offset__tsl2i4 = 0u;
-        char hex_val[5]="";
+        int32_t offset = 0u;
+        char hex_val[50] = "";
         res = true;
-        int32_t i= 0;
-		int32_t ip6_ind= 0;
+        int32_t i = 0;
+        int32_t ip6_ind = 0;
 
-        while ((res == true) && (offset__tsl2i4 < str_len)) {
-            char char_ip6 = in_ip_str[offset__tsl2i4];
-            offset__tsl2i4++;
-			if(true==is_hex_digit(char_ip6)){
-				hex_val[i] = char_ip6;
-				i++;
-				bool temp_res = try_strl2uint16 (hex_val, 4, &arr_ip6[ip6_ind]);
-				if (false==temp_res) {
-					arr_ip6[ip6_ind] = 0x0000;
-				}
-			}else if ( ':' == char_ip6){
-				i=0;
-				strcpy(hex_val,"");
-				ip6_ind++;
-			}else if ((char_ip6 == '\0') || (char_ip6 == ' ')) {
-				offset__tsl2i4 = str_len;
-			} else {
+        while ((res == true) && (offset < str_len)) {
+            char char_ip6 = in_ip_str[offset];
+            offset++;
+            if (true == is_hex_digit (char_ip6)) {
+                // if ( (true == first_after_sep ) && ('0' == char_ip6) ) {
+                //	res = false;
+                //}
+                // first_after_sep = false;
+                if (7 < ip6_ind) {
+                    res = false;
+                } else {
+
+                    val_ip6[ip6_ind] = true;
+                    hex_val[i] = char_ip6;
+                    i++;
+                    uint32_t digit_len = get_hex_digit_len (hex_val);
+                    if (4 < digit_len) {
+                        res = false;
+                    } else {
+                        bool temp_res = try_strl2uint16 (hex_val, 4, &arr_ip6[ip6_ind]);
+                        if (false == temp_res) {
+                            arr_ip6[ip6_ind] = 0x0000;
+                        }
+                    }
+                }
+            } else if (':' == char_ip6) {
+                // first_after_sep = true;
+                i = 0;
+                strcpy (hex_val, "");
+                ip6_ind++;
+            } else if ((char_ip6 == '\0') || (char_ip6 == ' ')) {
+                offset = str_len;
+            } else {
                 /* Invalid character */
                 res = false;
             }
 
-
         } /* while */
 
-        if (7u != ip6_ind ) {
+        if (7u != ip6_ind) {
+            res = false;
+        }
+        if (8 !=
+            (val_ip6[0] + val_ip6[1] + val_ip6[2] + val_ip6[3] + val_ip6[4] + val_ip6[5] + val_ip6[6] + val_ip6[7])) {
             res = false;
         }
 
         if (res == true) {
             if (ipv6_arr != NULL) {
-                memset (ipv6_arr,arr_ip6, 8) ;
+                memcpy (ipv6_arr, arr_ip6, 8);
             }
         }
     }
     return res;
 }
-
 
 uint32_t assemble_uint32 (uint8_t byte1, uint8_t byte2, uint8_t byte3, uint8_t byte4) {
     uint32_t v32 = 0;
@@ -1833,4 +1860,21 @@ bool parse_8bit_reg_addr (char *in_str_val, uint32_t len, uint8_t *reg_addr) {
         }
     }
     return false;
+}
+
+uint32_t get_hex_digit_len (const char *str) {
+    uint32_t len = 0;
+    while (true == is_hex_digit (str[len])) {
+        len++;
+    }
+    return len;
+}
+
+
+uint32_t get_dec_digit_len (const char *str){
+    uint32_t len = 0;
+    while (true == is_dec_digit (str[len])) {
+        len++;
+    }
+    return len;
 }

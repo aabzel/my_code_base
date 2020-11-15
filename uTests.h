@@ -120,7 +120,7 @@ typedef enum {
     STATIC_LOCAL_ERROR = 102,
     MATRIX_ACCSESS_ERROR = 103,
     BIN_UTILS_ERROR = 104,
-	STACK_ERROR = 105,
+    STACK_ERROR = 105,
     NUM_ERROR = 120
 } utError_t;
 
@@ -184,7 +184,7 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
 #define EXPECT_EQ_STR(strL, strR)                                                                                      \
     do {                                                                                                               \
         if (0 != strcmp (strL, strR)) {                                                                                \
-            printf ("\n%s:Line: %d %d in strL: [%s] strR: [%s] ", __FUNCTION__, __LINE__, __COUNTER__, strL, strR);        \
+            printf ("\n%s:Line: %d %d in strL: [%s] strR: [%s] ", __FUNCTION__, __LINE__, __COUNTER__, strL, strR);    \
             return false;                                                                                              \
         }                                                                                                              \
     } while (0);

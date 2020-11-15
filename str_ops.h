@@ -32,10 +32,9 @@ bool parse_or (char *expression, int inStrLen);
 bool parse_and (char *expression, int inStrLen);
 int parse_num_operands (char *expression, int inStrLen);
 
-
-bool is_camel_case(const char *in);
-char* toSnakeCase( const char *in);
-char *camel_case_2_snake_case(char *camel_case_str);
+bool is_camel_case (const char *in);
+char *toSnakeCase (const char *in);
+char *camel_case_2_snake_case (char *camel_case_str);
 
 bool is_bracket (char ch);
 bool parseBoolExpr (char *expression);

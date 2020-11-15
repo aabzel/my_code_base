@@ -11,17 +11,17 @@
 #include <string.h>
 
 static bool test_camel_case_2_snake_case (void) {
-	printf("\n%s",__FUNCTION__);
+    printf ("\n%s", __FUNCTION__);
 
-    EXPECT_FALSE( is_camel_case("CAMEL_CASE"));
-    EXPECT_TRUE( is_camel_case("camelCase"));
+    EXPECT_FALSE (is_camel_case ("CAMEL_CASE"));
+    EXPECT_TRUE (is_camel_case ("camelCase"));
 
-    EXPECT_EQ_STR(toSnakeCase("_"), "");
-    EXPECT_EQ_STR(toSnakeCase("camel__case"), "camel__case");
-    EXPECT_EQ_STR(toSnakeCase("CamelCase"), "camel_case");
-    EXPECT_EQ_STR(toSnakeCase("camelCase"), "camel_case");
-    EXPECT_EQ_STR(toSnakeCase("camel_case"), "camel_case");
-    EXPECT_EQ_STR(toSnakeCase("CAMEL_CASE"), "CAMEL_CASE");
+    EXPECT_EQ_STR (toSnakeCase ("_"), "");
+    EXPECT_EQ_STR (toSnakeCase ("camel__case"), "camel__case");
+    EXPECT_EQ_STR (toSnakeCase ("CamelCase"), "camel_case");
+    EXPECT_EQ_STR (toSnakeCase ("camelCase"), "camel_case");
+    EXPECT_EQ_STR (toSnakeCase ("camel_case"), "camel_case");
+    EXPECT_EQ_STR (toSnakeCase ("CAMEL_CASE"), "CAMEL_CASE");
     return true;
 }
 
@@ -470,7 +470,7 @@ static bool test_2_upper_case (void) {
 }
 
 bool test_str_ops (void) {
-	EXPECT_TRUE (test_camel_case_2_snake_case ());
+    EXPECT_TRUE (test_camel_case_2_snake_case ());
     EXPECT_TRUE (test_2_upper_case ());
     EXPECT_TRUE (test_count_substring ());
     EXPECT_TRUE (test_extract_sub_string ());

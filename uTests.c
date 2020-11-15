@@ -296,44 +296,41 @@ static bool test_static (void) {
     return res;
 }
 
-bool is_arr_pat(uint8_t *arr, uint32_t size, uint8_t patt){
-	bool res = true;
-	for(uint32_t i=0; i<size ;i++){
-		if(patt!=arr[i]){
-			res = false;
-	    }
-	}
-	return res;
-}
-
-
-static bool work_with_stack(int n,uint8_t pat){
-	//uint8_t array[n];
-	bool res = false;
-	uint8_t *array = alloca(n);
-    if (array) {
-    	memset(array,pat,n);
-    	if(is_arr_pat(array, n, pat)){
-   		   res = true;
-    	}
-
+bool is_arr_pat (uint8_t *arr, uint32_t size, uint8_t patt) {
+    bool res = true;
+    for (uint32_t i = 0; i < size; i++) {
+        if (patt != arr[i]) {
+            res = false;
+        }
     }
-	return res;
+    return res;
 }
 
+static bool work_with_stack (int n, uint8_t pat) {
+    // uint8_t array[n];
+    bool res = false;
+    uint8_t *array = alloca (n);
+    if (array) {
+        memset (array, pat, n);
+        if (is_arr_pat (array, n, pat)) {
+            res = true;
+        }
+    }
+    return res;
+}
 
-static char *val_2_str(int i){
-	printf ("\n%s() %d", __FUNCTION__, i);
-	static char buff[10];
-	snprintf(buff,sizeof(buff)," %d ",i);
-	return buff;
+static char *val_2_str (int i) {
+    printf ("\n%s() %d", __FUNCTION__, i);
+    static char buff[10];
+    snprintf (buff, sizeof (buff), " %d ", i);
+    return buff;
 }
 
 int unit_test (void) {
-	printf ("\n%s()", __FUNCTION__);
+    printf ("\n%s()", __FUNCTION__);
     bool res = false;
 
-    res = test_valid_ip_address();
+    res = test_valid_ip_address ();
     if (false == res) {
         printf ("test_valid_ip_address error");
         return PARSE_IP_ERROR;
@@ -352,8 +349,8 @@ int unit_test (void) {
       }
     }
 #endif
-    printf("\n%s %s",val_2_str(3),val_2_str(4));
-    //return 1;
+    printf ("\n%s %s", val_2_str (3), val_2_str (4));
+    // return 1;
 #ifdef HAS_AURIGA_TASK
     res = test_auriga_task ();
     if (false == res) {

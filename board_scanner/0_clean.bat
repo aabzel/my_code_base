@@ -1,8 +1,8 @@
 @echo off
 del /S *.o
-del /S *.exe
+del  *.exe
 
 cd ..
 del /S *.o
-del /S *.exe
+del  *.exe
 

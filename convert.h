@@ -25,6 +25,9 @@ extern "C" {
 bool is_dec_str (const char str_to_check[], int32_t str_to_check_len);
 bool is_hex_str (const char str_to_check[], int32_t str_to_check_len, uint8_t *const out_shift);
 
+uint32_t get_hex_digit_len (const char *str);
+uint32_t get_dec_digit_len (const char *str);
+
 bool try_strl2ipv4 (const char str__tsl2i4[], int32_t str_len__tsl2i4, uint32_t *ipv4_ptr__tsl2i4);
 bool try_strl2ipv6 (const char str__tsl2i6[], int32_t str_len__tsl2i6, uint16_t *ipv6_ptr__tsl2i6);
 bool try_str2mac (const char str__ts2m[], uint8_t mac_adr_ptr__ts2m[]);

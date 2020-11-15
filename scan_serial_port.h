@@ -9,6 +9,8 @@ extern "C" {
 
 #include "custom_type.h"
 
+#include <windows.h>
+
 #define DEDUG_RX_TEXT 0
 #define MAX_COM_NUM 20
 #define DEBUG_FINE_VI_REQ 0
