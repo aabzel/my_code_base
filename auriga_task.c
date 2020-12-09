@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+xSomeStruct_t node;
+
 /* Counts the number of items in a list.
  */
 int count_list_items (const list_t *head) {

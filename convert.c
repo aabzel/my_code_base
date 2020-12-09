@@ -1312,7 +1312,7 @@ static bool get_str_len (const char char_str[], int32_t *str_len) {
     return str_not_empty;
 }
 
-static bool is_dec_digit (const char character) {
+bool is_dec_digit (const char character) {
     bool res = false;
     if (('0' <= character) && (character <= '9')) {
         res = true;
@@ -1652,7 +1652,6 @@ const char *bool2name (bool val) {
     return name;
 }
 
-/** Converts the string in `192.168.1.101` format to the uint32_t IP address */
 bool try_strl2ipv4 (const char str__tsl2i4[], int32_t str_len__tsl2i4, uint32_t *ipv4_ptr__tsl2i4) {
     // printf ("\n%s() [%s] %d", __FUNCTION__, str__tsl2i4, str_len__tsl2i4);
     /* Minimal IPv4 address in correct format is: `0.0.0.0` (7 chars) */
@@ -1676,7 +1675,7 @@ bool try_strl2ipv4 (const char str__tsl2i4[], int32_t str_len__tsl2i4, uint32_t 
         out_res = true;
         while ((out_res == true) && (offset < str_len__tsl2i4)) {
             char chari4 = str__tsl2i4[offset];
-           	uint32_t digit_len = get_dec_digit_len (&str__tsl2i4[offset]);
+            uint32_t digit_len = get_dec_digit_len (&str__tsl2i4[offset]);
             offset += 1u;
             if (('0' <= chari4) && (chari4 <= '9')) {
                 if ((true == first_after_dot) && ('0' == chari4) && (1 < digit_len)) {
@@ -1870,8 +1869,7 @@ uint32_t get_hex_digit_len (const char *str) {
     return len;
 }
 
-
-uint32_t get_dec_digit_len (const char *str){
+uint32_t get_dec_digit_len (const char *str) {
     uint32_t len = 0;
     while (true == is_dec_digit (str[len])) {
         len++;

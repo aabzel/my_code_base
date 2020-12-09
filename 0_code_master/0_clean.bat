@@ -1,7 +1,15 @@
 @echo off
 del /S *.o
-del *.exe
+If exist "*.exe" (
+    Echo File exist
+    del *.exe
+)
 cd ..
 del *.o
-del *.exe
+If exist "*.exe" (
+    Echo File exist
+    del *.exe
+)
 
+
+dir

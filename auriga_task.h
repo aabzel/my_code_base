@@ -6,6 +6,16 @@
 extern "C" {
 #endif
 
+typedef struct xSomeStruct_s {
+    char data1; // 4
+    int data2;  // 4
+    int data3;  // 4
+    int data4;  // 4
+    char size[0];
+} xSomeStruct_t;
+
+extern xSomeStruct_t node;
+
 typedef struct list_s {
     struct list_s *next; /* NULL for the last item in a list */
     int data;

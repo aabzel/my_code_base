@@ -38,6 +38,15 @@ static bool test_auriga_task_case1 (void) {
     return true;
 }
 
+static bool test_auriga_task_case5 (void) {
+    printf ("\n[d] %s()\n", __FUNCTION__);
+    printf ("\nsize of node %d\n", (int)((void *)node.size - (void *)&node));
+
+    printf ("\n data4 %d \n", (int)(&((xSomeStruct_t *)0)->data4)); // 4
+    printf ("\nsize of node %d\n", (int)((void *)node.size - (void *)&node));
+    return true;
+}
+
 static bool test_auriga_task_case3 (void) {
     list_t head;
     head.data = 1;
@@ -75,5 +84,6 @@ bool test_auriga_task (void) {
     EXPECT_TRUE (test_auriga_task_case2 ());
     EXPECT_TRUE (test_auriga_task_case3 ());
     EXPECT_TRUE (test_auriga_task_case4 ());
+    EXPECT_TRUE (test_auriga_task_case5 ());
     return true;
 }

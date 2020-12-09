@@ -121,6 +121,13 @@ typedef enum {
     MATRIX_ACCSESS_ERROR = 103,
     BIN_UTILS_ERROR = 104,
     STACK_ERROR = 105,
+    IS_MAP_ERROR = 106,
+    DECODE_WAYS_ERROR = 107,
+    MALLOC_SIZE_ERROR = 108,
+    ENCODE_STRING_ERROR = 109,
+    TEST_STACK_ERROR = 110,
+    TEXT_ADDR_ERROR = 111,
+
     NUM_ERROR = 120
 } utError_t;
 
@@ -192,8 +199,8 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
 #define EXPECT_EQ(val1, val2)                                                                                          \
     do {                                                                                                               \
         if (val1 != val2) {                                                                                            \
-            printf ("\n%s:Line: %d in val1: %u val2: %u ", __FUNCTION__, __LINE__, val1, val2);                        \
-            printf (" %s:Line: %d in val1: %x val2: %x ", __FUNCTION__, __LINE__, (int)val1, (int)val2);               \
+            printf ("\n%s():Line: %d in val1: %u val2: %u ", __FUNCTION__, __LINE__, val1, val2);                      \
+            printf ("   val1: 0x%x val2: 0x%x  ", (int)val1, (int)val2);         \
             return false;                                                                                              \
         }                                                                                                              \
     } while (0);
@@ -210,7 +217,7 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
 #define EXPECT_TRUE(val)                                                                                               \
     do {                                                                                                               \
         if (true != ((bool)val)) {                                                                                     \
-            printf ("\n%s:Line: %d %d in val %d ", __FUNCTION__, __LINE__, __COUNTER__, (int)val);                     \
+            printf ("\n%s:Line: %d in val %d ", __FUNCTION__, __LINE__, (int)val);                     \
             return false;                                                                                              \
         }                                                                                                              \
     } while (0);
@@ -218,7 +225,7 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
 #define EXPECT_FALSE(val)                                                                                              \
     do {                                                                                                               \
         if (false != val) {                                                                                            \
-            printf ("\n%s:Line: %d %d in val %d ", __FUNCTION__, __LINE__, __COUNTER__, (int)val);                     \
+            printf ("\n%s:Line: %d val %d ", __FUNCTION__, __LINE__, (int)val);                                        \
             return false;                                                                                              \
         }                                                                                                              \
     } while (0);

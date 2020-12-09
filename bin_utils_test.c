@@ -42,6 +42,35 @@ static bool test_binary_swap (void) {
     return true;
 }
 
+static bool test_swap_bits_u8_slow (void) {
+    EXPECT_EQ (swap_bits_u8_slow (0), 0);
+    EXPECT_EQ (swap_bits_u8_slow (0x01), 0x80);
+    EXPECT_EQ (swap_bits_u8_slow (0x80), 0x01);
+    EXPECT_EQ (swap_bits_u8_slow (0x0F), 0xF0);
+    EXPECT_EQ (swap_bits_u8_slow (0xAA), 0x55);
+    EXPECT_EQ (swap_bits_u8_slow (0xFF), 0xFF);
+    return true;
+}
+
+static bool test_binary_swap_u8 (void) {
+    EXPECT_EQ (swap_bits_u8 (0), 0);
+    EXPECT_EQ (swap_bits_u8 (0x01), 0x80);
+    EXPECT_EQ (swap_bits_u8 (0x80), 0x01);
+    EXPECT_EQ (swap_bits_u8 (0x0F), 0xF0);
+    EXPECT_EQ (swap_bits_u8 (0xAA), 0x55);
+    EXPECT_EQ (swap_bits_u8 (0xFF), 0xFF);
+    return true;
+}
+
+static bool test_binary_swap_u8_all (void) {
+    for (int val = 0; val <= 0xFF; val++) {
+        uint8_t in_val = (uint8_t)val;
+        EXPECT_EQ (swap_bits_u8 (in_val), swap_bits_u8_slow (in_val));
+        EXPECT_EQ (reverse_bits_u8_fast (in_val), swap_bits_u8_slow (in_val));
+    }
+    return true;
+}
+
 static bool test_reverse_dec (void) {
     printf ("\n%s()", __FUNCTION__);
     EXPECT_EQ (sizeof (int64_t), 8);
@@ -64,6 +93,9 @@ static bool test_reverse_dec (void) {
 }
 
 bool test_bin_utils (void) {
+    EXPECT_TRUE (test_binary_swap_u8_all ());
+    EXPECT_TRUE (test_swap_bits_u8_slow ());
+    EXPECT_TRUE (test_binary_swap_u8 ());
     EXPECT_TRUE (test_reverse_dec ());
     EXPECT_TRUE (test_binary_swap ());
     EXPECT_TRUE (test_binary_gap ());

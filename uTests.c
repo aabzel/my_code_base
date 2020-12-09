@@ -14,7 +14,10 @@
 //#endif
 
 #include "bit_utils.h"
+#include "check_address.h"
+#include "compiler_test.h"
 #include "test_mk_2_dot.h"
+#include "test_stack_num.h"
 
 #ifdef HAS_EVAL_CACHE
 #include "test_evaluate_cache.h"
@@ -64,6 +67,7 @@
 #endif
 
 #include "float_utils.h"
+#include "test_decode_way.h"
 //#include "linked_list.h"
 //#include "min_path.h"
 //#include "min_path_diag_scale.h"
@@ -326,9 +330,62 @@ static char *val_2_str (int i) {
     return buff;
 }
 
+static bool test_malloc (void) {
+    bool res = false;
+    char *ptr = malloc (100);
+    if (NULL != ptr) {
+        memset (ptr, 0x00, 100);
+        printf ("\n sizeof(ptr) %d \n", sizeof (ptr)); // 4
+        printf ("\n msize(ptr) %d \n", _msize (ptr));  // 100
+        if (100 == _msize (ptr)) {
+            res = true;
+        }
+        free (ptr);
+    }
+    return res;
+}
+
 int unit_test (void) {
     printf ("\n%s()", __FUNCTION__);
     bool res = false;
+
+    res = test_text_addr ();
+    if (false == res) {
+        printf ("\n test_text_addr error");
+        return TEXT_ADDR_ERROR;
+    }
+#ifdef TEST_STACK_NUM
+    res = test_stack_num ();
+    if (false == res) {
+        printf ("\n test_stack_num error");
+        return TEST_STACK_ERROR;
+    }
+#endif
+
+#ifdef TEST_ENCODE_STRING
+    res = test_encode_string ();
+    if (false == res) {
+        printf ("\n test_encode_string error");
+        return ENCODE_STRING_ERROR;
+    }
+#endif
+    res = test_malloc ();
+    if (false == res) {
+        printf ("\n test_malloc error");
+        return MALLOC_SIZE_ERROR;
+    }
+#if 1
+    res = test_decode_ways ();
+    if (false == res) {
+        printf ("test_decode_ways error");
+        return DECODE_WAYS_ERROR;
+    }
+#endif
+    //    res = test_is_mapped ( );
+    //    if (false == res) {
+    //        printf ("test_is_mapped error");
+    //        return IS_MAP_ERROR;
+    //    }
 
     res = test_valid_ip_address ();
     if (false == res) {

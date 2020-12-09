@@ -73,6 +73,17 @@ uint64_t swap_bits (uint64_t in_val) {
     return out_val;
 }
 
+uint32_t swap_bits_u32 (uint32_t in_val) {
+    uint32_t out_val = 0U;
+    for (uint32_t i = 0U; i < 32U; i++) {
+        if ((((uint32_t)1U) << i) == ((((uint32_t)1U) << i) & in_val)) {
+            out_val |= (((uint32_t)1) << (31U - i));
+        }
+    }
+
+    return out_val;
+}
+
 int64_t powi (int base, int exp) {
     int64_t res = 1;
     for (int i = 0; i < exp; i++) {
@@ -135,4 +146,35 @@ int reverse_dec (int in_x) {
 #endif
     rev_dec = rev_dec * sign;
     return rev_dec;
+}
+
+uint8_t swap_bits_u8 (uint8_t in_val) {
+    uint8_t out_val = 0;
+    uint8_t out = 0;
+    for (uint8_t bit = 0U; bit <= 7U; bit++) {
+        out |= (in_val & 1);
+        out_val = out;
+        out = out << 1;
+        in_val = in_val >> 1;
+    }
+    return out_val;
+}
+
+uint8_t reverse_bits_u8_fast (uint8_t in_val) {
+    uint8_t out_val = 0, power = 7;
+    while (in_val != 0) {
+        out_val += (in_val & 1) << (power--);
+        in_val = in_val >> 1;
+    }
+    return out_val;
+}
+
+uint8_t swap_bits_u8_slow (uint8_t in_val) {
+    uint8_t out_val = 0;
+    for (uint8_t bit = 0U; bit < 8U; bit++) {
+        if ((((uint8_t)1U) << bit) == ((((uint8_t)1U) << bit) & in_val)) {
+            out_val |= (((uint8_t)1) << (7U - bit));
+        }
+    }
+    return out_val;
 }

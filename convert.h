@@ -22,6 +22,8 @@ extern "C" {
 
 #define MAX_PRECISION (10U)
 
+bool is_dec_digit (const char character);
+
 bool is_dec_str (const char str_to_check[], int32_t str_to_check_len);
 bool is_hex_str (const char str_to_check[], int32_t str_to_check_len, uint8_t *const out_shift);
 
