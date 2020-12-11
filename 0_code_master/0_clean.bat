@@ -11,5 +11,6 @@ If exist "*.exe" (
     del *.exe
 )
 
+cd 0_code_master
 
 dir

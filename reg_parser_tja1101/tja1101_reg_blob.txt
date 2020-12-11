@@ -27,6 +27,6 @@ reg addr: 25 reg val: 0x0000 Ob_0000_0000_0000_0000
 reg addr: 26 reg val: 0x0000 Ob_0000_0000_0000_0000
 reg addr: 27 reg val: 0x0020 Ob_0000_0000_0010_0000
 reg addr: 28 reg val: 0x0001 Ob_0000_0000_0000_0001
-reg addr: 29 reg val: 0x00BF Ob_0000_0000_1011_1111
+reg addr: 29 reg val: 0x0140 Ob_0000_0001_0100_0000
 reg addr: 30 reg val: 0x0000 Ob_0000_0000_0000_0000
 reg addr: 31 reg val: 0x2100 Ob_0010_0001_0000_0000

@@ -22,6 +22,11 @@
 #define FLT_MAX (3.40282347e+38f)
 #define FLT_MIN (1.175494350822287508e-38f)
 
+typedef struct xString_t{
+	char *ptr;
+	int len;
+}string_t;
+
 #define NEW_LINE "\n\r"
 
 bool parse_ip (char *inStr, uint16_t inStrLen, uint32_t *outIpAddr);

@@ -56,10 +56,10 @@ bool stack_indexer_is_full (StackIndexer_t *stack_indexer) {
 
 bool stack_indexer_reset (StackIndexer_t *stack_indexer) {
     bool res = false;
-	if (stack_indexer) {
-		stack_indexer->capacity = 0;
-		stack_indexer->pos = 0;
-		res = true;
-	}
-	return res;
+    if (stack_indexer) {
+        stack_indexer->capacity = 0;
+        stack_indexer->pos = 0;
+        res = true;
+    }
+    return res;
 }

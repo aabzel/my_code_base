@@ -355,9 +355,9 @@ int unit_test (void) {
         return TEXT_ADDR_ERROR;
     }
 #ifdef TEST_STACK_NUM
-    res = test_stack_num ();
+    res = test_stack ();
     if (false == res) {
-        printf ("\n test_stack_num error");
+        printf ("\n test_stack error");
         return TEST_STACK_ERROR;
     }
 #endif
@@ -369,11 +369,14 @@ int unit_test (void) {
         return ENCODE_STRING_ERROR;
     }
 #endif
+
+#if 0
     res = test_malloc ();
     if (false == res) {
         printf ("\n test_malloc error");
         return MALLOC_SIZE_ERROR;
     }
+#endif
 #if 1
     res = test_decode_ways ();
     if (false == res) {

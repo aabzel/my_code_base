@@ -200,7 +200,7 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
     do {                                                                                                               \
         if (val1 != val2) {                                                                                            \
             printf ("\n%s():Line: %d in val1: %u val2: %u ", __FUNCTION__, __LINE__, val1, val2);                      \
-            printf ("   val1: 0x%x val2: 0x%x  ", (int)val1, (int)val2);         \
+            printf ("   val1: 0x%x val2: 0x%x  ", (int)val1, (int)val2);                                               \
             return false;                                                                                              \
         }                                                                                                              \
     } while (0);
@@ -217,7 +217,7 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
 #define EXPECT_TRUE(val)                                                                                               \
     do {                                                                                                               \
         if (true != ((bool)val)) {                                                                                     \
-            printf ("\n%s:Line: %d in val %d ", __FUNCTION__, __LINE__, (int)val);                     \
+            printf ("\n%s:Line: %d in val %d ", __FUNCTION__, __LINE__, (int)val);                                     \
             return false;                                                                                              \
         }                                                                                                              \
     } while (0);

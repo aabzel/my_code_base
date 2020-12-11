@@ -23,7 +23,7 @@ bool stack_push (numStack_t *stack_instance, int data);
 bool stack_pop (numStack_t *stack_instance, int *out_data);
 bool stack_peek (numStack_t *stack_instance, int *out_data);
 void stack_free (numStack_t *stack_instance);
-void stack_debug(numStack_t *stack_instance);
+void stack_debug (numStack_t *stack_instance);
 #ifdef __cplusplus
 }
 #endif
