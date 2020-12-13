@@ -10,7 +10,7 @@ extern "C" {
 
 typedef struct xStackIndexer_t {
     uint32_t capacity;
-    uint32_t pos;
+    int32_t pos; // index for next insert
 } StackIndexer_t;
 
 bool stack_indexer_init (StackIndexer_t *StackIndexer, uint32_t capacity);

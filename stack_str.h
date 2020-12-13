@@ -20,8 +20,9 @@ typedef struct xStrStack_t {
 bool stack_str_init (strStack_t **stack_instance, int des_capacity);
 bool stack_str_realloc (strStack_t *stack_instance, int new_des_capacity);
 
+
 bool stack_str_push (strStack_t *stack_instance, char *in_str);
-bool stack_str_pop (strStack_t *stack_instance, char *out_str);
+bool stack_str_pop (strStack_t *stack_instance, char **out_str);
 bool stack_str_peek (strStack_t *stack_instance, char *out_str);
 void stack_str_free (strStack_t *stack_instance);
 

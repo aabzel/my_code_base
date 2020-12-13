@@ -58,11 +58,11 @@ bool stack_str_push(strStack_t *stack_instance, char *in_str) {
         res = true;
         bool temp_res = stack_indexer_is_full (&((stack_instance)->index));
         if (true == temp_res) {
-            printf ("\n stack_ is_full");
+            //printf ("\n stack_ is_full");
             int cur_cap = (stack_instance)->index.capacity;
             res = stack_str_realloc (stack_instance, cur_cap + (cur_cap / 2));
             if (false == res) {
-                printf ("\n stack_realloc error");
+              //  printf ("\n stack_realloc error");
             }
         }
         if (true == res) {
@@ -78,17 +78,32 @@ bool stack_str_push(strStack_t *stack_instance, char *in_str) {
     return res;
 }
 
-bool stack_str_pop(strStack_t *stack_instance, char *out_str) {
-    printf ("\n%s()", __FUNCTION__);
+// Мы не знаем размер строки которую надо возвращать. В стеке может быть строка произвольного размера
+// stack_str_pop должно возвращать указатель на строку предварительно выделив память для этотого.
+bool stack_str_pop(strStack_t *stack_instance, char **out_str) {
+//    printf ("\n%s()", __FUNCTION__);
     bool res = false;
     int pos = stack_instance->index.pos;
-    strcpy(out_str, stack_instance->data_ptr[pos - 1]);
+    if (0==pos) {
+    	printf ("\n errro empty stack", pos);
+    	return false;
+    }
+    int len_of_out_str = 0;
+    char *temp_str;
+    len_of_out_str = strlen(stack_instance->data_ptr[pos - 1]);
+    if (0 < len_of_out_str) {
+    	temp_str = strdup(stack_instance->data_ptr[pos - 1]);
+    } else {
+    	temp_str = strdup("");
+    }
+    *out_str = temp_str;
+    //strcpy(out_str, stack_instance->data_ptr[pos - 1]);
     free(stack_instance->data_ptr[pos - 1]);
-    stack_instance->data_ptr[pos - 1]=NULL;
-    printf ("\n pos=%d data [%s]", pos, out_str);
+    stack_instance->data_ptr[pos - 1] = NULL;
+  //  printf ("\n pos=%d data [%s]", pos, out_str);
     res = stack_indexer_pop (&(stack_instance->index));
     if ((stack_instance->index.pos < (stack_instance->index.capacity / 2)) && (2 < stack_instance->index.capacity)) {
-    	printf (" realloc");
+    //	printf (" realloc");
         res = stack_str_realloc (stack_instance, stack_instance->index.capacity / 2);
     }
     return res;

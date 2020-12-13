@@ -13,6 +13,9 @@
 #include "test_algorithms.h"
 //#endif
 
+#include "decode_string.h"
+#include "test_decode_string.h"
+
 #include "bit_utils.h"
 #include "check_address.h"
 #include "compiler_test.h"

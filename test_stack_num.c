@@ -18,11 +18,13 @@ bool test_stack_num (void) {
     stack_debug (stack_instance);
     EXPECT_TRUE (stack_push (stack_instance, 3));
     stack_debug (stack_instance);
+
     EXPECT_TRUE (stack_push (stack_instance, 4));
     stack_debug (stack_instance);
 
     EXPECT_TRUE (stack_push (stack_instance, 5));
     stack_debug (stack_instance);
+
     EXPECT_TRUE (stack_push (stack_instance, 6));
     stack_debug (stack_instance);
 
@@ -30,18 +32,23 @@ bool test_stack_num (void) {
     EXPECT_TRUE (stack_pop (stack_instance, &out_data));
     stack_debug (stack_instance);
     EXPECT_EQ (6, out_data);
+
     EXPECT_TRUE (stack_pop (stack_instance, &out_data));
     stack_debug (stack_instance);
     EXPECT_EQ (5, out_data);
+
     EXPECT_TRUE (stack_pop (stack_instance, &out_data));
     stack_debug (stack_instance);
     EXPECT_EQ (4, out_data);
+
     EXPECT_TRUE (stack_pop (stack_instance, &out_data));
     stack_debug (stack_instance);
     EXPECT_EQ (3, out_data);
+
     EXPECT_TRUE (stack_pop (stack_instance, &out_data));
     stack_debug (stack_instance);
     EXPECT_EQ (2, out_data);
+
     EXPECT_TRUE (stack_pop (stack_instance, &out_data));
     stack_debug (stack_instance);
     EXPECT_EQ (1, out_data);
@@ -51,7 +58,6 @@ bool test_stack_num (void) {
     return true;
 }
 
-
 bool test_stack_str (void) {
     printf ("\n%s()", __FUNCTION__);
     strStack_t *stack_str_instance;
@@ -59,9 +65,9 @@ bool test_stack_str (void) {
 
     EXPECT_TRUE (stack_str_push (stack_str_instance, "1"));
     stack_str_debug (stack_str_instance);
-    EXPECT_TRUE (stack_str_push (stack_str_instance, "2"));
+    EXPECT_TRUE (stack_str_push (stack_str_instance, "22"));
     stack_str_debug (stack_str_instance);
-    EXPECT_TRUE (stack_str_push (stack_str_instance, "3"));
+    EXPECT_TRUE (stack_str_push (stack_str_instance, "333"));
     stack_str_debug (stack_str_instance);
     EXPECT_TRUE (stack_str_push (stack_str_instance, "4"));
     stack_str_debug (stack_str_instance);
@@ -69,27 +75,55 @@ bool test_stack_str (void) {
     stack_str_debug (stack_str_instance);
     EXPECT_TRUE (stack_str_push (stack_str_instance, "6"));
     stack_str_debug (stack_str_instance);
+    EXPECT_TRUE (stack_str_push (stack_str_instance, ""));
+    stack_str_debug (stack_str_instance);
 #if 1
 
-    char out_str[100];
-    EXPECT_TRUE (stack_str_pop (stack_str_instance, out_str));
+    char *out_str = NULL;
+
+    EXPECT_TRUE (stack_str_pop (stack_str_instance, &out_str));
+    stack_str_debug (stack_str_instance); // [1] [2] [3] [4] [5]
+    EXPECT_EQ_STR ("", out_str);//
+    free(out_str);
+    out_str = NULL;
+
+
+    EXPECT_TRUE (stack_str_pop (stack_str_instance, &out_str));
     stack_str_debug (stack_str_instance); // [1] [2] [3] [4] [5]
     EXPECT_EQ_STR ("6", out_str);//
-    EXPECT_TRUE (stack_str_pop (stack_str_instance, out_str));
+    free(out_str);
+    out_str = NULL;
+
+    EXPECT_TRUE (stack_str_pop (stack_str_instance, &out_str));
     stack_str_debug (stack_str_instance); //[1] [2] [3] [4]
-    EXPECT_EQ_STR ("5", out_str); // error
-    EXPECT_TRUE (stack_str_pop (stack_str_instance, out_str));
+    EXPECT_EQ_STR ("5", out_str); //
+    free(out_str);
+    out_str = NULL;
+
+    EXPECT_TRUE (stack_str_pop (stack_str_instance, &out_str));
     stack_str_debug (stack_str_instance);
     EXPECT_EQ_STR ("4", out_str);
-    EXPECT_TRUE (stack_str_pop (stack_str_instance, out_str));
+    free(out_str);
+    out_str = NULL;
+
+    EXPECT_TRUE (stack_str_pop (stack_str_instance, &out_str));
     stack_str_debug (stack_str_instance);
-    EXPECT_EQ_STR ("3", out_str);
-    EXPECT_TRUE (stack_str_pop (stack_str_instance, out_str));
+    EXPECT_EQ_STR ("333", out_str);
+    free(out_str);
+    out_str = NULL;
+
+    EXPECT_TRUE (stack_str_pop (stack_str_instance, &out_str));
     stack_str_debug (stack_str_instance);
-    EXPECT_EQ_STR ("2", out_str);
-    EXPECT_TRUE (stack_str_pop (stack_str_instance, out_str));
+    EXPECT_EQ_STR ("22", out_str);
+    free(out_str);
+    out_str = NULL;
+
+    EXPECT_TRUE (stack_str_pop (stack_str_instance, &out_str));
     stack_str_debug (stack_str_instance);
     EXPECT_EQ_STR ("1", out_str);
+    free(out_str);
+    out_str = NULL;
+
 
     stack_str_free (stack_str_instance);
 #endif
