@@ -191,7 +191,17 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
 #define EXPECT_EQ_STR(strL, strR)                                                                                      \
     do {                                                                                                               \
         if (0 != strcmp (strL, strR)) {                                                                                \
-            printf ("\n%s:Line: %d %d in \nstrL: [%s] \nstrR: [%s] ", __FUNCTION__, __LINE__, __COUNTER__, strL, strR);    \
+            printf ("\n%s:Line: %d %d in \nstrL: [%s] \nstrR: [%s] ", __FUNCTION__, __LINE__, __COUNTER__, strL,       \
+                    strR);                                                                                             \
+            return false;                                                                                              \
+        }                                                                                                              \
+    } while (0);
+
+#define EXPECT_NE(val1, val2)                                                                                          \
+    do {                                                                                                               \
+        if (val1 == val2) {                                                                                            \
+            printf ("\n%s():Line: %d in val1: %u val2: %u ", __FUNCTION__, __LINE__, val1, val2);                      \
+            printf ("   val1: 0x%x val2: 0x%x  ", (int)val1, (int)val2);                                               \
             return false;                                                                                              \
         }                                                                                                              \
     } while (0);

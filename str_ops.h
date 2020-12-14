@@ -22,10 +22,10 @@
 #define FLT_MAX (3.40282347e+38f)
 #define FLT_MIN (1.175494350822287508e-38f)
 
-typedef struct xString_t{
-	char *ptr;
-	int len;
-}string_t;
+typedef struct xString_t {
+    char *ptr;
+    int len;
+} string_t;
 
 #define NEW_LINE "\n\r"
 
@@ -109,7 +109,7 @@ bool extract_numbers (char *s, int length);
 void find_diff (char *oldStr, int oldLen, char *newStr, int newLen, int *outOldSubStringLen, int *outNewSubStringLen,
                 char **oldSubStr, char **newSubStr);
 
-char * str_append (char *in_str, char letter) ;
-char *str_cat_dyn(char *in_str1, char *in_str2 );
+char *str_append (char *in_str, char letter);
+char *str_cat_dyn (char *in_str1, char *in_str2);
 
 #endif /* __STRING_OPS_H */

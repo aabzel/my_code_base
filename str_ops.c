@@ -1530,36 +1530,37 @@ char *camel_case_2_snake_case1 (char *camel_case_str) {
     return out_str;
 }
 
-char* str_append(char *in_str, char letter) {
+char *str_append (char *in_str, char letter) {
 #ifdef DEBUG_STR_OPS
-	printf("\n%s()", __FUNCTION__);
+    printf ("\n%s()", __FUNCTION__);
 #endif
-	int str_len = 0;
-	if (in_str) {
-		str_len = strlen(in_str);
-	}
-	char *out_str = malloc(str_len + 2);
-	if (out_str) {
-		if (in_str) {
-			if (0 < str_len) {
-				strncpy(out_str, in_str, str_len);
-			}
-			free(in_str);
-		}
-		out_str[str_len] = letter;
-		out_str[str_len+1] = '\0';
-	}
-	return out_str;
+    int str_len = 0;
+    if (in_str) {
+        str_len = strlen (in_str);
+    }
+    char *out_str = malloc (str_len + 2);
+    if (out_str) {
+        if (in_str) {
+            if (0 < str_len) {
+                strncpy (out_str, in_str, str_len);
+            }
+            free (in_str);
+        }
+        out_str[str_len] = letter;
+        out_str[str_len + 1] = '\0';
+    }
+    return out_str;
 }
 
-char *str_cat_dyn(char *in_str1, char *in_str2 ){
+char *str_cat_dyn (char *in_str1, char *in_str2) {
     char *out_str = NULL;
-    int len1=strlen(in_str1);
-    int len2=strlen(in_str2);
-    out_str = (char *)malloc (len1+len2);
+    int len1 = strlen (in_str1);
+    int len2 = strlen (in_str2);
+    out_str = (char *)malloc (len1 + len2);
     if (out_str) {
-    	strcpy(out_str, in_str1);
-    	strcat(out_str, in_str2);
+        strcpy (out_str, in_str1);
+        strcat (out_str, in_str2);
+        free (in_str1);
     }
-	return out_str;
+    return out_str;
 }

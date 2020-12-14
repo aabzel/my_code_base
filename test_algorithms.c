@@ -100,8 +100,47 @@ static bool test_avarage (void) {
     return true;
 }
 
+static bool test_two_sum (void) {
+    printf ("\n[d] %s()", __FUNCTION__);
+    int return_size = 0;
+    int nums1[] = {3, 3};
+    int *result;
+
+    int nums2[] = {3, 2, 4};
+    return_size = 0;
+    result = twoSum (nums2, 3, 6, &return_size);
+    EXPECT_NE (NULL, result);
+    print_array_int (result, 2);
+    EXPECT_EQ (2, return_size);
+    EXPECT_EQ (1, result[0]);
+    EXPECT_EQ (2, result[1]);
+    free(result);
+
+    result = twoSum (nums1, 2, 6, &return_size);
+    EXPECT_NE (NULL, result);
+    print_array_int (result, 2);
+    EXPECT_EQ (2, return_size);
+    EXPECT_EQ (0, result[0]);
+    EXPECT_EQ (1, result[1]);
+    free(result);
+
+
+    int nums3[] = {2, 7, 11, 15};
+    return_size = 0;
+    result = twoSum (nums3, 4, 9, &return_size);
+    EXPECT_NE (NULL, result);
+    print_array_int (result, 2);
+    EXPECT_EQ (2, return_size);
+    EXPECT_EQ (0, result[0]);
+    EXPECT_EQ (1, result[1]);
+    free(result);
+
+    return true;
+}
+
 bool test_algorithms (void) {
     printf ("\n[d] %s()", __FUNCTION__);
+    EXPECT_TRUE (test_two_sum ());
     // EXPECT_TRUE (test_avarage());
     EXPECT_TRUE (test_k_smallest ());
     EXPECT_TRUE (test_algo ());

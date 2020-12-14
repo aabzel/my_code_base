@@ -134,7 +134,7 @@ void print_array_int (int *alphabet, int sizeOfAlphabet) {
     if (sizeOfAlphabet < 0) {
         return;
     }
-    printf ("<%d>  ", sizeOfAlphabet);
+    printf ("\n<%d>  ", sizeOfAlphabet);
     printf ("[");
     for (int i = 0; i < sizeOfAlphabet; i++) {
         if (i != (sizeOfAlphabet - 1)) {

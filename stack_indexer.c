@@ -29,8 +29,8 @@ bool stack_indexer_pop (StackIndexer_t *stack_indexer) {
         if (0 < stack_indexer->pos) {
             stack_indexer->pos--;
             res = true;
-        }else {
-        	printf ("\n Error stack_indexer_pop");
+        } else {
+            printf ("\n Error stack_indexer_pop");
         }
     }
     return res;

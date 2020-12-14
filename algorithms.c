@@ -14,6 +14,37 @@
 #include <stdlib.h>
 #include <string.h>
 
+#if 0
+bool hasSum(int* arr, size_t n, int sum){
+    qsort(arr, n, compare);
+    for(int i=0; i<n; i++) {
+        if (is_exist(arr,n,sum-arr[i])) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool is_exist(int* arr, size_t n, int val) {
+    int start = 0;
+    int end = n;
+    int i = n/2; //
+    while (start<end) {
+        if(val == arr[i]) {
+            return true;
+        }else if(val<arr[i]) {
+            end=i;
+        }else {
+            //arr[i] <val
+            start = i;
+        }//
+        i = (start+end)>>1;
+    }
+    return false;
+}
+
+#endif
+
 uint32_t average_quick (uint32_t a, uint32_t b) {
     uint32_t res;
     res = (a | b) - ((a ^ b) >> 1);
@@ -211,10 +242,10 @@ typedef struct xPox_t {
 
 // <0 if x<y
 // >0 if x>y
-// ÓÔÂ‰ÂÎÂÌËÂ ÙÛÌÍˆËË Ò‡‚ÌÂÌËˇ ‰Îˇ Ï‡ÒÒË‚‡ int'Ó‚
+// √Æ√Ø√∞√•√§√•√´√•√≠√®√• √¥√≥√≠√™√∂√®√® √±√∞√†√¢√≠√•√≠√®√ø √§√´√ø √¨√†√±√±√®√¢√† int'√Æ√¢
 int cmp_int (const void *p1, const void *p2) {
-    int x = *(int *)p1; // ‰Ó·˚‚‡ÂÏ ËÁ ÛÍ‡Á‡ÚÂÎˇ ÁÌ‡˜ÂÌËÂ ÔÓ ˝ÚÓÏÛ ÛÍ‡Á‡ÚÂÎ˛
-    int y = *(int *)p2; // ‰Ó·˚‚‡ÂÏ ËÁ ÛÍ‡Á‡ÚÂÎˇ ÁÌ‡˜ÂÌËÂ ÔÓ ˝ÚÓÏÛ ÛÍ‡Á‡ÚÂÎ˛
+    int x = *(int *)p1; // √§√Æ√°√ª√¢√†√•√¨ √®√ß √≥√™√†√ß√†√≤√•√´√ø √ß√≠√†√∑√•√≠√®√• √Ø√Æ √Ω√≤√Æ√¨√≥ √≥√™√†√ß√†√≤√•√´√æ
+    int y = *(int *)p2; // √§√Æ√°√ª√¢√†√•√¨ √®√ß √≥√™√†√ß√†√≤√•√´√ø √ß√≠√†√∑√•√≠√®√• √Ø√Æ √Ω√≤√Æ√¨√≥ √≥√™√†√ß√†√≤√•√´√æ
     return x - y;
 }
 
@@ -250,4 +281,78 @@ int update_max (int curMax, int newVal) {
         newMax = curMax;
     }
     return newMax;
+}
+
+static bool is_exist_insorted (int *arr, size_t n, int val, int skip_index, int *second) {
+    printf ("\n[d] %s() target %d skip %d", __FUNCTION__, val,skip_index);
+    int start = 0;
+    int end = n;
+    (*second) = -1;
+    int i = n >> 1; //
+#if 0
+    if (1 == n) {
+        if ((arr[0] == val) && (i != skip_index)) {
+            (*second) = 0;
+            return true;
+        }
+    }
+    if ((arr[n - 1] == val) && (i != skip_index)) {
+        (*second) = n - 1;
+        return true;
+    }
+#endif
+    while (start < end) {
+    	printf("\n [%d...%d]",start,end);
+        if ((val == arr[i]) && (i != skip_index)) {
+            (*second) = i;
+            return true;
+        } else if (val < arr[i]) {
+            end = i;
+        } else {
+            // arr[i] <val
+            start = i;
+        } //
+        i = (start + end) >> 1;
+    }
+    return false;
+}
+
+static int comparator (const void *x1, const void *x2) {
+    return (*(int *)x1 - *(int *)x2); // –µ—Å–ª–∏ —Ä–µ–∑—É–ª—å—Ç–∞—Ç –≤—ã—á–∏—Ç–∞–Ω–∏—è —Ä–∞–≤–µ–Ω 0, —Ç–æ —á–∏—Å–ª–∞ —Ä–∞–≤–Ω—ã, < 0: x1 < x2; > 0: x1 > x2
+}
+
+// we know that val1 and val2 exists in array nums. find its index
+
+int get_index(int *nums, int nums_size, int target, int skip_index) {
+	for (int i=0; i<nums_size; i++) {
+		if ((nums[i]==target) && (i!=skip_index) ) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+int *twoSum (int *nums, int numsSize, int target, int *returnSize) {
+    (*returnSize) = 0;
+    int i_snd = -1;
+    int *origin_nums = malloc(sizeof(int)*numsSize);
+    if (origin_nums ) {
+    	memcpy(origin_nums,nums,sizeof(int)*numsSize);
+    }
+    qsort ((void *)nums, numsSize, sizeof (int), comparator);
+    for (int i = 0; i < numsSize; i++) {
+        if (is_exist_insorted (nums, numsSize, target - nums[i], i, &i_snd)) {
+        	int val1=nums[i];
+        	int val2=target - nums[i];
+            int *result = malloc (2 * sizeof (int));
+            if (result) {
+                result[0] = get_index(origin_nums,   numsSize,  val1,-1);
+                result[1] = get_index(origin_nums,   numsSize,  val2,result[0]);
+            	printf("\nspot [%d %d]",result[0],result[1]);
+                (*returnSize) = 2;
+                return result;
+            }
+        }
+    }
+    return NULL;
 }

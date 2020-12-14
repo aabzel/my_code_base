@@ -1312,19 +1312,15 @@ static bool get_str_len (const char char_str[], int32_t *str_len) {
     return str_not_empty;
 }
 
-
-
 bool is_letter (const char character) {
     bool res = false;
-    if ((('a' <= character) && (character <= 'z')) ||
-    	(('A' <= character) && (character <= 'Z'))) {
+    if ((('a' <= character) && (character <= 'z')) || (('A' <= character) && (character <= 'Z'))) {
         res = true;
     } else {
         res = false;
     }
     return res;
 }
-
 
 bool is_dec_digit (const char character) {
     bool res = false;

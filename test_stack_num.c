@@ -83,47 +83,45 @@ bool test_stack_str (void) {
 
     EXPECT_TRUE (stack_str_pop (stack_str_instance, &out_str));
     stack_str_debug (stack_str_instance); // [1] [2] [3] [4] [5]
-    EXPECT_EQ_STR ("", out_str);//
-    free(out_str);
+    EXPECT_EQ_STR ("", out_str);          //
+    free (out_str);
     out_str = NULL;
-
 
     EXPECT_TRUE (stack_str_pop (stack_str_instance, &out_str));
     stack_str_debug (stack_str_instance); // [1] [2] [3] [4] [5]
-    EXPECT_EQ_STR ("6", out_str);//
-    free(out_str);
+    EXPECT_EQ_STR ("6", out_str);         //
+    free (out_str);
     out_str = NULL;
 
     EXPECT_TRUE (stack_str_pop (stack_str_instance, &out_str));
     stack_str_debug (stack_str_instance); //[1] [2] [3] [4]
-    EXPECT_EQ_STR ("5", out_str); //
-    free(out_str);
+    EXPECT_EQ_STR ("5", out_str);         //
+    free (out_str);
     out_str = NULL;
 
     EXPECT_TRUE (stack_str_pop (stack_str_instance, &out_str));
     stack_str_debug (stack_str_instance);
     EXPECT_EQ_STR ("4", out_str);
-    free(out_str);
+    free (out_str);
     out_str = NULL;
 
     EXPECT_TRUE (stack_str_pop (stack_str_instance, &out_str));
     stack_str_debug (stack_str_instance);
     EXPECT_EQ_STR ("333", out_str);
-    free(out_str);
+    free (out_str);
     out_str = NULL;
 
     EXPECT_TRUE (stack_str_pop (stack_str_instance, &out_str));
     stack_str_debug (stack_str_instance);
     EXPECT_EQ_STR ("22", out_str);
-    free(out_str);
+    free (out_str);
     out_str = NULL;
 
     EXPECT_TRUE (stack_str_pop (stack_str_instance, &out_str));
     stack_str_debug (stack_str_instance);
     EXPECT_EQ_STR ("1", out_str);
-    free(out_str);
+    free (out_str);
     out_str = NULL;
-
 
     stack_str_free (stack_str_instance);
 #endif
@@ -132,33 +130,32 @@ bool test_stack_str (void) {
 
 bool test_ptr_array (void) {
     printf ("\n%s()", __FUNCTION__);
-	char **ch_ptr = NULL;
-	int i=0;
-	ch_ptr = malloc (10*sizeof(int *));
-	for ( i=0; i<10;i++) {
-		char buff[55];
-		sprintf(buff,"%d",i);
-		ch_ptr[i] = strdup(buff);
-	}
+    char **ch_ptr = NULL;
+    int i = 0;
+    ch_ptr = malloc (10 * sizeof (int *));
+    for (i = 0; i < 10; i++) {
+        char buff[55];
+        sprintf (buff, "%d", i);
+        ch_ptr[i] = strdup (buff);
+    }
 
-	for ( i = 0; i < 10; i++) {
-		printf("\n%s",ch_ptr[i]);
-	}
+    for (i = 0; i < 10; i++) {
+        printf ("\n%s", ch_ptr[i]);
+    }
 
-	for ( i = 0; i < 10; i++) {
-		free(ch_ptr[i]);
-		ch_ptr[i] = NULL;
-	}
+    for (i = 0; i < 10; i++) {
+        free (ch_ptr[i]);
+        ch_ptr[i] = NULL;
+    }
 
-	free(ch_ptr);
-	ch_ptr=NULL;
+    free (ch_ptr);
+    ch_ptr = NULL;
     return true;
 }
 
-
 bool test_stack (void) {
-	EXPECT_TRUE( test_ptr_array ());
-	EXPECT_TRUE( test_stack_num ());
-	EXPECT_TRUE( test_stack_str () );
+    EXPECT_TRUE (test_ptr_array ());
+    EXPECT_TRUE (test_stack_num ());
+    EXPECT_TRUE (test_stack_str ());
     return true;
 }
