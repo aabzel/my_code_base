@@ -105,6 +105,7 @@ bool is_hex_number (char letter);
 uint16_t calc_hex_val_len (char *inStr);
 bool delete_char (char *inOutStr, int curIndex);
 
+char findTheDifference (char *s, char *t);
 bool extract_numbers (char *s, int length);
 void find_diff (char *oldStr, int oldLen, char *newStr, int newLen, int *outOldSubStringLen, int *outNewSubStringLen,
                 char **oldSubStr, char **newSubStr);

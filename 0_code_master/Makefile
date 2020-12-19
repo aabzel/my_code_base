@@ -20,25 +20,38 @@ CFLAGS  += -Wall
 #CFLAGS  +=-pedantic
 #CFLAGS += -ftime-report
 
-
 #OPT = -DTEST_FIFO
 #OPT += -DDEBUG_RESULT
 #OPT += -DHAS_AURIGA_TASK
-OPT += -DTEST_ENCODE_STRING
 OPT += -DHAS_UTESTS
+OPT += -DLINKED_LIST
 OPT += -DHAS_ALGORITHMS
 #OPT += -DHAS_PERMUTATION
 #OPT += -DHAS_PERMUTATION_TEST
 OPT += -DDEBUG_ASSEMBLE_FROM_ALPH
+OPT += -DTEST_HASH_SET
+OPT += -DTEST_ENCODE_STRING
+OPT += -DTEST_LINKED_LIST
 OPT += -DTEST_ARRAY
+OPT += -DTEST_STACK_NUM
 OPT += -DHAS_ARRAY
 #OPT += -DHAS_EVAL_CACHE
 #OPT += -DDEBUG_PERMUT
 #OPT += -DTEST_CONVERT
-OPT += -DTEST_STACK_NUM
-
 #OPT += -DHAS_COMBINATIONS_TEST
-
+OPT += -DDEPLOY_DIF_SUB_STR_ERROR 
+OPT += -DTEST_STR_STR 
+OPT += -DTEST_UNIQ_DIAG_PATH_TASK 
+OPT += -DTEST_MIN_PATH_DIAG 
+OPT += -DTEST_MIN_DIAG_SCALE_SUMM 
+OPT += -DTEST_UNIQ_PATH_TASK 
+OPT += -DTEST_UIO_COMB 
+OPT += -DTEST_YA_TASK 
+OPT += -DTEST_HEAP_CON 
+OPT += -DTEST_HEAP_SAME 
+OPT += -DBIN_HEAP_RAND_ADD 
+OPT += -DDEPLOY_TEST_AVL_TREE 
+OPT += -DTEST_BIT_UTILS 
          
 #files to link:
 LFLAGS= -static
@@ -55,6 +68,8 @@ SOURCES += $(SRC_PATH)arrays.c
 SOURCES += $(SRC_PATH)stack_indexer.c
 SOURCES += $(SRC_PATH)stack_num.c
 SOURCES += $(SRC_PATH)stack_str.c
+SOURCES += $(SRC_PATH)hash_set.c
+SOURCES += $(SRC_PATH)test_hash_set.c
 SOURCES += $(SRC_PATH)test_stack_num.c
 SOURCES += $(SRC_PATH)decode_string.c
 SOURCES += $(SRC_PATH)compiler_test.c
@@ -79,6 +94,8 @@ SOURCES += $(SRC_PATH)fifo_index.c
 SOURCES += $(SRC_PATH)fifo_char.c
 SOURCES += $(SRC_PATH)helper.c
 SOURCES += $(SRC_PATH)linked_list.c
+#SOURCES += $(SRC_PATH)linked_list_array.c
+SOURCES += $(SRC_PATH)test_linked_list.c
 SOURCES += $(SRC_PATH)validate_ip_address.c
 SOURCES += $(SRC_PATH)test_validate_ip_address.c
 SOURCES += $(SRC_PATH)str_ops.c

@@ -94,62 +94,30 @@ bool test_lengthOfLongestSubstring (void) {
 }
 
 bool test_detect_change (void) {
-    char *oldSubString;
-    char *newSubString;
-    int oldSubStringLen = -1;
+    char *old_sub_string=NULL;
+    char *newSubString=NULL;
+    int old_sub_stringLen = -1;
     int newSubStringLen = -1;
     int cmpRes = 0;
     // "aaabb"
     // "aaa11bb"
-    detect_change ("aaabb", "aaa11bb", &oldSubString, &oldSubStringLen, &newSubString, &newSubStringLen);
-    if (0 != oldSubStringLen) {
-        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
-        return false;
-    }
-    if (2 != newSubStringLen) {
-        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
-        return false;
-    }
-    cmpRes = strncmp (newSubString, "11", 2);
-    if (0 != cmpRes) {
-        printf ("\n%s %d %s", __FUNCTION__, __COUNTER__, newSubString);
-        return false;
-    }
+    detect_change ("aaabb", "aaa11bb", &old_sub_string, &old_sub_stringLen, &newSubString, &newSubStringLen);
+    EXPECT_EQ(0, old_sub_stringLen);
+    EXPECT_EQ(2, newSubStringLen);
+    //EXPECT_EQ_STR("", old_sub_string);
+    EXPECT_EQ_STR_LEN("11", newSubString,2);
 
-    detect_change ("aaa11bb", "aaabb", &oldSubString, &oldSubStringLen, &newSubString, &newSubStringLen);
-    if (2 != oldSubStringLen) {
-        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
-        return false;
-    }
-    if (0 != newSubStringLen) {
-        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
-        return false;
-    }
-    cmpRes = strncmp (oldSubString, "11", 2);
-    if (0 != cmpRes) {
-        printf ("\n%s %d %s", __FUNCTION__, __COUNTER__, oldSubString);
-        return false;
-    }
+    detect_change ("aaa11bb", "aaabb", &old_sub_string, &old_sub_stringLen, &newSubString, &newSubStringLen);
+    EXPECT_EQ(2, old_sub_stringLen);
+    EXPECT_EQ(0, newSubStringLen);
+    EXPECT_EQ_STR_LEN("11", old_sub_string,2);
+    //EXPECT_EQ_STR("", newSubString);
 
-    detect_change ("aa111bb", "aa22bb", &oldSubString, &oldSubStringLen, &newSubString, &newSubStringLen);
-    if (3 != oldSubStringLen) {
-        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
-        return false;
-    }
-    if (2 != newSubStringLen) {
-        printf ("\n%s %d", __FUNCTION__, __COUNTER__);
-        return false;
-    }
-    cmpRes = strncmp (oldSubString, "111", 3);
-    if (0 != cmpRes) {
-        printf ("\n%s %d %s", __FUNCTION__, __COUNTER__, oldSubString);
-        return false;
-    }
-    cmpRes = strncmp (newSubString, "22", 2);
-    if (0 != cmpRes) {
-        printf ("\n%s %d %s", __FUNCTION__, __COUNTER__, newSubString);
-        return false;
-    }
+    detect_change ("aa111bb", "aa22bb", &old_sub_string, &old_sub_stringLen, &newSubString, &newSubStringLen);
+    EXPECT_EQ(3, old_sub_stringLen);
+    EXPECT_EQ(2, newSubStringLen);
+    EXPECT_EQ_STR_LEN("111", old_sub_string,3);
+    EXPECT_EQ_STR_LEN("22", newSubString,2);
 
     return true;
 }
@@ -162,8 +130,8 @@ bool test_detect_change (void) {
 //""0,   "11"2  oldSub""0    newSub"11"2
 
 // Examples:
-//"aaabb"5,   "aaa11bb"7  oldSub""0    newSub"11"2    < "11" inserted at index 3  oldSubStringLen 0  newSubStringLen: 2
-//"aa111bb"7, "aa22bb"6   oldSub"111"3 newSub"22"2    < "11" inserted at index 3  oldSubStringLen 3  newSubStringLen: 2
+//"aaabb"5,   "aaa11bb"7  oldSub""0    newSub"11"2    < "11" inserted at index 3  old_sub_stringLen 0  newSubStringLen: 2
+//"aa111bb"7, "aa22bb"6   oldSub"111"3 newSub"22"2    < "11" inserted at index 3  old_sub_stringLen 3  newSubStringLen: 2
 
 bool test_reverse (void) {
     int cmpRes = 0;
@@ -469,6 +437,23 @@ static bool test_2_upper_case (void) {
     return true;
 }
 
+static bool test_find_the_difference (void) {
+    char diff_char;
+    printf ("\n%s()", __FUNCTION__);
+    diff_char = findTheDifference ("abcd", "abcde");
+    EXPECT_EQ ('e', diff_char);
+
+    diff_char = findTheDifference ("", "y");
+    EXPECT_EQ ('y', diff_char);
+
+    diff_char = findTheDifference ("ae", "aea");
+    EXPECT_EQ ('a', diff_char);
+
+    diff_char = findTheDifference ("a", "aa");
+    EXPECT_EQ ('a', diff_char);
+    return true;
+}
+
 bool test_str_ops (void) {
     EXPECT_TRUE (test_camel_case_2_snake_case ());
     EXPECT_TRUE (test_2_upper_case ());
@@ -478,5 +463,7 @@ bool test_str_ops (void) {
     EXPECT_EQ (true, test_try_canch_hex_uint32 ());
     EXPECT_EQ (true, test_replace_substr ());
     EXPECT_EQ (true, test_str_char_replace ());
+    EXPECT_TRUE (test_detect_change ());
+    EXPECT_TRUE (test_find_the_difference ());
     return true;
 }

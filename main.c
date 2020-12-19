@@ -65,7 +65,6 @@ static bool print_ent (void) {
     }
     return true;
 }
-#endif
 
 void inc (char *array) {
     array++;
@@ -77,6 +76,7 @@ void inc (char *array) {
     *ptr2 = 'R';
     (*ptr2)++;
 }
+#endif
 
 #ifdef RAND_GENERATOR
 uint64_t GetTimeStamp () {

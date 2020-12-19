@@ -1,260 +1,26 @@
 #include "linked_list.h"
 
-#include "arrays.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 
-#if 0
-static void reverse_util (ListNode* curr, ListNode* prev, ListNode** head);
-
-list_node_t *pHead;
-
-list_node_t Node1;
-list_node_t Node2;
-list_node_t Node3;
-list_node_t Node4;
-list_node_t Node5;
-
-
-void init_list (void) {
-    pHead = &Node1;
-
-    Node1.val = 1;
-    Node1.nextNode = &Node2;
-
-    Node2.val = 2;
-    Node2.nextNode = &Node3;
-
-    Node3.val = 3;
-    Node3.nextNode = &Node4;
-
-    Node4.val = 4;
-    Node4.nextNode = &Node5;
-
-    Node5.val = 5;
-    Node5.nextNode = NULL;
-}
-#endif
-
-#if 0
-void list_print_reverse (void) {
-    list_print_rev (&Node1);
-    printf ("\n");
-}
-#endif
-
-#if 0
-
-void list_print_rev (list_node_t *pHead) {
-    if (pHead) {
-        list_print_rev (pHead->nextNode);
-        printf (" %d", pHead->val);
-    }
-}
-#endif
-#if 0
-void list_print_fwd (void) {
-    list_node_t *curNode = &Node1;
-    while (NULL != curNode->nextNode) {
-        printf (" %d", curNode->val);
-        curNode = curNode->nextNode;
-    }
-    printf (" %d", curNode->val);
-    printf ("\n");
-}
-#endif
-
-/* Function to insert a node at the beginging of the linked list */
-bool push_val (list_node_t **pInHead, int newVal) {
-    bool res = false;
-    /* allocate node */
-    list_node_t *newNodePtr = (list_node_t *)malloc (sizeof (list_node_t));
-    if (newNodePtr) {
-        newNodePtr->data = newVal;
-        newNodePtr->nextNode = (*pInHead);
-        (*pInHead) = newNodePtr;
+/* Function to push a node */
+bool list_add_node_front (ListNode_t** headNode, int new_data) {
+	bool res = false;
+	ListNode_t* newNode = NULL;
+    newNode = (ListNode_t*) malloc (sizeof(ListNode_t*));
+    if (NULL != newNode) {
+        (newNode)->val = new_data;
+        (newNode)->next = (*headNode);
+        *headNode = newNode;
         res = true;
     }
     return res;
 }
-
-/* Function to print linked list */
-void print_list2 (list_node_t *headNode) {
-    list_node_t *curNode = headNode;
-    printf ("\n Start of list\n");
-    while (curNode != NULL) {
-        printf ("%d  ", curNode->data);
-        curNode = curNode->nextNode;
-    }
-    printf ("\n End of list\n");
-}
-
 #if 0
-void save_list_to_file (list_node_t *pInHead, char *filename) {
-    FILE * fp;
-    printf ("\nSave to file: %s\n", filename);
-    fp = fopen (filename, "a");
-    if (fp) {
-        list_node_t *curNode = pInHead;
-        while (curNode) {
-            print_array_to_file_pointer (fp, curNode->data.pArr, curNode->data.arrSize);
-            curNode = curNode->nextNode;
-        }
-        /* write 10 lines of text into the file stream*/
-        //for (i = 0; i < numItem; i++) {
-        //    fprintf (fp, "%d ", array [i]);
-        //}
-        //fprintf (fp, "\n");
-        fclose (fp);
-    } else {
-        printf ("\n Unable to open file %s", filename);
-    }
-
-}
-
-bool linked_list_deinit (list_node_t *pInHead) {
-    list_node_t *curNode = pInHead;
-    list_node_t *prevNode = pInHead;
-    bool res = false;
-    if (pInHead) {
-        if (NULL == curNode->nextNode) {
-            free (curNode->data.pArr);
-            free (curNode);
-            res = true;
-        } else {
-            free (curNode->data.pArr);
-            while (NULL != curNode->nextNode) {
-                prevNode = curNode;
-                curNode = curNode->nextNode;
-                free (curNode->data.pArr);
-                free (prevNode);
-            }
-            res = true;
-        }
-    }
-    return res;
-}
-
-bool linked_list_add_array (list_node_t **pInHead, int *inArr, int arrSize) {
-    /*Find the end of Linked List*/
-    bool res = false;
-    if (0 < arrSize) {
-        list_node_t *newNode = NULL;
-        int amountOfElem = list_num_of_elements (*pInHead);
-        if (0 < amountOfElem) {
-            list_node_t *pCurNode = *pInHead;
-            list_node_t *pEndNode = NULL;
-            while (NULL != pCurNode->nextNode) {
-                pCurNode = pCurNode->nextNode;
-            }
-            pEndNode = pCurNode;
-            newNode = malloc (sizeof(list_node_t));
-            if (newNode) {
-                newNode->nextNode = NULL;
-                newNode->data.arrSize = arrSize;
-                newNode->data.pArr = memdup (inArr, sizeof(int) * arrSize);
-                pEndNode->nextNode = newNode;
-                res = true;
-            } else {
-                printf ("\nUnable to malloc new node!\n");
-            }
-        }
-        if (0 == amountOfElem) {
-            newNode = malloc (sizeof(list_node_t));
-            if (newNode) {
-                newNode->nextNode = NULL;
-                newNode->data.arrSize = arrSize;
-                newNode->data.pArr = memdup (inArr, sizeof(int) * arrSize);
-
-                *pInHead = newNode;
-                res = true;
-            } else {
-                printf ("\nUnable to malloc new node!\n");
-            }
-        }
-    } else {
-        printf ("\nArray is 0\n");
-    }
-    return res;
-
-}
-
-int list_num_of_data_byte (list_node_t *pHead) {
-    int amountOfByte = 0;
-    if (pHead) {
-        list_node_t *pCurNode = pHead;
-        if (pCurNode) {
-            while (pCurNode) {
-                amountOfByte += (pCurNode->data.arrSize) * (sizeof(int));
-                pCurNode = pCurNode->nextNode;
-            }
-        }
-    }
-    return amountOfByte;
-}
-
-list_node_t *get_node_by_index (list_node_t *pHead, int desInd) {
-    list_node_t *pCurNode = pHead;
-    list_node_t *pRetNode = NULL;
-    int curIndex = 0;
-    if (pCurNode) {
-        while (pCurNode) {
-            if (desInd == curIndex) {
-                pRetNode = pCurNode;
-                break;
-            }
-            curIndex++;
-            pCurNode = pCurNode->nextNode;
-        }
-    }
-
-    return pRetNode;
-}
-
-int list_num_of_elements (list_node_t *pHead) {
-    int amountOfElem = 0;
-    if (pHead) {
-        list_node_t *pCurNode = pHead;
-        if (pCurNode) {
-            while (pCurNode) {
-                amountOfElem++;
-                pCurNode = pCurNode->nextNode;
-            }
-        }
-    }
-
-    return amountOfElem;
-}
-
-void print_list1 (list_node_t *pHead) {
-    int numElem = list_num_of_elements (pHead);
-    printf ("\nList content: amount of item: [%d]\n", numElem);
-    if (pHead) {
-        list_node_t *pCurNode = pHead;
-        while (pCurNode) {
-            print_curr_array (pCurNode->data.pArr, pCurNode->data.arrSize);
-            pCurNode = pCurNode->nextNode;
-        }
-    }
-}
-
-/* Function to push a node */
-void list_add_node_front (ListNode** headNode, int new_data) {
-    ListNode* newNode = NULL;
-    newNode = (ListNode*) malloc (sizeof(ListNode));
-    if (NULL != newNode) {
-        newNode->val = new_data;
-        newNode->next = (*headNode);
-        *headNode = newNode;
-    }
-}
-
-
-ListNode* reverseList (ListNode* head) {
-    ListNode* prevNode = NULL;
-    ListNode* currentNode = head;
-    ListNode* nextNode = NULL;
+ListNode_t** reverseList (ListNode_t** head) {
+    ListNode_t** prevNode = NULL;
+    ListNode_t** currentNode = head;
+    ListNode_t** nextNode = NULL;
     while (currentNode != NULL) {
         // Store next
         nextNode = currentNode->next;
@@ -272,15 +38,16 @@ ListNode* reverseList (ListNode* head) {
 
 // This function mainly calls reverseUtil()
 // with prev as NULL
-void reverse_rec (ListNode** head) {
+void reverse_rec (ListNode_t*** head) {
     if (!head)
         return;
     reverse_util (*head, NULL, head);
 }
+#endif
 
 // A simple and tail recursive function to reverse
 // a linked list.  prev is passed as NULL initially.
-static void reverse_util (ListNode* curr, ListNode* prev, ListNode** head) {
+static void reverse_util (ListNode_t* curr, ListNode_t* prev, ListNode_t** head) {
     /* If last node mark it head*/
     if (!curr->next) {
         *head = curr;
@@ -291,7 +58,7 @@ static void reverse_util (ListNode* curr, ListNode* prev, ListNode** head) {
     }
 
     /* Save curr->next node for recursive call */
-    ListNode* next = curr->next;
+    ListNode_t* next = curr->next;
 
     /* and update next ..*/
     curr->next = prev;
@@ -299,9 +66,9 @@ static void reverse_util (ListNode* curr, ListNode* prev, ListNode** head) {
     reverse_util (next, curr, head);
 }
 
-ListNode* middle_node (ListNode* head) {
-    ListNode* slow = head;
-    ListNode* fast = head;
+struct xListNode_t* middle_node (struct xListNode_t* head) {
+	struct xListNode_t* slow = head;
+	struct xListNode_t* fast = head;
     while (fast != NULL && fast->next != NULL) {
         slow = slow->next;
         fast = fast->next->next;
@@ -309,21 +76,115 @@ ListNode* middle_node (ListNode* head) {
     return slow;
 }
 
-bool delete_node (ListNode* node) {
-    if (NULL == node) {
-        return false;
-    } else {
-        if (node->next == NULL) {
-            printf ("This is last node, require head, can't be freed\n");
-            return false;
-        }
-        ListNode* temp = node->next;
-        // Copy data of the next node to current node
-        node->val = node->next->val;
-        node->next = node->next->next;
-        free (temp);
-        return true;
-    }
+int linked_list_counts (ListNode_t* head_node){
+	int cnt =0;
+	if(head_node){
+	ListNode_t* cur_node= head_node;
+	while (NULL!=cur_node) {
+		cnt++;
+		cur_node=cur_node->next;
+	}
+	}
+	return cnt;
 }
 
+ListNode_t* is_data_exist_linked_list(ListNode_t *head_node, int data) {
+#ifdef DEBUG_LINKED_LIST
+	printf("\n[d] %s() %p", __FUNCTION__, head_node);
 #endif
+	ListNode_t *cur_node = NULL;
+	int cnt = 0;
+	int num = linked_list_counts ( head_node);
+	if (head_node) {
+		cur_node = head_node;
+		while (NULL != cur_node) {
+			printf(",");
+			cnt++;
+#ifdef DEBUG_LINKED_LIST
+     		printf("\n[d] %s() iter cnt %d", __FUNCTION__, cnt);
+#endif
+     		if (num<cnt) {
+     			cur_node = NULL;
+     			break;
+     		}
+    		if (data == cur_node->val) {
+	    		break;
+		    }
+			if(cur_node->next) {
+    			cur_node = cur_node->next;
+			}else {
+				cur_node = NULL;
+			}
+
+		}
+	} else {
+		printf("\n[d] error node");
+	}
+	return cur_node;
+}
+
+bool delete_node (ListNode_t** node) {
+	printf("\n[d] %s() node=%p ", __FUNCTION__, *node);
+
+
+    if (NULL == (*node)) {
+    	printf ("\n[d] empty list\n");
+        return false;
+    } else {
+      	printf("\n[d] %s() node=%p val=%d", __FUNCTION__, *node, (*node)->val);
+    	printf ("\n[d] valid node %p\n",* node);
+        if ((*node)->next == NULL) {
+            printf ("\n[d] This is last node\n");
+            (*node)->val=0;
+            //free(*node);
+            (*node) = NULL;
+            printf ("\n[d] Empty list\n");
+            return true;
+        }else {
+        ListNode_t* temp = (*node)->next;
+        // Copy data of the next node to current node
+        (*node)->val = (*node)->next->val;
+        (*node)->next = (*node)->next->next;
+        free (temp);
+        return true;
+        }
+    }
+    return false;
+}
+
+bool linked_list_deinit (ListNode_t** head) {
+	printf("\n[d] %s()", __FUNCTION__);
+	if (NULL==head) {
+		return true;
+	}
+	if (NULL==* head) {
+		return true;
+	}
+	bool res = false;
+	int del_cnt = 0;
+	int num_el = linked_list_counts ( *head);
+	printf("\n[d] %d", num_el);
+	while (true==delete_node (head)) {
+		del_cnt++;
+		printf (".");
+        if (num_el<del_cnt) {
+        	printf("\n[e] hand on");
+        	res = false;
+        	break;
+        }
+	}
+	printf("\n[d] del node done ");
+	if (num_el==del_cnt) {
+		printf("\n[d] del fine ");
+		res = true;
+		(* head)=NULL;
+	}else {
+		printf("\n[d] cnt!=del %d!=%d",num_el,del_cnt);
+	}
+
+	printf("\n[d] %s() done", __FUNCTION__);
+	return res;
+}
+
+
+

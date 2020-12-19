@@ -14,37 +14,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#if 0
-bool hasSum(int* arr, size_t n, int sum){
-    qsort(arr, n, compare);
-    for(int i=0; i<n; i++) {
-        if (is_exist(arr,n,sum-arr[i])) {
-            return true;
-        }
-    }
-    return false;
-}
-
-bool is_exist(int* arr, size_t n, int val) {
-    int start = 0;
-    int end = n;
-    int i = n/2; //
-    while (start<end) {
-        if(val == arr[i]) {
-            return true;
-        }else if(val<arr[i]) {
-            end=i;
-        }else {
-            //arr[i] <val
-            start = i;
-        }//
-        i = (start+end)>>1;
-    }
-    return false;
-}
-
-#endif
-
 uint32_t average_quick (uint32_t a, uint32_t b) {
     uint32_t res;
     res = (a | b) - ((a ^ b) >> 1);
@@ -283,10 +252,13 @@ int update_max (int curMax, int newVal) {
     return newMax;
 }
 
+// 2 3 3
 static bool is_exist_insorted (int *arr, size_t n, int val, int skip_index, int *second) {
-    printf ("\n[d] %s() target %d skip %d", __FUNCTION__, val,skip_index);
+#ifdef DEBUG_2_SUM
+    printf ("\n[d] %s() target %d skip %d", __FUNCTION__, val, skip_index);
+#endif
     int start = 0;
-    int end = n;
+    int end = n - 1;
     (*second) = -1;
     int i = n >> 1; //
 #if 0
@@ -301,8 +273,14 @@ static bool is_exist_insorted (int *arr, size_t n, int val, int skip_index, int 
         return true;
     }
 #endif
+    int max_num_iteration = log2 (n);
+    int cnt = 0;
     while (start < end) {
-    	printf("\n [%d...%d]",start,end);
+        // i=2
+        cnt++;
+#ifdef DEBUG_2_SUM
+        printf ("\n [%d....%d]", start, end);
+#endif
         if ((val == arr[i]) && (i != skip_index)) {
             (*second) = i;
             return true;
@@ -312,43 +290,51 @@ static bool is_exist_insorted (int *arr, size_t n, int val, int skip_index, int 
             // arr[i] <val
             start = i;
         } //
+        // 2 +3/2=    5/2 = 2.5
         i = (start + end) >> 1;
+        if (max_num_iteration < cnt) {
+#ifdef DEBUG_2_SUM
+            printf ("\n hang on error!");
+#endif
+            break;
+        }
     }
     return false;
 }
 
-static int comparator (const void *x1, const void *x2) {
-    return (*(int *)x1 - *(int *)x2); // если результат вычитания равен 0, то числа равны, < 0: x1 < x2; > 0: x1 > x2
-}
+static int comparator (const void *x1, const void *x2) { return (*(int *)x1 - *(int *)x2); }
 
 // we know that val1 and val2 exists in array nums. find its index
 
-int get_index(int *nums, int nums_size, int target, int skip_index) {
-	for (int i=0; i<nums_size; i++) {
-		if ((nums[i]==target) && (i!=skip_index) ) {
-			return i;
-		}
-	}
-	return -1;
+int get_index (int *nums, int nums_size, int target, int skip_index) {
+    for (int i = 0; i < nums_size; i++) {
+        if ((nums[i] == target) && (i != skip_index)) {
+            return i;
+        }
+    }
+    return -1;
 }
 
 int *twoSum (int *nums, int numsSize, int target, int *returnSize) {
     (*returnSize) = 0;
     int i_snd = -1;
-    int *origin_nums = malloc(sizeof(int)*numsSize);
-    if (origin_nums ) {
-    	memcpy(origin_nums,nums,sizeof(int)*numsSize);
+    int *origin_nums = malloc (sizeof (int) * numsSize);
+    if (origin_nums) {
+        memcpy (origin_nums, nums, sizeof (int) * numsSize);
     }
     qsort ((void *)nums, numsSize, sizeof (int), comparator);
     for (int i = 0; i < numsSize; i++) {
         if (is_exist_insorted (nums, numsSize, target - nums[i], i, &i_snd)) {
-        	int val1=nums[i];
-        	int val2=target - nums[i];
+            int val1 = nums[i];
+            int val2 = target - nums[i];
             int *result = malloc (2 * sizeof (int));
             if (result) {
-                result[0] = get_index(origin_nums,   numsSize,  val1,-1);
-                result[1] = get_index(origin_nums,   numsSize,  val2,result[0]);
-            	printf("\nspot [%d %d]",result[0],result[1]);
+                result[0] = get_index (origin_nums, numsSize, val1, -1);
+                result[1] = get_index (origin_nums, numsSize, val2, result[0]);
+                qsort ((void *)result, 2, sizeof (int), comparator);
+#ifdef DEBUG_2_SUM
+                printf ("\nspot [%d %d]", result[0], result[1]);
+#endif
                 (*returnSize) = 2;
                 return result;
             }

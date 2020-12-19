@@ -11,17 +11,9 @@ extern "C" {
 
 #include <stdint.h>
 
-typedef struct xList_node_t {
-    int data;
-    struct xList_node_t *nextNode;
-} list_node_t;
 
-#if 0
-typedef struct xList_array_node_t {
-    Array_t data;
-    struct xList_array_node_t *nextNode;
-} list_array_node_t;
-#endif
+
+
 
 #ifdef __cplusplus
 }

@@ -103,8 +103,17 @@ static bool test_avarage (void) {
 static bool test_two_sum (void) {
     printf ("\n[d] %s()", __FUNCTION__);
     int return_size = 0;
-    int nums1[] = {3, 3};
     int *result;
+
+    int nums4[] = {3, 2, 3};
+    return_size = 0;
+    result = twoSum (nums4, 3, 6, &return_size);
+    EXPECT_NE (NULL, result);
+    print_array_int (result, 2);
+    EXPECT_EQ (2, return_size);
+    EXPECT_EQ (0, result[0]);
+    EXPECT_EQ (2, result[1]);
+    free (result);
 
     int nums2[] = {3, 2, 4};
     return_size = 0;
@@ -114,16 +123,16 @@ static bool test_two_sum (void) {
     EXPECT_EQ (2, return_size);
     EXPECT_EQ (1, result[0]);
     EXPECT_EQ (2, result[1]);
-    free(result);
+    free (result);
 
+    int nums1[] = {3, 3};
     result = twoSum (nums1, 2, 6, &return_size);
     EXPECT_NE (NULL, result);
     print_array_int (result, 2);
     EXPECT_EQ (2, return_size);
     EXPECT_EQ (0, result[0]);
     EXPECT_EQ (1, result[1]);
-    free(result);
-
+    free (result);
 
     int nums3[] = {2, 7, 11, 15};
     return_size = 0;
@@ -133,7 +142,7 @@ static bool test_two_sum (void) {
     EXPECT_EQ (2, return_size);
     EXPECT_EQ (0, result[0]);
     EXPECT_EQ (1, result[1]);
-    free(result);
+    free (result);
 
     return true;
 }

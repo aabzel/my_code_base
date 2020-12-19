@@ -93,7 +93,9 @@ char *decodeString (char *in_text) {
                 if (false == res) {
                     printf ("\n stack_push error ");
                 } else {
+#ifdef DEBUG_DECODE_STR
                     printf ("\n stack_push fine %d ", cnt);
+#endif
                 }
             }
             cnt = 0;
@@ -101,7 +103,9 @@ char *decodeString (char *in_text) {
             if (false == res) {
                 printf ("\n [e] stack_str_push error <%s>", curr);
             } else {
+#ifdef DEBUG_DECODE_STR
                 printf ("\n [!] stack_str_push fine <%s> ", curr);
+#endif
             }
             free (curr);
             curr = strdup ("");
@@ -123,7 +127,9 @@ char *decodeString (char *in_text) {
 #endif
                     decoded_part_str = str_cat_dyn (decoded_part_str, curr);
                 }
+#ifdef DEBUG_DECODE_STR
                 printf ("\n  decoded part <%s>", decoded_part_str);
+#endif
             } else {
                 printf ("\n [e] stack_pop error nums %d", nums);
             }
@@ -134,7 +140,9 @@ char *decodeString (char *in_text) {
                 printf ("\n [e] stack_str_pop error ");
                 out_str = str_cat_dyn (out_str, decoded_part_str);
             } else {
+#ifdef DEBUG_DECODE_STR
                 printf ("\n [d] stack_str_pop fine cur=<%s> out_str=<%s>", curr, decoded_part_str);
+#endif
                 curr = str_cat_dyn (curr, decoded_part_str);
                 out_str = str_cat_dyn (strdup (""), curr);
             }
@@ -142,13 +150,17 @@ char *decodeString (char *in_text) {
     } // for
 
     if (0 < strlen (prefix_str)) {
+#ifdef DEBUG_DECODE_STR
         printf ("\n [d] prefix_str=<%s>", prefix_str);
+#endif
         out_str = str_cat_dyn (prefix_str, out_str);
     }
 
     if (true == is_siffix) {
         if (0 < strlen (curr)) {
+#ifdef DEBUG_DECODE_STR
             printf ("\n [d] remain cur=<%s>", curr);
+#endif
             out_str = str_cat_dyn (out_str, curr);
         }
     }

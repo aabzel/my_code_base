@@ -8,6 +8,7 @@ extern "C" {
 #include "bin_heap_array.h"
 #include "custom_type.h"
 #include "linked_list.h"
+#include "linked_list_array.h"
 
 #include <stdint.h>
 
@@ -62,7 +63,6 @@ uint32_t max_val (uint32_t amountofbit);
 int *grayCode (int n, int *returnSize);
 void print_bit_representation (float val);
 
-int **list_of_arr_to_arr_of_arr (list_node_t *const listOfArrays, int *const amountOfArrays, int **returnColumnSizes);
 double calc_median (int *const inArr, int sizeOfArr);
 long long summ_array (int const *const inArr, int sizeOfArr);
 double avrage_two (int val1, int val2);

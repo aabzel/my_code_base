@@ -15,7 +15,7 @@ extern "C" {
 #define DEBUG_IND_RANGE 0
 #define DEBUG_CURR_ARRAY 0
 
-extern list_node_t *permutllHead;
+extern list_array_node_t *permutllHead;
 
 void permute_from_set (int amount_of_num, int *array_of_numbers, int array_size);
 
@@ -36,7 +36,7 @@ bool print_permutations_ll (int *inCurrentArray, int inCurrSize, int *inIndexArr
                             int targetPermutIndex, int startIndex, int endIndex, int *outArray);
 
 bool is_permutation (int *arr1, int *arr2, int sizeOfArr);
-bool is_permutated_element_in_list (list_node_t *pHead, int *inArr, int arrSize);
+bool is_permutated_element_in_list (list_array_node_t *pHead, int *inArr, int arrSize);
 void permutation (int n);
 bool print_permutations (int N);
 

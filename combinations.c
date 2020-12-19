@@ -3,6 +3,7 @@
 #include "algorithms.h"
 #include "arrays.h"
 #include "linked_list.h"
+#include "linked_list_array.h"
 #include "permutations.h"
 #include "str_ops.h"
 #include "utils.h"
@@ -12,7 +13,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-list_node_t *combinationListHead = NULL;
+list_array_node_t *combinationListHead = NULL;
 
 void print_combinations (char *const alphabet) {
     int32_t alphabetLength = strlen (alphabet);
@@ -78,12 +79,12 @@ void combine (int n, int k) {
     }
 }
 
-bool assemble_combination_list (list_node_t *pPermutHead, list_node_t **pCombineHead) {
+bool assemble_combination_list (list_array_node_t *pPermutHead, list_array_node_t **pCombineHead) {
 #if DEBUG_ASSEMBLE_COMB
     int cnt = 0;
     printf ("%s()", __FUNCTION__);
 #endif
-    list_node_t *curNode = pPermutHead;
+    list_array_node_t *curNode = pPermutHead;
     bool res = false;
     if (curNode) {
 #ifdef SAVE_IN_LIST

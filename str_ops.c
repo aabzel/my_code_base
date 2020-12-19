@@ -12,8 +12,8 @@
 #include <string.h>
 
 #if 0
-static int findIndOfFirstDiffFromStart (char *oldStr, char *newStr);
-static int findIndOfFirstDiffFromEnd (char *oldStr, char *newStr);
+static int findIndOfFirstDiffFromStart (char *old_str, char *newStr);
+static int findIndOfFirstDiffFromEnd (char *old_str, char *newStr);
 #endif
 
 #if 0
@@ -517,44 +517,44 @@ int find_max_sec (char *string, char sripChar) {
 // Examples:
 //"aaabb"5,   "aaa11bb"7  oldSub""0    newSub"11"2    < "11" inserted at index 3  oldSubStringLen 0  newSubStringLen: 2
 //"aa111bb"7, "aa22bb"6   oldSub"111"3 newSub"22"2    < "11" inserted at index 3  oldSubStringLen 3  newSubStringLen: 2
-void detect_change (char *oldStr, char *newStr, char **oldSubStr, int *oldSubStringLen, char **newSubStr,
+void detect_change (char *old_str, char *newStr, char **oldSubStr, int *oldSubStringLen, char **newSubStr,
                     int *newSubStringLen) {
     (void)*oldSubStr;
     (void)*newSubStr;
     *oldSubStringLen = 0;
     *newSubStringLen = 0;
-    int oldStrLen = strlen (oldStr);
+    int old_strLen = strlen (old_str);
     int newStrLen = strlen (newStr);
-    find_diff (oldStr, oldStrLen, newStr, newStrLen, oldSubStringLen, newSubStringLen, oldSubStr, newSubStr);
+    find_diff (old_str, old_strLen, newStr, newStrLen, oldSubStringLen, newSubStringLen, oldSubStr, newSubStr);
 }
 
 #if 0
-static int findIndOfFirstDiffFromStart (char *oldStr, char *newStr) {
-    if (oldStr && newStr) {
-        int oldStrLen = strlen (oldStr);
+static int findIndOfFirstDiffFromStart (char *old_str, char *newStr) {
+    if (old_str && newStr) {
+        int old_strLen = strlen (old_str);
         int newStrLen = strlen (newStr);
-        for (int i = 0; i < min (oldStrLen, newStrLen); i++) {
-            if (oldStr [i] != newStr [i]) {
+        for (int i = 0; i < min (old_strLen, newStrLen); i++) {
+            if (old_str [i] != newStr [i]) {
                 return i;
             }
         }
     }
     return -1;
 }
-static int findIndOfFirstDiffFromEnd (char *oldStr, char *newStr) {
+static int findIndOfFirstDiffFromEnd (char *old_str, char *newStr) {
     int val = -1;
-    if (oldStr && newStr) {
-        char *replicaOld = strdup (oldStr);
+    if (old_str && newStr) {
+        char *replicaOld = strdup (old_str);
         char *replicaNew = strdup (newStr);
         if (replicaOld && replicaNew) {
-            int oldStrLen = strlen (oldStr);
+            int old_strLen = strlen (old_str);
             int newStrLen = strlen (newStr);
             printf ("\nreplicaOld [%s]", replicaOld);
             printf ("\nreplicaNew [%s]", replicaNew);
             reverse_string (replicaOld);
             reverse_string (replicaNew);
             val = findIndOfFirstDiffFromStart (replicaOld, replicaNew);
-            val = max (newStrLen, oldStrLen) - val - 1;
+            val = max (newStrLen, old_strLen) - val - 1;
             free (replicaOld);
             free (replicaNew);
         } else {
@@ -566,8 +566,8 @@ static int findIndOfFirstDiffFromEnd (char *oldStr, char *newStr) {
 #endif
 
 void reverse_string (char *inOutStr) {
-    int oldStrLen = strlen (inOutStr);
-    reverseString (inOutStr, oldStrLen);
+    int old_strLen = strlen (inOutStr);
+    reverseString (inOutStr, old_strLen);
 }
 
 void reverseString (char *inOutStr, int length) {
@@ -576,42 +576,59 @@ void reverseString (char *inOutStr, int length) {
     }
 }
 
-void find_diff (char *oldStr, int oldLen, char *newStr, int newLen, int *outOldSubStringLen, int *outNewSubStringLen,
+char findTheDifference (char *old_str, char *newStr) {
+    printf ("\n%s()", __FUNCTION__);
+    char *oldSubStr = NULL;
+    int oldSubStringLen = 0;
+    char *newSubStr = NULL;
+    char out_char = 0;
+    int newSubStringLen = 0;
+    detect_change (old_str, newStr, &oldSubStr, &oldSubStringLen, &newSubStr, &newSubStringLen);
+    if(1==newSubStringLen){
+    	out_char = newSubStr[0];
+    }
+    if(1==oldSubStringLen){
+    	out_char = oldSubStr[0];
+    }
+    return out_char;
+}
+
+void find_diff (char *old_str, int oldLen, char *newStr, int newLen, int *outOldSubStringLen, int *outNewSubStringLen,
                 char **oldSubStr, char **newSubStr) {
     // printf ("\n");
-    // print_str_head (oldStr, oldLen);
+    // print_str_head (old_str, oldLen);
     // printf (" ");
     // print_str_head (newStr, newLen);
     if ((0 < oldLen) && (0 < newLen)) {
-        if (oldStr[0] == newStr[0]) {
-            find_diff (&oldStr[1], oldLen - 1, &newStr[1], newLen - 1, outOldSubStringLen, outNewSubStringLen,
+        if (old_str[0] == newStr[0]) {
+            find_diff (&old_str[1], oldLen - 1, &newStr[1], newLen - 1, outOldSubStringLen, outNewSubStringLen,
                        oldSubStr, newSubStr);
         } else {
-            if (oldStr[oldLen - 1] == newStr[newLen - 1]) {
-                // oldStr [oldLen - 1] = '\0';
+            if (old_str[oldLen - 1] == newStr[newLen - 1]) {
+                // old_str [oldLen - 1] = '\0';
                 // newStr [newLen - 1] = '\0';
-                find_diff (oldStr, oldLen - 1, newStr, newLen - 1, outOldSubStringLen, outNewSubStringLen, oldSubStr,
+                find_diff (old_str, oldLen - 1, newStr, newLen - 1, outOldSubStringLen, outNewSubStringLen, oldSubStr,
                            newSubStr);
             } else {
                 *outOldSubStringLen = oldLen;
                 *outNewSubStringLen = newLen;
-                *oldSubStr = oldStr;
+                *oldSubStr = old_str;
                 *newSubStr = newStr;
                 // printf ("\n");
-                print_str_head (oldStr, oldLen);
+                //print_str_head (old_str, oldLen);
                 // printf ("\n");
-                print_str_head (newStr, newLen);
+                //print_str_head (newStr, newLen);
             }
         }
     } else {
         *outOldSubStringLen = oldLen;
         *outNewSubStringLen = newLen;
-        *oldSubStr = oldStr;
+        *oldSubStr = old_str;
         *newSubStr = newStr;
         // printf ("\n");
-        print_str_head (oldStr, oldLen);
+        //print_str_head (old_str, oldLen);
         // printf ("\n");
-        print_str_head (newStr, newLen);
+        //print_str_head (newStr, newLen);
     }
 }
 

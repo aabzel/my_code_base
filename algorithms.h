@@ -44,7 +44,6 @@ int cmp_int (const void *p1, const void *p2);
 void swap_char (char *const x, char *const y);
 int *generate_num_array (int n);
 char *generate_num_string (int n);
-bool hasSum (int *arr, size_t n, int sum);
 int *twoSum (int *nums, int numsSize, int target, int *returnSize);
 
 #ifdef __cplusplus

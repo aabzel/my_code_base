@@ -515,19 +515,6 @@ int find_max_sec (char *string, char sripChar) {
 //"b"5,   "11b"7  oldSub""0    newSub"11"2
 //""0,   "11"2  oldSub""0    newSub"11"2
 
-// Examples:
-//"aaabb"5,   "aaa11bb"7  oldSub""0    newSub"11"2    < "11" inserted at index 3  oldSubStringLen 0  newSubStringLen: 2
-//"aa111bb"7, "aa22bb"6   oldSub"111"3 newSub"22"2    < "11" inserted at index 3  oldSubStringLen 3  newSubStringLen: 2
-void detect_change (char *oldStr, char *newStr, char **oldSubStr, int *oldSubStringLen, char **newSubStr,
-                    int *newSubStringLen) {
-    (void)*oldSubStr;
-    (void)*newSubStr;
-    *oldSubStringLen = 0;
-    *newSubStringLen = 0;
-    int oldStrLen = strlen (oldStr);
-    int newStrLen = strlen (newStr);
-    find_diff (oldStr, oldStrLen, newStr, newStrLen, oldSubStringLen, newSubStringLen, oldSubStr, newSubStr);
-}
 
 #if 0
 static int findIndOfFirstDiffFromStart (char *oldStr, char *newStr) {

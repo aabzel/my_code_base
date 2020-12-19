@@ -212,7 +212,7 @@ bool print_permutations (int N) {
     return res;
 }
 
-list_node_t *permutllHead = NULL;
+list_array_node_t *permutllHead = NULL;
 
 /* Function to print permutations of string
  This function takes three parameters:
@@ -388,13 +388,13 @@ bool is_permutation (int *arr1, int *arr2, int sizeOfArr) {
 }
 
 #if 0
-bool is_permutated_element_in_list (list_node_t *pHead, int *inArr, int arrSize) {
+bool is_permutated_element_in_list (list_array_node_t *pHead, int *inArr, int arrSize) {
 #if DEBUG_PERMUT_ELEN_IN_LIST
     int static cnt = 0;
     printf ("\n%s() %d", __FUNCTION__,++cnt);
 #endif
     bool res = false;
-    list_node_t *curNode = pHead;
+    list_array_node_t *curNode = pHead;
     if (curNode) {
         while (NULL != curNode) {
             if (arrSize == curNode->data.arrSize) {

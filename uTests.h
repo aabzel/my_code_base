@@ -6,19 +6,7 @@
 #include "bin_search_tree.h"
 #include "utils.h"
 
-#define DEPLOY_DIF_SUB_STR_ERROR 0
-#define TEST_STR_STR 0
-#define TEST_UNIQ_DIAG_PATH_TASK 0
-#define TEST_MIN_PATH_DIAG 0
-#define TEST_MIN_DIAG_SCALE_SUMM 0
-#define TEST_UNIQ_PATH_TASK 0
-#define TEST_UIO_COMB 0
-#define TEST_YA_TASK 0
-#define TEST_HEAP_CON 0
-#define TEST_HEAP_SAME 0
-#define BIN_HEAP_RAND_ADD 0
-#define DEPLOY_TEST_AVL_TREE 0
-#define TEST_BIT_UTILS 1
+
 
 typedef enum {
     FINE = 0,
@@ -127,6 +115,8 @@ typedef enum {
     ENCODE_STRING_ERROR = 109,
     TEST_STACK_ERROR = 110,
     TEXT_ADDR_ERROR = 111,
+	LINKED_LIST_ERROR = 112,
+	TEST_HASH_ERROR = 113,
 
     NUM_ERROR = 120
 } utError_t;
@@ -188,6 +178,16 @@ bool fill_up_heap_continuous_vals (BinaryHeap_t *binHeap, int maxVal, bool isMax
 void assemble_tree_from_array (TreeNode_t **root, int *arr, int arraySize);
 void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
 
+
+#define EXPECT_EQ_STR_LEN(strL, strR, len)                                                                                      \
+    do {                                                                                                               \
+        if (0 != strncmp (strL, strR, len)) {                                                                                \
+            printf ("\n%s:Line: %d %d in \nstrL: [%s] \nstrR: [%s] ", __FUNCTION__, __LINE__, __COUNTER__, strL,       \
+                    strR);                                                                                             \
+            return false;                                                                                              \
+        }                                                                                                              \
+    } while (0);
+
 #define EXPECT_EQ_STR(strL, strR)                                                                                      \
     do {                                                                                                               \
         if (0 != strcmp (strL, strR)) {                                                                                \
@@ -218,8 +218,10 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
 #define EXPECT_HEX_EQ(val1, val2)                                                                                      \
     do {                                                                                                               \
         if (val1 != val2) {                                                                                            \
+        	printf("\033[0;31m");                                                                                      \
             printf ("\n%s:Line: %d %d in val1: %x val2: %x ", __FUNCTION__, __LINE__, __COUNTER__, (int)val1,          \
                     (int)val2);                                                                                        \
+            printf("\033[0m");                                                                                         \
             return false;                                                                                              \
         }                                                                                                              \
     } while (0);
@@ -227,7 +229,9 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
 #define EXPECT_TRUE(val)                                                                                               \
     do {                                                                                                               \
         if (true != ((bool)val)) {                                                                                     \
+            printf("\033[0;31m");                                                                                      \
             printf ("\n%s:Line: %d in val %d ", __FUNCTION__, __LINE__, (int)val);                                     \
+            printf("\033[0m");                                                                                         \
             return false;                                                                                              \
         }                                                                                                              \
     } while (0);
