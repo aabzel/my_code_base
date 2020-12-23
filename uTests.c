@@ -13,17 +13,25 @@
 #include "test_algorithms.h"
 #endif
 
+#ifdef HAS_VECTOR_CALC
+#include "test_vector_calc.h"
+#endif
+
 #if 0
 #include "decode_string.h"
 #include "test_decode_string.h"
 #endif
-
 
 #include "bit_utils.h"
 #include "check_address.h"
 #include "compiler_test.h"
 #include "test_mk_2_dot.h"
 #include "test_stack_num.h"
+
+#ifdef HAS_HOTEL
+#include "hotel.h"
+#include "test_hotel.h"
+#endif
 
 #ifdef HAS_EVAL_CACHE
 #include "test_evaluate_cache.h"
@@ -74,7 +82,6 @@
 
 #include "float_utils.h"
 #include "test_decode_way.h"
-
 
 #include "linked_list.h"
 #include "linked_list_array.h"
@@ -161,8 +168,6 @@ static bool test_parse_mac (void) {
     return true;
 }
 #endif
-
-
 
 #if 0
 static bool test_parse_serial (void) {
@@ -279,8 +284,6 @@ static bool test_parse_phy_addr (void) {
 }
 #endif
 
-
-
 #if 0
 static bool test_parse_phy_reg_vals (void) {
     printf ("\n%s()", __FUNCTION__);
@@ -316,8 +319,6 @@ static bool test_parse_phy_reg_vals (void) {
 }
 #endif
 
-
-
 #if 0
 static bool test_static (void) {
     static int a;
@@ -331,8 +332,6 @@ static bool test_static (void) {
 }
 #endif
 
-
-
 #if 0
 bool is_arr_pat (uint8_t *arr, uint32_t size, uint8_t patt) {
     bool res = true;
@@ -344,8 +343,6 @@ bool is_arr_pat (uint8_t *arr, uint32_t size, uint8_t patt) {
     return res;
 }
 #endif
-
-
 
 #if 0
 static bool work_with_stack (int n, uint8_t pat) {
@@ -362,8 +359,6 @@ static bool work_with_stack (int n, uint8_t pat) {
 }
 #endif
 
-
-
 #if 0
 static char *val_2_str (int i) {
     printf ("\n%s() %d", __FUNCTION__, i);
@@ -372,8 +367,6 @@ static char *val_2_str (int i) {
     return buff;
 }
 #endif
-
-
 
 #if 0
 static bool test_malloc (void) {
@@ -392,25 +385,39 @@ static bool test_malloc (void) {
 }
 #endif
 
-
 int unit_test (void) {
     printf ("\n%s()", __FUNCTION__);
     bool res = false;
 
+#ifdef HAS_VECTOR_CALC
+    res = test_vector_calc ();
+    if (false == res) {
+        printf ("\n test_vector_calc error");
+        return VECTOR_ERROR;
+    }
+#endif
+
+#ifdef HAS_HOTEL
+    res = test_guests ();
+    if (false == res) {
+        printf ("\n test_guests error");
+        return HOTEL_ERROR;
+    }
+#endif
+
 #ifdef TEST_LINKED_LIST
-    res = test_linked_list_ints();
+    res = test_linked_list_ints ();
     if (false == res) {
         printf ("\n test_linked_list_ints error");
         return LINKED_LIST_ERROR;
     }
 #endif
 
-
 #ifdef TEST_HASH_SET
-    res = test_hash_set();
+    res = test_hash_set ();
     if (false == res) {
-         printf ("\n test_hash_set error");
-         return TEST_HASH_ERROR;
+        printf ("\n test_hash_set error");
+        return TEST_HASH_ERROR;
     }
 #endif
 
@@ -498,7 +505,7 @@ int unit_test (void) {
         printf ("bin utils error");
         return BIN_UTILS_ERROR;
     }
-	#endif
+#endif
 
 #ifdef TEST_MATRIX_ACCESS
     res = test_matrix_accsess ();
@@ -515,7 +522,6 @@ int unit_test (void) {
         return STATIC_LOCAL_ERROR;
     }
 #endif
-
 
 #ifdef DHAS_ALGORITHMS
     res = test_algorithms ();
@@ -583,7 +589,6 @@ int unit_test (void) {
 
     // cube = solution(A, 4, 2, 4);
 
-
 #if 0
     int ret = solution4 (955); // 1101110111
     if (ret != 4) {
@@ -605,7 +610,6 @@ int unit_test (void) {
     }
 #endif
 
-
 #if 0
     // uint8_t regAddr = 0x00;
     // uint16_t regVal = 0x0000;
@@ -617,7 +621,7 @@ int unit_test (void) {
         printf ("\n reg64Val %08llx exp 202B17D3015A", (long long unsigned int)reg64Val);
         return PARSE_HEX_ERROR;
     }
-	#endif
+#endif
 
 #if 0
     res = try_strl2uint64 ("0x202B17D3015A", strlen ("0x202B17D3015A"), &reg64Val);
@@ -634,7 +638,7 @@ int unit_test (void) {
         printf ("ab1234ba");
         return PARSE_HEX_ERROR;
     }
-	#endif
+#endif
 
 #if 0
     res = is_hex_str ("0x1234ba", 8, &shift);
@@ -642,14 +646,14 @@ int unit_test (void) {
         printf ("0x1234ba");
         return PARSE_HEX_ERROR;
     }
-	#endif
+#endif
 
 #if 0
     res = test_parse_serial ();
     if (false == res) {
         return PARSE_SERIAL_ERROR;
     }
-	#endif
+#endif
 
 #if 0
     res = test_parse_mac ();
@@ -763,7 +767,6 @@ int unit_test (void) {
         return STR_OPS_ERROR;
     }
 #endif
-
 
 #ifdef TEST_FIFO
     res = test_fifo_char ();
@@ -1254,7 +1257,6 @@ int test_heap_api (void) {
 }
 #endif
 
-
 #if 0
 bool test_max_bit_val (void) {
     bool res = true;
@@ -1295,8 +1297,6 @@ bool test_max_bit_val (void) {
 }
 #endif
 
-
-
 #if 0
 bool test_grey_conversation (void) {
     bool res = true;
@@ -1315,7 +1315,6 @@ bool test_grey_conversation (void) {
     return res;
 }
 #endif
-
 
 #if TEST_LIST
 bool test_linked_list (void) {
@@ -1492,8 +1491,6 @@ bool test_uniq_path (void) {
 }
 #endif
 
-
-
 #if 0
 bool test_uniq_path_diag (void) {
     bool res = false;
@@ -1532,7 +1529,6 @@ bool test_uniq_path_diag (void) {
     return res;
 }
 #endif
-
 
 #if 0
 bool test_ya_task (void) {
@@ -1605,7 +1601,6 @@ bool test_ya_task (void) {
 }
 #endif
 
-
 #if 1 == COMBINATION
 bool test_array_combinations (void) {
     bool res = false;
@@ -1624,8 +1619,6 @@ bool test_array_combinations (void) {
 }
 #endif
 
-
-
 #if 0
 void print_bytes (uint32_t byte) {
     float kByte = 4;
@@ -1637,7 +1630,6 @@ void print_bytes (uint32_t byte) {
     //printf ("\nmax Available heap size [%u] byte [%f] k_Byte [%f] M_Byte [%f] G_Byte\n", byte, kByte, MByte, GByte);
 }
 #endif
-
 
 #if 0
 bool test_heap (void) {
@@ -1661,7 +1653,7 @@ bool test_heap (void) {
 }
 #endif
 
-#if 0
+#if TEST_STR_STR
 bool test_stsstr (void) {
     char text[100];
     char pattern[100];
@@ -1683,7 +1675,7 @@ bool test_stsstr (void) {
         printf ("\nDid not spot\n");
         return false;
     }
-   // printf ("\n[%s] [%s]\n", text, pattern);
+    // printf ("\n[%s] [%s]\n", text, pattern);
 
     strcpy (pattern, "paTtern");
     resPtr = str_case_str (text, pattern);
@@ -1691,21 +1683,21 @@ bool test_stsstr (void) {
         printf ("\nfalse spot\n");
         return false;
     }
-    //printf ("\n[%s] [%s]\n", text, pattern);
+    // printf ("\n[%s] [%s]\n", text, pattern);
 
     resPtr = str_case_str (text, nullPtr);
     if (NULL != resPtr) {
         printf ("\nfalse spot pattern NULL\n");
         return false;
     }
-    //printf ("\n[%s] [%s]\n", text, pattern);
+    // printf ("\n[%s] [%s]\n", text, pattern);
 
     resPtr = str_case_str (nullPtr, text);
     if (NULL != resPtr) {
         printf ("\nfalse spot text NULL\n");
         return false;
     }
-    //printf ("\n[%s] [%s]\n", text, pattern);
+    // printf ("\n[%s] [%s]\n", text, pattern);
     return true;
 }
 #endif
@@ -1754,7 +1746,6 @@ bool test_min_path (void) {
     return res;
 }
 #endif
-
 
 #if 0
 bool test_min_path_diag_atmospher (void) {
@@ -1828,7 +1819,6 @@ bool test_min_path_diag (void) {
 }
 #endif
 
-
 #if 0
 bool test_min_diag_scale_summ (void) {
     bool res = false;
@@ -1860,8 +1850,6 @@ bool test_find_min_diag_scale_summ2 (void) {
     return res;
 }
 #endif
-
-
 
 #if 0
 bool test_find_min_diag_scale_summ (void) {
@@ -3075,8 +3063,6 @@ bool test_medianSlidingWindow (void) {
 }
 #endif
 
-
-
 #if 0
 bool check_array (int *arr, int numsSize, int k) {
     bool res;
@@ -3109,8 +3095,6 @@ bool check_array (int *arr, int numsSize, int k) {
 }
 #endif
 
-
-
 #if 0
 bool test_bin_heap_same_add (void) {
     bool res = true;
@@ -3137,8 +3121,6 @@ bool test_bin_heap_same_add (void) {
 }
 #endif
 
-
-
 #if 0
 bool test_bin_heap_rand_add (void) {
     bool res = true;
@@ -3164,7 +3146,6 @@ bool test_bin_heap_rand_add (void) {
     return res;
 }
 #endif
-
 
 #if 0
 bool test_bin_heap_rand_add_and_del_one (void) {
@@ -3195,7 +3176,6 @@ bool test_bin_heap_rand_add_and_del_one (void) {
 }
 #endif
 
-
 #if 0
 bool test_bin_heap_dec_add (void) {
     bool res = true;
@@ -3218,7 +3198,6 @@ bool test_bin_heap_dec_add (void) {
     return res;
 }
 #endif
-
 
 #if 0
 bool test_bin_heap_delete (void) {
@@ -3252,8 +3231,6 @@ bool test_bin_heap_delete (void) {
     return res;
 }
 #endif
-
-
 
 #if 0
 bool test_is_bin_tree (void) {
@@ -3346,7 +3323,6 @@ bool test_is_bin_tree (void) {
 }
 #endif
 
-
 #if 0
 bool test_delim_amount (void) {
 
@@ -3392,7 +3368,6 @@ bool test_delim_amount (void) {
 }
 #endif
 
-
 #if 0
 bool test_split (void) {
     int amountOfval = 0;
@@ -3430,7 +3405,6 @@ bool test_split (void) {
     return true;
 }
 #endif
-
 
 #if 0
 bool test_bin_heap_par_ind_arr (void) {
@@ -3493,7 +3467,6 @@ bool test_bin_heap_par_ind_arr (void) {
     return true;
 }
 #endif
-
 
 #if 0
 bool test_max_bin_heap_insert (void) {
@@ -3570,7 +3543,6 @@ bool test_min_bin_heap_insert (void) {
 }
 #endif
 
-
 #if 0
 bool test_string_clean (void) {
     int cmpres;
@@ -3621,7 +3593,6 @@ bool test_string_clean (void) {
 }
 #endif
 
-
 #if DEPLOY_TEST_BIN_HEAP
 bool test_min_bin_heap_delete_val (void) {
     bool res = false;
@@ -3660,8 +3631,6 @@ bool test_min_bin_heap_delete_val (void) {
 }
 #endif
 
-
-
 #if 0
 bool test_bin_heap_delete_val (void) {
     bool res = false;
@@ -3699,7 +3668,6 @@ bool test_bin_heap_delete_val (void) {
     return res;
 }
 #endif
-
 
 #if 0
 bool fill_up_heap_continuous_vals (BinaryHeap_t *binHeap, int maxVal, bool isMaxHeap) {
@@ -3766,8 +3734,6 @@ bool test_bin_heap_remove (void) {
 }
 #endif
 
-
-
 #if 0
 bool test_sliding_window_max (void) {
     bool res;
@@ -3786,7 +3752,6 @@ bool test_sliding_window_max (void) {
 }
 #endif
 
-
 #if 0
 void assemble_tree_from_array (TreeNode_t **root, int *arr, int arraySize) {
     printf ("\n arraySize: %d\n", arraySize);
@@ -3795,7 +3760,6 @@ void assemble_tree_from_array (TreeNode_t **root, int *arr, int arraySize) {
     }
 }
 #endif
-
 
 #if 0
 // Creates a binary search tree
@@ -3841,8 +3805,6 @@ void print_matrix_ji (void) {
 }
 #endif
 
-
-
 #if 0
 // fast
 void print_matrix_ij (void) {
@@ -3855,7 +3817,6 @@ void print_matrix_ij (void) {
     }
 }
 #endif
-
 
 #if 0
 bool test_print_matrix (void) {

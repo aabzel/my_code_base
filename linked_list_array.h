@@ -12,7 +12,6 @@ typedef struct xList_array_node_t {
     struct xList_array_node_t *nextNode;
 } list_array_node_t;
 
-
 #ifdef __cplusplus
 }
 #endif

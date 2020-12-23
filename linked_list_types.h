@@ -11,10 +11,6 @@ extern "C" {
 
 #include <stdint.h>
 
-
-
-
-
 #ifdef __cplusplus
 }
 #endif

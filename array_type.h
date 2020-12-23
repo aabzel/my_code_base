@@ -10,7 +10,7 @@ extern "C" {
 typedef struct xArray_t {
     int arrSize;
     int *pArr;
-    //union
+    // union
 } Array_t;
 
 #ifdef __cplusplus

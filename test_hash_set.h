@@ -6,9 +6,9 @@ extern "C" {
 #endif
 
 #include <stdbool.h>
- 
-bool test_hash_set(void);
- 
+
+bool test_hash_set (void);
+
 #ifdef __cplusplus
 }
 #endif

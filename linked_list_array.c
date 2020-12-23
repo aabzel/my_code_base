@@ -233,8 +233,4 @@ void print_list1 (list_node_t *pHead) {
     }
 }
 
-
-
-
-
 #endif

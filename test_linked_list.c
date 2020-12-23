@@ -47,7 +47,6 @@ void init_list (void) {
     Node5.next = NULL;
 }
 
-
 void list_print_reverse (void) {
     list_print_rev (&Node1);
     printf ("\n");
@@ -55,24 +54,21 @@ void list_print_reverse (void) {
 
 #define LIST_LENGTH 10
 static bool test_add_front (void) {
-	printf("\n[d] %s()",__FUNCTION__);
-	ListNode_t* headNode = NULL;
-	for (int i=0;i<LIST_LENGTH;i++) {
-		EXPECT_TRUE(list_add_node_front (&headNode, i));
-		EXPECT_NE( NULL,is_data_exist_linked_list(headNode, i));
-	}
-	EXPECT_EQ( NULL,is_data_exist_linked_list(headNode, 999));
-    EXPECT_EQ(LIST_LENGTH,  linked_list_counts (headNode));
+    printf ("\n[d] %s()", __FUNCTION__);
+    ListNode_t *headNode = NULL;
+    for (int i = 0; i < LIST_LENGTH; i++) {
+        EXPECT_TRUE (list_add_node_front (&headNode, i));
+        EXPECT_NE (NULL, is_data_exist_linked_list (headNode, i));
+    }
+    EXPECT_EQ (NULL, is_data_exist_linked_list (headNode, 999));
+    EXPECT_EQ (LIST_LENGTH, linked_list_counts (headNode));
 
-    EXPECT_TRUE(linked_list_deinit(&headNode));
-	return true;
-}
-
-
-bool test_linked_list_ints(void) {
-	printf("\n[d] %s()",__FUNCTION__);
-    EXPECT_TRUE( test_add_front ());
+    EXPECT_TRUE (linked_list_deinit (&headNode));
     return true;
 }
 
-
+bool test_linked_list_ints (void) {
+    printf ("\n[d] %s()", __FUNCTION__);
+    EXPECT_TRUE (test_add_front ());
+    return true;
+}

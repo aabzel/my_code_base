@@ -515,7 +515,6 @@ int find_max_sec (char *string, char sripChar) {
 //"b"5,   "11b"7  oldSub""0    newSub"11"2
 //""0,   "11"2  oldSub""0    newSub"11"2
 
-
 #if 0
 static int findIndOfFirstDiffFromStart (char *oldStr, char *newStr) {
     if (oldStr && newStr) {

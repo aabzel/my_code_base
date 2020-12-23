@@ -94,30 +94,30 @@ bool test_lengthOfLongestSubstring (void) {
 }
 
 bool test_detect_change (void) {
-    char *old_sub_string=NULL;
-    char *newSubString=NULL;
+    char *old_sub_string = NULL;
+    char *newSubString = NULL;
     int old_sub_stringLen = -1;
     int newSubStringLen = -1;
     int cmpRes = 0;
     // "aaabb"
     // "aaa11bb"
     detect_change ("aaabb", "aaa11bb", &old_sub_string, &old_sub_stringLen, &newSubString, &newSubStringLen);
-    EXPECT_EQ(0, old_sub_stringLen);
-    EXPECT_EQ(2, newSubStringLen);
-    //EXPECT_EQ_STR("", old_sub_string);
-    EXPECT_EQ_STR_LEN("11", newSubString,2);
+    EXPECT_EQ (0, old_sub_stringLen);
+    EXPECT_EQ (2, newSubStringLen);
+    // EXPECT_EQ_STR("", old_sub_string);
+    EXPECT_EQ_STR_LEN ("11", newSubString, 2);
 
     detect_change ("aaa11bb", "aaabb", &old_sub_string, &old_sub_stringLen, &newSubString, &newSubStringLen);
-    EXPECT_EQ(2, old_sub_stringLen);
-    EXPECT_EQ(0, newSubStringLen);
-    EXPECT_EQ_STR_LEN("11", old_sub_string,2);
-    //EXPECT_EQ_STR("", newSubString);
+    EXPECT_EQ (2, old_sub_stringLen);
+    EXPECT_EQ (0, newSubStringLen);
+    EXPECT_EQ_STR_LEN ("11", old_sub_string, 2);
+    // EXPECT_EQ_STR("", newSubString);
 
     detect_change ("aa111bb", "aa22bb", &old_sub_string, &old_sub_stringLen, &newSubString, &newSubStringLen);
-    EXPECT_EQ(3, old_sub_stringLen);
-    EXPECT_EQ(2, newSubStringLen);
-    EXPECT_EQ_STR_LEN("111", old_sub_string,3);
-    EXPECT_EQ_STR_LEN("22", newSubString,2);
+    EXPECT_EQ (3, old_sub_stringLen);
+    EXPECT_EQ (2, newSubStringLen);
+    EXPECT_EQ_STR_LEN ("111", old_sub_string, 3);
+    EXPECT_EQ_STR_LEN ("22", newSubString, 2);
 
     return true;
 }
@@ -130,8 +130,10 @@ bool test_detect_change (void) {
 //""0,   "11"2  oldSub""0    newSub"11"2
 
 // Examples:
-//"aaabb"5,   "aaa11bb"7  oldSub""0    newSub"11"2    < "11" inserted at index 3  old_sub_stringLen 0  newSubStringLen: 2
-//"aa111bb"7, "aa22bb"6   oldSub"111"3 newSub"22"2    < "11" inserted at index 3  old_sub_stringLen 3  newSubStringLen: 2
+//"aaabb"5,   "aaa11bb"7  oldSub""0    newSub"11"2    < "11" inserted at index 3  old_sub_stringLen 0  newSubStringLen:
+// 2 "aa111bb"7, "aa22bb"6   oldSub"111"3 newSub"22"2    < "11" inserted at index 3  old_sub_stringLen 3
+// newSubStringLen:
+// 2
 
 bool test_reverse (void) {
     int cmpRes = 0;

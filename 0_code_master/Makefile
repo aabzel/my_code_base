@@ -20,37 +20,31 @@ CFLAGS  += -Wall
 #CFLAGS  +=-pedantic
 #CFLAGS += -ftime-report
 
-#OPT = -DTEST_FIFO
-#OPT += -DDEBUG_RESULT
-#OPT += -DHAS_AURIGA_TASK
+VECTOR_CALC=Y 
+ 
 OPT += -DHAS_UTESTS
-OPT += -DLINKED_LIST
-OPT += -DHAS_ALGORITHMS
-#OPT += -DHAS_PERMUTATION
-#OPT += -DHAS_PERMUTATION_TEST
-OPT += -DDEBUG_ASSEMBLE_FROM_ALPH
-OPT += -DTEST_HASH_SET
 OPT += -DTEST_ENCODE_STRING
 OPT += -DTEST_LINKED_LIST
 OPT += -DTEST_ARRAY
+OPT += -DHAS_HOTEL
 OPT += -DTEST_STACK_NUM
 OPT += -DHAS_ARRAY
 #OPT += -DHAS_EVAL_CACHE
 #OPT += -DDEBUG_PERMUT
 #OPT += -DTEST_CONVERT
 #OPT += -DHAS_COMBINATIONS_TEST
-OPT += -DDEPLOY_DIF_SUB_STR_ERROR 
+#OPT += -DDEPLOY_DIF_SUB_STR_ERROR 
 OPT += -DTEST_STR_STR 
-OPT += -DTEST_UNIQ_DIAG_PATH_TASK 
-OPT += -DTEST_MIN_PATH_DIAG 
-OPT += -DTEST_MIN_DIAG_SCALE_SUMM 
-OPT += -DTEST_UNIQ_PATH_TASK 
-OPT += -DTEST_UIO_COMB 
-OPT += -DTEST_YA_TASK 
-OPT += -DTEST_HEAP_CON 
-OPT += -DTEST_HEAP_SAME 
-OPT += -DBIN_HEAP_RAND_ADD 
-OPT += -DDEPLOY_TEST_AVL_TREE 
+#OPT += -DTEST_UNIQ_DIAG_PATH_TASK 
+#OPT += -DTEST_MIN_PATH_DIAG 
+#OPT += -DTEST_MIN_DIAG_SCALE_SUMM 
+#OPT += -DTEST_UNIQ_PATH_TASK 
+#OPT += -DTEST_UIO_COMB 
+#OPT += -DTEST_YA_TASK 
+#OPT += -DTEST_HEAP_CON 
+#OPT += -DTEST_HEAP_SAME 
+#OPT += -DBIN_HEAP_RAND_ADD 
+#OPT += -DDEPLOY_TEST_AVL_TREE 
 OPT += -DTEST_BIT_UTILS 
          
 #files to link:
@@ -62,6 +56,13 @@ EXECUTABLE=code_master
 
 SOURCES = $(SRC_PATH)main.c
 
+    OPT += -DHAS_VECTOR_CALC
+    SOURCES += $(SRC_PATH)vector_calc.c
+    SOURCES += $(SRC_PATH)test_vector_calc.c
+ifeq ($(VECTOR_CALC),Y)
+    echo "Do something"
+endif
+
 SOURCES += $(SRC_PATH)algorithms.c
 SOURCES += $(SRC_PATH)algorithms_test.c
 SOURCES += $(SRC_PATH)arrays.c
@@ -72,13 +73,15 @@ SOURCES += $(SRC_PATH)hash_set.c
 SOURCES += $(SRC_PATH)test_hash_set.c
 SOURCES += $(SRC_PATH)test_stack_num.c
 SOURCES += $(SRC_PATH)decode_string.c
-SOURCES += $(SRC_PATH)compiler_test.c
+#SOURCES += $(SRC_PATH)compiler_test.c
 SOURCES += $(SRC_PATH)test_decode_string.c
 SOURCES += $(SRC_PATH)decode_way.c
 SOURCES += $(SRC_PATH)test_decode_way.c
-SOURCES += $(SRC_PATH)auriga_task.c
-SOURCES += $(SRC_PATH)evaluate_cache.c
+#SOURCES += $(SRC_PATH)auriga_task.c
+#SOURCES += $(SRC_PATH)evaluate_cache.c
 SOURCES += $(SRC_PATH)bit_utils.c
+SOURCES += $(SRC_PATH)test_hotel.c
+SOURCES += $(SRC_PATH)hotel.c
 SOURCES += $(SRC_PATH)check_address.c
 SOURCES += $(SRC_PATH)bin_utils.c
 SOURCES += $(SRC_PATH)bin_utils_test.c
@@ -96,14 +99,14 @@ SOURCES += $(SRC_PATH)helper.c
 SOURCES += $(SRC_PATH)linked_list.c
 #SOURCES += $(SRC_PATH)linked_list_array.c
 SOURCES += $(SRC_PATH)test_linked_list.c
-SOURCES += $(SRC_PATH)validate_ip_address.c
-SOURCES += $(SRC_PATH)test_validate_ip_address.c
+#SOURCES += $(SRC_PATH)validate_ip_address.c
+#SOURCES += $(SRC_PATH)test_validate_ip_address.c
 SOURCES += $(SRC_PATH)str_ops.c
-SOURCES += $(SRC_PATH)test_auriga_task.c
+#SOURCES += $(SRC_PATH)test_auriga_task.c
 SOURCES += $(SRC_PATH)test_arrays.c
 SOURCES += $(SRC_PATH)test_str_ops.c
 SOURCES += $(SRC_PATH)test_algorithms.c
-SOURCES += $(SRC_PATH)test_evaluate_cache.c
+#SOURCES += $(SRC_PATH)test_evaluate_cache.c
 SOURCES += $(SRC_PATH)test_convert.c
 SOURCES += $(SRC_PATH)test_fifo_char.c
 SOURCES += $(SRC_PATH)utils.c

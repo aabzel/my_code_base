@@ -584,11 +584,11 @@ char findTheDifference (char *old_str, char *newStr) {
     char out_char = 0;
     int newSubStringLen = 0;
     detect_change (old_str, newStr, &oldSubStr, &oldSubStringLen, &newSubStr, &newSubStringLen);
-    if(1==newSubStringLen){
-    	out_char = newSubStr[0];
+    if (1 == newSubStringLen) {
+        out_char = newSubStr[0];
     }
-    if(1==oldSubStringLen){
-    	out_char = oldSubStr[0];
+    if (1 == oldSubStringLen) {
+        out_char = oldSubStr[0];
     }
     return out_char;
 }
@@ -615,9 +615,9 @@ void find_diff (char *old_str, int oldLen, char *newStr, int newLen, int *outOld
                 *oldSubStr = old_str;
                 *newSubStr = newStr;
                 // printf ("\n");
-                //print_str_head (old_str, oldLen);
+                // print_str_head (old_str, oldLen);
                 // printf ("\n");
-                //print_str_head (newStr, newLen);
+                // print_str_head (newStr, newLen);
             }
         }
     } else {
@@ -626,9 +626,9 @@ void find_diff (char *old_str, int oldLen, char *newStr, int newLen, int *outOld
         *oldSubStr = old_str;
         *newSubStr = newStr;
         // printf ("\n");
-        //print_str_head (old_str, oldLen);
+        // print_str_head (old_str, oldLen);
         // printf ("\n");
-        //print_str_head (newStr, newLen);
+        // print_str_head (newStr, newLen);
     }
 }
 

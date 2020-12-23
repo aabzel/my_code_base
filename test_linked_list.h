@@ -7,7 +7,7 @@ extern "C" {
 
 #include <stdbool.h>
 
-bool test_linked_list_ints(void);
+bool test_linked_list_ints (void);
 
 #ifdef __cplusplus
 }

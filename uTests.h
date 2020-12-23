@@ -6,8 +6,6 @@
 #include "bin_search_tree.h"
 #include "utils.h"
 
-
-
 typedef enum {
     FINE = 0,
     LIST_REV_ERROR = 5,
@@ -115,8 +113,10 @@ typedef enum {
     ENCODE_STRING_ERROR = 109,
     TEST_STACK_ERROR = 110,
     TEXT_ADDR_ERROR = 111,
-	LINKED_LIST_ERROR = 112,
-	TEST_HASH_ERROR = 113,
+    LINKED_LIST_ERROR = 112,
+    TEST_HASH_ERROR = 113,
+    HOTEL_ERROR = 114,
+    VECTOR_ERROR = 115,
 
     NUM_ERROR = 120
 } utError_t;
@@ -178,10 +178,9 @@ bool fill_up_heap_continuous_vals (BinaryHeap_t *binHeap, int maxVal, bool isMax
 void assemble_tree_from_array (TreeNode_t **root, int *arr, int arraySize);
 void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
 
-
-#define EXPECT_EQ_STR_LEN(strL, strR, len)                                                                                      \
+#define EXPECT_EQ_STR_LEN(strL, strR, len)                                                                             \
     do {                                                                                                               \
-        if (0 != strncmp (strL, strR, len)) {                                                                                \
+        if (0 != strncmp (strL, strR, len)) {                                                                          \
             printf ("\n%s:Line: %d %d in \nstrL: [%s] \nstrR: [%s] ", __FUNCTION__, __LINE__, __COUNTER__, strL,       \
                     strR);                                                                                             \
             return false;                                                                                              \
@@ -206,11 +205,13 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
         }                                                                                                              \
     } while (0);
 
-#define EXPECT_EQ(val1, val2)                                                                                          \
+#define EXPECT_EQ(vala, valb)                                                                                          \
     do {                                                                                                               \
+        int val1 = vala;                                                                                               \
+        int val2 = valb;                                                                                               \
         if (val1 != val2) {                                                                                            \
             printf ("\n%s():Line: %d in val1: %u val2: %u ", __FUNCTION__, __LINE__, val1, val2);                      \
-            printf ("   val1: 0x%x val2: 0x%x  ", (int)val1, (int)val2);                                               \
+            /*printf ("   val1: 0x%x val2: 0x%x  ", (int)val1, (int)val2);*/                                           \
             return false;                                                                                              \
         }                                                                                                              \
     } while (0);
@@ -218,20 +219,21 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
 #define EXPECT_HEX_EQ(val1, val2)                                                                                      \
     do {                                                                                                               \
         if (val1 != val2) {                                                                                            \
-        	printf("\033[0;31m");                                                                                      \
+            printf ("\033[0;31m");                                                                                     \
             printf ("\n%s:Line: %d %d in val1: %x val2: %x ", __FUNCTION__, __LINE__, __COUNTER__, (int)val1,          \
                     (int)val2);                                                                                        \
-            printf("\033[0m");                                                                                         \
+            printf ("\033[0m");                                                                                        \
             return false;                                                                                              \
         }                                                                                                              \
     } while (0);
 
-#define EXPECT_TRUE(val)                                                                                               \
+#define EXPECT_TRUE(val_in)                                                                                            \
     do {                                                                                                               \
+        bool val = val_in;                                                                                             \
         if (true != ((bool)val)) {                                                                                     \
-            printf("\033[0;31m");                                                                                      \
+            printf ("\033[0;31m");                                                                                     \
             printf ("\n%s:Line: %d in val %d ", __FUNCTION__, __LINE__, (int)val);                                     \
-            printf("\033[0m");                                                                                         \
+            printf ("\033[0m");                                                                                        \
             return false;                                                                                              \
         }                                                                                                              \
     } while (0);
