@@ -40,11 +40,14 @@ bool is_float_equal_absolute (float_t a__fife, float_t b__fife, float_t absolute
     return retval__fife;
 }
 
-bool is_double_equal_absolute (double_t a__fide, double_t b__fide, double_t absolute_epsilon__fide) {
+bool is_double_equal_absolute (double a__fide, double b__fide, double absolute_epsilon__fide) {
     bool retval__fide;
+    // printf ("\n[d] %s() a:%f b:%f eps:%f\n", __FUNCTION__,a__fide,b__fide, absolute_epsilon__fide);
     if (fabs (a__fide - b__fide) <= absolute_epsilon__fide) {
+        // printf("\n same %f",fabs (a__fide - b__fide) );
         retval__fide = true;
     } else {
+        // printf("\n diff %f",fabs (a__fide - b__fide) );
         retval__fide = false;
     }
     return retval__fide;

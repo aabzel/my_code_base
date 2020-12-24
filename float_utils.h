@@ -26,7 +26,7 @@ bool is_floats_equal (float_t valA, float_t valB);
 bool is_float_equal_relative (float_t a__fife, float_t b__fife, float_t relative_epsilon__fife);
 bool is_double_equal_relative (double_t a__fide, double_t b__fide, double_t relative_epsilon__fide);
 bool is_float_equal_absolute (float_t a__fife, float_t b__fife, float_t absolute_epsilon__fife);
-bool is_double_equal_absolute (double_t a__fide, double_t b__fide, double_t absolute_epsilon__fide);
+bool is_double_equal_absolute (double a__fide, double b__fide, double absolute_epsilon__fide);
 
 #ifdef __cplusplus
 }

@@ -162,6 +162,9 @@ bool is_signe_different (double a, double b) {
 
 bool is_line_segment_crossed (Line_t line_a, Line_t line_b) {
     bool res = false;
+#ifdef DEBUG_VECTOR_CALC
+    printf ("\n%s()", __FUNCTION__);
+#endif
     Dot_t a_start = get_line_start (line_a);
     Dot_t b_start = get_line_start (line_b);
     Dot_t a_end = get_line_end (line_a);
@@ -201,6 +204,40 @@ bool is_line_segment_crossed (Line_t line_a, Line_t line_b) {
 
     /*A x + B y + C = 0*/
     return res;
+}
+
+char *compose_2d_line_equation (Dot_t p1, Dot_t p2) {
+    double a, b, c;
+    printf ("\n%s()", __FUNCTION__);
+    static char out_str[100] = "";
+    bool done = false;
+    bool x_same = is_double_equal_absolute (p2.x, p1.x, 0.01);
+    if (false == x_same) {
+        a = (1 / (p2.x - p1.x));
+    } else {
+        done = true;
+        snprintf (out_str, sizeof (out_str), "x=%7.2f", p1.x);
+    }
+    bool y_same = is_double_equal_absolute (p2.y, p1.y, 0.01);
+    if (false == y_same) {
+        b = -(1 / (p2.y - p1.y));
+    } else {
+        done = true;
+        snprintf (out_str, sizeof (out_str), "y=%7.2f", p1.y);
+    }
+    if ((false == x_same) && (false == y_same)) {
+        c = (p1.x / (p2.x - p1.x)) - (p1.y / (p2.x - p1.y));
+    } else {
+        done = true;
+        if ((true == x_same) && (true == y_same)) {
+            snprintf (out_str, sizeof (out_str), "same");
+        }
+    }
+
+    if (false == done) {
+        snprintf (out_str, sizeof (out_str), "%7.2f*x+%7.2f*y=%7.2f", a, b, c);
+    }
+    return out_str;
 }
 
 #ifdef DEBUG_VECTOR_CALC
