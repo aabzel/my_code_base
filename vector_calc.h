@@ -5,6 +5,7 @@
 #include <stdint.h>
 
 #define M_PI 3.1415f
+//#define DEBUG_VECTOR_CALC
 
 typedef struct xDot_t {
     double x;
@@ -24,11 +25,11 @@ typedef struct xLine_t {
 } Line_t;
 
 bool is_line_segment_crossed (Line_t line_a, Line_t line_b);
-double calcAngleBetweenVectors (Vector_t *v1, Vector_t *v2);
+double calc_angle_between_vectors (Vector_t *v1, Vector_t *v2);
 Vector_t init_vector (double dx, double dy, double dz);
 Dot_t init_dot (double x, double y, double z);
 
-void print_dot (Dot_t d);
-void print_vector (Vector_t v);
+void print_dot (Dot_t d, char *text);
+void print_vector (Vector_t v, char *text);
 
 #endif /*VECTOR_CALC_H*/

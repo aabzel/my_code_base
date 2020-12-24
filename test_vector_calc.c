@@ -8,10 +8,11 @@ bool test_angle_between_vectors (void) {
     double angle_rad;
     Vector_t vector_a = init_vector (0.0f, 3.0f, 0.0f);
     Vector_t vector_b = init_vector (3.0f, 0.0f, 0.0f);
-    angle_rad = calcAngleBetweenVectors (&vector_a, &vector_b);
+    angle_rad = calc_angle_between_vectors (&vector_a, &vector_b);
+    printf ("\n%s() angle %f", __FUNCTION__, angle_rad);
     EXPECT_TRUE (is_double_equal_absolute (angle_rad, M_PI / 2, 0.1));
 
-    angle_rad = calcAngleBetweenVectors (&vector_b, &vector_a);
+    angle_rad = calc_angle_between_vectors (&vector_b, &vector_a);
     EXPECT_TRUE (is_double_equal_absolute (angle_rad, -M_PI / 2, 0.1));
 
     return true;

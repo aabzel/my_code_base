@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include "algorithms.h"
+#include "vector_calc.h"
 
 /*
 Даны даты заезда и отъезда каждого гостя.
@@ -104,20 +105,58 @@ uint32_t max_guests (Guest_t *guests_array, int num_guests) {
         debug_events (event_array, num_guests * 2);
 #endif
         for (int event = 0; event < (num_guests * 2); event++) {
+            guest_cnt += event_array[event].event;
+            max_cnt = max_int (max_cnt, guest_cnt);
 #ifdef DEBUG_HOTEL
             if (GUEST_IN == event_array[event].event) {
-                printf ("+");
+                printf ("\nday %2d+cur:%2d/cur max=%2d", event_array[event].day, guest_cnt, max_cnt);
             } else if (GUEST_OUT == event_array[event].event) {
-                printf ("-");
+                printf ("\nday %2d-cur:%2d/cur max=%2d", event_array[event].day, guest_cnt, max_cnt);
             } else {
                 printf ("[%d]", event_array[event].event);
             }
+            // printf ("%d/%d",guest_cnt,max_cnt);
 #endif
-            guest_cnt += event_array[event].event;
-            max_cnt = max_int (max_cnt, guest_cnt);
         }
         free (event_array);
         event_array = NULL;
     }
+    printf ("\n[d] %s() max_cnt %d", __FUNCTION__, max_cnt);
+    return max_cnt;
+}
+
+uint32_t max_guests_vector_slshn (Guest_t *guests_array, int num_guests) {
+#ifdef DEBUG_HOTEL
+    printf ("\n[d] %s() num_guests %d", __FUNCTION__, num_guests);
+    debug_guests (guests_array, num_guests);
+#endif
+    // compose the array of vectors for each guests
+    int max_cnt = 0;
+    int guest_cnt = 0;
+    int min_day = find_min_day (guests_array, num_guests);
+    int max_day = find_max_day (guests_array, num_guests);
+    Line_t *vector_array = (Line_t *)malloc (num_guests * sizeof (Line_t));
+    if (vector_array) {
+        memset (vector_array, 0x00, num_guests * sizeof (Line_t));
+        for (int person = 0; person < num_guests; person++) {
+            vector_array[person].start = init_dot ((double)guests_array[person].in_day, 0.0f, 0.0f);
+            vector_array[person].vector =
+                init_vector ((double)(guests_array[person].out_day - guests_array[person].in_day), 0.0f, 0.0f);
+        }
+        Line_t time_line;
+        time_line.vector = init_vector (0.0f, 10.0f, 0.0f);
+        for (int day = min_day; day <= max_day; day++) {
+            guest_cnt = 0;
+            time_line.start = init_dot ((double)day + 0.5, -1, 0.0f);
+            for (int person = 0; person < num_guests; person++) {
+                if (true == is_line_segment_crossed (time_line, vector_array[person])) {
+                    guest_cnt++;
+                }
+                max_cnt = max_int (max_cnt, guest_cnt);
+            }
+        }
+        free (vector_array);
+    }
+    printf ("\n[d] %s() max_cnt %d", __FUNCTION__, max_cnt);
     return max_cnt;
 }

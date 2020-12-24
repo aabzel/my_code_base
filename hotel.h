@@ -23,6 +23,7 @@ typedef struct xEvent_t {
 } Event_t;
 
 uint32_t max_guests (Guest_t *guests_array, int size);
+uint32_t max_guests_vector_slshn (Guest_t *guests_array, int num_guests);
 
 #ifdef __cplusplus
 }

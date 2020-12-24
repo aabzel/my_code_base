@@ -47,11 +47,15 @@ double mySign (double val) {
     return 0.0;
 }
 
-double calcAngleBetweenVectors (Vector_t *v1, Vector_t *v2) {
+double calc_angle_between_vectors (Vector_t *v1, Vector_t *v2) {
+#ifdef DEBUG_VECTOR_CALC
     printf ("\n%s()", __FUNCTION__);
+#endif
     //  betta rad  0.....3.14159
-    print_vector (*v1);
-    print_vector (*v2);
+#ifdef DEBUG_VECTOR_CALC
+    print_vector (*v1, "V1");
+    print_vector (*v2, "V2");
+#endif
     double betta = 0.0, norm1, norm2, absBetta;
     double dotPr;
     Vector_t v3;
@@ -162,34 +166,34 @@ bool is_line_segment_crossed (Line_t line_a, Line_t line_b) {
     Dot_t b_start = get_line_start (line_b);
     Dot_t a_end = get_line_end (line_a);
     Dot_t b_end = get_line_end (line_b);
+#ifdef DEBUG_VECTOR_CALC
+    print_dot (a_start, "a_start");
+    print_dot (a_end, "a_end");
+    print_dot (b_start, "b_start");
+    print_dot (b_end, "b_end");
+#endif
 
-    printf ("\n a_start\n");
-    print_dot (a_start);
-    printf ("\n a_end\n");
-    print_dot (a_end);
-    printf ("\n b_start\n");
-    print_dot (b_start);
-    printf ("\n b_end\n");
-    print_dot (b_end);
-
-    printf ("\n Dirrections\n");
     Vector_t a_st_b_st = compose_vector_from_2dot (a_start, b_start);
-    print_vector (a_st_b_st);
     Vector_t a_st_b_en = compose_vector_from_2dot (a_start, b_end);
-    print_vector (a_st_b_en);
     Vector_t b_st_a_st = compose_vector_from_2dot (b_start, a_start);
-    print_vector (b_st_a_st);
     Vector_t b_st_a_en = compose_vector_from_2dot (b_start, a_end);
-    print_vector (b_st_a_en);
+#ifdef DEBUG_VECTOR_CALC
+    print_vector (a_st_b_en, "a_st_b_en");
+    print_vector (a_st_b_st, "a_st_b_st");
+    print_vector (b_st_a_st, "b_st_a_st");
+    print_vector (b_st_a_en, "b_st_a_en");
+#endif
 
-    double a_deg_left = calcAngleBetweenVectors (&line_a.vector, &a_st_b_st);
+    double a_deg_left = calc_angle_between_vectors (&line_a.vector, &a_st_b_st);
+    double a_deg_right = calc_angle_between_vectors (&line_a.vector, &a_st_b_en);
+    double b_deg_left = calc_angle_between_vectors (&line_b.vector, &b_st_a_st);
+    double b_deg_right = calc_angle_between_vectors (&line_b.vector, &b_st_a_en);
+#ifdef DEBUG_VECTOR_CALC
     printf ("\n deg %f", a_deg_left);
-    double a_deg_right = calcAngleBetweenVectors (&line_a.vector, &a_st_b_en);
     printf ("\n deg %f", a_deg_right);
-    double b_deg_left = calcAngleBetweenVectors (&line_b.vector, &b_st_a_st);
     printf ("\n deg %f", b_deg_left);
-    double b_deg_right = calcAngleBetweenVectors (&line_b.vector, &b_st_a_en);
     printf ("\n deg %f", b_deg_right);
+#endif
 
     if (is_signe_different (a_deg_left, a_deg_right) && is_signe_different (b_deg_left, b_deg_right)) {
         res = true;
@@ -199,8 +203,9 @@ bool is_line_segment_crossed (Line_t line_a, Line_t line_b) {
     return res;
 }
 
-void print_vector (Vector_t v) { printf ("\n V(%f, %f, %f)", v.dx, v.dy, v.dz); }
-
-void print_dot (Dot_t d) { printf ("\n D[%f, %f, %f]", d.x, d.y, d.z); }
+#ifdef DEBUG_VECTOR_CALC
+void print_vector (Vector_t v, char *text) { printf ("\n %s V(%f, %f, %f)", text, v.dx, v.dy, v.dz); }
+void print_dot (Dot_t d, char *text) { printf ("\n %s D[%f, %f, %f]", text, d.x, d.y, d.z); }
+#endif
 
 //Даны 2 точки построить уравнение прямой
