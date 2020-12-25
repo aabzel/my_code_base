@@ -155,7 +155,7 @@ static bool test_tree_sum (void) {
     EXPECT_EQ (6, numRollsToTarget (2, 6, 7));
     EXPECT_EQ (1, numRollsToTarget (1, 6, 3));
     EXPECT_EQ (0, numRollsToTarget (1, 2, 3));
-    // EXPECT_EQ (222616187, numRollsToTarget (30, 30, 500));
+    EXPECT_EQ (222616187, numRollsToTarget (30, 30, 500));
 
     return true;
 }

@@ -347,7 +347,7 @@ static int g_dmax = 0;
 static int g_target = 0;
 static int *g_lookUpTable = NULL;
 
-#define DEBUG_2_SUM
+//#define DEBUG_2_SUM
 //#define LIST_VARIANTS
 static int cnt_comb (int d, int f, int t, int *in_arr, int len) {
 #ifdef DEBUG_2_SUM
@@ -363,27 +363,31 @@ static int cnt_comb (int d, int f, int t, int *in_arr, int len) {
     if ((0 <= d) && (0 <= t)) {
         if (0 < t) {
             for (int v = 1; v <= f; v++) {
+#ifdef DEBUG_2_SUM
                 printf ("\n[d]  v:%d", v);
+#endif
                 int cnt = 0;
 #ifdef LIST_VARIANTS
                 int *arr = add_val_to_end_array (in_arr, len, v);
                 cnt += cnt_comb (d - 1, f, t - v, arr, len + 1);
 #else
-                if ((0<=(d-1))&&(0<=(t-v))) {
-                	if(-1==(int) *(g_lookUpTable +(d - 1)*g_target+(t - v)) ){
+                if ((0 <= (d - 1)) && (0 <= (t - v))) {
+                    if (-1 == (int)*(g_lookUpTable + (d - 1) * g_target + (t - v))) {
                         cnt = cnt_comb (d - 1, f, t - v, NULL, 0);
+#ifdef DEBUG_2_SUM
+                        printf ("\n[d] insert dt[%d][%d]=%d", d - 1, t - v, cnt);
+#endif
+                        *(g_lookUpTable + (d - 1) * g_target + (t - v)) = cnt;
 
-                            printf ("\n[d] insert dt[%d][%d]=%d", d-1, t-v, cnt);
-                            *(g_lookUpTable +(d - 1)*g_target+(t - v)) = cnt;
+                    } else {
 
-                	}else {
-
-                		cnt =(int) *(g_lookUpTable +(d - 1)*g_target+(t - v));
-                		printf ("\n[!]  macth! d:%d t:%d cnt:%d",(d - 1),(t - v),cnt);
-                	}
-                }else{
+                        cnt = (int)*(g_lookUpTable + (d - 1) * g_target + (t - v));
+#ifdef DEBUG_2_SUM
+                        printf ("\n[!]  macth! d:%d t:%d cnt:%d", (d - 1), (t - v), cnt);
+#endif
+                    }
+                } else {
                     cnt = cnt_comb (d - 1, f, t - v, NULL, 0);
-
                 }
 
                 // if ((0 <= (t - v)) && ( 0 < (d - 1))) {
@@ -397,6 +401,8 @@ static int cnt_comb (int d, int f, int t, int *in_arr, int len) {
                 //    }
                 //}
 #endif
+                cnt = cnt % (1000000000 + 7);
+                out_cnt = out_cnt % (1000000000 + 7);
                 out_cnt += cnt;
             }
         } else if (0 == t) {
@@ -428,19 +434,19 @@ static int cnt_comb (int d, int f, int t, int *in_arr, int len) {
 }
 
 int numRollsToTarget (int dmax, int f, int target) {
-    printf ("\n[d] %s() d:%d f:%d t:%d", __FUNCTION__, dmax, f, target);
+    // printf ("\n[d] %s() d:%d f:%d t:%d", __FUNCTION__, dmax, f, target);
     int cnt = 0;
-    int tt=0;
+    int tt = 0;
 
-    if((0==dmax)&&(0==target)){
-    	return 0;
+    if ((0 == dmax) && (0 == target)) {
+        return 0;
     }
 
-    g_lookUpTable = (int *)malloc (dmax*target * sizeof (int));
+    g_lookUpTable = (int *)malloc (dmax * target * sizeof (int));
     g_dmax = dmax;
     g_target = target;
     if (NULL != g_lookUpTable) {
-    	memset(g_lookUpTable,0xFF,dmax*target * sizeof (int));
+        memset (g_lookUpTable, 0xFF, dmax * target * sizeof (int));
         // for (;;){
         //	for (;;){
         //		(g_lookUpTable)
@@ -450,5 +456,5 @@ int numRollsToTarget (int dmax, int f, int target) {
         free (g_lookUpTable);
         g_lookUpTable = NULL;
     }
-    return cnt;
+    return cnt % (1000000000 + 7);
 }
