@@ -149,6 +149,7 @@ static bool test_two_sum (void) {
 
 static bool test_tree_sum (void) {
     printf ("\n[d] %s()", __FUNCTION__);
+    EXPECT_EQ (0, numRollsToTarget (0, 5, 0));
     EXPECT_EQ (1, numRollsToTarget (1, 5, 5));
     EXPECT_EQ (1, numRollsToTarget (2, 5, 10));
     EXPECT_EQ (6, numRollsToTarget (2, 6, 7));

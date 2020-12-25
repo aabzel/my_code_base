@@ -369,7 +369,23 @@ static int cnt_comb (int d, int f, int t, int *in_arr, int len) {
                 int *arr = add_val_to_end_array (in_arr, len, v);
                 cnt += cnt_comb (d - 1, f, t - v, arr, len + 1);
 #else
-                cnt = cnt_comb (d - 1, f, t - v, NULL, 0);
+                if ((0<=(d-1))&&(0<=(t-v))) {
+                	if(-1==(int) *(g_lookUpTable +(d - 1)*g_target+(t - v)) ){
+                        cnt = cnt_comb (d - 1, f, t - v, NULL, 0);
+
+                            printf ("\n[d] insert dt[%d][%d]=%d", d-1, t-v, cnt);
+                            *(g_lookUpTable +(d - 1)*g_target+(t - v)) = cnt;
+
+                	}else {
+
+                		cnt =(int) *(g_lookUpTable +(d - 1)*g_target+(t - v));
+                		printf ("\n[!]  macth! d:%d t:%d cnt:%d",(d - 1),(t - v),cnt);
+                	}
+                }else{
+                    cnt = cnt_comb (d - 1, f, t - v, NULL, 0);
+
+                }
+
                 // if ((0 <= (t - v)) && ( 0 < (d - 1))) {
                 //    if (0xFFFFFFFF == *(g_lookUpTable + (d - 1) * g_target + (t - v))) {
                 //        cnt = cnt_comb (d - 1, f, t - v, NULL, 0);
@@ -414,11 +430,17 @@ static int cnt_comb (int d, int f, int t, int *in_arr, int len) {
 int numRollsToTarget (int dmax, int f, int target) {
     printf ("\n[d] %s() d:%d f:%d t:%d", __FUNCTION__, dmax, f, target);
     int cnt = 0;
-    g_lookUpTable = (int *)malloc (dmax * target * sizeof (int));
+    int tt=0;
+
+    if((0==dmax)&&(0==target)){
+    	return 0;
+    }
+
+    g_lookUpTable = (int *)malloc (dmax*target * sizeof (int));
     g_dmax = dmax;
     g_target = target;
     if (NULL != g_lookUpTable) {
-        memset (g_lookUpTable, 0xFF, dmax * target * sizeof (int));
+    	memset(g_lookUpTable,0xFF,dmax*target * sizeof (int));
         // for (;;){
         //	for (;;){
         //		(g_lookUpTable)
