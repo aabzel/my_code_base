@@ -229,22 +229,22 @@ void *memdup (const void *mem, size_t sizeByte) {
 }
 
 //
-int *add_val_to_end_array (int *inArr, int arrSize, int val) {
+int *add_val_to_end_array (int *in_arr, int arrSize, int val) {
     int *newArr = NULL;
 #if DEBUG_ADD_VAL_TO_END_ARRAY
     printf ("\n %s start", __FUNCTION__);
 #endif
     newArr = malloc (sizeof (int) * (arrSize + 1));
     if (newArr) {
-        if ((NULL != inArr)) {
+        if (NULL != in_arr) {
             if (0 < arrSize) {
 #if DEBUG_ADD_VAL_TO_END_ARRAY
                 printf ("\n");
-                print_curr_array (inArr, arrSize);
+                print_curr_array (in_arr, arrSize);
                 printf ("\n");
 #endif
-                memcpy (newArr, inArr, sizeof (int) * (arrSize));
-                // inArr must not be free here
+                memcpy (newArr, in_arr, sizeof (int) * (arrSize));
+                // in_arr must not be free here
             }
         }
         newArr[arrSize] = val;
@@ -264,23 +264,23 @@ int *add_val_to_end_array (int *inArr, int arrSize, int val) {
 #endif
     return newArr;
 }
-//[inArr 1 0]
-//[inArr 2 1]
+//[in_arr 1 0]
+//[in_arr 2 1]
 // {11 22} 2 1
-int *remove_int_from_arr (int *inArr, int arrSize, int delIndex) {
+int *remove_int_from_arr (int *in_arr, int arrSize, int delIndex) {
 #ifdef DEBUG_REMOVE_INT_FROM_ARR
     printf ("\n %s size: %u delInd %u", __FUNCTION__, arrSize, delIndex);
 #endif
     int *newArr = NULL;
-    if (NULL != inArr) {
+    if (NULL != in_arr) {
         if (delIndex < arrSize) {
             if (2 <= arrSize) {
                 int index = 0;
                 for (index = delIndex; index < (arrSize - 1); index++) {
-                    inArr[index] = inArr[index + 1];
+                    in_arr[index] = in_arr[index + 1];
                 }
-                inArr[arrSize] = 0;
-                newArr = inArr;
+                in_arr[arrSize] = 0;
+                newArr = in_arr;
             } else if (1 == arrSize) {
                 newArr = NULL;
             } else {

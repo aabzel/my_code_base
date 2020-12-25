@@ -45,6 +45,7 @@ void swap_char (char *const x, char *const y);
 int *generate_num_array (int n);
 char *generate_num_string (int n);
 int *twoSum (int *nums, int numsSize, int target, int *returnSize);
+int numRollsToTarget (int d, int f, int t);
 
 #ifdef __cplusplus
 }

@@ -219,10 +219,8 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
 #define EXPECT_HEX_EQ(val1, val2)                                                                                      \
     do {                                                                                                               \
         if (val1 != val2) {                                                                                            \
-            printf ("\033[0;31m");                                                                                     \
             printf ("\n%s:Line: %d %d in val1: %x val2: %x ", __FUNCTION__, __LINE__, __COUNTER__, (int)val1,          \
                     (int)val2);                                                                                        \
-            printf ("\033[0m");                                                                                        \
             return false;                                                                                              \
         }                                                                                                              \
     } while (0);

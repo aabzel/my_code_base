@@ -342,3 +342,91 @@ int *twoSum (int *nums, int numsSize, int target, int *returnSize) {
     }
     return NULL;
 }
+
+static int g_dmax = 0;
+static int g_target = 0;
+static int *g_lookUpTable = NULL;
+
+#define DEBUG_2_SUM
+//#define LIST_VARIANTS
+static int cnt_comb (int d, int f, int t, int *in_arr, int len) {
+#ifdef DEBUG_2_SUM
+    printf ("\n[d] %s() d:%d f:%d t:%d len:%d", __FUNCTION__, d, f, t, len);
+#endif
+    int out_cnt = 0;
+    if ((0 == t) && (0 < d)) {
+#ifdef DEBUG_2_SUM
+        printf ("\n[!]  too much");
+#endif
+        return 0;
+    }
+    if ((0 <= d) && (0 <= t)) {
+        if (0 < t) {
+            for (int v = 1; v <= f; v++) {
+                printf ("\n[d]  v:%d", v);
+                int cnt = 0;
+#ifdef LIST_VARIANTS
+                int *arr = add_val_to_end_array (in_arr, len, v);
+                cnt += cnt_comb (d - 1, f, t - v, arr, len + 1);
+#else
+                cnt = cnt_comb (d - 1, f, t - v, NULL, 0);
+                // if ((0 <= (t - v)) && ( 0 < (d - 1))) {
+                //    if (0xFFFFFFFF == *(g_lookUpTable + (d - 1) * g_target + (t - v))) {
+                //        cnt = cnt_comb (d - 1, f, t - v, NULL, 0);
+                //        *(g_lookUpTable + (d - 1) * g_target + (t - v)) = cnt;
+                //        printf ("\n[!]  calc! d:%d t:%d cnt:%d",(d - 1),(t - v),cnt);
+                //    } else {
+                //        cnt = *(g_lookUpTable + (d - 1) * g_target + (t - v));
+                //    	//printf ("\n[!]  macth! d:%d t:%d cnt:%d",(d - 1),(t - v),cnt);
+                //    }
+                //}
+#endif
+                out_cnt += cnt;
+            }
+        } else if (0 == t) {
+#ifdef DEBUG_2_SUM
+            printf ("\n[!]  sol ");
+#endif
+#ifdef LIST_VARIANTS
+            print_curr_array (in_arr, len);
+            free (in_arr);
+#endif
+            return 1;
+        } else {
+            // printf ("\n[!]  deadlock");
+#ifdef LIST_VARIANTS
+            free (in_arr);
+#endif
+            return 0;
+        }
+    } else {
+        // printf ("\n[!]  deadlock");
+#ifdef LIST_VARIANTS
+        free (in_arr);
+#endif
+        return 0;
+    }
+    // printf ("\n[!]  Error");
+
+    return out_cnt;
+}
+
+int numRollsToTarget (int dmax, int f, int target) {
+    printf ("\n[d] %s() d:%d f:%d t:%d", __FUNCTION__, dmax, f, target);
+    int cnt = 0;
+    g_lookUpTable = (int *)malloc (dmax * target * sizeof (int));
+    g_dmax = dmax;
+    g_target = target;
+    if (NULL != g_lookUpTable) {
+        memset (g_lookUpTable, 0xFF, dmax * target * sizeof (int));
+        // for (;;){
+        //	for (;;){
+        //		(g_lookUpTable)
+        //	}
+        //}
+        cnt = cnt_comb (dmax, f, target, NULL, 0);
+        free (g_lookUpTable);
+        g_lookUpTable = NULL;
+    }
+    return cnt;
+}

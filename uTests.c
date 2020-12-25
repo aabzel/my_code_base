@@ -389,6 +389,14 @@ int unit_test (void) {
     printf ("\n%s()", __FUNCTION__);
     bool res = false;
 
+#ifdef HAS_ALGORITHMS
+    res = test_algorithms ();
+    if (false == res) {
+        printf ("test_algorithms error");
+        return ALGOTITHMS_ERROR;
+    }
+#endif
+
 #ifdef HAS_VECTOR_CALC
     res = test_vector_calc ();
     if (false == res) {
@@ -520,14 +528,6 @@ int unit_test (void) {
     if (false == res) {
         printf ("test_static error");
         return STATIC_LOCAL_ERROR;
-    }
-#endif
-
-#ifdef DHAS_ALGORITHMS
-    res = test_algorithms ();
-    if (false == res) {
-        printf ("test_algorithms error");
-        return ALGOTITHMS_ERROR;
     }
 #endif
 

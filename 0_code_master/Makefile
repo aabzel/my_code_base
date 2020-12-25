@@ -21,14 +21,16 @@ CFLAGS  += -Wall
 #CFLAGS += -ftime-report
 
 VECTOR_CALC=Y 
+HOTEL=Y 
  
 OPT += -DHAS_UTESTS
 OPT += -DTEST_ENCODE_STRING
 OPT += -DTEST_LINKED_LIST
 OPT += -DTEST_ARRAY
-OPT += -DHAS_HOTEL
+#OPT += -DHAS_HOTEL
 OPT += -DTEST_STACK_NUM
 OPT += -DHAS_ARRAY
+OPT += -DHAS_ALGORITHMS
 #OPT += -DHAS_EVAL_CACHE
 #OPT += -DDEBUG_PERMUT
 #OPT += -DTEST_CONVERT
@@ -46,6 +48,7 @@ OPT += -DTEST_STR_STR
 #OPT += -DBIN_HEAP_RAND_ADD 
 #OPT += -DDEPLOY_TEST_AVL_TREE 
 OPT += -DTEST_BIT_UTILS 
+#OPT += -DHAS_VECTOR_CALC
          
 #files to link:
 LFLAGS= -static
@@ -56,11 +59,16 @@ EXECUTABLE=code_master
 
 SOURCES = $(SRC_PATH)main.c
 
-    OPT += -DHAS_VECTOR_CALC
-    SOURCES += $(SRC_PATH)vector_calc.c
-    SOURCES += $(SRC_PATH)test_vector_calc.c
-ifeq ($(VECTOR_CALC),Y)
-    echo "Do something"
+SOURCES += $(SRC_PATH)vector_calc.c
+SOURCES += $(SRC_PATH)test_vector_calc.c
+
+#@echo $(error VECTOR_CALC)
+ifeq (,$(VECTOR_CALC),Y)
+    @echo $(error VECTOR_CALC=$(VECTOR_CALC)) 
+endif
+
+ifeq (,$(HOTEL),Y)
+     @echo $(error HOTEL=$(HOTEL)) 
 endif
 
 SOURCES += $(SRC_PATH)algorithms.c

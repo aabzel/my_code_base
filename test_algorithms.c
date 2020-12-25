@@ -147,8 +147,21 @@ static bool test_two_sum (void) {
     return true;
 }
 
+static bool test_tree_sum (void) {
+    printf ("\n[d] %s()", __FUNCTION__);
+    EXPECT_EQ (1, numRollsToTarget (1, 5, 5));
+    EXPECT_EQ (1, numRollsToTarget (2, 5, 10));
+    EXPECT_EQ (6, numRollsToTarget (2, 6, 7));
+    EXPECT_EQ (1, numRollsToTarget (1, 6, 3));
+    EXPECT_EQ (0, numRollsToTarget (1, 2, 3));
+    // EXPECT_EQ (222616187, numRollsToTarget (30, 30, 500));
+
+    return true;
+}
+
 bool test_algorithms (void) {
     printf ("\n[d] %s()", __FUNCTION__);
+    EXPECT_TRUE (test_tree_sum ());
     EXPECT_TRUE (test_two_sum ());
     // EXPECT_TRUE (test_avarage());
     EXPECT_TRUE (test_k_smallest ());

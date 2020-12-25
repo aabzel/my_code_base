@@ -139,8 +139,9 @@ uint32_t max_guests_vector_slshn (Guest_t *guests_array, int num_guests) {
     if (vector_array) {
         memset (vector_array, 0x00, num_guests * sizeof (Line_t));
         for (int person = 0; person < num_guests; person++) {
-            vector_array[person].start = init_dot ((double)guests_array[person].in_day-1.0, 0.0f, 0.0f);
-            vector_array[person].vector = init_vector ((double)((double)guests_array[person].out_day -(double) guests_array[person].in_day)+1.0, 0.0f, 0.0f);
+            vector_array[person].start = init_dot ((double)guests_array[person].in_day - 1.0, 0.0f, 0.0f);
+            vector_array[person].vector = init_vector (
+                (double)((double)guests_array[person].out_day - (double)guests_array[person].in_day) + 1.0, 0.0f, 0.0f);
         }
         Line_t time_line;
         time_line.vector = init_vector (0.0f, 2.0f, 0.0f);
