@@ -123,20 +123,29 @@ ListNode_t *is_data_exist_linked_list (ListNode_t *head_node, int data) {
 }
 
 bool delete_node (ListNode_t **node) {
+#if 0
     printf ("\n[d] %s() node=%p ", __FUNCTION__, *node);
-
+#endif
     if (NULL == (*node)) {
+#if 0
         printf ("\n[d] empty list\n");
+#endif
         return false;
     } else {
+#if 0
         printf ("\n[d] %s() node=%p val=%d", __FUNCTION__, *node, (*node)->val);
         printf ("\n[d] valid node %p\n", *node);
+#endif
         if ((*node)->next == NULL) {
+#if 0
             printf ("\n[d] This is last node\n");
+#endif
             (*node)->val = 0;
             // free(*node);
             (*node) = NULL;
+#if 0
             printf ("\n[d] Empty list\n");
+#endif
             return true;
         } else {
             ListNode_t *temp = (*node)->next;
@@ -151,7 +160,9 @@ bool delete_node (ListNode_t **node) {
 }
 
 bool linked_list_deinit (ListNode_t **head) {
+#if 0
     printf ("\n[d] %s()", __FUNCTION__);
+#endif
     if (NULL == head) {
         return true;
     }

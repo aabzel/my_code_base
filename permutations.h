@@ -40,6 +40,8 @@ bool is_permutated_element_in_list (list_array_node_t *pHead, int *inArr, int ar
 void permutation (int n);
 bool print_permutations (int N);
 
+int *generate_perm_arr (int dice, int rank, int index);
+
 #ifdef __cplusplus
 }
 #endif

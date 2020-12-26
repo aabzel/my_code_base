@@ -50,8 +50,8 @@ bool HashSetContains (HashSet_t *in_hSet, int data) {
 }
 
 bool HashSetRemove (HashSet_t *hSet, int data) {
-    printf ("\n\n[d] %s() data %d", __FUNCTION__, data);
 #ifdef DEBUG_HASH_SET
+    printf ("\n\n[d] %s() data %d", __FUNCTION__, data);
 #endif
     int index = data % TLB_SIZE;
     bool res = false;

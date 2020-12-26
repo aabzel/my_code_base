@@ -2,6 +2,7 @@
 
 #include "arrays.h"
 #include "permutations.h"
+#include "uTests.h"
 
 static bool test_permutation3 (void) {
     printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
@@ -29,9 +30,32 @@ static bool test_permutation4 (void) {
     return true;
 }
 
+static bool test_generate_permutation (void) {
+    printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
+    int exp_arr0[2] = {0, 0};
+    int exp_arr1[2] = {0, 1};
+    int exp_arr29[2] = {6, 6};
+    int *arr = NULL;
+    int cmp = 0;
+    arr = generate_perm_arr (2, 6, 0);
+    EXPECT_EQ (0, memcmp (arr, exp_arr0, 2 * sizeof (int)));
+    free (arr);
+
+    arr = generate_perm_arr (2, 6, 1);
+    EXPECT_EQ (0, memcmp (arr, exp_arr1, 2 * sizeof (int)));
+    free (arr);
+
+    arr = generate_perm_arr (2, 6, 29);
+    EXPECT_EQ (0, memcmp (arr, exp_arr29, 2 * sizeof (int)));
+    free (arr);
+
+    return true;
+}
+
 bool test_permutation (void) {
     printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
-    test_permutation3 ();
-    test_permutation4 ();
+    EXPECT_TRUE (test_generate_permutation ());
+    EXPECT_TRUE (test_permutation3 ());
+    EXPECT_TRUE (test_permutation4 ());
     return true;
 }
