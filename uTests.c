@@ -1,4 +1,7 @@
+#ifndef __cplusplus
+
 #include "uTests.h"
+
 
 #include <malloc.h>
 #include <time.h>
@@ -3845,4 +3848,6 @@ bool test_print_matrix (void) {
     // Elapsed: ij 0.906000 seconds
     return true;
 }
+#endif
+
 #endif

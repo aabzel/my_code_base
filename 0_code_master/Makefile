@@ -72,6 +72,7 @@ ifeq (,$(HOTEL),Y)
      @echo $(error HOTEL=$(HOTEL)) 
 endif
 
+SOURCES += $(SRC_PATH)intervals.cpp
 SOURCES += $(SRC_PATH)algorithms.c
 SOURCES += $(SRC_PATH)algorithms_test.c
 SOURCES += $(SRC_PATH)arrays.c

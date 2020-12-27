@@ -123,6 +123,11 @@ typedef enum {
 
 int unit_test (void);
 
+#ifdef __cplusplus
+bool u_tests(void);
+#endif
+
+
 // bool test_sliding_window_max (void);
 // bool test_max_bin_heap_insert (void);
 // int test_heap_api (void);
