@@ -60,7 +60,7 @@ static bool test_add_front (void) {
         EXPECT_TRUE (list_add_node_front (&headNode, i));
         EXPECT_NE (NULL, is_data_exist_linked_list (headNode, i));
     }
-    EXPECT_EQ (NULL, is_data_exist_linked_list (headNode, 999));
+    EXPECT_EQ ((ListNode_t *)NULL, is_data_exist_linked_list (headNode, 999));
     EXPECT_EQ (LIST_LENGTH, linked_list_counts (headNode));
 
     EXPECT_TRUE (linked_list_deinit (&headNode));

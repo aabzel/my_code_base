@@ -34,7 +34,7 @@ static bool test_generate_permutation (void) {
     printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
     int exp_arr0[2] = {0, 0};
     int exp_arr1[2] = {0, 1};
-    int exp_arr29[2] = {6, 6};
+    int exp_arr29[2] = {5, 5};
     int *arr = NULL;
     int cmp = 0;
     arr = generate_perm_arr (2, 6, 0);
@@ -45,7 +45,8 @@ static bool test_generate_permutation (void) {
     EXPECT_EQ (0, memcmp (arr, exp_arr1, 2 * sizeof (int)));
     free (arr);
 
-    arr = generate_perm_arr (2, 6, 29);
+    arr = generate_perm_arr (2, 6, 35);
+    print_curr_array (arr, 2);
     EXPECT_EQ (0, memcmp (arr, exp_arr29, 2 * sizeof (int)));
     free (arr);
 

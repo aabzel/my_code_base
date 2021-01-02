@@ -336,7 +336,7 @@ void print_mem (unsigned char *array, int num) {
 void print_curr_array (int *array, int num) {
     if (array) {
         if (0 < num) {
-            // printf ("\n");
+            printf ("\n");
             for (int i = 0; i < num; i++) {
                 printf ("%d ", array[i]);
             }

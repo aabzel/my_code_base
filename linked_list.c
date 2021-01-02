@@ -6,12 +6,12 @@
 /* Function to push a node */
 bool list_add_node_front (ListNode_t **headNode, int new_data) {
     bool res = false;
-    ListNode_t *newNode = NULL;
-    newNode = (ListNode_t *)malloc (sizeof (ListNode_t *));
-    if (NULL != newNode) {
-        (newNode)->val = new_data;
-        (newNode)->next = (*headNode);
-        *headNode = newNode;
+    ListNode_t *new_node = NULL;
+    new_node = (ListNode_t *)malloc (sizeof (ListNode_t));
+    if (NULL != new_node) {
+        (new_node)->val = new_data;
+        (new_node)->next = (*headNode);
+        *headNode = new_node;
         res = true;
     }
     return res;
@@ -104,10 +104,12 @@ ListNode_t *is_data_exist_linked_list (ListNode_t *head_node, int data) {
             printf ("\n[d] %s() iter cnt %d", __FUNCTION__, cnt);
 #endif
             if (num < cnt) {
+                printf ("\n[d] num < cnt");
                 cur_node = NULL;
                 break;
             }
             if (data == cur_node->val) {
+                printf ("\n[d] cur_node: %p %d", cur_node, cur_node->val);
                 break;
             }
             if (cur_node->next) {
@@ -119,12 +121,15 @@ ListNode_t *is_data_exist_linked_list (ListNode_t *head_node, int data) {
     } else {
         printf ("\n[d] error node");
     }
+#ifdef DEBUG_LINKED_LIST
+    printf ("\n[d] %s() node [%p] data end", __FUNCTION__, cur_node);
+#endif
     return cur_node;
 }
 
 bool delete_node (ListNode_t **node) {
-#if 0
-    printf ("\n[d] %s() node=%p ", __FUNCTION__, *node);
+#if 1
+    printf ("\n[d] %s() node=%p val=%d", __FUNCTION__, *node, (*node)->val);
 #endif
     if (NULL == (*node)) {
 #if 0
@@ -141,8 +146,8 @@ bool delete_node (ListNode_t **node) {
             printf ("\n[d] This is last node\n");
 #endif
             (*node)->val = 0;
-            // free(*node);
-            (*node) = NULL;
+            // free((*node)); //crash ?
+            (*node) = NULL; // crash ?
 #if 0
             printf ("\n[d] Empty list\n");
 #endif
@@ -172,17 +177,18 @@ bool linked_list_deinit (ListNode_t **head) {
     bool res = false;
     int del_cnt = 0;
     int num_el = linked_list_counts (*head);
-    printf ("\n[d] %d", num_el);
-    while (true == delete_node (head)) {
-        del_cnt++;
-        printf (".");
-        if (num_el < del_cnt) {
-            printf ("\n[e] hand on");
-            res = false;
+    printf ("\n[d] elements in the list %d", num_el);
+
+    for (int i = 0; i < num_el; i++) {
+        res = delete_node (head);
+        if (true == res) {
+            del_cnt++;
+        } else {
             break;
         }
     }
-    printf ("\n[d] del node done ");
+
+    printf ("\n[d] del node done %d", del_cnt);
     if (num_el == del_cnt) {
         printf ("\n[d] del fine ");
         res = true;

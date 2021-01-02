@@ -451,7 +451,7 @@ static int *generate_perm_arr_ll (int dice, int rank, int index, int *in_arr, in
 			dice, rank, index, len);
 #endif
     int *out_arr = NULL;
-    if (index < (rank * (rank - 1))) {
+    if (index < (rank * rank)) {
         if (0 < dice) {
             for (int val = 0; val < rank; val++) {
                 int *temp_arr = add_val_to_end_array (in_arr, len, val);
@@ -468,8 +468,8 @@ static int *generate_perm_arr_ll (int dice, int rank, int index, int *in_arr, in
             // 0==dice
             print_curr_array (in_arr, len);
             if (g_cnt == index) {
-#if 0
-				printf("\n Spot perm!!!!!");
+#if 1
+                printf ("\n Spot perm!!!!!");
 #endif
                 return in_arr;
             } else {
@@ -483,7 +483,7 @@ static int *generate_perm_arr_ll (int dice, int rank, int index, int *in_arr, in
 
 int *generate_perm_arr (int dice, int rank, int index) {
     int *out_arr = NULL;
-    if ((0 <= index) && (index < (rank * (rank - 1)))) {
+    if ((0 <= index) && (index < (rank * rank))) {
         g_cnt = 0;
         out_arr = generate_perm_arr_ll (dice, rank, index, NULL, 0);
     }

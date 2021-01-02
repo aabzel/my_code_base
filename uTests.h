@@ -117,16 +117,19 @@ typedef enum {
     TEST_HASH_ERROR = 113,
     HOTEL_ERROR = 114,
     VECTOR_ERROR = 115,
+    LION_TASK_ERROR = 116,
 
     NUM_ERROR = 120
 } utError_t;
 
 int unit_test (void);
 
-#ifdef __cplusplus
-bool u_tests(void);
-#endif
+size_t basename_start (const char *filename);
+#define BASENAME() ((__FILE__ ":") + basename_start (__FILE__))
 
+#ifdef __cplusplus
+bool u_tests (void);
+#endif
 
 // bool test_sliding_window_max (void);
 // bool test_max_bin_heap_insert (void);
@@ -234,9 +237,7 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
     do {                                                                                                               \
         bool val = val_in;                                                                                             \
         if (true != ((bool)val)) {                                                                                     \
-            printf ("\033[0;31m");                                                                                     \
             printf ("\n%s:Line: %d in val %d ", __FUNCTION__, __LINE__, (int)val);                                     \
-            printf ("\033[0m");                                                                                        \
             return false;                                                                                              \
         }                                                                                                              \
     } while (0);

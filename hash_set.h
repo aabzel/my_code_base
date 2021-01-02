@@ -12,17 +12,17 @@ extern "C" {
 
 #define TLB_SIZE 100
 
-typedef struct xHashSet_t {
+typedef struct xMyHashSet {
     ListNode_t *head_nodes[TLB_SIZE];
-} HashSet_t;
+} MyHashSet;
 
-HashSet_t *HashSetCreate (void);
+MyHashSet *myHashSetCreate (void);
 
-bool HashSetAdd (HashSet_t *const hSet, int key);
-bool HashSetRemove (HashSet_t *hSet, int key);
+bool myHashSetAdd (MyHashSet *const hSet, int key);
+bool myHashSetRemove (MyHashSet *hSet, int key);
 /** Returns true if this set contains the specified element */
-bool HashSetContains (HashSet_t *hSet, int key);
-bool HashSetFree (HashSet_t *obj);
+bool myHashSetContains (MyHashSet *hSet, int key);
+bool myHashSetFree (MyHashSet *obj);
 
 #ifdef __cplusplus
 }

@@ -2,7 +2,6 @@
 
 #include "uTests.h"
 
-
 #include <malloc.h>
 #include <time.h>
 
@@ -48,6 +47,7 @@
 
 #include "bin_utils_test.h"
 #include "compare_version_test.h"
+#include "tree_lions.h"
 
 #ifdef HAS_PARSE_REG
 #include "parse_tja1101_regs.h"
@@ -391,6 +391,13 @@ static bool test_malloc (void) {
 int unit_test (void) {
     printf ("\n%s()", __FUNCTION__);
     bool res = false;
+
+    res = test_lion_man_task ();
+    if (false == res) {
+        printf ("test_lion_man_task error");
+        return LION_TASK_ERROR;
+    }
+    res = run_tree_lions ();
 
 #ifdef HAS_ALGORITHMS
     res = test_algorithms ();

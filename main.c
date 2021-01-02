@@ -6,12 +6,29 @@
 #include <string.h>
 #include <sys/time.h>
 #include <time.h>
+#include <unistd.h>
 
 #include "algorithms.h"
 #include "combinations.h"
 #include "convert.h"
 #include "hash_table.h"
 #include "linked_list.h"
+
+#if 0
+//not allowed in C
+int init_by_foo1(void){
+	printf("\n[d]%s()",__FUNCTION__);
+	return 1;
+}
+
+int init_by_foo2(void){
+	printf("\n[d]%s()",__FUNCTION__);
+	return 2;
+}
+
+int a_val1=init_by_foo1();
+int a_val2=init_by_foo2();
+#endif
 
 #ifdef HAS_LS
 #include "ls_l.h"
@@ -86,6 +103,7 @@ uint64_t GetTimeStamp () {
 }
 #endif
 
+int g_val = 2;
 int main (int argc, char *argv[]) {
     printf ("\n[d] %s(): addr of main 0x%p", __FUNCTION__, main);
     // time_t t;
@@ -136,17 +154,6 @@ int main (int argc, char *argv[]) {
     } else {
         printf ("\n\nUnit Test fine\n");
     }
-#endif
-
-#ifdef HAS_EVAL_CACHE
-    if (2 == argc) {
-        uint64_t byte_max = 0;
-        bool res = try_strl2uint64 (argv[1], strlen (argv[1]), &byte_max);
-        if (true == res) {
-            evaluate_cache (byte_max);
-        }
-    }
-
 #endif
 
 #ifdef HAS_LS
@@ -303,6 +310,16 @@ int main (int argc, char *argv[]) {
     res = simulate_roket (20.0f);
     if (false == res) {
         printf ("\nUnable to simulate rocket\n\n");
+    }
+#endif
+
+#if 0
+    bool loop=true;
+    int cnt=0;
+    while (loop){
+    	cnt++;
+        printf ("\n addr of val:%p val:%d cnt:%p cnt:%d", &g_val, g_val, &cnt,cnt);
+        sleep(2);
     }
 #endif
 

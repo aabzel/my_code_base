@@ -258,6 +258,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="test_str_ops.h" />
+		<Unit filename="tree_lions.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="tree_lions.h" />
 		<Unit filename="uTests.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -266,10 +270,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="utils.h" />
-		<Extensions>
-			<code_completion />
-			<envvars />
-			<debugger />
-		</Extensions>
+		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
