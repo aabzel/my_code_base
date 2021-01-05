@@ -392,12 +392,18 @@ int unit_test (void) {
     printf ("\n%s()", __FUNCTION__);
     bool res = false;
 
+#ifdef HAS_TREE_LIONS
     res = test_lion_man_task ();
     if (false == res) {
         printf ("test_lion_man_task error");
         return LION_TASK_ERROR;
     }
     res = run_tree_lions ();
+    if (false == res) {
+        printf ("run_tree_lions error");
+        return TREE_LIONS_ERROR;
+    }
+#endif
 
 #ifdef HAS_ALGORITHMS
     res = test_algorithms ();

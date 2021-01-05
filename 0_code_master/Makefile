@@ -25,10 +25,10 @@ HOTEL=Y
  
 OPT += -DHAS_UTESTS
 #OPT += -DTEST_ENCODE_STRING
-OPT += -DTEST_LINKED_LIST
-OPT += -DTEST_HASH_SET
-OPT += -DDEBUG_HASH_SET
-OPT += -DDEBUG_LINKED_LIST
+#OPT += -DTEST_LINKED_LIST
+#OPT += -DTEST_HASH_SET
+#OPT += -DDEBUG_HASH_SET
+#OPT += -DDEBUG_LINKED_LIST
 #OPT += -DTEST_ARRAY
 #OPT += -DHAS_HOTEL
 #OPT += -DTEST_STACK_NUM
@@ -52,7 +52,7 @@ OPT += -DDEBUG_LINKED_LIST
 #OPT += -DBIN_HEAP_RAND_ADD 
 #OPT += -DDEPLOY_TEST_AVL_TREE 
 #OPT += -DTEST_BIT_UTILS 
-#OPT += -DHAS_VECTOR_CALC
+OPT += -DHAS_VECTOR_CALC
          
 #files to link:
 LFLAGS= -static
@@ -62,9 +62,8 @@ EXECUTABLE=code_master
 #TARGET = main
 
 SOURCES = $(SRC_PATH)main.c
+SOURCES += $(SRC_PATH)uTests.c
 
-#SOURCES += $(SRC_PATH)vector_calc.c
-#SOURCES += $(SRC_PATH)test_vector_calc.c
 
 #@echo $(error VECTOR_CALC)
 ifeq (,$(VECTOR_CALC),Y)
@@ -78,12 +77,14 @@ endif
 #SOURCES += $(SRC_PATH)algorithms.c
 #SOURCES += $(SRC_PATH)algorithms_test.c
 #SOURCES += $(SRC_PATH)arrays.c
+SOURCES += $(SRC_PATH)vector_calc.c
+SOURCES += $(SRC_PATH)test_vector_calc.c
 #SOURCES += $(SRC_PATH)stack_indexer.c
 #SOURCES += $(SRC_PATH)stack_num.c
-SOURCES += $(SRC_PATH)tree_lions.c
+#SOURCES += $(SRC_PATH)tree_lions.c
 #SOURCES += $(SRC_PATH)stack_str.c
-SOURCES += $(SRC_PATH)hash_set.c
-SOURCES += $(SRC_PATH)test_hash_set.c
+#SOURCES += $(SRC_PATH)hash_set.c
+#SOURCES += $(SRC_PATH)test_hash_set.c
 #SOURCES += $(SRC_PATH)test_stack_num.c
 #SOURCES += $(SRC_PATH)decode_string.c
 #SOURCES += $(SRC_PATH)compiler_test.c
@@ -105,12 +106,12 @@ SOURCES += $(SRC_PATH)test_hash_set.c
 #SOURCES += $(SRC_PATH)permutations_test.c
 #SOURCES += $(SRC_PATH)combinations.c
 #SOURCES += $(SRC_PATH)combinations_test.c
-#SOURCES += $(SRC_PATH)float_utils.c
+SOURCES += $(SRC_PATH)float_utils.c
 #SOURCES += $(SRC_PATH)fifo_index.c
 #SOURCES += $(SRC_PATH)fifo_char.c
 #SOURCES += $(SRC_PATH)helper.c
-SOURCES += $(SRC_PATH)linked_list.c
-SOURCES += $(SRC_PATH)test_linked_list.c
+#SOURCES += $(SRC_PATH)linked_list.c
+#SOURCES += $(SRC_PATH)test_linked_list.c
 #SOURCES += $(SRC_PATH)linked_list_array.c
 #SOURCES += $(SRC_PATH)validate_ip_address.c
 #SOURCES += $(SRC_PATH)test_validate_ip_address.c
@@ -123,7 +124,6 @@ SOURCES += $(SRC_PATH)test_linked_list.c
 #SOURCES += $(SRC_PATH)test_convert.c
 #SOURCES += $(SRC_PATH)test_fifo_char.c
 #SOURCES += $(SRC_PATH)utils.c
-SOURCES += $(SRC_PATH)uTests.c
 
 
 OBJECTS =$(SOURCES:.c=.o)

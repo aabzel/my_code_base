@@ -3,6 +3,7 @@
 
 #include "uTests.h"
 #include "test_intervals.h"
+#include "test_brick_wall.h"
 
 using namespace std;
  
@@ -41,6 +42,8 @@ int a_val4=init_by_foo4();
 
 bool u_tests(void) {
    cout << "u_tests" << endl;
+   EXPECT_TRUE( test_brick_wall( ));
    EXPECT_TRUE( test_remove_Covered_Intervals( ));
+   cout << "u_tests fine" << endl;
    return true;
 }

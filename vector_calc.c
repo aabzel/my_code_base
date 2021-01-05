@@ -1,5 +1,9 @@
 #include "vector_calc.h"
 
+#include <string.h>
+
+#include "float_utils.h"
+
 double norm (Vector_t *v) {
     //Евклидова норма:
     double norm;
@@ -206,16 +210,21 @@ bool is_line_segment_crossed (Line_t line_a, Line_t line_b) {
     return res;
 }
 
-char *compose_2d_line_equation (Dot_t p1, Dot_t p2) {
-    double a, b, c;
+char *compose_2d_line_equation (Dot_t p1, Dot_t p2, float *out_equation) {
+    float a = 0.0f, b = 0.0f, c = 0.0f;
     printf ("\n%s()", __FUNCTION__);
     static char out_str[100] = "";
+    out_equation[0] = 0.0f;
+    out_equation[1] = 0.0f;
+    out_equation[2] = 0.0f;
     bool done = false;
     bool x_same = is_double_equal_absolute (p2.x, p1.x, 0.01);
     if (false == x_same) {
         a = (1 / (p2.x - p1.x));
     } else {
         done = true;
+        out_equation[0] = 1;
+        out_equation[2] = p1.x;
         snprintf (out_str, sizeof (out_str), "x=%7.2f", p1.x);
     }
     bool y_same = is_double_equal_absolute (p2.y, p1.y, 0.01);
@@ -223,6 +232,8 @@ char *compose_2d_line_equation (Dot_t p1, Dot_t p2) {
         b = -(1 / (p2.y - p1.y));
     } else {
         done = true;
+        out_equation[1] = 1;
+        out_equation[2] = p1.y;
         snprintf (out_str, sizeof (out_str), "y=%7.2f", p1.y);
     }
     if ((false == x_same) && (false == y_same)) {
@@ -236,8 +247,57 @@ char *compose_2d_line_equation (Dot_t p1, Dot_t p2) {
 
     if (false == done) {
         snprintf (out_str, sizeof (out_str), "%7.2f*x+%7.2f*y=%7.2f", a, b, c);
+        out_equation[0] = a;
+        out_equation[1] = b;
+        out_equation[2] = c;
     }
     return out_str;
+}
+
+float calc_determinant_2x2 (float *arr) {
+    float det = 0;
+    float a = arr[0];
+    float b = arr[1];
+    float c = arr[2];
+    float d = arr[3];
+    det = a * d - b * c;
+    return det;
+}
+
+void print_2d_system (float *a, float *b) {
+    printf ("\n%fx + %fy =%f", a[0], a[1], b[0]);
+    printf ("\n%fx + %fy =%f\n", a[2], a[3], b[1]);
+}
+
+bool solve_2d_equation (float *a, float *b, float *x_out) {
+    float determinamt = calc_determinant_2x2 (a);
+    float determinamt_x = 0;
+    float determinamt_y = 0;
+    print_2d_system (a, b);
+    bool res = false;
+    float *a_temp = (float *)malloc (4 * sizeof (float));
+    if (a_temp) {
+        memcpy (a_temp, a, 4 * sizeof (float));
+        a_temp[0] = b[0];
+        a_temp[2] = b[1];
+        determinamt_x = calc_determinant_2x2 (a_temp);
+        printf ("\n[d] determinamt_x %f", determinamt_x);
+        memcpy (a_temp, a, 4 * sizeof (float));
+        a_temp[1] = b[0];
+        a_temp[3] = b[1];
+        determinamt_y = calc_determinant_2x2 (a_temp);
+        printf ("\n[d] determinamt_y %f", determinamt_y);
+        if (false == is_float_equal_absolute (0.0, determinamt, 0.001)) {
+            printf ("\n[d] determinamt %f", determinamt);
+            x_out[0] = determinamt_x / determinamt;
+            x_out[1] = determinamt_y / determinamt;
+            res = true;
+        } else {
+            printf ("\n[!] determinamt zero");
+        }
+        free (a_temp);
+    }
+    return res;
 }
 
 #ifdef DEBUG_VECTOR_CALC
