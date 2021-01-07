@@ -301,7 +301,7 @@ string expand_formula (string formula) {
     string temp_res = "";
     string cur_str = "";
     string tmp_str, temp_str;
-    // string  prefix_str;
+    string  prefix_str;
     int round_bracket_open = 0;
     int round_bracket_closed = 0;
     int stack_depth = 0;
@@ -354,6 +354,10 @@ string expand_formula (string formula) {
                     stack_stack.push (cur_str);
                     cur_str = "";
                 }
+                if (0 == stack_depth){
+                    prefix_str+prefix_str+formula[i];
+                	cout << "    prefix_str [" << prefix_str << "]" << endl;
+                }
 
             } else {
                 cout << "    number! " << endl;
@@ -400,15 +404,28 @@ string expand_formula (string formula) {
         }
     }
     cout << "End" << endl;
-#if 0
-	while(1<=stack_stack.size()) {
-		cout << " prefix size "<<stack_stack.size() << endl;
-	    cout << " stack_top {"<< stack_stack.top()<<"}" ;
-	    cur_str=stack_stack.top()+cur_str;
-	    stack_stack.pop();
+    out_res = out_res+cur_str;
+#if 1
+	while(1<=stack_prefix.size()) {
+		cout << "   in cur_str {"<< out_res<<"}" ;
+		string prefx=stack_prefix.top();
+		cout << " add prefix size "<<stack_prefix.size() << endl;
+	    cout << " stack stack_prefix {"<< prefx<<"}" ;
+	    stack_prefix.pop();
+	    out_res= prefx+out_res;
+	    cout << "   cur_str {"<< out_res<<"}" ;
 	}
 #endif
-    out_res += cur_str;
+	cout << "   out_res {"<< out_res<<"}" ;
+    cout << " out  out_res   "<<out_res<< endl;
     return out_res;
 }
+
+
+string countOfAtoms(string formula){
+	string expanded=expand_formula ( formula);
+	string hist=build_histogram (  expanded);
+	return hist;
+}
+
 #endif

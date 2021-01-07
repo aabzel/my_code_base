@@ -27,7 +27,14 @@ bool test_number_of_atoms (void) {
     histogram = formalize_expression ("K4(ON(SO3)2)2");
     EXPECT_EQ_STR_CPP (histogram, "(K)4(ON(S(O)3)2)2");
 
+
 #if 1
+    histogram = expand_formula ("Be32");
+    EXPECT_EQ_STR_CPP (histogram, "BeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBe");
+
+    histogram = expand_formula ("Mg(OH)2");
+    EXPECT_EQ_STR_CPP (histogram, "MgOHOH");
+
     histogram = expand_formula ("O3");
     EXPECT_EQ_STR_CPP (histogram, "OOO");
 
@@ -47,7 +54,7 @@ bool test_number_of_atoms (void) {
 
     cout << endl << endl << endl << endl;
 
-#if 0
+#if 1
 
     histogram = countOfAtoms ("K4(ON(SO3)2)2");
     EXPECT_EQ_STR_CPP (histogram,"K4N2O14S4");
