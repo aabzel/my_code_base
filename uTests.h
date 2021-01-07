@@ -195,17 +195,16 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
         }                                                                                                              \
     } while (0);
 
-
 #ifdef __cplusplus
 #define EXPECT_EQ_STR_CPP(strL, strR)                                                                                  \
     do {                                                                                                               \
-        if (0 != strL.compare(strR))  {                                                                                \
-            cout<<"[e] "<<  __FUNCTION__<<"() Line "<< __LINE__ <<" ["<< strL <<"] != ["<< strR<< "] " << endl;                                       \
+        if (0 != strL.compare (strR)) {                                                                                \
+            cout << "[e] " << __FUNCTION__ << "() Line " << __LINE__ << " [" << strL << "] != [" << strR << "] "       \
+                 << endl;                                                                                              \
             return false;                                                                                              \
         }                                                                                                              \
     } while (0);
 #endif
-
 
 #define EXPECT_EQ_STR(strL, strR)                                                                                      \
     do {                                                                                                               \
