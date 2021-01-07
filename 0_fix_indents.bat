@@ -5,4 +5,5 @@ set format_tool="C:\Program Files\LLVM\bin\clang-format.exe"
 
 %format_tool%  -verbose -i -style=%style1% C:\1_lessons\C_programming_language\trainings\training\*.h
 %format_tool%  -verbose -i -style=%style1% C:\1_lessons\C_programming_language\trainings\training\*.c
+%format_tool%  -verbose -i -style=%style1% C:\1_lessons\C_programming_language\trainings\training\*.cpp
 

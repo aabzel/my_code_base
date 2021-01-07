@@ -33,7 +33,7 @@ OPT += -DHAS_UTESTS
 #OPT += -DHAS_HOTEL
 #OPT += -DTEST_STACK_NUM
 #OPT += -DHAS_ARRAY
-#OPT += -DHAS_ALGORITHMS
+OPT += -DHAS_ALGORITHMS
 #OPT += -DHAS_PERMUTATIONS_TEST
 #OPT += -DHAS_EVAL_CACHE
 #OPT += -DDEBUG_PERMUT
@@ -74,7 +74,8 @@ ifeq (,$(HOTEL),Y)
      @echo $(error HOTEL=$(HOTEL)) 
 endif
 
-#SOURCES += $(SRC_PATH)algorithms.c
+SOURCES += $(SRC_PATH)algorithms.c
+SOURCES += $(SRC_PATH)test_algorithms.c
 #SOURCES += $(SRC_PATH)algorithms_test.c
 #SOURCES += $(SRC_PATH)arrays.c
 SOURCES += $(SRC_PATH)vector_calc.c
@@ -93,7 +94,7 @@ SOURCES += $(SRC_PATH)test_vector_calc.c
 #SOURCES += $(SRC_PATH)test_decode_way.c
 #SOURCES += $(SRC_PATH)auriga_task.c
 #SOURCES += $(SRC_PATH)evaluate_cache.c
-#SOURCES += $(SRC_PATH)bit_utils.c
+SOURCES += $(SRC_PATH)bit_utils.c
 #SOURCES += $(SRC_PATH)test_hotel.c
 #SOURCES += $(SRC_PATH)hotel.c
 #SOURCES += $(SRC_PATH)check_address.c
@@ -119,7 +120,6 @@ SOURCES += $(SRC_PATH)float_utils.c
 #SOURCES += $(SRC_PATH)test_auriga_task.c
 #SOURCES += $(SRC_PATH)test_arrays.c
 #SOURCES += $(SRC_PATH)test_str_ops.c
-#SOURCES += $(SRC_PATH)test_algorithms.c
 #SOURCES += $(SRC_PATH)test_evaluate_cache.c
 #SOURCES += $(SRC_PATH)test_convert.c
 #SOURCES += $(SRC_PATH)test_fifo_char.c

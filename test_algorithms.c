@@ -109,7 +109,7 @@ static bool test_two_sum (void) {
     return_size = 0;
     result = twoSum (nums4, 3, 6, &return_size);
     EXPECT_NE (NULL, result);
-    print_array_int (result, 2);
+    // print_array_int (result, 2);
     EXPECT_EQ (2, return_size);
     EXPECT_EQ (0, result[0]);
     EXPECT_EQ (2, result[1]);
@@ -119,7 +119,7 @@ static bool test_two_sum (void) {
     return_size = 0;
     result = twoSum (nums2, 3, 6, &return_size);
     EXPECT_NE (NULL, result);
-    print_array_int (result, 2);
+    //   print_array_int (result, 2);
     EXPECT_EQ (2, return_size);
     EXPECT_EQ (1, result[0]);
     EXPECT_EQ (2, result[1]);
@@ -128,7 +128,7 @@ static bool test_two_sum (void) {
     int nums1[] = {3, 3};
     result = twoSum (nums1, 2, 6, &return_size);
     EXPECT_NE (NULL, result);
-    print_array_int (result, 2);
+    // print_array_int (result, 2);
     EXPECT_EQ (2, return_size);
     EXPECT_EQ (0, result[0]);
     EXPECT_EQ (1, result[1]);
@@ -138,7 +138,7 @@ static bool test_two_sum (void) {
     return_size = 0;
     result = twoSum (nums3, 4, 9, &return_size);
     EXPECT_NE (NULL, result);
-    print_array_int (result, 2);
+    //    print_array_int (result, 2);
     EXPECT_EQ (2, return_size);
     EXPECT_EQ (0, result[0]);
     EXPECT_EQ (1, result[1]);
@@ -160,8 +160,27 @@ static bool test_tree_sum (void) {
     return true;
 }
 
+static bool test_swap (void) {
+    printf ("\n[d] %s()", __FUNCTION__);
+    for (int a = (INT_MAX - 2); 0 < a; a -= INT_MAX / 1000) {
+        for (int b = (INT_MAX - 1); 0 < b; b -= INT_MAX / 1000) {
+            int x1 = a;
+            int y1 = b;
+            int x2 = a;
+            int y2 = b;
+            // printf ("\n[d] a %d b %d", a,b);
+            EXPECT_TRUE (swap_int (&x1, &y1));
+            EXPECT_TRUE (swap_int2 (&x2, &y2));
+            EXPECT_EQ (x1, x2);
+            EXPECT_EQ (y1, y2);
+        }
+    }
+    return true;
+}
+
 bool test_algorithms (void) {
     printf ("\n[d] %s()", __FUNCTION__);
+    EXPECT_TRUE (test_swap ());
     EXPECT_TRUE (test_tree_sum ());
     EXPECT_TRUE (test_two_sum ());
     // EXPECT_TRUE (test_avarage());

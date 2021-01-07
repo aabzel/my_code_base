@@ -38,7 +38,7 @@ int sum_digits (int val) {
     }
     return sum;
 }
-
+#if 0
 void print_permut_terms (int *in_current_array, int in_curr_arr_size, int pos, int *alf, int alf_size, int total_num,
                          int sum, int *syllables) {
     if (in_curr_arr_size == total_num) {
@@ -64,10 +64,11 @@ void print_permut_terms (int *in_current_array, int in_curr_arr_size, int pos, i
         }
     }
 }
+#endif
 
 void print_terms (int total_num, int *alf, int alf_size, int sum, int *syllables) {
     printf ("\n");
-    print_permut_terms (NULL, 0, 0, alf, alf_size, total_num, sum, syllables);
+    // print_permut_terms (NULL, 0, 0, alf, alf_size, total_num, sum, syllables);
 }
 
 bool is_in_range (int val, int lowBound, int upBound) {
@@ -188,6 +189,7 @@ void swap_char (char *const x, char *const y) {
 }
 
 bool swap_int (int *const x, int *const y) {
+    // printf ("\n[d] %s()", __FUNCTION__);
     bool res = false;
     if (x != y) {
         int temp;
@@ -198,6 +200,19 @@ bool swap_int (int *const x, int *const y) {
     }
     return res;
 }
+
+bool swap_int2 (int *const x, int *const y) {
+    // printf ("\n[d] %s()", __FUNCTION__);
+    bool res = false;
+    if (x != y) {
+        (*x) = (*x) + (*y); // x now becomes 15
+        (*y) = (*x) - (*y); // y becomes 10
+        (*x) = (*x) - (*y); // x becomes 5
+        res = true;
+    }
+    return res;
+}
+
 #if 0
 bool is_power_of_two (int x) { return ((0 < x) && (0 == (x & (x - 1)))); }
 #endif

@@ -28,7 +28,7 @@ short compare (int Data1, int Data2);
 int max_int (int val1, int val2);
 int min_int (int val1, int val2);
 int min3 (int val1, int val2, int val3);
-
+bool swap_int2 (int *const x, int *const y);
 uint32_t average_slow (uint32_t a, uint32_t b);
 uint32_t average_quick (uint32_t a, uint32_t b);
 bool is_exist (int *arr, size_t n, int val);
