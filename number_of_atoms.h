@@ -7,3 +7,4 @@ string formalize_expression (string formula);
 string expand_formula (string formula);
 string expand_formula (string formula);
 string countOfAtoms (string formula);
+string build_histogram (string expand_formula);

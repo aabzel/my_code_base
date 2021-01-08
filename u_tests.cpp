@@ -3,6 +3,10 @@
 
 #include "uTests.h"
 
+#if ALGORITHMS_OOP
+#include "test_algorithms_oop.h"
+#endif
+
 #if INTERVALS
 #include "test_intervals.h"
 #endif
@@ -45,16 +49,20 @@ int a_val3 = init_by_foo3 ();
 int a_val4 = init_by_foo4 ();
 
 bool u_tests (void) {
-    cout << "u_tests" << endl;
-#if NUMBER_OF_ATOMS
+    cout << __FUNCTION__ << endl;
+#ifdef ALGORITHMS_OOP
+    EXPECT_TRUE (test_findDuplicate ());
+    EXPECT_TRUE (test_singleNumber ());
+#endif
+#ifdef NUMBER_OF_ATOMS
     EXPECT_TRUE (test_number_of_atoms ());
 #endif
 
-#if BRICK_WALL
+#ifdef BRICK_WALL
     EXPECT_TRUE (test_brick_wall ());
 #endif
 
-#if INTERVALS
+#ifdef INTERVALS
     EXPECT_TRUE (test_remove_Covered_Intervals ());
 #endif
     cout << "u_tests fine" << endl;

@@ -19,101 +19,42 @@ vector<string> periodicTable = {
     "Rn", "Fr", "Ra", "Ac", "Th", "Pa", "U",  "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No",
     "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds", "Rg", "Cn", "Nh", "Fl", "Mc", "Lv", "Ts", "Og"};
 
-void computeLPSArray (string pat, int M, int lps[]) {
-
-    // Length of the previous longest
-    // prefix suffix
-    int len = 0;
-    int i = 1;
-    lps[0] = 0; // lps[0] is always 0
-
-    // The loop calculates lps[i] for
-    // i = 1 to M-1
-    while (i < M) {
-        if (pat[i] == pat[len]) {
-            len++;
-            lps[i] = len;
-            i++;
-        } else // (pat[i] != pat[len])
-        {
-
-            // This is tricky. Consider the example.
-            // AAACAAAA and i = 7. The idea is similar
-            // to search step.
-            if (len != 0) {
-                len = lps[len - 1];
-
-                // Also, note that we do not
-                // increment i here
-            } else // if (len == 0)
-            {
-                lps[i] = len;
-                i++;
-            }
+vector<string> compose_set (string expand_formula) {
+    vector<string> set;
+    string elem;
+    for (int i = 0; i < expand_formula.size (); i++) {
+        if (isupper (expand_formula[i])) {
+            set.push_back (elem);
+            elem = "";
+            elem += expand_formula[i];
+        } else {
+            elem += expand_formula[i];
         }
     }
-}
-
-int KMPSearch (string pat, string txt) {
-    int M = pat.length ();
-    int N = txt.length ();
-
-    // Create lps[] that will hold the longest
-    // prefix suffix values for pattern
-    int lps[M];
-    int j = 0; // index for pat[]
-
-    // Preprocess the pattern (calculate lps[]
-    // array)
-    computeLPSArray (pat, M, lps);
-
-    int i = 0; // index for txt[]
-    int res = 0;
-    int next_i = 0;
-
-    while (i < N) {
-        if (pat[j] == txt[i]) {
-            j++;
-            i++;
-        }
-        if (j == M) {
-
-            // When we find pattern first time,
-            // we iterate again to check if there
-            // exists more pattern
-            j = lps[j - 1];
-            res++;
-
-            // We start i to check for more than once
-            // appearance of pattern, we will reset i
-            // to previous start+1
-            if (lps[j] != 0)
-                i = ++next_i;
-            j = 0;
-        }
-
-        // Mismatch after j matches
-        else if (i < N && pat[j] != txt[i]) {
-
-            // Do not match lps[0..lps[j-1]]
-            // characters, they will match anyway
-            if (j != 0)
-                j = lps[j - 1];
-            else
-                i = i + 1;
-        }
-    }
-    return res;
+    set.push_back (elem);
+    // for (int j=0; j<set.size(); j++) {
+    //     cout << " j:"<<j<<"," <<set[j] << endl;
+    //}
+    return set;
 }
 
 // expand the formula to full view   Mg(OH)2->MgOHOH
 // count each atom
 string build_histogram (string expand_formula) {
-    cout << __FUNCTION__ << " [" << expand_formula << "] " << endl;
+    // cout << __FUNCTION__ << " [" << expand_formula << "] " << endl;
     string res_hist = "";
+    vector<string> set;
+    set = compose_set (expand_formula);
+
     sort (periodicTable.begin (), periodicTable.end ());
     for (unsigned int i = 0; i < periodicTable.size (); i++) {
-        int num = KMPSearch (periodicTable[i], expand_formula);
+        int num = 0;
+        for (int j = 0; j < set.size (); j++) {
+            if (set[j] == periodicTable[i]) {
+                num++;
+            }
+        }
+        // int num = KMPSearch (periodicTable[i], expand_formula);
         if (1 < num) {
             res_hist += periodicTable[i] + to_string (num);
         } else if (1 == num) {
@@ -198,110 +139,15 @@ string formalize_expression (string formula) {
     return res;
 }
 
-#if 0
-
-string expand_formula(string formula){
-
-}
-#endif
-
-#if CORRECT
-string countOfAtoms (string formula) {
-    map<string, int> m;
-    stack<pair<string, int>> st;
-
-    string curr = ""; // Building symbols
-    int num = 0;      // Counting
-    int i = 0;        // Index
-
-    while (i < formula.size ()) {
-        char c = formula[i];
-        if (c == '(') {
-            // Open Bracket
-            curr = "";
-            num = 0;
-            st.emplace ("(", 0);
-            ++i;
-        }
-
-        else if (c == ')') {
-            stack<pair<string, int>> temp;
-            ++i;
-
-            // Scan past the last paren to see if we have any numbers
-            while (i < formula.size () && isdigit (formula[i])) {
-                num = num * 10 + (formula[i] - '0');
-                ++i;
-            }
-            // Multiply everything in between
-            while (st.top ().first != "(") {
-
-                // num is 0 to make parsing work, but no num after symbols means 1
-
-                temp.emplace (st.top ().first, st.top ().second * max (1, num));
-                st.pop ();
-            }
-
-            // reset
-            num = 0;
-
-            // Get rid of open Paren
-            st.pop ();
-
-            // Put stuff back
-            while (!temp.empty ()) {
-                st.emplace (temp.top ());
-                temp.pop ();
-            }
-        }
-
-        else if (isupper (c)) {
-            // Parse Symbol plus immediate numbers
-
-            curr += c;
-            ++i;
-            while (i < formula.size () && islower (formula[i])) {
-                curr += formula[i];
-                ++i;
-            }
-            while (i < formula.size () && isdigit (formula[i])) {
-                num = num * 10 + formula[i] - '0';
-                ++i;
-            }
-            st.emplace (curr, max (1, num));
-            curr = "", num = 0;
-        }
-    }
-
-    // Add everything
-    while (!st.empty ()) {
-        m[st.top ().first] += st.top ().second;
-        st.pop ();
-    }
-
-    // Already have a string around
-    curr = "";
-
-    for (auto &p : m) {
-        curr += p.first;
-        if (p.second > 1)
-            curr += to_string (p.second);
-    }
-    return curr;
-}
-#endif
-
-#if 1
-
 //"K4(ON(SO3)2)2"
 string expand_formula (string formula) {
     formula = formalize_expression (formula);
-    cout << __FUNCTION__ << " [" << formula << "] " << endl;
+    // cout << __FUNCTION__ << " [" << formula << "] " << endl;
     string out_res = "";
     string temp_res = "";
     string cur_str = "";
     string tmp_str, temp_str;
-    string  prefix_str;
+    string prefix_str;
     int round_bracket_open = 0;
     int round_bracket_closed = 0;
     int stack_depth = 0;
@@ -309,22 +155,22 @@ string expand_formula (string formula) {
     stack<string> stack_prefix;
     int num = 0;
     for (unsigned int i = 0; i < formula.size (); i++) {
-        cout << endl << "proc {" << formula[i] << "}";
-        cout << " cur_str {" << cur_str << "}";
+        // cout << endl << "proc {" << formula[i] << "}";
+        // cout << " cur_str {" << cur_str << "}";
         if (1 <= stack_prefix.size ()) {
-            cout << " stack_prefix {" << stack_prefix.top () << "} size: " << stack_prefix.size ();
+            // cout << " stack_prefix {" << stack_prefix.top () << "} size: " << stack_prefix.size ();
         }
 
         if (1 <= stack_stack.size ()) {
-            cout << " stack_top {" << stack_stack.top () << "} size: " << stack_stack.size ();
+            // cout << " stack_top {" << stack_stack.top () << "} size: " << stack_stack.size ();
         }
-        cout << endl;
+        // cout << endl;
         switch (formula[i]) {
         case '(': {
             stack_depth++;
             round_bracket_open++;
             // prefix_str=cur_str;
-            cout << " save prefix before ( {" << cur_str << "}";
+            // cout << " save prefix before ( {" << cur_str << "}";
             stack_prefix.push (cur_str);
             cur_str = "";
         } break;
@@ -334,15 +180,15 @@ string expand_formula (string formula) {
             round_bracket_closed++;
             if (1 <= stack_stack.size ()) {
                 tmp = stack_stack.top ();
-                cout << "    push after ) [" << tmp << "]" << endl;
+                // cout << "    push after ) [" << tmp << "]" << endl;
                 stack_stack.push (tmp);
             } else {
-                cout << "    push after ) [" << cur_str << "]" << endl;
+                // cout << "    push after ) [" << cur_str << "]" << endl;
                 stack_stack.push (cur_str);
             }
             // if(1<=stack_stack.size()) {
             //	tmp_str = stack_stack.top();stack_stack.pop();
-            //	cout <<"    top after ) ["<< tmp_str<<"]" << endl;
+            //	//cout <<"    top after ) ["<< tmp_str<<"]" << endl;
             //}
             cur_str = "";
         } break;
@@ -350,46 +196,49 @@ string expand_formula (string formula) {
             if (isalpha (formula[i])) {
                 cur_str = cur_str + formula[i];
                 if (isdigit (formula[i + 1])) {
-                    cout << "    push [" << cur_str << "]" << endl;
+                    // cout << "    push [" << cur_str << "]" << endl;
                     stack_stack.push (cur_str);
                     cur_str = "";
                 }
-                if (0 == stack_depth){
-                    prefix_str+prefix_str+formula[i];
-                	cout << "    prefix_str [" << prefix_str << "]" << endl;
+                if (0 == stack_depth) {
+                    prefix_str + prefix_str + formula[i];
+                    // cout << "    prefix_str [" << prefix_str << "]" << endl;
                 }
 
             } else {
-                cout << "    number! " << endl;
+                // cout << "    number! " << endl;
                 string expand_element = "";
                 num = atoi (&formula[i]);
-                cout << "    num " << num << endl;
+                // cout << "    num " << num << endl;
                 temp_str = "";
                 if (1 <= stack_stack.size ()) {
-                    cout << "        stack_stack contain [" << stack_stack.top () << "]" << endl;
+                    // cout << "        stack_stack contain [" << stack_stack.top () << "]" << endl;
                     temp_str = stack_stack.top ();
                     stack_stack.pop ();
-                    cout << "    num " << num << "*" << temp_str << endl;
+                    // cout << "    num " << num << "*" << temp_str << endl;
                     for (int j = 0; j < num; j++) {
-                        cout << cur_str << endl;
+                        // cout << cur_str << endl;
                         expand_element = expand_element + temp_str;
                     }
                 }
-
+#ifdef DEBUG
                 cout << "     expand_element " << expand_element << " depth " << stack_depth << endl;
+#endif
                 cur_str = expand_element;
 
                 if (0 == stack_depth) {
                     out_res += expand_element;
-                    cout << "     out_res " << out_res << endl;
+                    // cout << "     out_res " << out_res << endl;
                 } else {
                     if (0 < stack_prefix.size ()) {
-                        cout << "   middle push [" << stack_prefix.top () << "+" << cur_str << "]" << endl;
+                        // cout << "   middle push [" << stack_prefix.top () << "+" << cur_str << "]" << endl;
                         stack_stack.push (stack_prefix.top () + cur_str);
                         stack_prefix.pop ();
 
                     } else {
+#ifdef DEBUG
                         cout << "   middle push [" << cur_str << "]" << endl;
+#endif
                         stack_stack.push (cur_str);
                     }
                 }
@@ -403,29 +252,32 @@ string expand_formula (string formula) {
         } break;
         }
     }
+#ifdef DEBUG
     cout << "End" << endl;
-    out_res = out_res+cur_str;
-#if 1
-	while(1<=stack_prefix.size()) {
-		cout << "   in cur_str {"<< out_res<<"}" ;
-		string prefx=stack_prefix.top();
-		cout << " add prefix size "<<stack_prefix.size() << endl;
-	    cout << " stack stack_prefix {"<< prefx<<"}" ;
-	    stack_prefix.pop();
-	    out_res= prefx+out_res;
-	    cout << "   cur_str {"<< out_res<<"}" ;
-	}
 #endif
-	cout << "   out_res {"<< out_res<<"}" ;
-    cout << " out  out_res   "<<out_res<< endl;
+    out_res = out_res + cur_str;
+#if 1
+    while (1 <= stack_prefix.size ()) {
+        // cout << "   in cur_str {"<< out_res<<"}" ;
+        string prefx = stack_prefix.top ();
+#ifdef DEBUG
+        cout << " add prefix size " << stack_prefix.size () << endl;
+        cout << " stack stack_prefix {" << prefx << "}";
+#endif
+        stack_prefix.pop ();
+        out_res = prefx + out_res;
+#ifdef DEBUG
+        cout << "   cur_str {" << out_res << "}";
+#endif
+    }
+#endif
+    // cout << "   out_res {"<< out_res<<"}" ;
+    // cout << " out  out_res   "<<out_res<< endl;
     return out_res;
 }
 
-
-string countOfAtoms(string formula){
-	string expanded=expand_formula ( formula);
-	string hist=build_histogram (  expanded);
-	return hist;
+string countOfAtoms (string formula) {
+    string expanded = expand_formula (formula);
+    string hist = build_histogram (expanded);
+    return hist;
 }
-
-#endif

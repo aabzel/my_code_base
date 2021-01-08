@@ -12,6 +12,9 @@ bool test_number_of_atoms (void) {
     EXPECT_EQ (2, atoi ("2O"));
     EXPECT_EQ (3, atoi ("3)2)2"));
 
+    histogram = formalize_expression ("(B2O39He17BeBe49)39");
+    EXPECT_EQ_STR_CPP (histogram, "((B)2(O)39(He)17Be(Be)49)39");
+
     histogram = formalize_expression ("H2O");
     EXPECT_EQ_STR_CPP (histogram, "(H)2O");
 
@@ -26,7 +29,6 @@ bool test_number_of_atoms (void) {
 
     histogram = formalize_expression ("K4(ON(SO3)2)2");
     EXPECT_EQ_STR_CPP (histogram, "(K)4(ON(S(O)3)2)2");
-
 
 #if 1
     histogram = expand_formula ("Be32");
@@ -50,6 +52,9 @@ bool test_number_of_atoms (void) {
     histogram = expand_formula ("K4(ON(SO3)2)2");
     EXPECT_EQ_STR_CPP (histogram, "KKKKONSOOOSOOOONSOOOSOOO");
 
+    histogram = build_histogram ("BeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBeBe");
+    EXPECT_EQ_STR_CPP (histogram, "Be32");
+
 #endif
 
     cout << endl << endl << endl << endl;
@@ -57,20 +62,19 @@ bool test_number_of_atoms (void) {
 #if 1
 
     histogram = countOfAtoms ("K4(ON(SO3)2)2");
-    EXPECT_EQ_STR_CPP (histogram,"K4N2O14S4");
+    EXPECT_EQ_STR_CPP (histogram, "K4N2O14S4");
 
-    cout << endl<<endl<<endl<<endl;
+    // cout << endl<<endl<<endl<<endl;
     histogram = countOfAtoms ("Mg(OH)2");
-    EXPECT_EQ_STR_CPP (histogram,"H2MgO2");
+    EXPECT_EQ_STR_CPP (histogram, "H2MgO2");
 
-    cout << endl<<endl<<endl<<endl;
+    // cout << endl<<endl<<endl<<endl;
     histogram = countOfAtoms ("H2O");
-    EXPECT_EQ_STR_CPP (histogram,"H2O");
+    EXPECT_EQ_STR_CPP (histogram, "H2O");
 
-
-    cout << endl<<endl<<endl<<endl;
+    // cout << endl<<endl<<endl<<endl;
     histogram = countOfAtoms ("Be32");
-    EXPECT_EQ_STR_CPP (histogram,"Be32");
+    EXPECT_EQ_STR_CPP (histogram, "Be32");
 #endif
     cout << __FUNCTION__ << " Fine" << endl;
     return true;

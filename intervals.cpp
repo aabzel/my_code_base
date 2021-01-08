@@ -4,19 +4,6 @@
 
 using namespace std;
 
-void print_vector (vector<vector<int>> &intervals) {
-    cout << endl;
-    for (int i = 0; i < intervals.size (); i++) {
-        cout << "[";
-        for (int j = 0; j < intervals[i].size (); j++) {
-            cout << intervals[i].at (j) << ' ';
-        }
-        cout << "]";
-    }
-    cout << endl;
-    cout << endl;
-}
-
 int removeCoveredIntervals (vector<vector<int>> &intervals) {
     cout << "removeCoveredIntervals(): size" << intervals.size () << endl;
     cout << "prio sort" << endl;

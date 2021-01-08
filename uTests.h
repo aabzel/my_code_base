@@ -202,6 +202,8 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
             cout << "[e] " << __FUNCTION__ << "() Line " << __LINE__ << " [" << strL << "] != [" << strR << "] "       \
                  << endl;                                                                                              \
             return false;                                                                                              \
+        } else {                                                                                                       \
+            cout << "OK!" << endl;                                                                                     \
         }                                                                                                              \
     } while (0);
 #endif
@@ -232,6 +234,8 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
             printf ("\n%s():Line: %d in val1: %u val2: %u ", __FUNCTION__, __LINE__, val1, val2);                      \
             /*printf ("   val1: 0x%x val2: 0x%x  ", (int)val1, (int)val2);*/                                           \
             return false;                                                                                              \
+        } else {                                                                                                       \
+            printf ("\n OK!\n");                                                                                       \
         }                                                                                                              \
     } while (0);
 

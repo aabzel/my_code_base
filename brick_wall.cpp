@@ -5,14 +5,6 @@
 #include <map>
 #include <vector>
 
-void print_map (map<int, int> histogram) {
-
-    map<int, int>::iterator itr;
-    for (itr = histogram.begin (); itr != histogram.end (); ++itr) {
-        cout << ' ' << itr->first << ' ' << itr->second << '\n';
-    }
-}
-
 int leastBricks (vector<vector<int>> &wall) {
     cout << "num of rows is wall " << wall.size () << endl;
     map<int, int> gap_histogram;
