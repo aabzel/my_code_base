@@ -22,3 +22,14 @@ void print_vector (vector<vector<int>> &intervals) {
     cout << endl;
     cout << endl;
 }
+
+void print_vector_strs (vector<string> words) {
+    cout << __FUNCTION__ << endl;
+    cout << endl;
+    for (int i = 0; i < words.size (); i++) {
+        cout << "[";
+        cout << words[i] << ' ';
+        cout << "]" << endl;
+    }
+    cout << endl;
+}

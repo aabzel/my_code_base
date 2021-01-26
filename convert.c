@@ -1774,7 +1774,7 @@ bool try_strl2ipv6 (const char in_ip_str[], int32_t str_len, uint16_t *ipv6_arr)
         /* Error: The `in_ip_str` string is too short */
         res = false;
     } else {
-        uint8_t octet_n__tsl2i4 = 0u;
+        // uint8_t octet_n__tsl2i4 = 0u;
         int32_t offset = 0u;
         char hex_val[50] = "";
         res = true;

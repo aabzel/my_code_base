@@ -122,7 +122,7 @@ typedef enum {
     NUM_ERROR = 120
 } utError_t;
 
-int unit_test (void);
+bool unit_test (void);
 
 size_t basename_start (const char *filename);
 #define BASENAME() ((__FILE__ ":") + basename_start (__FILE__))
@@ -196,14 +196,26 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
     } while (0);
 
 #ifdef __cplusplus
-#define EXPECT_EQ_STR_CPP(strL, strR)                                                                                  \
+#define EXPECT_EQ_STR_CPP(strLc, strRc)                                                                                \
     do {                                                                                                               \
+        string strL (strLc);                                                                                           \
+        string strR (strRc);                                                                                           \
         if (0 != strL.compare (strR)) {                                                                                \
             cout << "[e] " << __FUNCTION__ << "() Line " << __LINE__ << " [" << strL << "] != [" << strR << "] "       \
                  << endl;                                                                                              \
             return false;                                                                                              \
         } else {                                                                                                       \
-            cout << "OK!" << endl;                                                                                     \
+            /* cout << "OK!" << endl;*/                                                                                \
+        }                                                                                                              \
+    } while (0);
+
+#define EXPECT_VEC_EQ(veca, vecb)                                                                                      \
+    do {                                                                                                               \
+        vector<int> vect_a = veca;                                                                                     \
+        vector<int> vect_b = vecb;                                                                                     \
+        if (vect_a != vect_b) {                                                                                        \
+            cout << "[e] " << __FUNCTION__ << "() Line " << __LINE__ << "Different vectors" << endl;                   \
+            return false;                                                                                              \
         }                                                                                                              \
     } while (0);
 #endif
@@ -213,6 +225,14 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
         if (0 != strcmp (strL, strR)) {                                                                                \
             printf ("\n%s:Line: %d %d in \nstrL: [%s] \nstrR: [%s] ", __FUNCTION__, __LINE__, __COUNTER__, strL,       \
                     strR);                                                                                             \
+            return false;                                                                                              \
+        }                                                                                                              \
+    } while (0);
+
+#define EXPECT_EQ_MEM(memL, memR, len)                                                                                 \
+    do {                                                                                                               \
+        if (0 != memcmp (memL, memR, len)) {                                                                           \
+            printf ("\n%s:Line: %d diffenent memory", __FUNCTION__, __LINE__);                                         \
             return false;                                                                                              \
         }                                                                                                              \
     } while (0);
@@ -235,7 +255,7 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
             /*printf ("   val1: 0x%x val2: 0x%x  ", (int)val1, (int)val2);*/                                           \
             return false;                                                                                              \
         } else {                                                                                                       \
-            printf ("\n OK!\n");                                                                                       \
+            /*printf ("\n OK!\n");  */                                                                                 \
         }                                                                                                              \
     } while (0);
 

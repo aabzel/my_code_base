@@ -1,0 +1,1 @@
+cmake -S C:\1_lessons\C_programming_language\trainings\training\build_csfml\CSFML-2.5\  -G"MinGW Makefiles" .

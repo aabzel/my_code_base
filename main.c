@@ -55,7 +55,7 @@ int a_val2=init_by_foo2();
 #ifdef HAS_TCP_CLIENT
 #include "tcp_client.h"
 #endif
-
+#include "win_utils.h"
 #include "uTests.h"
 #include "utils.h"
 #ifdef DEPLOY_TCP_SERVER
@@ -64,7 +64,6 @@ int a_val2=init_by_foo2();
 #include "mk_to_dot.h"
 #ifdef HAS_SERIAL
 #include "scan_serial_port.h"
-#include "win_utils.h"
 #endif
 #include "simulate_rocket_2d.h"
 
@@ -147,13 +146,7 @@ int main (int argc, char *argv[]) {
 #endif
 
 #ifdef HAS_UTESTS
-    int ret = unit_test ();
-    if (0 != ret) {
-        printf ("\n\nUnit Test Error: %d\n", ret);
-        exit (ret);
-    } else {
-        printf ("\n\nUnit Test fine\n");
-    }
+    EXPECT_TRUE (unit_test ());
 #endif
 
 #ifdef HAS_LS
@@ -163,7 +156,7 @@ int main (int argc, char *argv[]) {
     }
 #endif
 
-#ifdef DEPLOY_TCP_CLIENT
+#ifdef TCP_CLIENT
     printf ("\nDEPLOY_TCP_CLIENT\n");
     get_adapter_info ();
 #endif
@@ -314,7 +307,7 @@ int main (int argc, char *argv[]) {
 #endif
 
 #if 0
-    bool loop=true;
+    bool loop=false;
     int cnt=0;
     while (loop){
     	cnt++;

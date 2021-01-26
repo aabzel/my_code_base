@@ -3,19 +3,23 @@
 
 #include "uTests.h"
 
-#if ALGORITHMS_OOP
+#ifdef FINDREPEATEDDNASEQUENCES
+#include "test_repeated_dna_secuenses.h"
+#endif
+
+#ifdef ALGORITHMS_OOP
 #include "test_algorithms_oop.h"
 #endif
 
-#if INTERVALS
+#ifdef INTERVALS
 #include "test_intervals.h"
 #endif
 
-#if BRICK_WALL
+#ifdef BRICK_WALL
 #include "test_brick_wall.h"
 #endif
 
-#if NUMBER_OF_ATOMS
+#ifdef NUMBER_OF_ATOMS
 #include "test_number_of_atoms.h"
 #endif
 
@@ -50,9 +54,17 @@ int a_val4 = init_by_foo4 ();
 
 bool u_tests (void) {
     cout << __FUNCTION__ << endl;
+#ifdef FINDREPEATEDDNASEQUENCES
+    EXPECT_TRUE (test_findRepeatedDnaSequences ());
+    EXPECT_TRUE (test_findRepeatedDnaSequences1 ());
+#endif
+
 #ifdef ALGORITHMS_OOP
+    EXPECT_TRUE (test_uniqueOccurrences ());
+    EXPECT_TRUE (test_return_unique ());
     EXPECT_TRUE (test_findDuplicate ());
     EXPECT_TRUE (test_singleNumber ());
+    EXPECT_TRUE (test_find_first_absent ());
 #endif
 #ifdef NUMBER_OF_ATOMS
     EXPECT_TRUE (test_number_of_atoms ());

@@ -5,6 +5,14 @@
 #include <malloc.h>
 #include <time.h>
 
+#ifdef EXAFORE
+#include "exafore_task.h"
+#endif
+
+#ifdef TEST_BIT_UTILS
+#include "test_bit_utils.h"
+#endif
+
 #ifdef HAS_AURIGA_TASK
 #include "test_auriga_task.h"
 #endif
@@ -22,6 +30,10 @@
 #if 0
 #include "decode_string.h"
 #include "test_decode_string.h"
+#endif
+
+#ifdef MICROAVIA_TASK
+#include "microavia_task.h"
 #endif
 
 #include "bit_utils.h"
@@ -388,9 +400,22 @@ static bool test_malloc (void) {
 }
 #endif
 
-int unit_test (void) {
-    printf ("\n%s()", __FUNCTION__);
+bool unit_test (void) {
+    printf ("\n[d] %s()", __FUNCTION__);
     bool res = false;
+    (void)res;
+
+#ifdef EXAFORE
+    EXPECT_TRUE (test_struct ());
+#endif
+
+#ifdef BIT_UTILS
+    EXPECT_TRUE (test_bit_utils ());
+#endif
+
+#ifdef MICROAVIA_TASK
+    EXPECT_TRUE (test_microavia ());
+#endif
 
 #ifdef HAS_TREE_LIONS
     res = test_lion_man_task ();
@@ -405,7 +430,7 @@ int unit_test (void) {
     }
 #endif
 
-#ifdef HAS_ALGORITHMS
+#ifdef HAS_TEST_ALGORITHM
     res = test_algorithms ();
     if (false == res) {
         printf ("test_algorithms error");
@@ -1035,57 +1060,6 @@ int unit_test (void) {
     res = save_the_amount_of_uio ();
 #endif
 
-#ifdef TEST_BIT_UTILS
-    uint32_t reg16bitVal;
-    reg16bitVal = generate_16bit_left_mask (1);
-    if (0x0001 != reg16bitVal) {
-        return GENERATE_BIT_MASK_ERROR;
-    }
-    reg16bitVal = generate_16bit_left_mask (2);
-    if (0x0003 != reg16bitVal) {
-        return GENERATE_BIT_MASK_ERROR;
-    }
-    reg16bitVal = generate_16bit_left_mask (4);
-    if (0x000f != reg16bitVal) {
-        return GENERATE_BIT_MASK_ERROR;
-    }
-    reg16bitVal = generate_16bit_left_mask (5);
-    if (0x001f != reg16bitVal) {
-        return GENERATE_BIT_MASK_ERROR;
-    }
-    reg16bitVal = extract_subval_from_16bit (0xF000, 15, 12);
-    if (0x000f != reg16bitVal) {
-        return EXTRACT_BITS_ERROR;
-    }
-
-    // 0x0f00   0000 1111 0000 0000
-    reg16bitVal = extract_subval_from_16bit (0x0F00, 11, 8);
-    if (0x000f != reg16bitVal) {
-        return EXTRACT_BITS_ERROR;
-    }
-    reg16bitVal = extract_subval_from_16bit (0x000F, 3, 0);
-    if (0x000f != reg16bitVal) {
-        return EXTRACT_BITS_ERROR;
-    }
-
-    uint32_t n;
-    n = reverseBits32 (0x00000001);
-    if (0x80000000 != n) {
-        return REV_BIT_ERROR;
-    }
-    n = reverseBits32 (0x0000000F);
-    if (0xF0000000 != n) {
-        return REV_BIT_ERROR;
-    }
-
-    uint8_t numSetBit = hamming_weight (56);
-    if (3 != numSetBit) {
-        printf ("\n numSetBit:%d\n", numSetBit);
-        return ONE_BIT_ERROR;
-    }
-
-#endif
-
 #if TEST_ARR_COMB
     test_heap ();
     res = test_array_combinations ();
@@ -1232,8 +1206,8 @@ int unit_test (void) {
         return LL_ERROR;
     }
 #endif
-    printf ("\n unit test done");
-    return FINE;
+    printf ("\n %s done", __FUNCTION__);
+    return true;
 }
 
 #if 0

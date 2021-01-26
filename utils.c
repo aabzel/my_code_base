@@ -184,40 +184,6 @@ char *format_time_txt (void) {
  */
 uint32_t bin_to_gray (uint32_t num) { return num ^ (num >> 1); }
 
-/*
- * This function converts a reflected binary
- * Gray code number to a binary number.
- * Each Gray code bit is exclusive-ored with all
- * more significant bits.
- */
-unsigned int GrayToBinary (unsigned int num) {
-    unsigned int mask = num >> 1;
-    while (mask != 0) {
-        num = num ^ mask;
-        mask = mask >> 1;
-    }
-    return num;
-}
-
-/*
- * A more efficient version for Gray codes 32 bits or fewer
- * through the use of SWAR (SIMD within a register) techniques.
- * It implements a parallel prefix XOR function.  The assignment
- * statements can be in any order.
- *
- * This function can be adapted for longer Gray codes by adding steps.
- * A 4-bit variant changes a binary number (abcd)2 to (abcd)2 ^ (00ab)2,
- * then to (abcd)2 ^ (00ab)2 ^ (0abc)2 ^ (000a)2.
- */
-unsigned int GrayToBinary32 (unsigned int num) {
-    num = num ^ (num >> 16);
-    num = num ^ (num >> 8);
-    num = num ^ (num >> 4);
-    num = num ^ (num >> 2);
-    num = num ^ (num >> 1);
-    return num;
-}
-
 uint32_t max_val (uint32_t amountofbit) {
     uint32_t val = 0u;
     for (uint32_t i = 0; i < amountofbit; i++) {
@@ -243,35 +209,6 @@ int *grayCode (int n, int *returnSize) {
     return outArr;
 }
 
-uint32_t reverseBits32 (uint32_t num) {
-    uint32_t numOfbit = 4u * 8u;
-    uint32_t reverseNum = 0u;
-    uint32_t i;
-    uint32_t temp;
-
-    for (i = 0u; i < numOfbit; i++) {
-        temp = (num & (1 << i));
-        if (temp) {
-            reverseNum |= (1 << ((numOfbit - 1) - i));
-        }
-    }
-    return reverseNum;
-}
-
-uint8_t hamming_weight (uint32_t n) {
-    uint8_t sum = 0;
-    while (n != 0) {
-#if DEBUG_HAMMING_WEIGHT
-        printf ("\nn      :%s", uint32_to_bin_str (n));
-        printf ("\n n-1   :%s", uint32_to_bin_str (n - 1));
-        printf ("\nn&(n-1):%s", uint32_to_bin_str (n & (n - 1)));
-        printf ("\n");
-#endif
-        sum++;
-        n &= (n - 1);
-    }
-    return sum;
-}
 #if 0
 char *uint32_to_bin_str (uint32_t const inVal32bit) {
     static char outBitStr [33] = "";
@@ -343,14 +280,6 @@ long long summ_array (int const *const inArr, int sizeOfArr) {
 double avrage_two (int val1, int val2) {
     double avagage = (double)(((double)(((double)val1) + ((double)val2)) / 2.0));
     return avagage;
-}
-
-bool is_odd (int val) {
-    bool res = false;
-    if (val & 1) {
-        res = true;
-    }
-    return res;
 }
 
 double calc_average (int const *const inArr, int sizeOfArr) {
@@ -628,49 +557,6 @@ float cacl_percent (float numerator, float denominator) {
     return percent;
 }
 
-uint32_t extract_subval_from_32bit (uint32_t inVal, uint8_t maxBit, uint8_t minBit) {
-    uint32_t outVal = 0;
-    if ((minBit <= maxBit) && (maxBit <= 31) && (minBit <= 31)) {
-        uint32_t mask = generate_32bit_left_mask (maxBit - minBit + 1);
-        outVal = (inVal >> minBit);
-        outVal = outVal & mask;
-    }
-    return outVal;
-}
-
-// 15 10
-uint16_t extract_subval_from_16bit (uint16_t inVal, uint8_t maxBit, uint8_t minBit) {
-    uint16_t outVal = 0;
-    if ((minBit < maxBit) && (maxBit <= 15) && (minBit <= 15)) {
-        uint16_t mask = generate_16bit_left_mask (maxBit - minBit + 1);
-        outVal = (inVal >> minBit);
-        outVal = outVal & mask;
-    }
-    return outVal;
-}
-
-uint32_t generate_32bit_left_mask (uint8_t bitlen) {
-    uint32_t mask = 0x00000000U;
-    if (bitlen <= 32) {
-        uint32_t i = 0U;
-        for (i = 0U; i < bitlen; i++) {
-            mask |= (1 << i);
-        }
-    }
-    return mask;
-}
-
-uint16_t generate_16bit_left_mask (uint8_t bitlen) {
-    uint16_t mask = 0x0000;
-    if (bitlen <= 16) {
-        uint16_t i = 0;
-        for (i = 0; i < bitlen; i++) {
-            mask |= (1 << i);
-        }
-    }
-    return mask;
-}
-
 union sharedmem {
     uint32_t bitVal;
     float realVal;
@@ -716,6 +602,7 @@ void print_biggest_mantissa (void) {
     printf ("\n fractiona %f", fractiona);
 }
 
+#if 0
 #define BIAS 127
 uint16_t float_to_uint16 (float inVal) {
     uint16_t outVal = 0;
@@ -754,6 +641,7 @@ uint16_t float_to_uint16 (float inVal) {
 
     return outVal;
 }
+#endif
 
 uint16_t reverse_byte_order_uint16 (const uint16_t in2byteVal) {
     uint16_t swapped = 0;
@@ -841,6 +729,7 @@ struct Results solution (int *A, int N, int F, int M) {
     // result.R = ...
     return result;
 }
+
 
 int solution4 (int n) {
     int d[32];

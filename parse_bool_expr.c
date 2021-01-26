@@ -765,31 +765,6 @@ bool is_signed (const char first_str_char) {
 }
 
 //
-// 1111_1111_1111_1111_1111_1111_1111_1111
-char *uint32_to_bin_str (uint32_t inVal32bit) {
-    static char outBitStr[40] = "";
-    int8_t rBit = 0;
-    uint8_t cell = 0u, bitCnt = 0u;
-    uint32_t mask = 0u;
-    for (rBit = 31; 0 <= rBit; rBit--) {
-        if (cell < sizeof (outBitStr)) {
-            if (4u == bitCnt) {
-                outBitStr[cell] = '_';
-                bitCnt = 0u;
-                cell++;
-            }
-            mask = (uint32_t) (((uint32_t)1u) << ((uint32_t)rBit));
-            bitCnt++;
-            if (0u != (inVal32bit & mask)) {
-                outBitStr[cell] = '1';
-            } else {
-                outBitStr[cell] = '0';
-            }
-        }
-        cell++;
-    }
-    return outBitStr;
-}
 
 // "&(t,f)"
 // "|(f,t)"

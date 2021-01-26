@@ -1,9 +1,10 @@
 #include "win_utils.h"
 
+#include <windows.h>
+
 #include <Assert.h>
 #include <Iphlpapi.h>
 #include <stdio.h>
-#include <windows.h>
 
 #include "convert.h"
 #include "tcp_client.h"

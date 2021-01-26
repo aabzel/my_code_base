@@ -1,6 +1,45 @@
-#PROJECT_ROOT = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+MK_PATH:=$(dir $(realpath $(lastword $(MAKEFILE_LIST))))
+#@echo $(error MK_PATH= $(MK_PATH))
+ PROJECT_ROOT:= $(MK_PATH)../
+#@echo $(error PROJECT_ROOT= $(PROJECT_ROOT))
 
-PATH_PROJECT := $(realpath $(dir $(lastword $(MAKEFILE_LIST))))
+
+BUILDDIR := $(PROJECT_ROOT)/Build
+#MAKEFILE_PATH:=$(abspath $(lastword $(MAKEFILE_LIST)))
+#@echo $(error MAKEFILE_PATH= $(MAKEFILE_PATH))
+#MAKEFILE_PATH_ELEMS:=$(subst /, ,$(MAKEFILE_PATH))
+#@echo $(error MAKEFILE_PATH_ELEMS= $(MAKEFILE_PATH_ELEMS))
+#PARENT_DIR:=$(word $(guile (- $(words $(MAKEFILE_PATH_ELEMS)) 1)),$(MAKEFILE_PATH_ELEMS))
+#@echo $(error PARENT_DIR= $(PARENT_DIR))
+
+#parent_name = $(lastword $(subst /, ,$(dir $(abspath $1))))
+#@echo $(error parent_name= $(parent_name))
+
+#TARGET := $(notdir $(CURDIR))
+#@echo $(error TARGET= $(TARGET))
+
+#rootdir=$( echo $BUILD_DIR | cut -d/ -f1 )
+#@echo $(error rootdir= $(rootdir))
+
+#@echo $(error MAKEFILE_LIST= $(MAKEFILE_LIST))
+#mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
+#ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+#MK_PATH:=$(dir $(realpath $(lastword $(MAKEFILE_LIST))))
+# PROJECT_ROOT:=$(realpath $(MK_PATH)../)
+#@echo $(error PROJECT_ROOT= $(PROJECT_ROOT))
+
+#PROJECT_ROOT               = $(abspath $(abspath $(lastword $(MAKEFILE_LIST)))..)
+#@echo $(error PROJECT_ROOT= $(PROJECT_ROOT))
+#PROJECT_ROOT               = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+#PROJECT_ROOT	= $(abspath $(dir $(abspath $(firstword $(MAKEFILE_LIST))))..)
+
+#PROJECT_ROOT	= $(abspath $(dir $(abspath $(firstword $(MAKEFILE_LIST))))../)
+#@echo $(error PROJECT_ROOT= $(PROJECT_ROOT))
+#PROJECT_ROOT= C:/1_lessons/C_programming_language/trainings/training/0_code_master/C:/1_lessons/C_programming_language/trainings/training
+
+
+
+#PATH_PROJECT   := $(realpath $(dir $(lastword $(MAKEFILE_LIST))))
 #@echo $(error PATH_PROJECT= $(PATH_PROJECT))
 SRC_PATH :=  $(dir $(abspath $(dir $$PWD) ))
 #@echo $(error SRC_PATH=$(SRC_PATH))
@@ -33,8 +72,8 @@ OPT += -DHAS_UTESTS
 #OPT += -DHAS_HOTEL
 #OPT += -DTEST_STACK_NUM
 #OPT += -DHAS_ARRAY
-OPT += -DHAS_ALGORITHMS
-#OPT += -DHAS_PERMUTATIONS_TEST
+#OPT += -DHAS_ALGORITHMS
+#OPT += -DHAS_TEST_ALGORITHM
 #OPT += -DHAS_EVAL_CACHE
 #OPT += -DDEBUG_PERMUT
 #OPT += -DTEST_CONVERT
@@ -51,8 +90,12 @@ OPT += -DHAS_ALGORITHMS
 #OPT += -DTEST_HEAP_SAME 
 #OPT += -DBIN_HEAP_RAND_ADD 
 #OPT += -DDEPLOY_TEST_AVL_TREE 
-#OPT += -DTEST_BIT_UTILS 
-OPT += -DHAS_VECTOR_CALC
+#OPT += -DHAS_VECTOR_CALC
+#OPT += -DMICROAVIA_TASK
+#OPT += -DMICROAVIA_TASK
+OPT += -DEXAFORE
+OPT += -DBIT_UTILS
+OPT += -DTEST_BIT_UTILS
          
 #files to link:
 LFLAGS= -static
@@ -61,7 +104,9 @@ EXECUTABLE=code_master
 # the name to use for both the target source file, and the output file:
 #TARGET = main
 
-SOURCES = $(SRC_PATH)main.c
+include $(PROJECT_ROOT)utils/utils.mk
+
+SOURCES += $(SRC_PATH)main.c
 SOURCES += $(SRC_PATH)uTests.c
 
 
@@ -74,12 +119,13 @@ ifeq (,$(HOTEL),Y)
      @echo $(error HOTEL=$(HOTEL)) 
 endif
 
-SOURCES += $(SRC_PATH)algorithms.c
-SOURCES += $(SRC_PATH)test_algorithms.c
+#SOURCES += $(SRC_PATH)algorithms.c
+#SOURCES += $(SRC_PATH)test_algorithms.c
+#SOURCES += $(SRC_PATH)microavia_task.c
 #SOURCES += $(SRC_PATH)algorithms_test.c
 #SOURCES += $(SRC_PATH)arrays.c
-SOURCES += $(SRC_PATH)vector_calc.c
-SOURCES += $(SRC_PATH)test_vector_calc.c
+#SOURCES += $(SRC_PATH)vector_calc.c
+#SOURCES += $(SRC_PATH)test_vector_calc.c
 #SOURCES += $(SRC_PATH)stack_indexer.c
 #SOURCES += $(SRC_PATH)stack_num.c
 #SOURCES += $(SRC_PATH)tree_lions.c
@@ -94,7 +140,8 @@ SOURCES += $(SRC_PATH)test_vector_calc.c
 #SOURCES += $(SRC_PATH)test_decode_way.c
 #SOURCES += $(SRC_PATH)auriga_task.c
 #SOURCES += $(SRC_PATH)evaluate_cache.c
-SOURCES += $(SRC_PATH)bit_utils.c
+SOURCES += $(SRC_PATH)test_bit_utils.c
+SOURCES += $(SRC_PATH)exafore_task.c
 #SOURCES += $(SRC_PATH)test_hotel.c
 #SOURCES += $(SRC_PATH)hotel.c
 #SOURCES += $(SRC_PATH)check_address.c
@@ -107,7 +154,7 @@ SOURCES += $(SRC_PATH)bit_utils.c
 #SOURCES += $(SRC_PATH)permutations_test.c
 #SOURCES += $(SRC_PATH)combinations.c
 #SOURCES += $(SRC_PATH)combinations_test.c
-SOURCES += $(SRC_PATH)float_utils.c
+#SOURCES += $(SRC_PATH)float_utils.c
 #SOURCES += $(SRC_PATH)fifo_index.c
 #SOURCES += $(SRC_PATH)fifo_char.c
 #SOURCES += $(SRC_PATH)helper.c
@@ -125,16 +172,20 @@ SOURCES += $(SRC_PATH)float_utils.c
 #SOURCES += $(SRC_PATH)test_fifo_char.c
 #SOURCES += $(SRC_PATH)utils.c
 
-
-OBJECTS =$(SOURCES:.c=.o)
-
+OBJ := $(patsubst %.c, %.o, $(SOURCES))
+#OBJ =$(SOURCES:.c=.o)
 #@echo $(error OBJECTS= $(OBJECTS))
 
-all: $(EXECUTABLE)
+.PHONY:all
 
-$(EXECUTABLE): $(OBJECTS)
-	$(CC) $(OPT) $(CFLAGS) $(OBJECTS) $(LFLAGS) -o $(EXECUTABLE).exe
-
+all:$(OBJ) $(EXECUTABLE)
+    
 %.o: %.c
-	$(CC) $(CFLAGS) $(OPT) -c $^
-	move "*.o" $(SRC_PATH)
+	$(CC) $(CFLAGS) $(OPT) -c $< -o $@ 
+	#mv *.o $(SRC_PATH)
+
+$(EXECUTABLE): $(OBJ)
+	$(CC) $(OPT) $(CFLAGS) $(OBJ) $(LFLAGS) -o $(EXECUTABLE).exe 
+
+clean:
+	rm -r $(EXECUTABLE) $(OBJ) 

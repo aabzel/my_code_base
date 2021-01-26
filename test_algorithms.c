@@ -11,27 +11,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-static bool test_bit_utils (void) {
-    EXPECT_EQ (MASK_0_BITS, calc_16_mask (0));
-    EXPECT_EQ (MASK_1_BITS, calc_16_mask (1));
-    EXPECT_EQ (MASK_2_BITS, calc_16_mask (2));
-    EXPECT_EQ (MASK_3_BITS, calc_16_mask (3));
-    EXPECT_EQ (MASK_4_BITS, calc_16_mask (4));
-    EXPECT_EQ (MASK_5_BITS, calc_16_mask (5));
-    EXPECT_EQ (MASK_6_BITS, calc_16_mask (6));
-    EXPECT_EQ (MASK_7_BITS, calc_16_mask (7));
-    EXPECT_EQ (MASK_8_BITS, calc_16_mask (8));
-    EXPECT_EQ (MASK_9_BITS, calc_16_mask (9));
-    EXPECT_EQ (MASK_10_BITS, calc_16_mask (10));
-    EXPECT_EQ (MASK_11_BITS, calc_16_mask (11));
-    EXPECT_EQ (MASK_12_BITS, calc_16_mask (12));
-    EXPECT_EQ (MASK_13_BITS, calc_16_mask (13));
-    EXPECT_EQ (MASK_14_BITS, calc_16_mask (14));
-    EXPECT_EQ (MASK_15_BITS, calc_16_mask (15));
-    EXPECT_EQ (MASK_16_BITS, calc_16_mask (16));
-    return true;
-}
-
 static bool test_k_smallest (void) {
     int numsSize;
     int val;
@@ -187,6 +166,5 @@ bool test_algorithms (void) {
     EXPECT_TRUE (test_k_smallest ());
     EXPECT_TRUE (test_algo ());
     EXPECT_TRUE (test_sum_digits ());
-    EXPECT_TRUE (test_bit_utils ());
     return true;
 }
