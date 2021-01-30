@@ -42,6 +42,7 @@ static void u8g2_draw_circle_section(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y,
 
 static void u8g2_draw_circle_section(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t x0, u8g2_uint_t y0, uint8_t option)
 {
+	#if 0
     /* upper right */
     if ( option & U8G2_DRAW_UPPER_RIGHT )
     {
@@ -69,10 +70,12 @@ static void u8g2_draw_circle_section(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y,
       u8g2_DrawPixel(u8g2, x0 - x, y0 + y);
       u8g2_DrawPixel(u8g2, x0 - y, y0 + x);
     }
+	#endif
 }
 
 static void u8g2_draw_circle(u8g2_t *u8g2, u8g2_uint_t x0, u8g2_uint_t y0, u8g2_uint_t rad, uint8_t option)
 {
+		#if 0
     u8g2_int_t f;
     u8g2_int_t ddF_x;
     u8g2_int_t ddF_y;
@@ -104,10 +107,12 @@ static void u8g2_draw_circle(u8g2_t *u8g2, u8g2_uint_t x0, u8g2_uint_t y0, u8g2_
 
       u8g2_draw_circle_section(u8g2, x, y, x0, y0, option);    
     }
+	#endif
 }
 
 void u8g2_DrawCircle(u8g2_t *u8g2, u8g2_uint_t x0, u8g2_uint_t y0, u8g2_uint_t rad, uint8_t option)
 {
+		#if 0
   /* check for bounding box */
 #ifdef U8G2_WITH_INTERSECTION
   {
@@ -119,6 +124,7 @@ void u8g2_DrawCircle(u8g2_t *u8g2, u8g2_uint_t x0, u8g2_uint_t y0, u8g2_uint_t r
   
   /* draw circle */
   u8g2_draw_circle(u8g2, x0, y0, rad, option);
+  #endif
 }
 
 /*==============================================*/
@@ -128,6 +134,7 @@ static void u8g2_draw_disc_section(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y, u
 
 static void u8g2_draw_disc_section(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t x0, u8g2_uint_t y0, uint8_t option)
 {
+		#if 0
     /* upper right */
     if ( option & U8G2_DRAW_UPPER_RIGHT )
     {
@@ -155,10 +162,12 @@ static void u8g2_draw_disc_section(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y, u
       u8g2_DrawVLine(u8g2, x0-x, y0, y+1);
       u8g2_DrawVLine(u8g2, x0-y, y0, x+1);
     }
+	#endif
 }
 
 static void u8g2_draw_disc(u8g2_t *u8g2, u8g2_uint_t x0, u8g2_uint_t y0, u8g2_uint_t rad, uint8_t option)
 {
+		#if 0
   u8g2_int_t f;
   u8g2_int_t ddF_x;
   u8g2_int_t ddF_y;
@@ -190,10 +199,12 @@ static void u8g2_draw_disc(u8g2_t *u8g2, u8g2_uint_t x0, u8g2_uint_t y0, u8g2_ui
 
     u8g2_draw_disc_section(u8g2, x, y, x0, y0, option);    
   }
+  #endif
 }
 
 void u8g2_DrawDisc(u8g2_t *u8g2, u8g2_uint_t x0, u8g2_uint_t y0, u8g2_uint_t rad, uint8_t option)
 {
+		#if 0
   /* check for bounding box */
 #ifdef U8G2_WITH_INTERSECTION
   {
@@ -204,6 +215,7 @@ void u8g2_DrawDisc(u8g2_t *u8g2, u8g2_uint_t x0, u8g2_uint_t y0, u8g2_uint_t rad
   
   /* draw disc */
   u8g2_draw_disc(u8g2, x0, y0, rad, option);
+  #endif
 }
 
 /*==============================================*/
@@ -216,6 +228,7 @@ void u8g2_DrawDisc(u8g2_t *u8g2, u8g2_uint_t x0, u8g2_uint_t y0, u8g2_uint_t rad
 static void u8g2_draw_ellipse_section(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t x0, u8g2_uint_t y0, uint8_t option) U8G2_NOINLINE;
 static void u8g2_draw_ellipse_section(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t x0, u8g2_uint_t y0, uint8_t option)
 {
+		#if 0
     /* upper right */
     if ( option & U8G2_DRAW_UPPER_RIGHT )
     {
@@ -239,10 +252,12 @@ static void u8g2_draw_ellipse_section(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y
     {
       u8g2_DrawPixel(u8g2, x0 - x, y0 + y);
     }
+	#endif
 }
 
 static void u8g2_draw_ellipse(u8g2_t *u8g2, u8g2_uint_t x0, u8g2_uint_t y0, u8g2_uint_t rx, u8g2_uint_t ry, uint8_t option)
 {
+		#if 0
   u8g2_uint_t x, y;
   u8g2_long_t xchg, ychg;
   u8g2_long_t err;
@@ -327,11 +342,12 @@ static void u8g2_draw_ellipse(u8g2_t *u8g2, u8g2_uint_t x0, u8g2_uint_t y0, u8g2
       ychg += rxrx2;
     }
   }
-  
+  #endif
 }
 
 void u8g2_DrawEllipse(u8g2_t *u8g2, u8g2_uint_t x0, u8g2_uint_t y0, u8g2_uint_t rx, u8g2_uint_t ry, uint8_t option)
 {
+		#if 0
   /* check for bounding box */
 #ifdef U8G2_WITH_INTERSECTION
   {
@@ -341,6 +357,7 @@ void u8g2_DrawEllipse(u8g2_t *u8g2, u8g2_uint_t x0, u8g2_uint_t y0, u8g2_uint_t 
 #endif /* U8G2_WITH_INTERSECTION */
   
   u8g2_draw_ellipse(u8g2, x0, y0, rx, ry, option);
+  #endif
 }
 
 /*==============================================*/
@@ -349,6 +366,7 @@ void u8g2_DrawEllipse(u8g2_t *u8g2, u8g2_uint_t x0, u8g2_uint_t y0, u8g2_uint_t 
 static void u8g2_draw_filled_ellipse_section(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t x0, u8g2_uint_t y0, uint8_t option) U8G2_NOINLINE;
 static void u8g2_draw_filled_ellipse_section(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t x0, u8g2_uint_t y0, uint8_t option)
 {
+		#if 0
     /* upper right */
     if ( option & U8G2_DRAW_UPPER_RIGHT )
     {
@@ -372,10 +390,12 @@ static void u8g2_draw_filled_ellipse_section(u8g2_t *u8g2, u8g2_uint_t x, u8g2_u
     {
       u8g2_DrawVLine(u8g2, x0-x, y0, y+1);
     }
+	#endif
 }
 
 static void u8g2_draw_filled_ellipse(u8g2_t *u8g2, u8g2_uint_t x0, u8g2_uint_t y0, u8g2_uint_t rx, u8g2_uint_t ry, uint8_t option)
 {
+		#if 0
   u8g2_uint_t x, y;
   u8g2_long_t xchg, ychg;
   u8g2_long_t err;
@@ -460,11 +480,12 @@ static void u8g2_draw_filled_ellipse(u8g2_t *u8g2, u8g2_uint_t x0, u8g2_uint_t y
       ychg += rxrx2;
     }
   }
-  
+  #endif
 }
 
 void u8g2_DrawFilledEllipse(u8g2_t *u8g2, u8g2_uint_t x0, u8g2_uint_t y0, u8g2_uint_t rx, u8g2_uint_t ry, uint8_t option)
 {
+		#if 0
   /* check for bounding box */
 #ifdef U8G2_WITH_INTERSECTION
   {
@@ -474,6 +495,7 @@ void u8g2_DrawFilledEllipse(u8g2_t *u8g2, u8g2_uint_t x0, u8g2_uint_t y0, u8g2_u
 #endif /* U8G2_WITH_INTERSECTION */
   
   u8g2_draw_filled_ellipse(u8g2, x0, y0, rx, ry, option);
+  #endif
 }
 
 

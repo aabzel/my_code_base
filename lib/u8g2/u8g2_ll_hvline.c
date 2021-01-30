@@ -51,6 +51,7 @@
 #include "u8g2.h"
 #include <assert.h>
 
+#if 0
 /*=================================================*/
 /*
   u8g2_ll_hvline_vertical_top_lsb
@@ -367,5 +368,5 @@ void u8g2_ll_hvline_horizontal_right_lsb(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_
     } while( len != 0 );
   }
 }
-
+#endif 
 #endif /* U8G2_WITH_HVLINE_SPEED_OPTIMIZATION */

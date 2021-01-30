@@ -1,6 +1,8 @@
 #include "avl_tree.h"
 
+#ifdef MATH
 #include "algorithms.h"
+#endif
 
 #include <stdlib.h>
 

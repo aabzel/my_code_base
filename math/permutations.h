@@ -9,7 +9,7 @@ extern "C" {
 
 #if 0
 #include "linked_list.h"
-#endif 
+#endif
 
 #include "utils.h"
 

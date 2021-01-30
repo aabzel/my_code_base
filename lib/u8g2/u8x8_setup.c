@@ -36,14 +36,16 @@
 
 #include "u8x8.h"
 
+#if 0
 /* universal dummy callback, which will be default for all callbacks */
 uint8_t u8x8_dummy_cb(U8X8_UNUSED u8x8_t *u8x8, U8X8_UNUSED uint8_t msg, U8X8_UNUSED uint8_t arg_int, U8X8_UNUSED void *arg_ptr)
 {
   /* the dummy callback will not handle any message and will fail for all messages */
   return 0;
 }
+#endif
 
-
+#if 0
 static const u8x8_display_info_t u8x8_null_display_info =
 {
   /* chip_enable_level = */ 0,
@@ -67,8 +69,9 @@ static const u8x8_display_info_t u8x8_null_display_info =
   /* pixel_width = */ 8,
   /* pixel_height = */ 8
 };
+#endif 
 
-
+#if 0
 /* a special null device */
 uint8_t u8x8_d_null_cb(u8x8_t *u8x8, uint8_t msg, U8X8_UNUSED uint8_t arg_int, U8X8_UNUSED void *arg_ptr)
 {
@@ -84,7 +87,7 @@ uint8_t u8x8_d_null_cb(u8x8_t *u8x8, uint8_t msg, U8X8_UNUSED uint8_t arg_int, U
   /* the null device callback will succeed for all messages */
   return 1;
 }
-
+#endif 
 
 /*
   Description:
@@ -92,6 +95,7 @@ uint8_t u8x8_d_null_cb(u8x8_t *u8x8, uint8_t msg, U8X8_UNUSED uint8_t arg_int, U
   Args:
     u8x8	An empty u8x8 structure
 */
+#if 0
 void u8x8_SetupDefaults(u8x8_t *u8x8)
 {
     u8x8->display_info = NULL;
@@ -114,7 +118,7 @@ void u8x8_SetupDefaults(u8x8_t *u8x8)
   }
 #endif
 }
-
+#endif 
 
 /*
   Description:
@@ -130,6 +134,7 @@ void u8x8_SetupDefaults(u8x8_t *u8x8)
     gpio_and_delay_cb	Environment specific callback function
 
 */
+#if 0
 void u8x8_Setup(u8x8_t *u8x8, u8x8_msg_cb display_cb, u8x8_msg_cb cad_cb, u8x8_msg_cb byte_cb, u8x8_msg_cb gpio_and_delay_cb)
 {
   /* setup defaults and reset pins to U8X8_PIN_NONE */
@@ -144,4 +149,7 @@ void u8x8_Setup(u8x8_t *u8x8, u8x8_msg_cb display_cb, u8x8_msg_cb cad_cb, u8x8_m
   /* setup display info */
   u8x8_SetupMemory(u8x8);
 }
+ 
+
+#endif 
 

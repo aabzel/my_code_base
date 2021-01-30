@@ -41,6 +41,7 @@
 */
 void u8g2_DrawBox(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w, u8g2_uint_t h)
 {
+	#if 0
 #ifdef U8G2_WITH_INTERSECTION
   if ( u8g2_IsIntersection(u8g2, x, y, x+w, y+h) == 0 ) 
     return;
@@ -51,6 +52,7 @@ void u8g2_DrawBox(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w, u8g
     y++;    
     h--;
   }
+  #endif
 }
 
 
@@ -62,6 +64,7 @@ void u8g2_DrawBox(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w, u8g
 */
 void u8g2_DrawFrame(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w, u8g2_uint_t h)
 {
+	#if 0
   u8g2_uint_t xtmp = x;
   
 #ifdef U8G2_WITH_INTERSECTION
@@ -77,6 +80,7 @@ void u8g2_DrawFrame(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w, u
   y+=h;
   y--;
   u8g2_DrawHVLine(u8g2, xtmp, y, w, 0);
+  #endif
 }
 
 
@@ -84,6 +88,7 @@ void u8g2_DrawFrame(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w, u
 
 void u8g2_DrawRBox(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w, u8g2_uint_t h, u8g2_uint_t r)
 {
+	#if 0
   u8g2_uint_t xl, yu;
   u8g2_uint_t yl, xr;
 
@@ -138,11 +143,13 @@ void u8g2_DrawRBox(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w, u8
       u8g2_DrawBox(u8g2, x, yu, w, hh);
     }
   }
+  #endif
 }
 
 
 void u8g2_DrawRFrame(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w, u8g2_uint_t h, u8g2_uint_t r)
 {
+	#if 0
   u8g2_uint_t xl, yu;
 
 #ifdef U8G2_WITH_INTERSECTION
@@ -203,5 +210,6 @@ void u8g2_DrawRFrame(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w, 
       u8g2_DrawVLine(u8g2, x+w, yu, hh);
     }
   }
+  #endif
 }
 

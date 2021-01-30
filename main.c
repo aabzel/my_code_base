@@ -8,11 +8,17 @@
 #include <time.h>
 #include <unistd.h>
 
+#ifdef MATH
 #include "algorithms.h"
 #include "combinations.h"
+#endif
+
 #include "convert.h"
+
+#ifdef ADT
 #include "hash_table.h"
 #include "linked_list.h"
+#endif
 
 #if 0
 //not allowed in C
@@ -34,7 +40,9 @@ int a_val2=init_by_foo2();
 #include "ls_l.h"
 #endif
 
+#ifdef LEET_CODE
 #include "compare_version.h"
+#endif
 
 #ifdef HAS_EVAL_CACHE
 #include "evaluate_cache.h"
@@ -55,9 +63,14 @@ int a_val2=init_by_foo2();
 #ifdef HAS_TCP_CLIENT
 #include "tcp_client.h"
 #endif
-#include "win_utils.h"
+
 #include "uTests.h"
 #include "utils.h"
+
+#ifdef WIN_UTILS
+#include "win_utils.h"
+#endif 
+
 #ifdef DEPLOY_TCP_SERVER
 #include "tcp_server.h"
 #endif

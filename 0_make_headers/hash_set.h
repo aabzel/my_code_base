@@ -4,4 +4,4 @@ bool myHashSetFree(MyHashSet *in_hSet);
 bool myHashSetRemove(MyHashSet *hSet,int data);
 bool myHashSetContains(MyHashSet *in_hSet,int data);
 bool myHashSetAdd(MyHashSet *const in_hSet,int key);
-MyHashSet *myHashSetCreate(void);
+static MyHashSet *myHashSetCreate(void);

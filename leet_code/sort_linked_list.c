@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#if 0
 static list_node_t *SortedMerge (list_node_t *a, list_node_t *b);
 static void FrontBackSplit (list_node_t *source, list_node_t **frontRef, list_node_t **backRef);
 
@@ -88,3 +89,5 @@ static list_node_t *SortedMerge (list_node_t *a, list_node_t *b) {
     }
     return (result);
 }
+
+#endif

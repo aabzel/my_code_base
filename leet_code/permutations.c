@@ -212,7 +212,7 @@ bool print_permutations (int N) {
     return res;
 }
 
-list_array_node_t *permutllHead = NULL;
+// list_array_node_t *permutllHead = NULL;
 
 /* Function to print permutations of string
  This function takes three parameters:

@@ -60,6 +60,8 @@
 
 #include "u8x8.h"
 
+#if 0
+#endif
 /*
   The following macro enables 16 Bit mode. 
   Without defining this macro all calulations are done with 8 Bit (1 Byte) variables.
@@ -186,6 +188,7 @@ typedef int16_t u8g2_long_t;		/* introduced for ellipse calculation */
 
 
 typedef struct u8g2_struct u8g2_t;
+#if 0
 typedef struct u8g2_cb_struct u8g2_cb_t;
 
 typedef void (*u8g2_update_dimension_cb)(u8g2_t *u8g2);
@@ -279,12 +282,13 @@ struct u8g2_cb_struct
 
 typedef u8g2_uint_t (*u8g2_font_calc_vref_fnptr)(u8g2_t *u8g2);
 
+#endif 
 
 struct u8g2_struct
 {
   u8x8_t u8x8;
-  u8g2_draw_ll_hvline_cb ll_hvline;	/* low level hvline procedure */
-  const u8g2_cb_t *cb;		/* callback drawprocedures, can be replaced for rotation */
+ // u8g2_draw_ll_hvline_cb ll_hvline;	/* low level hvline procedure */
+  //const u8g2_cb_t *cb;		/* callback drawprocedures, can be replaced for rotation */
   
   /* the following variables must be assigned during u8g2 setup */
   uint8_t *tile_buf_ptr;	/* ptr to memory area with u8x8.display_info->tile_width * 8 * tile_buf_height bytes */
@@ -329,9 +333,9 @@ struct u8g2_struct
   // removed: const u8g2_kerning_t *kerning;		/* can be NULL */
   // removed: u8g2_get_kerning_cb get_kerning_cb;
   
-  u8g2_font_calc_vref_fnptr font_calc_vref;
-  u8g2_font_decode_t font_decode;		/* new font decode structure */
-  u8g2_font_info_t font_info;			/* new font info structure */
+ // u8g2_font_calc_vref_fnptr font_calc_vref;
+  //u8g2_font_decode_t font_decode;		/* new font decode structure */
+  //u8g2_font_info_t font_info;			/* new font info structure */
 
 #ifdef U8G2_WITH_CLIP_WINDOW_SUPPORT
   /* 1 of there is an intersection between user_?? and clip_?? box */
@@ -353,6 +357,8 @@ struct u8g2_struct
   uint8_t is_auto_page_clear; 		/* set to 0 to disable automatic clear of the buffer in firstPage() and nextPage() */
   
 };
+
+#if 0
 
 #define u8g2_GetU8x8(u8g2) ((u8x8_t *)(u8g2))
 //#define u8g2_GetU8x8(u8g2) (&((u8g2)->u8x8))
@@ -1217,7 +1223,7 @@ void u8g2_ll_hvline_vertical_top_lsb(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y,
 /* ST7920 */
 void u8g2_ll_hvline_horizontal_right_lsb(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t len, uint8_t dir);
 
-
+#endif 
 /*==========================================*/
 /* u8g2_hvline.c */
 
@@ -1230,7 +1236,7 @@ void u8g2_DrawVLine(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t len)
 void u8g2_DrawPixel(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y);
 void u8g2_SetDrawColor(u8g2_t *u8g2, uint8_t color) U8G2_NOINLINE;  /* u8g: u8g_SetColorIndex(u8g_t *u8g, uint8_t idx); */
 
-
+#if 0
 /*==========================================*/
 /* u8g2_bitmap.c */
 void u8g2_SetBitmapMode(u8g2_t *u8g2, uint8_t is_transparent);
@@ -3287,6 +3293,6 @@ extern const uint8_t u8g2_font_px437wyse700b_mn[] U8G2_FONT_SECTION("u8g2_font_p
 }
 #endif
 
-
+#endif
 #endif
 

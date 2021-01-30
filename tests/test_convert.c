@@ -1,7 +1,8 @@
 #include "test_convert.h"
 
-#include "convert.h"
+#include <stdio.h>
 
+#include "convert.h"
 #include "uTests.h"
 
 static bool test_assemble_uint32 (void) {
@@ -16,9 +17,11 @@ static bool test_assemble_uint32 (void) {
 
 bool test_convert (void) {
     printf ("\n[d] %s(): line %u", __FUNCTION__, __LINE__);
-    bool res;
-    res = test_assemble_uint32 ();
-    EXPECT_EQ (true, res);
+    uint32_t ip_addr = 0;
+    EXPECT_TRUE (try_strl2ipv4 ("4.3.2.1", strlen ("4.3.2.1"), &ip_addr));
+    EXPECT_EQ (0x04030201, ip_addr);
+
+    EXPECT_TRUE (test_assemble_uint32 ());
     uint8_t out_shift;
     uint8_t value;
 

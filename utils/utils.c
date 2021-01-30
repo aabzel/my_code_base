@@ -732,7 +732,6 @@ struct Results solution (int *A, int N, int F, int M) {
     return result;
 }
 
-
 int solution4 (int n) {
     int d[32];
     int l = 0;

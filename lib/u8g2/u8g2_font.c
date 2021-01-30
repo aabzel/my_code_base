@@ -89,7 +89,7 @@
     - The height of the glyphs depend on the largest glyph in the font. This means font height depends on postfix "r", "f" and "n".
 
 */
-
+#if 0
 /* use case: What is the width and the height of the minimal box into which string s fints? */
 void u8g2_font_GetStrSize(const void *font, const char *s, u8g2_uint_t *width, u8g2_uint_t *height);
 void u8g2_font_GetStrSizeP(const void *font, const char *s, u8g2_uint_t *width, u8g2_uint_t *height);
@@ -1287,5 +1287,6 @@ void u8g2_SetFontDirection(u8g2_t *u8g2, uint8_t dir)
   u8g2->font_decode.dir = dir;
 #endif
 }
+#endif 
 
 

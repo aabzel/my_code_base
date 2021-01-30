@@ -1,15 +1,16 @@
 #ifndef __UTESTS_H
 #define __UTESTS_H
 
-#include <stdint.h>
+#include <stdbool.h>
 #include <stddef.h>
+#include <stdint.h>
 
 #if 0
 #include "bin_search_tree.h"
-#endif 
-
 #include "utils.h"
+#endif
 
+#if 0
 typedef enum {
     FINE = 0,
     LIST_REV_ERROR = 5,
@@ -125,6 +126,7 @@ typedef enum {
 
     NUM_ERROR = 120
 } utError_t;
+#endif
 
 bool unit_test (void);
 
@@ -192,7 +194,7 @@ bool fill_up_heap_continuous_vals (BinaryHeap_t *binHeap, int maxVal, bool isMax
 
 void assemble_tree_from_array (TreeNode_t **root, int *arr, int arraySize);
 void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
-#endif 
+#endif
 
 #define EXPECT_EQ_STR_LEN(strL, strR, len)                                                                             \
     do {                                                                                                               \
@@ -251,6 +253,14 @@ void create_binary_search_tree (TreeNode_t **root, int how_many_elements);
             printf ("\n%s():Line: %d in val1: %u val2: %u ", __FUNCTION__, __LINE__, val1, val2);                      \
             printf ("   val1: 0x%x val2: 0x%x  ", (int)val1, (int)val2);                                               \
             return false;                                                                                              \
+        }                                                                                                              \
+    } while (0);
+
+#define EXPECT_NULL(val)                                                                                               \
+    do {                                                                                                               \
+        if (0 != val) {                                                                                                \
+            printf ("\n%s():Line: %d in  val: %u ", __FUNCTION__, __LINE__, val);                                      \
+            return val;                                                                                                \
         }                                                                                                              \
     } while (0);
 

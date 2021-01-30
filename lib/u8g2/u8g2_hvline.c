@@ -60,6 +60,7 @@
 
 static uint8_t u8g2_clip_intersection2(u8g2_uint_t *ap, u8g2_uint_t *len, u8g2_uint_t c, u8g2_uint_t d)
 {
+	#if 0
   u8g2_uint_t a = *ap;
   u8g2_uint_t b;
   b  = a;
@@ -112,6 +113,7 @@ static uint8_t u8g2_clip_intersection2(u8g2_uint_t *ap, u8g2_uint_t *len, u8g2_u
   *ap = a;
   b -= a;
   *len = b;
+  #endif 
   return 1;
 }
 
@@ -131,13 +133,14 @@ static uint8_t u8g2_clip_intersection2(u8g2_uint_t *ap, u8g2_uint_t *len, u8g2_u
 */
 void u8g2_draw_hv_line_2dir(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t len, uint8_t dir)
 {
-
+#if 0
   /* clipping happens before the display rotation */
 
   /* transform to pixel buffer coordinates */
   y -= u8g2->pixel_curr_row;
   
   u8g2->ll_hvline(u8g2, x, y, len, dir);
+  #endif 
 }
 
 
@@ -149,6 +152,7 @@ void u8g2_draw_hv_line_2dir(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y, u8g2_uin
 */
 void u8g2_DrawHVLine(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t len, uint8_t dir)
 {
+	#if 0
   /* Make a call to the callback function (e.g. u8g2_draw_l90_r0). */
   /* The callback may rotate the hv line */
   /* after rotation this will call u8g2_draw_hv_line_4dir() */
@@ -198,28 +202,34 @@ void u8g2_DrawHVLine(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t len
       
       u8g2->cb->draw_l90(u8g2, x, y, len, dir);
     }
+	#endif 
 }
 
 void u8g2_DrawHLine(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t len)
 {
+	#if 0
 // #ifdef U8G2_WITH_INTERSECTION
 //   if ( u8g2_IsIntersection(u8g2, x, y, x+len, y+1) == 0 ) 
 //     return;
 // #endif /* U8G2_WITH_INTERSECTION */
   u8g2_DrawHVLine(u8g2, x, y, len, 0);
+  #endif 
 }
 
 void u8g2_DrawVLine(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t len)
 {
+	#if 0
 // #ifdef U8G2_WITH_INTERSECTION
 //   if ( u8g2_IsIntersection(u8g2, x, y, x+1, y+len) == 0 ) 
 //     return;
 // #endif /* U8G2_WITH_INTERSECTION */
   u8g2_DrawHVLine(u8g2, x, y, len, 1);
+    #endif 
 }
 
 void u8g2_DrawPixel(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y)
 {
+#if 0
 #ifdef U8G2_WITH_INTERSECTION
   if ( y < u8g2->user_y0 )
     return;
@@ -231,6 +241,7 @@ void u8g2_DrawPixel(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y)
     return;
 #endif /* U8G2_WITH_INTERSECTION */
   u8g2_DrawHVLine(u8g2, x, y, 1, 0);
+  #endif 
 }
 
 /*
@@ -248,8 +259,10 @@ void u8g2_DrawPixel(u8g2_t *u8g2, u8g2_uint_t x, u8g2_uint_t y)
 */
 void u8g2_SetDrawColor(u8g2_t *u8g2, uint8_t color)
 {
+	#if 0
   u8g2->draw_color = color;	/* u8g2_SetDrawColor: just assign the argument */ 
   if ( color >= 3 )
     u8g2->draw_color = 1;	/* u8g2_SetDrawColor: make color as one if arg is invalid */
+	#endif 
 }
 

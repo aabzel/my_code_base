@@ -1,5 +1,6 @@
 #include "linked_list_array.h"
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -57,7 +58,6 @@ void list_print_fwd (void) {
     printf (" %d", curNode->val);
     printf ("\n");
 }
-#endif
 
 /* Function to insert a node at the beginging of the linked list */
 bool push_val (list_node_t **pInHead, int newVal) {
@@ -83,6 +83,7 @@ void print_list2 (list_node_t *headNode) {
     }
     printf ("\n End of list\n");
 }
+#endif
 
 #if 0
 void save_list_to_file (list_node_t *pInHead, char *filename) {

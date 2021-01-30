@@ -5,6 +5,10 @@
 #include <malloc.h>
 #include <time.h>
 
+#ifdef HAS_LCD_TEST
+#include "lcd_api.h"
+#endif
+
 #ifdef EXAFORE
 #include "exafore_task.h"
 #endif
@@ -60,7 +64,7 @@
 #if 0
 #include "bin_utils_test.h"
 #include "tree_lions.h"
-#endif 
+#endif
 
 #include "compare_version_test.h"
 
@@ -93,8 +97,8 @@
 //#include "bin_tree.h"
 //#include "bin_tree_draw.h"
 //#include "combinations.h"
+#ifdef HAS_CONVERT
 #include "convert.h"
-#ifdef TEST_CONVERT
 #include "test_convert.h"
 #endif
 
@@ -408,6 +412,15 @@ bool unit_test (void) {
     bool res = false;
     (void)res;
 
+#ifdef WIN_UTILS
+#ifdef HAS_LCD_TEST
+    char tx_text[] = "\n\r[d]Test TCP server";
+    uint32_t tcp_server_ip;
+    EXPECT_TRUE (try_strl2ipv4 ("127.0.0.1", strlen ("127.0.0.1"), &tcp_server_ip);
+                 EXPECT_TRUE (sent_to_tcp_server (tx_text, strlen (tx_text), LCD_PORT, tcp_server_ip)));
+#endif
+#endif
+
 #ifdef EXAFORE
     EXPECT_TRUE (test_struct ());
 #endif
@@ -568,19 +581,11 @@ bool unit_test (void) {
 #endif
 
 #if 0
-    res = test_static ();
-    if (false == res) {
-        printf ("test_static error");
-        return STATIC_LOCAL_ERROR;
-    }
+    EXPECT_TRUE (  test_static ());
 #endif
 
-#ifdef TEST_CONVERT
-    res = test_convert ();
-    if (false == res) {
-        printf ("test_convert error");
-        return CONVERT_ERROR;
-    }
+#ifdef HAS_CONVERT
+    EXPECT_TRUE (test_convert ());
 #endif
 
 #ifdef HAS_GENERATE_REG_PARSER_TEST

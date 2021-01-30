@@ -13,7 +13,6 @@ extern "C" {
 
 #include "custom_type.h"
 
-
 #include <stdint.h>
 
 #define NOT_NUM (-999999)
