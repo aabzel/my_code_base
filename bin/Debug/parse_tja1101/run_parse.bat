@@ -1,1 +1,0 @@
-parse_regs.exe in_tja1101_reg_map_blob.txt tja1101_confuguration.txt
