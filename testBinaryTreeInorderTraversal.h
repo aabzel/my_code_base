@@ -1,6 +1,0 @@
-#ifndef TEST_BINARY_TREE_INORDER_TRAVERSAL_H
-#define TEST_BINARY_TREE_INORDER_TRAVERSAL_H
-
-bool test_inorderTraversal (void);
-
-#endif /* TEST_BINARY_TREE_INORDER_TRAVERSAL_H */

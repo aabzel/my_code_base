@@ -1,4 +1,0 @@
-#ifndef MICROAVIA_TASK_H
-#define MICROAVIA_TASK_H
-
-#endif /* MICROAVIA_TASK_H */
