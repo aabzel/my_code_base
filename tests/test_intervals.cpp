@@ -3,7 +3,6 @@
 #include <vector>
 
 #include "intervals.h"
-
 #include "uTests.h"
 
 using namespace std;

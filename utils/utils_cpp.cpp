@@ -32,7 +32,7 @@ void print_map (map<int, int> histogram) {
     }
 }
 
-void print_vector (vector<vector<int>> &intervals) {
+void print_intervals (vector<vector<int>> &intervals) {
     cout << endl;
     for (int i = 0; i < intervals.size (); i++) {
         cout << "[";
@@ -42,6 +42,17 @@ void print_vector (vector<vector<int>> &intervals) {
         cout << "]";
     }
     cout << endl;
+    cout << endl;
+}
+
+void print_vector_ints (vector<int> nums){
+    cout << __FUNCTION__ << endl;
+    cout << endl;
+    for (int i = 0; i < nums.size (); i++) {
+        cout << "[";
+        cout << nums[i] << ' ';
+        cout << "]" << endl;
+    }
     cout << endl;
 }
 

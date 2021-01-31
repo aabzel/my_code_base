@@ -1,7 +1,13 @@
 // hello.cpp
 #include <iostream>
 
+#include <cstring>
+
 #include "uTests.h"
+
+#ifdef INSERT_INTERVAL
+#include "test_insert_interval.h"
+#endif
 
 #ifdef FINDREPEATEDDNASEQUENCES
 #include "test_repeated_dna_secuenses.h"
@@ -54,6 +60,11 @@ int a_val4 = init_by_foo4 ();
 
 bool u_tests (void) {
     cout << __FUNCTION__ << endl;
+
+#ifdef INSERT_INTERVAL
+    EXPECT_TRUE (test_insert_interval ());
+#endif
+
 #ifdef FINDREPEATEDDNASEQUENCES
     EXPECT_TRUE (test_findRepeatedDnaSequences ());
     EXPECT_TRUE (test_findRepeatedDnaSequences1 ());

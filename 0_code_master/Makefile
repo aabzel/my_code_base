@@ -76,6 +76,7 @@ include $(PROJECT_ROOT)utils/utils.mk
 include $(PROJECT_ROOT)ADT/adt.mk
 include $(PROJECT_ROOT)tests/tests.mk
 include $(PROJECT_ROOT)leet_code/leet_code.mk
+include $(PROJECT_ROOT)interview_tasks/interview_tasks.mk
 #include $(PROJECT_ROOT)win_utils/win_utils.mk
 
 SOURCES += $(SRC_PATH)main.c

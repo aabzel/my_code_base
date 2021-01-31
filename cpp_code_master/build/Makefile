@@ -129,44 +129,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named cpp_trainings
+# Target rules for targets named cpp_training
 
 # Build rule for target.
-cpp_trainings: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 cpp_trainings
-.PHONY : cpp_trainings
+cpp_training: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 cpp_training
+.PHONY : cpp_training
 
 # fast build rule for target.
-cpp_trainings/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_trainings.dir\build.make CMakeFiles/cpp_trainings.dir/build
-.PHONY : cpp_trainings/fast
+cpp_training/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/build
+.PHONY : cpp_training/fast
 
-C_/1_lessons/C_programming_language/trainings/training/algorithms_oop.obj: C_/1_lessons/C_programming_language/trainings/training/algorithms_oop.cpp.obj
+C_/1_lessons/C_programming_language/trainings/training/leet_code/insert_interval.obj: C_/1_lessons/C_programming_language/trainings/training/leet_code/insert_interval.cpp.obj
 
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/algorithms_oop.obj
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/insert_interval.obj
 
 # target to build an object file
-C_/1_lessons/C_programming_language/trainings/training/algorithms_oop.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_trainings.dir\build.make CMakeFiles/cpp_trainings.dir/C_/1_lessons/C_programming_language/trainings/training/algorithms_oop.cpp.obj
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/algorithms_oop.cpp.obj
+C_/1_lessons/C_programming_language/trainings/training/leet_code/insert_interval.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/leet_code/insert_interval.cpp.obj
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/insert_interval.cpp.obj
 
-C_/1_lessons/C_programming_language/trainings/training/algorithms_oop.i: C_/1_lessons/C_programming_language/trainings/training/algorithms_oop.cpp.i
+C_/1_lessons/C_programming_language/trainings/training/leet_code/insert_interval.i: C_/1_lessons/C_programming_language/trainings/training/leet_code/insert_interval.cpp.i
 
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/algorithms_oop.i
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/insert_interval.i
 
 # target to preprocess a source file
-C_/1_lessons/C_programming_language/trainings/training/algorithms_oop.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_trainings.dir\build.make CMakeFiles/cpp_trainings.dir/C_/1_lessons/C_programming_language/trainings/training/algorithms_oop.cpp.i
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/algorithms_oop.cpp.i
+C_/1_lessons/C_programming_language/trainings/training/leet_code/insert_interval.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/leet_code/insert_interval.cpp.i
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/insert_interval.cpp.i
 
-C_/1_lessons/C_programming_language/trainings/training/algorithms_oop.s: C_/1_lessons/C_programming_language/trainings/training/algorithms_oop.cpp.s
+C_/1_lessons/C_programming_language/trainings/training/leet_code/insert_interval.s: C_/1_lessons/C_programming_language/trainings/training/leet_code/insert_interval.cpp.s
 
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/algorithms_oop.s
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/insert_interval.s
 
 # target to generate assembly for a file
-C_/1_lessons/C_programming_language/trainings/training/algorithms_oop.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_trainings.dir\build.make CMakeFiles/cpp_trainings.dir/C_/1_lessons/C_programming_language/trainings/training/algorithms_oop.cpp.s
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/algorithms_oop.cpp.s
+C_/1_lessons/C_programming_language/trainings/training/leet_code/insert_interval.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/leet_code/insert_interval.cpp.s
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/insert_interval.cpp.s
 
 C_/1_lessons/C_programming_language/trainings/training/main_cpp.obj: C_/1_lessons/C_programming_language/trainings/training/main_cpp.cpp.obj
 
@@ -174,7 +174,7 @@ C_/1_lessons/C_programming_language/trainings/training/main_cpp.obj: C_/1_lesson
 
 # target to build an object file
 C_/1_lessons/C_programming_language/trainings/training/main_cpp.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_trainings.dir\build.make CMakeFiles/cpp_trainings.dir/C_/1_lessons/C_programming_language/trainings/training/main_cpp.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/main_cpp.cpp.obj
 .PHONY : C_/1_lessons/C_programming_language/trainings/training/main_cpp.cpp.obj
 
 C_/1_lessons/C_programming_language/trainings/training/main_cpp.i: C_/1_lessons/C_programming_language/trainings/training/main_cpp.cpp.i
@@ -183,7 +183,7 @@ C_/1_lessons/C_programming_language/trainings/training/main_cpp.i: C_/1_lessons/
 
 # target to preprocess a source file
 C_/1_lessons/C_programming_language/trainings/training/main_cpp.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_trainings.dir\build.make CMakeFiles/cpp_trainings.dir/C_/1_lessons/C_programming_language/trainings/training/main_cpp.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/main_cpp.cpp.i
 .PHONY : C_/1_lessons/C_programming_language/trainings/training/main_cpp.cpp.i
 
 C_/1_lessons/C_programming_language/trainings/training/main_cpp.s: C_/1_lessons/C_programming_language/trainings/training/main_cpp.cpp.s
@@ -192,89 +192,89 @@ C_/1_lessons/C_programming_language/trainings/training/main_cpp.s: C_/1_lessons/
 
 # target to generate assembly for a file
 C_/1_lessons/C_programming_language/trainings/training/main_cpp.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_trainings.dir\build.make CMakeFiles/cpp_trainings.dir/C_/1_lessons/C_programming_language/trainings/training/main_cpp.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/main_cpp.cpp.s
 .PHONY : C_/1_lessons/C_programming_language/trainings/training/main_cpp.cpp.s
 
-C_/1_lessons/C_programming_language/trainings/training/test_algorithms_oop.obj: C_/1_lessons/C_programming_language/trainings/training/test_algorithms_oop.cpp.obj
+C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interval.obj: C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interval.cpp.obj
 
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/test_algorithms_oop.obj
-
-# target to build an object file
-C_/1_lessons/C_programming_language/trainings/training/test_algorithms_oop.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_trainings.dir\build.make CMakeFiles/cpp_trainings.dir/C_/1_lessons/C_programming_language/trainings/training/test_algorithms_oop.cpp.obj
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/test_algorithms_oop.cpp.obj
-
-C_/1_lessons/C_programming_language/trainings/training/test_algorithms_oop.i: C_/1_lessons/C_programming_language/trainings/training/test_algorithms_oop.cpp.i
-
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/test_algorithms_oop.i
-
-# target to preprocess a source file
-C_/1_lessons/C_programming_language/trainings/training/test_algorithms_oop.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_trainings.dir\build.make CMakeFiles/cpp_trainings.dir/C_/1_lessons/C_programming_language/trainings/training/test_algorithms_oop.cpp.i
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/test_algorithms_oop.cpp.i
-
-C_/1_lessons/C_programming_language/trainings/training/test_algorithms_oop.s: C_/1_lessons/C_programming_language/trainings/training/test_algorithms_oop.cpp.s
-
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/test_algorithms_oop.s
-
-# target to generate assembly for a file
-C_/1_lessons/C_programming_language/trainings/training/test_algorithms_oop.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_trainings.dir\build.make CMakeFiles/cpp_trainings.dir/C_/1_lessons/C_programming_language/trainings/training/test_algorithms_oop.cpp.s
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/test_algorithms_oop.cpp.s
-
-C_/1_lessons/C_programming_language/trainings/training/u_tests.obj: C_/1_lessons/C_programming_language/trainings/training/u_tests.cpp.obj
-
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/u_tests.obj
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interval.obj
 
 # target to build an object file
-C_/1_lessons/C_programming_language/trainings/training/u_tests.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_trainings.dir\build.make CMakeFiles/cpp_trainings.dir/C_/1_lessons/C_programming_language/trainings/training/u_tests.cpp.obj
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/u_tests.cpp.obj
+C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interval.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interval.cpp.obj
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interval.cpp.obj
 
-C_/1_lessons/C_programming_language/trainings/training/u_tests.i: C_/1_lessons/C_programming_language/trainings/training/u_tests.cpp.i
+C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interval.i: C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interval.cpp.i
 
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/u_tests.i
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interval.i
 
 # target to preprocess a source file
-C_/1_lessons/C_programming_language/trainings/training/u_tests.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_trainings.dir\build.make CMakeFiles/cpp_trainings.dir/C_/1_lessons/C_programming_language/trainings/training/u_tests.cpp.i
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/u_tests.cpp.i
+C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interval.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interval.cpp.i
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interval.cpp.i
 
-C_/1_lessons/C_programming_language/trainings/training/u_tests.s: C_/1_lessons/C_programming_language/trainings/training/u_tests.cpp.s
+C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interval.s: C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interval.cpp.s
 
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/u_tests.s
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interval.s
 
 # target to generate assembly for a file
-C_/1_lessons/C_programming_language/trainings/training/u_tests.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_trainings.dir\build.make CMakeFiles/cpp_trainings.dir/C_/1_lessons/C_programming_language/trainings/training/u_tests.cpp.s
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/u_tests.cpp.s
+C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interval.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interval.cpp.s
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interval.cpp.s
 
-C_/1_lessons/C_programming_language/trainings/training/utils_cpp.obj: C_/1_lessons/C_programming_language/trainings/training/utils_cpp.cpp.obj
+C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.obj: C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.cpp.obj
 
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/utils_cpp.obj
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.obj
 
 # target to build an object file
-C_/1_lessons/C_programming_language/trainings/training/utils_cpp.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_trainings.dir\build.make CMakeFiles/cpp_trainings.dir/C_/1_lessons/C_programming_language/trainings/training/utils_cpp.cpp.obj
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/utils_cpp.cpp.obj
+C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.cpp.obj
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.cpp.obj
 
-C_/1_lessons/C_programming_language/trainings/training/utils_cpp.i: C_/1_lessons/C_programming_language/trainings/training/utils_cpp.cpp.i
+C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.i: C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.cpp.i
 
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/utils_cpp.i
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.i
 
 # target to preprocess a source file
-C_/1_lessons/C_programming_language/trainings/training/utils_cpp.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_trainings.dir\build.make CMakeFiles/cpp_trainings.dir/C_/1_lessons/C_programming_language/trainings/training/utils_cpp.cpp.i
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/utils_cpp.cpp.i
+C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.cpp.i
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.cpp.i
 
-C_/1_lessons/C_programming_language/trainings/training/utils_cpp.s: C_/1_lessons/C_programming_language/trainings/training/utils_cpp.cpp.s
+C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.s: C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.cpp.s
 
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/utils_cpp.s
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.s
 
 # target to generate assembly for a file
-C_/1_lessons/C_programming_language/trainings/training/utils_cpp.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_trainings.dir\build.make CMakeFiles/cpp_trainings.dir/C_/1_lessons/C_programming_language/trainings/training/utils_cpp.cpp.s
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/utils_cpp.cpp.s
+C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.cpp.s
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.cpp.s
+
+C_/1_lessons/C_programming_language/trainings/training/utils/utils_cpp.obj: C_/1_lessons/C_programming_language/trainings/training/utils/utils_cpp.cpp.obj
+
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/utils/utils_cpp.obj
+
+# target to build an object file
+C_/1_lessons/C_programming_language/trainings/training/utils/utils_cpp.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/utils/utils_cpp.cpp.obj
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/utils/utils_cpp.cpp.obj
+
+C_/1_lessons/C_programming_language/trainings/training/utils/utils_cpp.i: C_/1_lessons/C_programming_language/trainings/training/utils/utils_cpp.cpp.i
+
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/utils/utils_cpp.i
+
+# target to preprocess a source file
+C_/1_lessons/C_programming_language/trainings/training/utils/utils_cpp.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/utils/utils_cpp.cpp.i
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/utils/utils_cpp.cpp.i
+
+C_/1_lessons/C_programming_language/trainings/training/utils/utils_cpp.s: C_/1_lessons/C_programming_language/trainings/training/utils/utils_cpp.cpp.s
+
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/utils/utils_cpp.s
+
+# target to generate assembly for a file
+C_/1_lessons/C_programming_language/trainings/training/utils/utils_cpp.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/utils/utils_cpp.cpp.s
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/utils/utils_cpp.cpp.s
 
 # Help Target
 help:
@@ -284,22 +284,22 @@ help:
 	@echo ... depend
 	@echo ... edit_cache
 	@echo ... rebuild_cache
-	@echo ... cpp_trainings
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/algorithms_oop.obj
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/algorithms_oop.i
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/algorithms_oop.s
+	@echo ... cpp_training
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/insert_interval.obj
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/insert_interval.i
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/insert_interval.s
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/main_cpp.obj
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/main_cpp.i
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/main_cpp.s
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/test_algorithms_oop.obj
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/test_algorithms_oop.i
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/test_algorithms_oop.s
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/u_tests.obj
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/u_tests.i
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/u_tests.s
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/utils_cpp.obj
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/utils_cpp.i
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/utils_cpp.s
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interval.obj
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interval.i
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interval.s
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.obj
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.i
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.s
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/utils/utils_cpp.obj
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/utils/utils_cpp.i
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/utils/utils_cpp.s
 .PHONY : help
 
 
