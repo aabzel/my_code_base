@@ -5,4 +5,4 @@
 
 using namespace std;
 
-vector<vector<int>> Insert_Interval (vector<vector<int>> &intervals, vector<int> &newInterval);
+vector<vector<int>> insert_interval (vector<vector<int>> &intervals, vector<int> &newInterval);

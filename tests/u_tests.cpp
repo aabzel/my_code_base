@@ -5,6 +5,10 @@
 
 #include "uTests.h"
 
+#ifdef MERGE_INTERVAL
+#include "test_merge_interval.h"
+#endif
+
 #ifdef INSERT_INTERVAL
 #include "test_insert_interval.h"
 #endif
@@ -60,6 +64,9 @@ int a_val4 = init_by_foo4 ();
 
 bool u_tests (void) {
     cout << __FUNCTION__ << endl;
+#ifdef MERGE_INTERVAL
+    EXPECT_TRUE (test_merge_interval ());
+#endif
 
 #ifdef INSERT_INTERVAL
     EXPECT_TRUE (test_insert_interval ());

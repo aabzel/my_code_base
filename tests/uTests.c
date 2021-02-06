@@ -5,7 +5,7 @@
 #include <malloc.h>
 #include <time.h>
 
-#ifdef  INTERVIEW_TASKS
+#ifdef INTERVIEW_TASKS
 #include "dsol_task.h"
 #endif
 
@@ -415,7 +415,7 @@ bool unit_test (void) {
     printf ("\n[d] %s()", __FUNCTION__);
     bool res = false;
     (void)res;
-    EXPECT_TRUE (test_dsol());
+    EXPECT_TRUE (test_dsol ());
 #ifdef WIN_UTILS
 #ifdef HAS_LCD_TEST
     char tx_text[] = "\n\r[d]Test TCP server";

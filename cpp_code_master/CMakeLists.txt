@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.19)
 
 message("current dirrectory  ${CMAKE_CURRENT_SOURCE_DIR}")
 
-
+set(merge_interval ON)
 set(insert_interval ON)
 set(intervals OFF)
 set(brick_wall OFF)
@@ -28,6 +28,19 @@ if(${FINDREPEATEDDNASEQUENCES})
   list(APPEND LIST_SRC ${PATH_SRC}test_repeated_dna_secuenses.cpp )
 endif()
 
+if(${merge_interval} OR ${insert_interval} )
+    list(APPEND LIST_SRC ${PATH_SRC}/..//leet_code/interval_api.cpp )
+endif()
+
+if(${merge_interval})
+  message("  merge_interval ${merge_interval}")
+  list(APPEND OPT "-DMERGE_INTERVAL" )
+  #list(APPEND OPT "-DDEBUG_MERGE_INTERVAL" )
+  set(INCL_PATH_UTILS  ${PATH_SRC}/../leet_code)
+  list(APPEND OPT -I${INCL_PATH_UTILS})
+  list(APPEND LIST_SRC ${PATH_SRC}/..//leet_code/merge_interval.cpp )
+  list(APPEND LIST_SRC ${PATH_SRC}/..//tests/test_merge_interval.cpp )
+endif()
 
 if(${insert_interval})
   message("  insert_interval ${insert_interval}")
