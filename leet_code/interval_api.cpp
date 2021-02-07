@@ -1,6 +1,6 @@
 
-#include <vector>
 #include <iostream>
+#include <vector>
 
 #include "interval_api.h"
 #include "utils_cpp.h"
@@ -22,6 +22,7 @@ vector<intrvEvent_t> assembple_event_list (vector<vector<int>> &intervals) {
     return event_array;
 }
 
+bool comparator_time (intrvEvent_t const &a, intrvEvent_t const &b) { return a.time < b.time; }
 
 vector<intrvEvent_t> glue_intervals (vector<intrvEvent_t> &event_array) {
     vector<intrvEvent_t> new_events;
@@ -46,7 +47,6 @@ vector<intrvEvent_t> glue_intervals (vector<intrvEvent_t> &event_array) {
     return new_events;
 }
 
-
 vector<vector<int>> assemble_intervals_array (vector<intrvEvent_t> event_array) {
     vector<vector<int>> intervals;
     vector<int> interval;
@@ -59,7 +59,7 @@ vector<vector<int>> assemble_intervals_array (vector<intrvEvent_t> event_array) 
                 interval.push_back (event_array[event].time);
                 interavl = 1;
             } else {
-                cout << "events unsorted " << endl;
+                // cout << "events unsorted " << endl;
             }
         } else if (INTERVAL_END == event_array[event].event) {
             if (1 == interavl) {
@@ -67,19 +67,17 @@ vector<vector<int>> assemble_intervals_array (vector<intrvEvent_t> event_array) 
                 interval.push_back (event_array[event].time);
                 intervals.push_back (interval);
             } else {
-                cout << "events unsorted " << endl;
+                // cout << "events unsorted " << endl;
             }
         }
     }
     return intervals;
 }
 
-
-
 bool debug_events (vector<intrvEvent_t> &event_array) {
     cout << __FUNCTION__ << endl;
     bool res = false;
-    cout << "\n [d] Event list \n" << endl;
+    cout << "\n [d] Event list size: " << event_array.size () << endl;
 
     for (int event = 0; event < event_array.size (); event++) {
         res = true;
@@ -88,5 +86,3 @@ bool debug_events (vector<intrvEvent_t> &event_array) {
     cout << endl;
     return res;
 }
-
-

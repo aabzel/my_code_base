@@ -1,9 +1,13 @@
 #ifndef __cplusplus
 
-#include "uTests.h"
-
 #include <malloc.h>
 #include <time.h>
+
+#include "uTests.h"
+#include "utils.h"
+
+#include "system_explore.h"
+
 
 #ifdef INTERVIEW_TASKS
 #include "dsol_task.h"
@@ -150,25 +154,7 @@
 #include <string.h>
 #include <time.h>
 
-#if 0
-static bool is_mem_equal (uint8_t *arr1, uint8_t *arr2, uint32_t size) {
-    uint32_t i = 0U;
-    uint32_t eqCnt = 0U;
-    bool res = false;
-    for (i = 0; i < size; i++) {
-        if (arr1[i] == arr2[i]) {
-            eqCnt++;
-        } else {
-            res = false;
-            i = size + 1;
-        }
-    }
-    if (eqCnt == size) {
-        res = true;
-    }
-    return res;
-}
-#endif
+
 
 #if 0
 static bool test_parse_mac (void) {
@@ -345,45 +331,10 @@ static bool test_parse_phy_reg_vals (void) {
 }
 #endif
 
-#if 0
-static bool test_static (void) {
-    static int a;
-    printf ("\n static a a=%d &a=%p", a, &a);
-    bool res = false;
-    if (0 == a) {
-        res = true;
-    }
-    a++;
-    return res;
-}
-#endif
 
-#if 0
-bool is_arr_pat (uint8_t *arr, uint32_t size, uint8_t patt) {
-    bool res = true;
-    for (uint32_t i = 0; i < size; i++) {
-        if (patt != arr[i]) {
-            res = false;
-        }
-    }
-    return res;
-}
-#endif
 
-#if 0
-static bool work_with_stack (int n, uint8_t pat) {
-    // uint8_t array[n];
-    bool res = false;
-    uint8_t *array = alloca (n);
-    if (array) {
-        memset (array, pat, n);
-        if (is_arr_pat (array, n, pat)) {
-            res = true;
-        }
-    }
-    return res;
-}
-#endif
+
+
 
 #if 0
 static char *val_2_str (int i) {
@@ -394,27 +345,17 @@ static char *val_2_str (int i) {
 }
 #endif
 
-#if 0
-static bool test_malloc (void) {
-    bool res = false;
-    char *ptr = malloc (100);
-    if (NULL != ptr) {
-        memset (ptr, 0x00, 100);
-        printf ("\n sizeof(ptr) %d \n", sizeof (ptr)); // 4
-        printf ("\n msize(ptr) %d \n", _msize (ptr));  // 100
-        if (100 == _msize (ptr)) {
-            res = true;
-        }
-        free (ptr);
-    }
-    return res;
-}
-#endif
-
 bool unit_test (void) {
     printf ("\n[d] %s()", __FUNCTION__);
     bool res = false;
     (void)res;
+#ifdef TEST_HEAP_MEM
+    EXPECT_TRUE (test_free_zero());
+    //EXPECT_TRUE (test_malloc_zero()); fails
+    EXPECT_TRUE (test_malloc ( ));
+    test_heap ();
+    test_heap_set ();
+#endif
     EXPECT_TRUE (test_dsol ());
 #ifdef WIN_UTILS
 #ifdef HAS_LCD_TEST
@@ -514,13 +455,6 @@ bool unit_test (void) {
     }
 #endif
 
-#if 0
-    res = test_malloc ();
-    if (false == res) {
-        printf ("\n test_malloc error");
-        return MALLOC_SIZE_ERROR;
-    }
-#endif
 
 #if 0
     res = test_decode_ways ();
@@ -828,6 +762,7 @@ bool unit_test (void) {
     }
 #endif
 
+
 #ifdef HAS_TEST_PARSE_MK
     res = test_mk_2_dot ();
     if (false == res) {
@@ -921,10 +856,8 @@ bool unit_test (void) {
 #endif
 
 #if 0
-    ret = test_heap_api ();
-    if (ret) {
-        return ret;
-    }
+    EXPECT_TRUE(test_heap_api ());
+
 
     res = test_delim_amount ();
     if (false == res) {
@@ -991,9 +924,6 @@ bool unit_test (void) {
     }
 #endif
 
-#if TEST_HEAP_MEM
-    test_heap ();
-#endif
 
 #if 0
     res = test_algo ();
@@ -1621,39 +1551,7 @@ bool test_array_combinations (void) {
 }
 #endif
 
-#if 0
-void print_bytes (uint32_t byte) {
-    float kByte = 4;
-    float MByte = 4;
-    float GByte = 4;
-    kByte = (float)byte / 1024.0f;
-    MByte = (float)kByte / 1024.0f;
-    GByte = (float)MByte / 1024.0f;
-    //printf ("\nmax Available heap size [%u] byte [%f] k_Byte [%f] M_Byte [%f] G_Byte\n", byte, kByte, MByte, GByte);
-}
-#endif
 
-#if 0
-bool test_heap (void) {
-    uint32_t byte = 3;
-    uint32_t mult = 10;
-    uint32_t div = 2;
-    while (1) {
-        char *ptr = NULL;
-        ptr = (char *)malloc (byte);
-        if (ptr) {
-            byte = (byte * mult) / div;
-            // print_bytes (byte);
-            free (ptr);
-        } else {
-            break;
-        }
-    } //[2327387742]
-    print_bytes (byte);
-
-    return true;
-}
-#endif
 
 #if TEST_STR_STR
 bool test_stsstr (void) {

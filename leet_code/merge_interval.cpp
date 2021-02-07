@@ -11,9 +11,6 @@
 
 using namespace std;
 
-static bool comparator_time (intrvEvent_t const &a, intrvEvent_t const &b) { return a.time < b.time; }
-
-
 vector<vector<int>> merge_interval (vector<vector<int>> &intervals) {
 #ifdef DEBUG_MERGE_INTERVAL
     cout << __FUNCTION__ << endl;

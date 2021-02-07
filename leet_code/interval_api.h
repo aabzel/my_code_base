@@ -14,7 +14,8 @@ typedef struct xEvent_t {
     eEvent_t event;
 } intrvEvent_t;
 
+bool comparator_time (intrvEvent_t const &a, intrvEvent_t const &b);
 vector<intrvEvent_t> assembple_event_list (vector<vector<int>> &intervals);
-vector<intrvEvent_t> glue_intervals (vector<intrvEvent_t> &event_array) ;
-vector<vector<int>> assemble_intervals_array (vector<intrvEvent_t> event_array) ;
-bool debug_events (vector<intrvEvent_t> &event_array) ;
+vector<intrvEvent_t> glue_intervals (vector<intrvEvent_t> &event_array);
+vector<vector<int>> assemble_intervals_array (vector<intrvEvent_t> event_array);
+bool debug_events (vector<intrvEvent_t> &event_array);

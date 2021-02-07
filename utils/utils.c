@@ -732,6 +732,44 @@ struct Results solution (int *A, int N, int F, int M) {
     return result;
 }
 
+bool is_arr_pat (uint8_t *arr, uint32_t size, uint8_t patt) {
+    bool res = true;
+    for (uint32_t i = 0; i < size; i++) {
+        if (patt != arr[i]) {
+            res = false;
+        }
+    }
+    return res;
+}
+
+void print_bytes (uint32_t byte) {
+    float kByte = 4;
+    float MByte = 4;
+    float GByte = 4;
+    kByte = (float)byte / 1024.0f;
+    MByte = (float)kByte / 1024.0f;
+    GByte = (float)MByte / 1024.0f;
+    printf ("\nmax Available heap size [%u] byte [%f] k_Byte [%f] M_Byte [%f] G_Byte\n", byte, kByte, MByte, GByte);
+}
+
+bool is_mem_equal (uint8_t *arr1, uint8_t *arr2, uint32_t size) {
+    uint32_t i = 0U;
+    uint32_t eqCnt = 0U;
+    bool res = false;
+    for (i = 0; i < size; i++) {
+        if (arr1[i] == arr2[i]) {
+            eqCnt++;
+        } else {
+            res = false;
+            i = size + 1;
+        }
+    }
+    if (eqCnt == size) {
+        res = true;
+    }
+    return res;
+}
+
 int solution4 (int n) {
     int d[32];
     int l = 0;
