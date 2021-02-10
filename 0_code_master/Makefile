@@ -73,6 +73,7 @@ EXECUTABLE=code_master
 #TARGET = main
 include $(PROJECT_ROOT)math/math.mk
 include $(PROJECT_ROOT)utils/utils.mk
+include $(PROJECT_ROOT)system_explore/system_explore.mk
 include $(PROJECT_ROOT)ADT/adt.mk
 include $(PROJECT_ROOT)tests/tests.mk
 include $(PROJECT_ROOT)leet_code/leet_code.mk

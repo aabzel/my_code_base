@@ -1074,53 +1074,6 @@ int calc_paratasis_nesting (char *s, int *const amountOfPairs) {
     return nestDepth;
 }
 
-bool is_valid_parentheses (char *s) {
-    bool res = false;
-    Lifo_array_t lifoObj;
-    int strLen = strlen (s);
-    char *array = malloc (strLen);
-    if (array) {
-        lifo_init (&lifoObj, strLen, array);
-        char outChar = 'a';
-        for (int i = 0; i < strLen; i++) {
-            outChar = 'a';
-            if (is_bracket (s[i])) {
-                lifo_peek (&lifoObj, &outChar);
-                if (true == brackets_same_type (outChar, s[i])) {
-                    lifo_pull (&lifoObj, &outChar);
-                } else {
-                    lifo_push (&lifoObj, s[i]);
-                }
-            }
-        }
-        if (0 == lifoObj.lifoStat.len) {
-            res = true;
-        }
-        free (array);
-    }
-    return res;
-}
-
-bool is_bracket (char ch) {
-    bool res = false;
-    switch (ch) {
-    case '}':
-    case '{':
-    case '[':
-    case ']':
-    case '(':
-    case ')':
-    case '>':
-    case '<':
-        res = true;
-        break;
-    default:
-        res = false;
-        break;
-    }
-    return res;
-}
-
 bool brackets_same_type (char open, char close) {
     if (('(' == open) && (')' == close)) {
         return true;

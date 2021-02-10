@@ -8,7 +8,6 @@
 
 #include "system_explore.h"
 
-
 #ifdef INTERVIEW_TASKS
 #include "dsol_task.h"
 #endif
@@ -50,7 +49,7 @@
 
 #include "bit_utils.h"
 #include "check_address.h"
-#include "compiler_test.h"
+//#include "compiler_test.h"
 #include "test_mk_2_dot.h"
 #include "test_stack_num.h"
 
@@ -153,8 +152,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-
-
 
 #if 0
 static bool test_parse_mac (void) {
@@ -331,11 +328,6 @@ static bool test_parse_phy_reg_vals (void) {
 }
 #endif
 
-
-
-
-
-
 #if 0
 static char *val_2_str (int i) {
     printf ("\n%s() %d", __FUNCTION__, i);
@@ -349,10 +341,11 @@ bool unit_test (void) {
     printf ("\n[d] %s()", __FUNCTION__);
     bool res = false;
     (void)res;
+
 #ifdef TEST_HEAP_MEM
-    EXPECT_TRUE (test_free_zero());
-    //EXPECT_TRUE (test_malloc_zero()); fails
-    EXPECT_TRUE (test_malloc ( ));
+    EXPECT_TRUE (test_free_zero ());
+    // EXPECT_TRUE (test_malloc_zero()); fails
+    EXPECT_TRUE (test_malloc ());
     test_heap ();
     test_heap_set ();
 #endif
@@ -454,7 +447,6 @@ bool unit_test (void) {
         return ENCODE_STRING_ERROR;
     }
 #endif
-
 
 #if 0
     res = test_decode_ways ();
@@ -762,7 +754,6 @@ bool unit_test (void) {
     }
 #endif
 
-
 #ifdef HAS_TEST_PARSE_MK
     res = test_mk_2_dot ();
     if (false == res) {
@@ -923,7 +914,6 @@ bool unit_test (void) {
         return BIN_HEAP_RAND_ERROR;
     }
 #endif
-
 
 #if 0
     res = test_algo ();
@@ -1550,8 +1540,6 @@ bool test_array_combinations (void) {
     return res;
 }
 #endif
-
-
 
 #if TEST_STR_STR
 bool test_stsstr (void) {

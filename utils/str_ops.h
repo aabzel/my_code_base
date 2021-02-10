@@ -1,9 +1,12 @@
 #ifndef __STRING_OPS_H
 #define __STRING_OPS_H
 
-#include "custom_type.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include <math.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
 
@@ -37,6 +40,7 @@ bool parse_or (char *expression, int inStrLen);
 bool parse_and (char *expression, int inStrLen);
 int parse_num_operands (char *expression, int inStrLen);
 
+bool is_bracket (char ch);
 bool is_camel_case (const char *in);
 char *toSnakeCase (const char *in);
 char *camel_case_2_snake_case (char *camel_case_str);
@@ -44,7 +48,7 @@ char *camel_case_2_snake_case (char *camel_case_str);
 bool is_bracket (char ch);
 bool parseBoolExpr (char *expression);
 bool parse_bool_expr (char *expression, int inStrlen);
-bool is_valid_parentheses (char *s);
+bool is_valid_parentheses (const char *s);
 int get_index_in_string (char *expression, int inStrLen, int operandNum, int *const operandLen);
 bool brackets_same_type (char open, char close);
 int calc_paratasis_nesting (char *s, int *const amountOfPairs);
@@ -112,5 +116,9 @@ void find_diff (char *oldStr, int oldLen, char *newStr, int newLen, int *outOldS
 
 char *str_append (char *in_str, char letter);
 char *str_cat_dyn (char *in_str1, char *in_str2);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __STRING_OPS_H */

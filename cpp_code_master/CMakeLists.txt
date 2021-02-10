@@ -2,7 +2,12 @@ cmake_minimum_required(VERSION 3.19)
 
 message("current dirrectory  ${CMAKE_CURRENT_SOURCE_DIR}")
 
-set(interval_list_intersections ON)
+set(CMAKE_CXX_STANDARD 14)
+
+set(add_c_src ON)
+
+set(generate_parentheses ON)
+set(interval_list_intersections OFF)
 set(merge_interval OFF)
 set(insert_interval OFF)
 set(intervals OFF)
@@ -11,16 +16,23 @@ set(algorithms_oop OFF)
 set(number_of_atoms OFF)
 set(FINDREPEATEDDNASEQUENCES OFF)
  
+ 
+ 
+ 
 set(PATH_SRC   ${CMAKE_CURRENT_SOURCE_DIR})
 
 set(INCL_PATH_TESTS  ${PATH_SRC}/../tests)
+set(INCL_PATH_ADT  ${PATH_SRC}/../ADT)
 set(INCL_PATH_UTILS  ${PATH_SRC}/../utils)
 
 
 set(LIST_SRC ${PATH_SRC}/../main_cpp.cpp 
              ${PATH_SRC}/../tests/u_tests.cpp 
-             ${PATH_SRC}/../utils/utils_cpp.cpp)
-set(OPT -Wall -fexceptions -g -Weffc++ -std=c++14  -I${INCL_PATH_TESTS}  -I${INCL_PATH_UTILS})
+             ${PATH_SRC}/../utils/utils_cpp.cpp
+			 )
+set(OPT -Wall -fexceptions -g -Weffc++ -std=c++14  -I${INCL_PATH_TESTS}  
+                                                   -I${INCL_PATH_UTILS}
+                                                   -I${INCL_PATH_ADT})
 
 if(${FINDREPEATEDDNASEQUENCES})
   message("  FINDREPEATEDDNASEQUENCES ${FINDREPEATEDDNASEQUENCES}")
@@ -32,6 +44,21 @@ endif()
 if(${merge_interval} OR ${insert_interval} OR ${interval_list_intersections} )
     list(APPEND LIST_SRC ${PATH_SRC}/..//leet_code/interval_api.cpp )
 endif()
+
+if(${generate_parentheses})
+  message("  generate_parentheses ${generate_parentheses}")
+  list(APPEND OPT "-DGENERATE_PARENTHESES" )
+  list(APPEND OPT "-DDEBUG_GENERATE_PARENTHESES" )
+  set(INCL_PATH_UTILS  ${PATH_SRC}/../leet_code)
+  list(APPEND OPT -I${INCL_PATH_UTILS})
+
+ 
+  list(APPEND LIST_SRC ${PATH_SRC}/..//ADT/lifo_char.c )
+  list(APPEND LIST_SRC ${PATH_SRC}/..//utils/str_ops.c )
+  list(APPEND LIST_SRC ${PATH_SRC}/..//leet_code/generate_parentheses.cpp )
+  list(APPEND LIST_SRC ${PATH_SRC}/..//tests/test_generate_parentheses.cpp )
+endif()
+
 
 if(${interval_list_intersections})
   message("  interval_list_intersections ${interval_list_intersections}")
@@ -100,7 +127,7 @@ message("LIST_SRC=${LIST_SRC}")
 message("OPT=${OPT}")
 
 set(PROJECT_NAME cpp_training)
-project(${PROJECT_NAME} VERSION 1.0 LANGUAGES CXX)
+project(${PROJECT_NAME} VERSION 1.0 LANGUAGES CXX C)
 add_compile_options( ${OPT} )
  
 add_executable(${PROJECT_NAME}  ${LIST_SRC})

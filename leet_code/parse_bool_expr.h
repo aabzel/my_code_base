@@ -1,9 +1,8 @@
 #ifndef __STRING_OPS_H
 #define __STRING_OPS_H
 
-#include "custom_type.h"
-
 #include <math.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
 
@@ -32,10 +31,8 @@ bool parse_or (char *expression, int inStrLen);
 bool parse_and (char *expression, int inStrLen);
 int parse_num_operands (char *expression, int inStrLen);
 
-bool is_bracket (char ch);
 bool parseBoolExpr (char *expression);
 bool parse_bool_expr (char *expression, int inStrlen);
-bool is_valid_parentheses (char *s);
 int get_index_in_string (char *expression, int inStrLen, int operandNum, int *const operandLen);
 bool brackets_same_type (char open, char close);
 int calc_paratasis_nesting (char *s, int *const amountOfPairs);

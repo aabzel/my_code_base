@@ -5,7 +5,8 @@
 extern "C" {
 #endif
 
-#include "custom_type.h"
+#include <stdbool.h>
+#include <stdint.h>
 
 typedef struct xLifo_index_t {
     uint16_t len;

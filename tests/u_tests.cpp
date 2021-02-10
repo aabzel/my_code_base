@@ -5,10 +5,13 @@
 
 #include "uTests.h"
 
+#ifdef GENERATE_PARENTHESES
+#include "test_generate_parentheses.h"
+#endif
+
 #ifdef INTERVAL_INTERSECTIONS
 #include "test_interval_list_intersections.h"
 #endif
-
 
 #ifdef MERGE_INTERVAL
 #include "test_merge_interval.h"
@@ -69,8 +72,12 @@ int a_val4 = init_by_foo4 ();
 
 bool u_tests (void) {
     cout << __FUNCTION__ << endl;
+#ifdef GENERATE_PARENTHESES
+    EXPECT_TRUE (test_generate_parentheses ());
+#endif
+
 #ifdef INTERVAL_INTERSECTIONS
-    EXPECT_TRUE (test_interval_list_intersections());
+    EXPECT_TRUE (test_interval_list_intersections ());
 #endif
 
 #ifdef MERGE_INTERVAL

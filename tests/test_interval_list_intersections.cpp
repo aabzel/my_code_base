@@ -21,24 +21,24 @@ bool test_interval_list_intersections (void) {
     vector<vector<int>> intervals4 = {{0, 2},   {4, 6},   {10, 11}, {14, 15}, {18, 20},
                                       {26, 26}, {31, 31}, {35, 42}, {43, 47}, {49, 52}};
 
-    vector<vector<int>> intervals5={{0,2},{5,10},{13,23},{24,25}};
-    vector<vector<int>> intervals6={{1,5},{8,12},{15,24},{25,26}};
-    new_intervals = intervalIntersection (intervals5,intervals6);//{2 3 }
+    vector<vector<int>> intervals5 = {{0, 2}, {5, 10}, {13, 23}, {24, 25}};
+    vector<vector<int>> intervals6 = {{1, 5}, {8, 12}, {15, 24}, {25, 26}};
+    new_intervals = intervalIntersection (intervals5, intervals6); //{2 3 }
     print_intervals (new_intervals);
 
-    new_intervals = intervalIntersection (intervals1,intervals4);//{2 3 }
+    new_intervals = intervalIntersection (intervals1, intervals4); //{2 3 }
     print_intervals (new_intervals);
 
-    new_intervals = intervalIntersection (intervals4,intervals3);
+    new_intervals = intervalIntersection (intervals4, intervals3);
     print_intervals (new_intervals);
 
-    new_intervals = intervalIntersection (intervals3,intervals);
+    new_intervals = intervalIntersection (intervals3, intervals);
     print_intervals (new_intervals);
 
-    new_intervals = intervalIntersection (intervals,intervals2);
+    new_intervals = intervalIntersection (intervals, intervals2);
     print_intervals (new_intervals);
 
-    new_intervals = intervalIntersection (intervals2,intervals1);
+    new_intervals = intervalIntersection (intervals2, intervals1);
     print_intervals (new_intervals);
 
     return true;

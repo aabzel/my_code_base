@@ -4,6 +4,8 @@
 #include <iostream>
 #include <sstream>
 
+using namespace std;
+
 string load_file_to_string (string inputFileName) {
     ifstream cFileIn (inputFileName);
     string strCfileContent = "";
@@ -45,7 +47,7 @@ void print_intervals (vector<vector<int>> &intervals) {
     cout << endl;
 }
 
-void print_vector_ints (vector<int> nums){
+void print_vector_ints (vector<int> nums) {
     cout << __FUNCTION__ << endl;
     cout << endl;
     for (int i = 0; i < nums.size (); i++) {

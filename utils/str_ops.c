@@ -1,15 +1,17 @@
 #include "str_ops.h"
 
-#include "algorithms.h"
-#include "convert.h"
-#include "custom_type.h"
-
 #include <ctype.h>
 #include <math.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+//#include "algorithms.h"
+#include "convert.h"
+#include "lifo_char.h"
+//#include "custom_type.h"
 
 #if 0
 static int findIndOfFirstDiffFromStart (char *old_str, char *newStr);
@@ -238,9 +240,9 @@ static bool is_space (const char character) {
 
 static bool is_spaces (const char str[]) {
     bool res = true;
-    uint32_t strLen = strlen (str);
+    uint32_t str_len = strlen (str);
     uint32_t strIndex = 0u;
-    for (strIndex = 0; strIndex < strLen; strIndex++) {
+    for (strIndex = 0; strIndex < str_len; strIndex++) {
         if (false == is_space ((char)(str[strIndex]))) {
             res = false;
         }
@@ -256,7 +258,7 @@ bool is_real_number (const char str[]) {
     uint8_t num_digits = 0U;
     uint8_t num_decimals = 0U;
     uint8_t temp_value = 0U;
-    uint32_t strLen = strlen (str);
+    uint32_t str_len = strlen (str);
 
     /* Skip leading whitespace */
     while (isspace ((int32_t) (str[str_index])) > 0) {
@@ -347,7 +349,7 @@ bool is_real_number (const char str[]) {
         }
     }
     if (true == strtod_success) {
-        if (str_index < (strLen - 1)) {
+        if (str_index < (str_len - 1)) {
             /* "1 4" */
             strtod_success = is_spaces (&str[str_index]);
         }
@@ -435,6 +437,7 @@ static void full_str_with (char *s, char pattern, int size) {
 #endif
 // abcabcbb 8
 // pwwkew
+#if 0
 int lengthOfLongestSubstring (char *inStr) {
     int maxNumUnicChars = 0;
     bool res;
@@ -444,10 +447,10 @@ int lengthOfLongestSubstring (char *inStr) {
     printf ("\n str: %s ", inStr);
 #endif
     if (inStr) {
-        uint32_t strLen = strlen (inStr);
-        for (i = 0; i < strLen; i++) {
+        uint32_t str_len = strlen (inStr);
+        for (i = 0; i < str_len; i++) {
             init_hash_table ();
-            for (j = 1; j <= (strLen - i); j++) {
+            for (j = 1; j <= (str_len - i); j++) {
                 if (hash_table_char_check (inStr[i + j - 1]) < 0) {
                     res = hash_table_char_put (inStr[i + j - 1], i);
                     if (false == res) {
@@ -463,6 +466,7 @@ int lengthOfLongestSubstring (char *inStr) {
 
     return maxNumUnicChars;
 }
+#endif
 
 #if 0
 int lengthOfLongestSubstring_slow (char * inStr) {
@@ -474,9 +478,9 @@ int lengthOfLongestSubstring_slow (char * inStr) {
     printf ("\n str: %s ", inStr);
 #endif
     if (inStr) {
-        uint32_t strLen = strlen (inStr);
-        for (i = 0; i < strLen; i++) {
-            for (j = 1; j <= (strLen-i); j++) {
+        uint32_t str_len = strlen (inStr);
+        for (i = 0; i < str_len; i++) {
+            for (j = 1; j <= (str_len-i); j++) {
                 amountOfChars = j;
                 res = is_diff_chars (&inStr [i], amountOfChars);
                 if (true == res) {
@@ -490,13 +494,12 @@ int lengthOfLongestSubstring_slow (char * inStr) {
 
     return maxNumUnicChars;
 }
-#endif
 
 int find_max_sec (char *string, char sripChar) {
     int maxCnt = 0;
     int curCnt = 0;
-    int strLen = strlen (string);
-    for (int i = 0; i < strLen; i++) {
+    int str_len = strlen (string);
+    for (int i = 0; i < str_len; i++) {
         if (sripChar != string[i]) {
             curCnt++;
         } else {
@@ -506,7 +509,7 @@ int find_max_sec (char *string, char sripChar) {
     }
     return maxCnt;
 }
-
+#endif
 //"aaabb"5,   "aaa11bb"7  oldSub""0    newSub"11"2
 //"aabb"5,   "aa11bb"7  oldSub""0    newSub"11"2
 //"abb"5,   "a11bb"7  oldSub""0    newSub"11"2
@@ -523,17 +526,17 @@ void detect_change (char *old_str, char *newStr, char **oldSubStr, int *oldSubSt
     (void)*newSubStr;
     *oldSubStringLen = 0;
     *newSubStringLen = 0;
-    int old_strLen = strlen (old_str);
+    int old_str_len = strlen (old_str);
     int newStrLen = strlen (newStr);
-    find_diff (old_str, old_strLen, newStr, newStrLen, oldSubStringLen, newSubStringLen, oldSubStr, newSubStr);
+    find_diff (old_str, old_str_len, newStr, newStrLen, oldSubStringLen, newSubStringLen, oldSubStr, newSubStr);
 }
 
 #if 0
 static int findIndOfFirstDiffFromStart (char *old_str, char *newStr) {
     if (old_str && newStr) {
-        int old_strLen = strlen (old_str);
+        int old_str_len = strlen (old_str);
         int newStrLen = strlen (newStr);
-        for (int i = 0; i < min (old_strLen, newStrLen); i++) {
+        for (int i = 0; i < min (old_str_len, newStrLen); i++) {
             if (old_str [i] != newStr [i]) {
                 return i;
             }
@@ -547,14 +550,14 @@ static int findIndOfFirstDiffFromEnd (char *old_str, char *newStr) {
         char *replicaOld = strdup (old_str);
         char *replicaNew = strdup (newStr);
         if (replicaOld && replicaNew) {
-            int old_strLen = strlen (old_str);
+            int old_str_len = strlen (old_str);
             int newStrLen = strlen (newStr);
             printf ("\nreplicaOld [%s]", replicaOld);
             printf ("\nreplicaNew [%s]", replicaNew);
             reverse_string (replicaOld);
             reverse_string (replicaNew);
             val = findIndOfFirstDiffFromStart (replicaOld, replicaNew);
-            val = max (newStrLen, old_strLen) - val - 1;
+            val = max (newStrLen, old_str_len) - val - 1;
             free (replicaOld);
             free (replicaNew);
         } else {
@@ -563,11 +566,10 @@ static int findIndOfFirstDiffFromEnd (char *old_str, char *newStr) {
     }
     return val;
 }
-#endif
 
 void reverse_string (char *inOutStr) {
-    int old_strLen = strlen (inOutStr);
-    reverseString (inOutStr, old_strLen);
+    int old_str_len = strlen (inOutStr);
+    reverseString (inOutStr, old_str_len);
 }
 
 void reverseString (char *inOutStr, int length) {
@@ -575,7 +577,7 @@ void reverseString (char *inOutStr, int length) {
         swap_char (&inOutStr[i], &inOutStr[(length - 1) - i]);
     }
 }
-
+#endif
 char findTheDifference (char *old_str, char *newStr) {
     printf ("\n%s()", __FUNCTION__);
     char *oldSubStr = NULL;
@@ -652,8 +654,8 @@ bool is_diff_chars (char *inStr, uint32_t len) {
     init_hash_table ();
     bool res = true;
     if (inStr && 0 < len) {
-        uint32_t strLen = strlen (inStr);
-        if (len <= strLen) {
+        uint32_t str_len = strlen (inStr);
+        if (len <= str_len) {
             for (uint32_t i = 0; i < len; i++) {
                 if (hash_table_char_check (inStr[i]) < 0) {
                     bool res = hash_table_char_put (inStr[i], i);
@@ -673,6 +675,7 @@ bool is_diff_chars (char *inStr, uint32_t len) {
     return res;
 }
 
+#if 0
 int myAtoi (char *str) {
     int val = 0;
     bool res;
@@ -682,7 +685,6 @@ int myAtoi (char *str) {
     }
     return val;
 }
-#if 0
 bool try_strl2int32_dec (const char s32_dec_str [], int32_t s32_dec_str_len, int32_t * const s32_dec_value) {
     int64_t s32l_dec_result = 0;
     int32_t i = 0;
@@ -975,21 +977,6 @@ bool parse_and(char *expression, int inStrLen) {
 }
 
 #endif
-bool brackets_same_type (char open, char close) {
-    if (('(' == open) && (')' == close)) {
-        return true;
-    }
-    if (('[' == open) && (']' == close)) {
-        return true;
-    }
-    if (('{' == open) && ('}' == close)) {
-        return true;
-    }
-    if (('<' == open) && ('>' == close)) {
-        return true;
-    }
-    return false;
-}
 
 int replace_char (char *out_str, char orig, char rep) {
     char *ix = out_str;
@@ -1064,7 +1051,7 @@ uint16_t count_substring (char *inStr, char *substr) {
 
     return matchCnt;
 }
-
+#if 0
 bool extract_numbers (char *inOutStr, int length) {
     int curIndex = 0;
     bool res = false;
@@ -1164,15 +1151,16 @@ bool is_hex_number (char letter) {
     return res;
 }
 
+
 /// reg addr: 0x04 reg val: 0x0000 Ob_0000_0000_0000_0000
-bool try_canch_hex_uint8 (char *inStr, int strLen, uint8_t *val8b) {
+bool try_canch_hex_uint8 (char *inStr, int str_len, uint8_t *val8b) {
     int i = 0;
     int startIndex = 0;
     bool res = false;
     int catch = 0;
     int hexValCnt = 0;
     int valLen = 0;
-    for (i = 0; i < strLen; i++) {
+    for (i = 0; i < str_len; i++) {
         if (0 == catch) {
             if ('0' == inStr[i]) {
                 valLen = 1;
@@ -1209,7 +1197,7 @@ bool try_canch_hex_uint8 (char *inStr, int strLen, uint8_t *val8b) {
 }
 
 /// reg addr: 0x04 reg val: 0x0000 Ob_0000_0000_0000_0000
-bool try_canch_hex_uint16 (char *inStr, int strLen, uint16_t *val16b) {
+bool try_canch_hex_uint16 (char *inStr, int str_len, uint16_t *val16b) {
     int i = 0;
     (void)val16b;
     bool res = false;
@@ -1217,7 +1205,7 @@ bool try_canch_hex_uint16 (char *inStr, int strLen, uint16_t *val16b) {
     int startIndex = 0;
     int hexValCnt = 0;
     int valLen = 0;
-    for (i = 0; i < strLen; i++) {
+    for (i = 0; i < str_len; i++) {
         if (0 == catch) {
             if ('0' == inStr[i]) {
                 valLen = 1;
@@ -1252,7 +1240,7 @@ bool try_canch_hex_uint16 (char *inStr, int strLen, uint16_t *val16b) {
 }
 
 ///      DEVICE_ID[0x01]: 0x00000020 0b_0000_0000_0000_0000_0000_0000_0010_0000
-bool try_canch_hex_uint32 (char *inStr, int strLen, uint32_t *val32b) {
+bool try_canch_hex_uint32 (char *inStr, int str_len, uint32_t *val32b) {
     int i = 0;
     (void)val32b;
     bool res = false;
@@ -1260,7 +1248,7 @@ bool try_canch_hex_uint32 (char *inStr, int strLen, uint32_t *val32b) {
     int startIndex = 0;
     int hexValCnt = 0;
     int valLen = 0;
-    for (i = 0; i < strLen; i++) {
+    for (i = 0; i < str_len; i++) {
         if (0 == catch) {
             if ('0' == inStr[i]) {
                 valLen = 1;
@@ -1567,6 +1555,71 @@ char *str_append (char *in_str, char letter) {
         out_str[str_len + 1] = '\0';
     }
     return out_str;
+}
+
+#endif
+
+bool is_bracket (char ch) {
+    bool res = false;
+    switch (ch) {
+    case '}':
+    case '{':
+    case '[':
+    case ']':
+    case '(':
+    case ')':
+    case '>':
+    case '<':
+        res = true;
+        break;
+    default:
+        res = false;
+        break;
+    }
+    return res;
+}
+
+bool brackets_same_type (char open, char close) {
+    if (('(' == open) && (')' == close)) {
+        return true;
+    }
+    if (('[' == open) && (']' == close)) {
+        return true;
+    }
+    if (('{' == open) && ('}' == close)) {
+        return true;
+    }
+    if (('<' == open) && ('>' == close)) {
+        return true;
+    }
+    return false;
+}
+
+bool is_valid_parentheses (const char *s) {
+    bool res = false;
+    Lifo_array_t lifoObj;
+    int str_len = strlen (s);
+    char *array = (char *)malloc (str_len);
+    if (array) {
+        lifo_init (&lifoObj, str_len, array);
+        char out_char = 'x';
+        for (int i = 0; i < str_len; i++) {
+            out_char = 'x';
+            if (is_bracket (s[i])) {
+                lifo_peek (&lifoObj, &out_char);
+                if (true == brackets_same_type (out_char, s[i])) {
+                    lifo_pull (&lifoObj, &out_char);
+                } else {
+                    lifo_push (&lifoObj, s[i]);
+                }
+            }
+        }
+        if (0 == lifoObj.lifoStat.len) {
+            res = true;
+        }
+        free (array);
+    }
+    return res;
 }
 
 char *str_cat_dyn (char *in_str1, char *in_str2) {

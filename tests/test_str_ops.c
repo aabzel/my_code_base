@@ -344,14 +344,13 @@ bool test_calc_paratasis_nesting(void) {
 	return true;
 }
 
-
-bool test_Valid_Parentheses(void) {
-	EXPECT_TRUE(is_valid_parentheses("()[]{}"));
-	EXPECT_TRUE(is_valid_parentheses("(t,f,t)"));
-	EXPECT_TRUE(is_valid_parentheses("(&(t,&(f,t),t),!(t))"));
-	return true;
-}
 #endif
+bool test_Valid_Parentheses (void) {
+    EXPECT_TRUE (is_valid_parentheses ("()[]{}"));
+    EXPECT_TRUE (is_valid_parentheses ("(t,f,t)"));
+    EXPECT_TRUE (is_valid_parentheses ("(&(t,&(f,t),t),!(t))"));
+    return true;
+}
 
 static bool test_replace_substr (void) {
     char text[100];

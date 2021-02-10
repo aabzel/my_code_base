@@ -168,6 +168,87 @@ C_/1_lessons/C_programming_language/trainings/training/leet_code/insert_interval
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/leet_code/insert_interval.cpp.s
 .PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/insert_interval.cpp.s
 
+C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_api.obj: C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_api.cpp.obj
+
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_api.obj
+
+# target to build an object file
+C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_api.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_api.cpp.obj
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_api.cpp.obj
+
+C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_api.i: C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_api.cpp.i
+
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_api.i
+
+# target to preprocess a source file
+C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_api.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_api.cpp.i
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_api.cpp.i
+
+C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_api.s: C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_api.cpp.s
+
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_api.s
+
+# target to generate assembly for a file
+C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_api.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_api.cpp.s
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_api.cpp.s
+
+C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_list_intersections.obj: C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_list_intersections.cpp.obj
+
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_list_intersections.obj
+
+# target to build an object file
+C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_list_intersections.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_list_intersections.cpp.obj
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_list_intersections.cpp.obj
+
+C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_list_intersections.i: C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_list_intersections.cpp.i
+
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_list_intersections.i
+
+# target to preprocess a source file
+C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_list_intersections.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_list_intersections.cpp.i
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_list_intersections.cpp.i
+
+C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_list_intersections.s: C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_list_intersections.cpp.s
+
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_list_intersections.s
+
+# target to generate assembly for a file
+C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_list_intersections.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_list_intersections.cpp.s
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_list_intersections.cpp.s
+
+C_/1_lessons/C_programming_language/trainings/training/leet_code/merge_interval.obj: C_/1_lessons/C_programming_language/trainings/training/leet_code/merge_interval.cpp.obj
+
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/merge_interval.obj
+
+# target to build an object file
+C_/1_lessons/C_programming_language/trainings/training/leet_code/merge_interval.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/leet_code/merge_interval.cpp.obj
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/merge_interval.cpp.obj
+
+C_/1_lessons/C_programming_language/trainings/training/leet_code/merge_interval.i: C_/1_lessons/C_programming_language/trainings/training/leet_code/merge_interval.cpp.i
+
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/merge_interval.i
+
+# target to preprocess a source file
+C_/1_lessons/C_programming_language/trainings/training/leet_code/merge_interval.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/leet_code/merge_interval.cpp.i
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/merge_interval.cpp.i
+
+C_/1_lessons/C_programming_language/trainings/training/leet_code/merge_interval.s: C_/1_lessons/C_programming_language/trainings/training/leet_code/merge_interval.cpp.s
+
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/merge_interval.s
+
+# target to generate assembly for a file
+C_/1_lessons/C_programming_language/trainings/training/leet_code/merge_interval.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/leet_code/merge_interval.cpp.s
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/merge_interval.cpp.s
+
 C_/1_lessons/C_programming_language/trainings/training/main_cpp.obj: C_/1_lessons/C_programming_language/trainings/training/main_cpp.cpp.obj
 
 .PHONY : C_/1_lessons/C_programming_language/trainings/training/main_cpp.obj
@@ -221,6 +302,60 @@ C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interva
 C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interval.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interval.cpp.s
 .PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interval.cpp.s
+
+C_/1_lessons/C_programming_language/trainings/training/tests/test_interval_list_intersections.obj: C_/1_lessons/C_programming_language/trainings/training/tests/test_interval_list_intersections.cpp.obj
+
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_interval_list_intersections.obj
+
+# target to build an object file
+C_/1_lessons/C_programming_language/trainings/training/tests/test_interval_list_intersections.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/tests/test_interval_list_intersections.cpp.obj
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_interval_list_intersections.cpp.obj
+
+C_/1_lessons/C_programming_language/trainings/training/tests/test_interval_list_intersections.i: C_/1_lessons/C_programming_language/trainings/training/tests/test_interval_list_intersections.cpp.i
+
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_interval_list_intersections.i
+
+# target to preprocess a source file
+C_/1_lessons/C_programming_language/trainings/training/tests/test_interval_list_intersections.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/tests/test_interval_list_intersections.cpp.i
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_interval_list_intersections.cpp.i
+
+C_/1_lessons/C_programming_language/trainings/training/tests/test_interval_list_intersections.s: C_/1_lessons/C_programming_language/trainings/training/tests/test_interval_list_intersections.cpp.s
+
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_interval_list_intersections.s
+
+# target to generate assembly for a file
+C_/1_lessons/C_programming_language/trainings/training/tests/test_interval_list_intersections.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/tests/test_interval_list_intersections.cpp.s
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_interval_list_intersections.cpp.s
+
+C_/1_lessons/C_programming_language/trainings/training/tests/test_merge_interval.obj: C_/1_lessons/C_programming_language/trainings/training/tests/test_merge_interval.cpp.obj
+
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_merge_interval.obj
+
+# target to build an object file
+C_/1_lessons/C_programming_language/trainings/training/tests/test_merge_interval.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/tests/test_merge_interval.cpp.obj
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_merge_interval.cpp.obj
+
+C_/1_lessons/C_programming_language/trainings/training/tests/test_merge_interval.i: C_/1_lessons/C_programming_language/trainings/training/tests/test_merge_interval.cpp.i
+
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_merge_interval.i
+
+# target to preprocess a source file
+C_/1_lessons/C_programming_language/trainings/training/tests/test_merge_interval.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/tests/test_merge_interval.cpp.i
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_merge_interval.cpp.i
+
+C_/1_lessons/C_programming_language/trainings/training/tests/test_merge_interval.s: C_/1_lessons/C_programming_language/trainings/training/tests/test_merge_interval.cpp.s
+
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_merge_interval.s
+
+# target to generate assembly for a file
+C_/1_lessons/C_programming_language/trainings/training/tests/test_merge_interval.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/tests/test_merge_interval.cpp.s
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_merge_interval.cpp.s
 
 C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.obj: C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.cpp.obj
 
@@ -288,12 +423,27 @@ help:
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/insert_interval.obj
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/insert_interval.i
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/insert_interval.s
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_api.obj
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_api.i
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_api.s
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_list_intersections.obj
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_list_intersections.i
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/interval_list_intersections.s
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/merge_interval.obj
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/merge_interval.i
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/merge_interval.s
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/main_cpp.obj
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/main_cpp.i
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/main_cpp.s
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interval.obj
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interval.i
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_insert_interval.s
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_interval_list_intersections.obj
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_interval_list_intersections.i
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_interval_list_intersections.s
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_merge_interval.obj
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_merge_interval.i
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_merge_interval.s
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.obj
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.i
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.s
