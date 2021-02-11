@@ -16,11 +16,12 @@ bool test_sort_list (void){
 	EXPECT_TRUE(list_add_node_front (&headNode, 3));
 	EXPECT_TRUE(list_add_node_front (&headNode, 2));
 	EXPECT_TRUE(list_add_node_front (&headNode, 5));
-	EXPECT_TRUE(list_add_node_front (&headNode, 7));
+	EXPECT_TRUE(list_add_node_front (&headNode, -7));
 	EXPECT_TRUE(list_add_node_front (&headNode, -1));
 	print_linked_list (headNode);
 
-	headNode = sortList(headNode);
+	//headNode = sortList(headNode);
+	headNode = sort_list_merge(headNode);
 
 	print_linked_list (headNode);
 	printf ("\n%s() done!", __FUNCTION__);

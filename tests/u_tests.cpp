@@ -5,6 +5,8 @@
 
 #include "uTests.h"
 
+#include "test_majority_element.h"
+
 #ifdef GENERATE_PARENTHESES
 #include "test_generate_parentheses.h"
 #endif
@@ -72,6 +74,8 @@ int a_val4 = init_by_foo4 ();
 
 bool u_tests (void) {
     cout << __FUNCTION__ << endl;
+    EXPECT_TRUE (test_majority_element ());
+
 #ifdef GENERATE_PARENTHESES
     EXPECT_TRUE (test_generate_parentheses ());
 #endif

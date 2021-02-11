@@ -24,6 +24,7 @@ set(PATH_SRC   ${CMAKE_CURRENT_SOURCE_DIR})
 set(INCL_PATH_TESTS  ${PATH_SRC}/../tests)
 set(INCL_PATH_ADT  ${PATH_SRC}/../ADT)
 set(INCL_PATH_UTILS  ${PATH_SRC}/../utils)
+set(INCL_PATH_LEET_CODE  ${PATH_SRC}/../leet_code)
 
 
 set(LIST_SRC ${PATH_SRC}/../main_cpp.cpp 
@@ -34,6 +35,12 @@ set(OPT -Wall -fexceptions -g -Weffc++ -std=c++14  -I${INCL_PATH_TESTS}
                                                    -I${INCL_PATH_UTILS}
                                                    -I${INCL_PATH_ADT})
 
+  
+  
+list(APPEND OPT -I${INCL_PATH_LEET_CODE})
+list(APPEND LIST_SRC ${PATH_SRC}/..//leet_code/majority_element.cpp)
+list(APPEND LIST_SRC ${PATH_SRC}/..//tests/test_majority_element.cpp )
+  
 if(${FINDREPEATEDDNASEQUENCES})
   message("  FINDREPEATEDDNASEQUENCES ${FINDREPEATEDDNASEQUENCES}")
   list(APPEND OPT "-DFINDREPEATEDDNASEQUENCES" )
