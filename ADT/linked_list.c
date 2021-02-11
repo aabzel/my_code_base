@@ -4,14 +4,14 @@
 #include <stdlib.h>
 
 /* Function to push a node */
-bool list_add_node_front (ListNode_t **headNode, int new_data) {
+bool list_add_node_front (ListNode_t **head_node, int new_data) {
     bool res = false;
     ListNode_t *new_node = NULL;
     new_node = (ListNode_t *)malloc (sizeof (ListNode_t));
     if (NULL != new_node) {
         (new_node)->val = new_data;
-        (new_node)->next = (*headNode);
-        *headNode = new_node;
+        (new_node)->next = (*head_node);
+        *head_node = new_node;
         res = true;
     }
     return res;
@@ -66,6 +66,7 @@ static void reverse_util (ListNode_t *curr, ListNode_t *prev, ListNode_t **head)
     reverse_util (next, curr, head);
 }
 
+#if 0
 struct xListNode_t *middle_node (struct xListNode_t *head) {
     struct xListNode_t *slow = head;
     struct xListNode_t *fast = head;
@@ -75,6 +76,7 @@ struct xListNode_t *middle_node (struct xListNode_t *head) {
     }
     return slow;
 }
+#endif
 
 int linked_list_counts (ListNode_t *head_node) {
     int cnt = 0;
@@ -127,6 +129,7 @@ ListNode_t *is_data_exist_linked_list (ListNode_t *head_node, int data) {
     return cur_node;
 }
 
+#if 0
 bool delete_node (ListNode_t **node) {
 #if 1
     printf ("\n[d] %s() node=%p val=%d", __FUNCTION__, *node, (*node)->val);
@@ -199,4 +202,59 @@ bool linked_list_deinit (ListNode_t **head) {
 
     printf ("\n[d] %s() done", __FUNCTION__);
     return res;
+}
+
+#endif
+
+int val_by_index (ListNode_t *head_node, int des_index) {
+    ListNode_t *ret_node = NULL;
+    int val = -1;
+    ret_node = node_by_index (head_node, des_index);
+    if (NULL != ret_node) {
+        val = ret_node->val;
+    }
+    return val;
+}
+
+bool swap_node_ll (ListNode_t *node_a, ListNode_t *node_b) {
+    bool res = false;
+    if (node_a && node_b) {
+        int temp_a = node_a->val;
+        int temp_b = node_b->val;
+        node_a->val = temp_b;
+        node_b->val = temp_a;
+        res = true;
+    }
+    return res;
+}
+
+ListNode_t *node_by_index (ListNode_t *head_node, int des_index) {
+    int cur_index = 0;
+    ListNode_t *ret_node = NULL;
+    ListNode_t *cur_node = head_node;
+    while (cur_node != NULL) {
+        if (des_index == cur_index) {
+            ret_node = cur_node;
+            break;
+        }
+        cur_index++;
+        cur_node = cur_node->next;
+    }
+    return ret_node;
+}
+
+/* Function to print linked list */
+void print_linked_list (ListNode_t *head_node) {
+    if (head_node) {
+
+        ListNode_t *cur_node = head_node;
+        printf ("\n Start of list\n");
+        while (cur_node != NULL) {
+            printf ("%d  ", cur_node->val);
+            cur_node = cur_node->next;
+        }
+        printf ("\n End of list\n");
+    } else {
+        printf ("\n ptr error\n");
+    }
 }

@@ -69,7 +69,7 @@ int a_val2=init_by_foo2();
 
 #ifdef WIN_UTILS
 #include "win_utils.h"
-#endif 
+#endif
 
 #ifdef DEPLOY_TCP_SERVER
 #include "tcp_server.h"

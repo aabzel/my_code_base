@@ -5,5 +5,7 @@ ADT_DIR = $(PROJECT_ROOT)ADT
 INCDIR			+= -I$(ADT_DIR)
 
 OPT += -DADT
+SOURCES += $(ADT_DIR)/linked_list.c
+SOURCES += $(ADT_DIR)/lifo_char.c
  
 #SOURCES += $(wildcard $(ADT_DIR)/*.c)

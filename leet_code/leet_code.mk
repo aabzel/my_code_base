@@ -5,6 +5,8 @@ INCDIR			+= -I$(LEET_CODE_DIR)
 
 OPT += -DLEET_CODE
 
+SOURCES += $(LEET_CODE_DIR)/sort_list.c
+
 CPP_SOURCES += $(LEET_CODE_DIR)insert_interval.cpp
 CPP_SOURCES += $(LEET_CODE_DIR)merge_interval.cpp
 CPP_SOURCES += $(LEET_CODE_DIR)interval_api.cpp

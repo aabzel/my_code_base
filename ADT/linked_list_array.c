@@ -73,16 +73,6 @@ bool push_val (list_node_t **pInHead, int newVal) {
     return res;
 }
 
-/* Function to print linked list */
-void print_list2 (list_node_t *headNode) {
-    list_node_t *curNode = headNode;
-    printf ("\n Start of list\n");
-    while (curNode != NULL) {
-        printf ("%d  ", curNode->data);
-        curNode = curNode->nextNode;
-    }
-    printf ("\n End of list\n");
-}
 #endif
 
 #if 0

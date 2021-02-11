@@ -12,6 +12,11 @@
 #include "dsol_task.h"
 #endif
 
+#ifdef SORT_LIST
+#include "test_sort_list.h"
+#endif
+
+
 #ifdef HAS_LCD_TEST
 #include "lcd_api.h"
 #endif
@@ -161,12 +166,12 @@ static bool test_parse_mac (void) {
     uint8_t expMac[6] = {0xd4, 0x3b, 0x04, 0xa0, 0xa2, 0x21};
     strncpy (inStr, "Device: CAN_FLASHER Serial 0x202b17d3015a from IP 192.168.0.11 MAC d4:3b:04:a0:a2:21",
              sizeof (inStr));
-    res = parse_mac (inStr, sizeof (inStr), curMac);
+    EXPECT_TRUE ( parse_mac (inStr, sizeof (inStr), curMac);
     if (false == res) {
         printf ("\nunable to parse mac");
         return false;
     }
-    bool cmpRes = is_mem_equal (curMac, expMac, 6);
+    EXPECT_TRUE ( is_mem_equal (curMac, expMac, 6);
     if (false == cmpRes) {
         printf ("\nexp mac d4:3b:04:a0:a2:21");
         printf ("\ncur mac ");
@@ -188,7 +193,7 @@ static bool test_parse_serial (void) {
     strncpy (inStr, "Device: IOV4_A Serial 0x907a08b from IP 192.168.0.11 MAC d4:3b:04:a0:a2:214:a0:a2:21",
              sizeof (inStr));
     uint64_t serial64BitNumber = 0;
-    res = parse_serial (inStr, sizeof (inStr), &serial64BitNumber);
+    EXPECT_TRUE (parse_serial (inStr, sizeof (inStr), &serial64BitNumber);
     if (true == res) {
         if (0x907a08b != serial64BitNumber) {
             printf ("\n Serial 0x[%08llx] exp 0x907a08b", (long long unsigned int)serial64BitNumber);
@@ -234,7 +239,7 @@ static bool test_parse_vi (void) {
              "Serial:202B17D3015A by Arrival\n\r1.013:I [SYS] Ok!\n\r-->",
              sizeof (inStr));
     uint64_t serial64BitNumber = 0U;
-    res = parse_serial (inStr, sizeof (inStr), &serial64BitNumber);
+    EXPECT_TRUE (parse_serial (inStr, sizeof (inStr), &serial64BitNumber);
     if (true == res) {
         if (0x0000202B17D3015A != serial64BitNumber) {
             printf ("\n Serial 0x[%08llx] exp 0x0000202B17D3015A", (long long unsigned int)serial64BitNumber);
@@ -245,7 +250,7 @@ static bool test_parse_vi (void) {
         return false;
     }
 
-    res = test_parse_vi_devname ();
+    EXPECT_TRUE ( test_parse_vi_devname ();
     if (false == res) {
         printf ("\n Unable to extract dev name form vi");
         return false;
@@ -265,29 +270,22 @@ static bool test_parse_phy_addr (void) {
 
     strncpy (inStr, "reg addr: 02 reg val: 0x0180 Ob_0000_0001_1000_0000", sizeof (inStr));
 
-    res = parse_8bit_reg_addr (inStr, strlen (inStr), &reg_addr);
-    if (true == res) {
+    EXPECT_TRUE ( parse_8bit_reg_addr (inStr, strlen (inStr), &reg_addr);
+
         if (2 != reg_addr) {
             printf ("\n phy addr exp 2 real [%u]", reg_addr);
             return false;
         }
-    } else {
-        printf ("\n parse_reg_addr err 1");
-        return false;
-    }
+
 
     strncpy (inStr, "reg addr: 09 reg val: 0x0000 Ob_0000_0000_0000_0000", sizeof (inStr));
 
-    res = parse_8bit_reg_addr (inStr, sizeof (inStr), &reg_addr);
-    if (true == res) {
+    EXPECT_TRUE (parse_8bit_reg_addr (inStr, sizeof (inStr), &reg_addr);
+
         if (9 != reg_addr) {
             printf ("\n phy addr exp 9 real %u", reg_addr);
             return false;
         }
-    } else {
-        printf ("\n parse_reg_addr err 2");
-        return false;
-    }
 
     return true;
 }
@@ -301,25 +299,23 @@ static bool test_parse_phy_reg_vals (void) {
     uint16_t reg16_val;
     strncpy (inStr, "reg addr: 02 reg val: 0x0180 Ob_0000_0001_1000_0000", sizeof (inStr));
 
-    res = try_canch_hex_uint16 (inStr, strlen (inStr), &reg16_val);
-    if (true == res) {
+    EXPECT_TRUE (try_canch_hex_uint16 (inStr, strlen (inStr), &reg16_val);
+
         if ((0x0180 != reg16_val)) {
             printf ("\n reg16_val %x exp  0x0180", reg16_val);
             return false;
         }
-    } else {
-        return false;
-    }
+
 
     strncpy (inStr, "reg addr: 19 reg val: 0x3241 Ob_0011_0010_0100_0001", sizeof (inStr));
-    res = try_canch_hex_uint16 (inStr, strlen (inStr), &reg16_val);
+    EXPECT_TRUE ( try_canch_hex_uint16 (inStr, strlen (inStr), &reg16_val);
     if ((0x3241 != reg16_val)) {
         printf ("\n reg16_val %x exp 0x3241 ", reg16_val);
         return false;
     }
 
     strncpy (inStr, "reg addr: 27 reg val: 0x2020 Ob_0010_0000_0010_0000", sizeof (inStr));
-    res = try_canch_hex_uint16 (inStr, strlen (inStr), &reg16_val);
+    EXPECT_TRUE ( try_canch_hex_uint16 (inStr, strlen (inStr), &reg16_val);
     if (0x2020 != reg16_val) {
         printf ("\n reg16_val %x exp 0x2020 ", reg16_val);
         return false;
@@ -341,7 +337,10 @@ bool unit_test (void) {
     printf ("\n[d] %s()", __FUNCTION__);
     bool res = false;
     (void)res;
-
+#ifdef SORT_LIST
+    EXPECT_TRUE (test_sort_list());
+#endif
+	
 #ifdef TEST_HEAP_MEM
     EXPECT_TRUE (test_free_zero ());
     // EXPECT_TRUE (test_malloc_zero()); fails
@@ -372,88 +371,45 @@ bool unit_test (void) {
 #endif
 
 #ifdef HAS_TREE_LIONS
-    res = test_lion_man_task ();
-    if (false == res) {
-        printf ("test_lion_man_task error");
-        return LION_TASK_ERROR;
-    }
-    res = run_tree_lions ();
-    if (false == res) {
-        printf ("run_tree_lions error");
-        return TREE_LIONS_ERROR;
-    }
+    EXPECT_TRUE ( test_lion_man_task ());
+    EXPECT_TRUE (run_tree_lions ());
 #endif
 
 #ifdef HAS_TEST_ALGORITHM
-    res = test_algorithms ();
-    if (false == res) {
-        printf ("test_algorithms error");
-        return ALGOTITHMS_ERROR;
-    }
+    EXPECT_TRUE ( test_algorithms ();
+
 #endif
 
 #ifdef HAS_VECTOR_CALC
-    res = test_vector_calc ();
-    if (false == res) {
-        printf ("\n test_vector_calc error");
-        return VECTOR_ERROR;
-    }
+    EXPECT_TRUE ( test_vector_calc ();
 #endif
 
 #ifdef HAS_HOTEL
-    res = test_guests ();
-    if (false == res) {
-        printf ("\n test_guests error");
-        return HOTEL_ERROR;
-    }
+    EXPECT_TRUE (test_guests ();
 #endif
 
 #ifdef TEST_LINKED_LIST
-    res = test_linked_list_ints ();
-    if (false == res) {
-        printf ("\n test_linked_list_ints error");
-        return LINKED_LIST_ERROR;
-    }
+    EXPECT_TRUE ( test_linked_list_ints ();
 #endif
 
 #ifdef TEST_HASH_SET
-    res = test_hash_set ();
-    if (false == res) {
-        printf ("\n test_hash_set error");
-        return TEST_HASH_ERROR;
-    }
+    EXPECT_TRUE ( test_hash_set ();
 #endif
 
 #if 0
-    res = test_text_addr ();
-    if (false == res) {
-        printf ("\n test_text_addr error");
-        return TEXT_ADDR_ERROR;
-    }
+    EXPECT_TRUE (test_text_addr ();
 #endif
 
 #ifdef TEST_STACK_NUM
-    res = test_stack ();
-    if (false == res) {
-        printf ("\n test_stack error");
-        return TEST_STACK_ERROR;
-    }
+    EXPECT_TRUE (test_stack ();
 #endif
 
 #ifdef TEST_ENCODE_STRING
-    res = test_encode_string ();
-    if (false == res) {
-        printf ("\n test_encode_string error");
-        return ENCODE_STRING_ERROR;
-    }
+    EXPECT_TRUE ( test_encode_string ();
 #endif
 
 #if 0
-    res = test_decode_ways ();
-    if (false == res) {L
-        printf ("test_decode_ways error");
-        return DECODE_WAYS_ERROR;
-    }
+    EXPECT_TRUE ( test_decode_ways ();
 #endif
     //    res = test_is_mapped ( );
     //    if (false == res) {
@@ -462,18 +418,14 @@ bool unit_test (void) {
     //    }
 
 #if 0
-    res = test_valid_ip_address ();
-    if (false == res) {
-        printf ("test_valid_ip_address error");
-        return PARSE_IP_ERROR;
-    }
+    EXPECT_TRUE ( test_valid_ip_address ();
 #endif
 
 #if 0
     uint32_t nn=10;
     while (1) {
       nn *=2 ;
-      res = work_with_stack (nn, 0x55);
+      EXPECT_TRUE (work_with_stack (nn, 0x55);
       if (false == res) {
           printf ("work_with_stack error %d", nn);
           return STACK_ERROR;
@@ -487,27 +439,15 @@ bool unit_test (void) {
     // return 1;
 #ifdef HAS_AURIGA_TASK
     printf ("\n%s %s", val_2_str (3), val_2_str (4));
-    res = test_auriga_task ();
-    if (false == res) {
-        printf ("test_auriga_task error");
-        return AURIGA_TASK_ERROR;
-    }
+    EXPECT_TRUE ( test_auriga_task ());
 #endif
 
 #if 0
-    res = test_bin_utils ();
-    if (false == res) {
-        printf ("bin utils error");
-        return BIN_UTILS_ERROR;
-    }
+    EXPECT_TRUE ( test_bin_utils ());
 #endif
 
 #ifdef TEST_MATRIX_ACCESS
-    res = test_matrix_accsess ();
-    if (false == res) {
-        printf ("matrix_accsess error");
-        return MATRIX_ACCSESS_ERROR;
-    }
+    EXPECT_TRUE ( test_matrix_accsess ());
 #endif
 
 #if 0
@@ -520,40 +460,23 @@ bool unit_test (void) {
 
 #ifdef HAS_GENERATE_REG_PARSER_TEST
     //#error test_build
-    res = test_generate_reg_parser ();
-    if (false == res) {
-        printf ("generate reg parser error");
-        return GENERATE_REG_PARSER_ERROR;
-    }
+    EXPECT_TRUE (test_generate_reg_parser ();
 #endif
 
 #ifdef TEST_ARRAY
-    res = test_array ();
-    if (false == res) {
-        printf ("array error");
-        return ARRAY_ERROR;
-    }
+    EXPECT_TRUE ( test_array ();
 #endif
 
 #ifdef HAS_PERMUTATIONS_TEST
-    res = test_permutation ();
-    if (false == res) {
-        return PERMUT_ERROR;
-    }
+    EXPECT_TRUE (test_permutation ();
 #endif
 
 #ifdef HAS_COMBINATION_TEST
-    res = test_combinations ();
-    if (false == res) {
-        return COMBINE_ERROR;
-    }
+    EXPECT_TRUE (test_combinations ();
 #endif
 
 #ifdef HAS_ALGORITHM_TEST
-    res = test_algorithm ();
-    if (false == res) {
-        return ALGORITM_ERROR;
-    }
+    EXPECT_TRUE ( test_algorithm ();
 #endif
 
 #ifdef BEAM_TRAIL
@@ -576,17 +499,11 @@ bool unit_test (void) {
 #endif
 
 #ifdef HAS_COMPARE_VERSION_TEST
-    res = compare_version_test ();
-    if (false == res) {
-        return COMPARE_VERSION_ERROR;
-    }
+    EXPECT_TRUE ( compare_version_test ();
 #endif
 
 #ifdef HAS_BIN_UTILS_TEST
-    res = test_binary_gap ();
-    if (false == res) {
-        return BIN_GAP_ERROR;
-    }
+    EXPECT_TRUE ( test_binary_gap ();
 #endif
 
 #if 0
@@ -612,72 +529,36 @@ bool unit_test (void) {
 #endif
 
 #if 0
-    res = is_hex_str ("ab1234ba", 8, &shift);
-    if (false == res) {
-        printf ("ab1234ba");
-        return PARSE_HEX_ERROR;
-    }
+    EXPECT_TRUE ( is_hex_str ("ab1234ba", 8, &shift);
 #endif
 
 #if 0
-    res = is_hex_str ("0x1234ba", 8, &shift);
-    if (false == res) {
-        printf ("0x1234ba");
-        return PARSE_HEX_ERROR;
-    }
+    EXPECT_TRUE (is_hex_str ("0x1234ba", 8, &shift);
 #endif
 
 #if 0
-    res = test_parse_serial ();
-    if (false == res) {
-        return PARSE_SERIAL_ERROR;
-    }
+    EXPECT_TRUE ( test_parse_serial ();
 #endif
 
 #if 0
-    res = test_parse_mac ();
-    if (false == res) {
-        return PARSE_MAC_ERROR;
-    }
+    EXPECT_TRUE ( test_parse_mac ();
 #endif
 
 #ifdef TEST_PARSE_REG
-    res = test_parse_phy_addr ();
-    if (false == res) {
-        return PARSE_PHY_ADDR_ERROR;
-    }
-
-    res = test_parse_phy_reg_vals ();
-    if (false == res) {
-        return PARSE_PHY_REG_VALS_ERROR;
-    }
+    EXPECT_TRUE ( test_parse_phy_addr ();
+    EXPECT_TRUE ( test_parse_phy_reg_vals ();
 #endif
 
 #ifdef TEST_SHA256
-    res = test_sha256 ();
-    if (false == res) {
-        printf ("\n[!] calc sha256 error");
-        return SHA256_ERROR;
-    } else {
-        printf ("\n[+] calc sha256 fine");
-    }
+    EXPECT_TRUE ( test_sha256 ();
 #endif
 
 #ifdef TEST_AES
-    res = test_aes ();
-    if (false == res) {
-        printf ("\n test aes error");
-        return AES_ERROR;
-    } else {
-        printf ("\n calc aes fine");
-    }
+    EXPECT_TRUE ( test_aes ();
 #endif
 
 #if 0
-    res = test_parse_vi ();
-    if (false == res) {
-        return PARSE_VI_ERROR;
-    }
+    EXPECT_TRUE ( test_parse_vi ();
 #endif
 
 #if TEST_FLOART
@@ -720,357 +601,210 @@ bool unit_test (void) {
 #endif
 
 #ifdef TEST_MY_PRINTF
-    res = test_my_printf ();
-    if (false == res) {
-        return NUM_OF_ARGS_ERROR;
-    }
+    EXPECT_TRUE ( test_my_printf ();
 #endif
 
 #ifdef TEST_MAX_ENFELOP
-    res = maxEnvelopes_test ();
-    if (false == res) {
-        return MAX_ENVELOPES_TEST_ERROR;
-    }
+    EXPECT_TRUE ( maxEnvelopes_test ();
 #endif
 
 #if TEST_LIST_SORT
-    res = test_list_sort ();
-    if (false == res) {
-        return LIST_SORT_ERROR;
-    }
+    EXPECT_TRUE ( test_list_sort ();
 #endif
 
 #if 0
-    res = test_str_ops ();
-    if (false == res) {
-        return STR_OPS_ERROR;
-    }
+    EXPECT_TRUE ( test_str_ops ();
 #endif
 
 #ifdef TEST_FIFO
-    res = test_fifo_char ();
-    if (false == res) {
-        return FIFO_CAHR_ERROR;
-    }
+    EXPECT_TRUE ( test_fifo_char ();
 #endif
 
 #ifdef HAS_TEST_PARSE_MK
-    res = test_mk_2_dot ();
-    if (false == res) {
-        return TEST_MK_2_DOT_ERROR;
-    }
+    EXPECT_TRUE ( test_mk_2_dot ();
 #endif
 
 #if DEPLOY_TEST_SINGLE_NUMBER
-    res = test_single_number ();
-    if (false == res) {
-        return SINGLE_NUMBER_ERROR;
-    }
+    EXPECT_TRUE ( test_single_number ();
 #endif
 
 #if DEPLOY_TEST_BOOL_EXPRESS
-    res = test_lifo ();
-    if (false == res) {
-        return LIFO_CAHR_ERROR;
-    }
-    res = test_Valid_Parentheses ();
-    if (false == res) {
-        return VALID_PARENTHESES_ERROR;
-    }
-
-    res = test_calc_paratasis_nesting ();
-    if (false == res) {
-        return PARSE_NUM_PAR_NEST_ERROR;
-    }
-
-    res = test_parse_num_operands ();
-    if (false == res) {
-        return PARSE_NUM_OPE_ERROR;
-    }
-
-    res = test_operand_extract ();
-    if (false == res) {
-        return EXTRACT_OPE_ERROR;
-    }
-    res = test_parse_and ();
-    if (false == res) {
-        return PARSE_AND_ERROR;
-    }
-
-    res = test_parse_not ();
-    if (false == res) {
-        return PARSE_NOT_ERROR;
-    }
-    res = test_parseBoolExpr ();
-    if (false == res) {
-        return PARSE_BOOL_EXPRES_ERROR;
-    }
+    EXPECT_TRUE ( test_lifo ();
+    EXPECT_TRUE ( test_Valid_Parentheses ();
+    EXPECT_TRUE ( test_calc_paratasis_nesting ();
+    EXPECT_TRUE ( test_parse_num_operands ();
+    EXPECT_TRUE ( test_operand_extract ();
+    EXPECT_TRUE ( test_parse_and ();
+    EXPECT_TRUE ( test_parse_not ();
+    EXPECT_TRUE ( test_parseBoolExpr ();
 #endif
 
 #if DEPLOY_TEST_NUM_STRING
-    res = test_num_to_bin_str ();
-    if (false == res) {
-        return NUM_TO_BIN_STR_ERROR;
-    }
+    EXPECT_TRUE ( test_num_to_bin_str ();
 #endif
     // int ret = 0;
 #if TEST_ATOI
-    res = test_myAtoi ();
-    if (false == res) {
-        return STR_TO_INT_ERROR;
-    }
+    EXPECT_TRUE ( test_myAtoi ();
 #endif
 
 #if 0
-    res = test_reverse ();
-    if (false == res) {
-        return REV_STR_ERROR;
-    }
-    res = test_detect_change ();
-    if (false == res) {
-        return DETECT_CHANGE_ERROR;
-    }
+    EXPECT_TRUE ( test_reverse ();
+    EXPECT_TRUE ( test_detect_change ();
 #endif
 
 #if DEPLOY_DIF_SUB_STR_ERROR
-    res = test_lengthOfLongestSubstring ();
-    if (false == res) {
-        return DIF_SUB_STR_ERROR;
-    }
+    EXPECT_TRUE (test_lengthOfLongestSubstring ();
+
 #endif
 
 #if DEPLOY_TEST_AVL_TREE
-    res = test_avl_tree ();
-    if (false == res) {
-        return AVL_TREE_ERROR;
-    }
+    EXPECT_TRUE ( test_avl_tree ();
+
 #endif
 
 #if 0
     EXPECT_TRUE(test_heap_api ());
-
-
-    res = test_delim_amount ();
-    if (false == res) {
-        return STRING_DELIM_ERROR;
-    }
-
-    res = test_string_clean ();
-    if (false == res) {
-        return STRING_CLEAN_ERROR;
-    }
+    EXPECT_TRUE ( test_delim_amount ();
+    EXPECT_TRUE ( test_string_clean ();
 #endif
 
 #if DEBUG_MAIL
-    res = test_split ();
-    if (false == res) {
-        return STRING_SPLIT_ERROR;
-    }
+    EXPECT_TRUE ( test_split ();
+
 #endif
 
 #if 0
-    res = test_sliding_window_max ();
-    if (false == res) {
-        return SLIDING_WINDOW_MAX_ERROR;
-    }
+    EXPECT_TRUE ( test_sliding_window_max ();
 
-    res = test_is_bin_tree ();
-    if (false == res) {
-        return IS_BIN_SEARCH_TREE_ERROR;
-    }
+    EXPECT_TRUE ( test_is_bin_tree ();
+
 #endif
 
 #if TEST_HEAP_DELET_ONE
-    res = test_bin_heap_rand_add_and_del_one ();
-    if (false == res) {
-        return BIN_HEAP_DEL_ERROR;
-    }
+    EXPECT_TRUE ( test_bin_heap_rand_add_and_del_one ();
+
 #endif
 
 #if TEST_HEAP_DELET
-    res = test_bin_heap_delete ();
-    if (false == res) {
-        return BIN_HEAP_DEL_ERROR;
-    }
+    EXPECT_TRUE ( test_bin_heap_delete ();
+
 #endif
 
 #if TEST_HEAP_SAME
-    res = test_bin_heap_same_add ();
-    if (false == res) {
-        return BIN_HEAP_SAME_ERROR;
-    }
+    EXPECT_TRUE ( test_bin_heap_same_add ();
+
 #endif
 
 #if TEST_HEAP_CON
-    res = test_bin_heap_dec_add ();
-    if (false == res) {
-        return BIN_HEAP_ERROR;
-    }
+    EXPECT_TRUE ( test_bin_heap_dec_add ();
+
 #endif
 
 #if BIN_HEAP_RAND_ADD
-    res = test_bin_heap_rand_add ();
-    if (false == res) {
-        return BIN_HEAP_RAND_ERROR;
-    }
+    EXPECT_TRUE (test_bin_heap_rand_add ();
+
 #endif
 
 #if 0
-    res = test_algo ();
-    if (false == res) {
-        return ALGO_ERROR;
-    }
+    EXPECT_TRUE ( test_algo ();
 
-    res = test_k_smallest ();
-    if (false == res) {
-        return K_SMALL_ERROR;
-    }
+    EXPECT_TRUE ( test_k_smallest ();
 
-    res = test_medianSlidingWindow ();
-    if (false == res) {
-        return MEDIAN_ERROR;
-    }
+    EXPECT_TRUE ( test_medianSlidingWindow ();
+
 #endif
 
 #if 0
-    res = test_valid_float_number ();
-    if (false == res) {
-        return IS_STR_FALSE_ERROR;
-    }
+    EXPECT_TRUE (test_valid_float_number ();
+
 #endif
 #if TEST_KDBX
-    res = try_to_open_kdbx_file ();
-    if (false == res) {
-        return TRY_OPEN_KEEPASS_ERROR;
-    }
+    EXPECT_TRUE ( try_to_open_kdbx_file ();
+
 #endif
 
 #if TEST_STR_STR
-    res = test_stsstr ();
-    if (false == res) {
-        return STRCASESTR_ERROR;
-    }
+    EXPECT_TRUE ( test_stsstr ();
+
 #endif
 
 #if TEST_MIN_PATH
-    res = test_min_path ();
-    if (false == res) {
-        return MIN_PATH_ERROR;
-    }
+    EXPECT_TRUE ( test_min_path ();
+
 #endif
 
 #if TEST_MIN_PATH_DIAG
-    res = test_min_path_diag ();
-    if (false == res) {
-        return MIN_PATH_DIAG_ERROR;
-    }
+    EXPECT_TRUE ( test_min_path_diag ();
+
 #endif
 
 #if TEST_MIN_DIAG_SCALE_SUMM
-    res = test_min_diag_scale_summ ();
-    if (false == res) {
-        return MIN_PATH_DIAG_SCALE_ERROR;
-    }
+    EXPECT_TRUE ( test_min_diag_scale_summ ();
+
 #endif
 
 #if TEST_FIND_MIN_DIAG_SCALE_SUMM
-    res = test_find_min_diag_scale_summ ();
-    if (false == res) {
-        return FIND_MIN_PATH_DIAG_SCALE_ERROR;
-    }
-    res = test_find_min_diag_scale_summ2 ();
-    if (false == res) {
-        return FIND_MIN_PATH_DIAG_SCALE2_ERROR;
-    }
+    EXPECT_TRUE ( test_find_min_diag_scale_summ ();
+
+    EXPECT_TRUE ( test_find_min_diag_scale_summ2 ();
+
 #endif
 
 #if TEST_FLOAT
-    res = test_float ();
+    EXPECT_TRUE ( test_float ();
 #endif
 
 #if TEST_UIO_COMB
-    res = save_the_amount_of_uio ();
+    EXPECT_TRUE (save_the_amount_of_uio ();
 #endif
 
 #if TEST_ARR_COMB
     test_heap ();
-    res = test_array_combinations ();
-    if (false == res) {
-        return ARR_COMB_ERROR;
-    }
+    EXPECT_TRUE ( test_array_combinations ();
+
 #endif
 
 #if TEST_YA_TASK
-    res = test_ya_task ();
-    if (false == res) {
-        return CON_11_ERROR;
-    }
+    EXPECT_TRUE ( test_ya_task ();
+
 #endif
 
 #if TEST_UNIQ_DIAG_PATH_TASK
-    res = test_uniq_path_diag ();
-    if (false == res) {
-        return UNIQ_PATH_DIAG_ERROR;
-    } else {
-        printf ("\ntest_uniq_path fine!\n");
-    }
+    EXPECT_TRUE ( test_uniq_path_diag ();
+
 #endif
 
 #if TEST_UNIQ_PATH_TASK
-    res = test_uniq_path ();
-    if (false == res) {
-        return UNIQ_PATH_ERROR;
-    } else {
-        printf ("\ntest_uniq_path fine!\n");
-    }
+    EXPECT_TRUE ( test_uniq_path ();
+
 #endif
 
 #if DEPLOY_REMAINED_TESTS
-    res = test_parse_bin_tree_init_array ();
-    if (false == res) {
-        return BIN_ARR_PARSE_TREE_ERROR;
-    }
+    EXPECT_TRUE ( test_parse_bin_tree_init_array ();
 
-    res = test_bin_tree_init_array ();
-    if (false == res) {
-        return BIN_ARR_TREE_ERROR;
-    }
+    EXPECT_TRUE ( test_bin_tree_init_array ();
 
-    res = test_bin_tree ();
-    if (false == res) {
-        return BIN_TREE_ERROR;
-    }
 
-    res = test_reverse_list ();
-    if (false == res) {
-        return LIST_REV_ERROR;
-    }
+    EXPECT_TRUE ( test_bin_tree ();
 
-    res = test_max_bit_val ();
-    if (false == res) {
-        return MAX_BIT_VAL_ERROR;
-    } else {
-        printf ("\ntest_max_bit_val fine!\n");
-    }
+    EXPECT_TRUE ( test_reverse_list ();
 
-    res = test_grey_conversation ();
-    if (false == res) {
-        return GRAY_ERROR;
-    }
+
+    EXPECT_TRUE ( test_max_bit_val ();
+
+
+    EXPECT_TRUE ( test_grey_conversation ();
+
 
     int arr1[] = {1, 2};
     int arr2[] = {2, 1};
-    res = is_permutation (arr1, arr2, 2);
-    if (false == res) {
-        return 11;
-    }
+    EXPECT_TRUE ( is_permutation (arr1, arr2, 2);
+
 
     int arra1[] = {1, 2, 5};
     int arra2[] = {2, 1, 6};
-    res = is_permutation (arra1, arra2, 3);
-    if (true == res) {
-        return 12;
-    }
+    EXPECT_TRUE (is_permutation (arra1, arra2, 3);
+
 
     outArray = generate_num_array (4);
     if (NULL != outArray) {
@@ -1133,10 +867,8 @@ bool unit_test (void) {
 #endif
     free (outStr);
 
-    res = test_linked_list ();
-    if (false == res) {
-        return LL_ERROR;
-    }
+    EXPECT_TRUE ( test_linked_list ();
+
 #endif
     printf ("\n %s done", __FUNCTION__);
     return true;
