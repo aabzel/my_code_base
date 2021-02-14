@@ -1,7 +1,8 @@
+
 #pragma once
 
 #include <vector>
 
 using namespace std;
 
-int majority_element (vector<int> &nums);
+bool test_bulls_and_cows (void);

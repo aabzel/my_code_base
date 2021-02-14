@@ -141,59 +141,32 @@ cpp_training/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/build
 .PHONY : cpp_training/fast
 
-C_/1_lessons/C_programming_language/trainings/training/ADT/lifo_char.obj: C_/1_lessons/C_programming_language/trainings/training/ADT/lifo_char.c.obj
+C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.obj: C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.cpp.obj
 
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/ADT/lifo_char.obj
-
-# target to build an object file
-C_/1_lessons/C_programming_language/trainings/training/ADT/lifo_char.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/ADT/lifo_char.c.obj
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/ADT/lifo_char.c.obj
-
-C_/1_lessons/C_programming_language/trainings/training/ADT/lifo_char.i: C_/1_lessons/C_programming_language/trainings/training/ADT/lifo_char.c.i
-
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/ADT/lifo_char.i
-
-# target to preprocess a source file
-C_/1_lessons/C_programming_language/trainings/training/ADT/lifo_char.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/ADT/lifo_char.c.i
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/ADT/lifo_char.c.i
-
-C_/1_lessons/C_programming_language/trainings/training/ADT/lifo_char.s: C_/1_lessons/C_programming_language/trainings/training/ADT/lifo_char.c.s
-
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/ADT/lifo_char.s
-
-# target to generate assembly for a file
-C_/1_lessons/C_programming_language/trainings/training/ADT/lifo_char.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/ADT/lifo_char.c.s
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/ADT/lifo_char.c.s
-
-C_/1_lessons/C_programming_language/trainings/training/leet_code/generate_parentheses.obj: C_/1_lessons/C_programming_language/trainings/training/leet_code/generate_parentheses.cpp.obj
-
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/generate_parentheses.obj
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.obj
 
 # target to build an object file
-C_/1_lessons/C_programming_language/trainings/training/leet_code/generate_parentheses.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/leet_code/generate_parentheses.cpp.obj
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/generate_parentheses.cpp.obj
+C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.cpp.obj
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.cpp.obj
 
-C_/1_lessons/C_programming_language/trainings/training/leet_code/generate_parentheses.i: C_/1_lessons/C_programming_language/trainings/training/leet_code/generate_parentheses.cpp.i
+C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.i: C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.cpp.i
 
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/generate_parentheses.i
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.i
 
 # target to preprocess a source file
-C_/1_lessons/C_programming_language/trainings/training/leet_code/generate_parentheses.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/leet_code/generate_parentheses.cpp.i
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/generate_parentheses.cpp.i
+C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.cpp.i
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.cpp.i
 
-C_/1_lessons/C_programming_language/trainings/training/leet_code/generate_parentheses.s: C_/1_lessons/C_programming_language/trainings/training/leet_code/generate_parentheses.cpp.s
+C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.s: C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.cpp.s
 
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/generate_parentheses.s
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.s
 
 # target to generate assembly for a file
-C_/1_lessons/C_programming_language/trainings/training/leet_code/generate_parentheses.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/leet_code/generate_parentheses.cpp.s
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/generate_parentheses.cpp.s
+C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.cpp.s
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.cpp.s
 
 C_/1_lessons/C_programming_language/trainings/training/leet_code/majority_element.obj: C_/1_lessons/C_programming_language/trainings/training/leet_code/majority_element.cpp.obj
 
@@ -249,32 +222,32 @@ C_/1_lessons/C_programming_language/trainings/training/main_cpp.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/main_cpp.cpp.s
 .PHONY : C_/1_lessons/C_programming_language/trainings/training/main_cpp.cpp.s
 
-C_/1_lessons/C_programming_language/trainings/training/tests/test_generate_parentheses.obj: C_/1_lessons/C_programming_language/trainings/training/tests/test_generate_parentheses.cpp.obj
+C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.obj: C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.cpp.obj
 
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_generate_parentheses.obj
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.obj
 
 # target to build an object file
-C_/1_lessons/C_programming_language/trainings/training/tests/test_generate_parentheses.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/tests/test_generate_parentheses.cpp.obj
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_generate_parentheses.cpp.obj
+C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.cpp.obj
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.cpp.obj
 
-C_/1_lessons/C_programming_language/trainings/training/tests/test_generate_parentheses.i: C_/1_lessons/C_programming_language/trainings/training/tests/test_generate_parentheses.cpp.i
+C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.i: C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.cpp.i
 
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_generate_parentheses.i
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.i
 
 # target to preprocess a source file
-C_/1_lessons/C_programming_language/trainings/training/tests/test_generate_parentheses.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/tests/test_generate_parentheses.cpp.i
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_generate_parentheses.cpp.i
+C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.cpp.i
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.cpp.i
 
-C_/1_lessons/C_programming_language/trainings/training/tests/test_generate_parentheses.s: C_/1_lessons/C_programming_language/trainings/training/tests/test_generate_parentheses.cpp.s
+C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.s: C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.cpp.s
 
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_generate_parentheses.s
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.s
 
 # target to generate assembly for a file
-C_/1_lessons/C_programming_language/trainings/training/tests/test_generate_parentheses.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/tests/test_generate_parentheses.cpp.s
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_generate_parentheses.cpp.s
+C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.cpp.s
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.cpp.s
 
 C_/1_lessons/C_programming_language/trainings/training/tests/test_majority_element.obj: C_/1_lessons/C_programming_language/trainings/training/tests/test_majority_element.cpp.obj
 
@@ -330,33 +303,6 @@ C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.cpp.s
 .PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.cpp.s
 
-C_/1_lessons/C_programming_language/trainings/training/utils/str_ops.obj: C_/1_lessons/C_programming_language/trainings/training/utils/str_ops.c.obj
-
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/utils/str_ops.obj
-
-# target to build an object file
-C_/1_lessons/C_programming_language/trainings/training/utils/str_ops.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/utils/str_ops.c.obj
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/utils/str_ops.c.obj
-
-C_/1_lessons/C_programming_language/trainings/training/utils/str_ops.i: C_/1_lessons/C_programming_language/trainings/training/utils/str_ops.c.i
-
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/utils/str_ops.i
-
-# target to preprocess a source file
-C_/1_lessons/C_programming_language/trainings/training/utils/str_ops.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/utils/str_ops.c.i
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/utils/str_ops.c.i
-
-C_/1_lessons/C_programming_language/trainings/training/utils/str_ops.s: C_/1_lessons/C_programming_language/trainings/training/utils/str_ops.c.s
-
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/utils/str_ops.s
-
-# target to generate assembly for a file
-C_/1_lessons/C_programming_language/trainings/training/utils/str_ops.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/utils/str_ops.c.s
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/utils/str_ops.c.s
-
 C_/1_lessons/C_programming_language/trainings/training/utils/utils_cpp.obj: C_/1_lessons/C_programming_language/trainings/training/utils/utils_cpp.cpp.obj
 
 .PHONY : C_/1_lessons/C_programming_language/trainings/training/utils/utils_cpp.obj
@@ -393,30 +339,24 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... cpp_training
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/ADT/lifo_char.obj
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/ADT/lifo_char.i
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/ADT/lifo_char.s
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/generate_parentheses.obj
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/generate_parentheses.i
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/generate_parentheses.s
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.obj
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.i
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.s
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/majority_element.obj
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/majority_element.i
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/majority_element.s
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/main_cpp.obj
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/main_cpp.i
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/main_cpp.s
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_generate_parentheses.obj
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_generate_parentheses.i
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_generate_parentheses.s
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.obj
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.i
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.s
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_majority_element.obj
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_majority_element.i
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_majority_element.s
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.obj
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.i
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.s
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/utils/str_ops.obj
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/utils/str_ops.i
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/utils/str_ops.s
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/utils/utils_cpp.obj
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/utils/utils_cpp.i
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/utils/utils_cpp.s

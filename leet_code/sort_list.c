@@ -25,13 +25,12 @@ static void bubble_sort (ListNode_t *head_node) {
     }
 }
 
-
-static void split_list(ListNode_t * list_a, ListNode_t **list_b) {
-    ListNode_t * aux, *ult;
+static void split_list (ListNode_t *list_a, ListNode_t **list_b) {
+    ListNode_t *aux, *ult;
     if (list_a != NULL) {
-       if (list_a->next == NULL) {
+        if (list_a->next == NULL) {
             *list_b = NULL;
-       } else {
+        } else {
             aux = list_a;
             ult = list_a->next;
             while (ult != NULL) {
@@ -43,12 +42,12 @@ static void split_list(ListNode_t * list_a, ListNode_t **list_b) {
             }
             *list_b = aux->next;
             aux->next = NULL;
-       }
+        }
     }
 }
 
-void merge(ListNode_t * *list_a, ListNode_t * *list_b, ListNode_t * *list_res) {
-    ListNode_t * aux;
+void merge (ListNode_t **list_a, ListNode_t **list_b, ListNode_t **list_res) {
+    ListNode_t *aux;
 
     if (*list_a != NULL && *list_b != NULL) {
         if ((*list_a)->val < (*list_b)->val) {
@@ -74,7 +73,7 @@ void merge(ListNode_t * *list_a, ListNode_t * *list_b, ListNode_t * *list_res) {
             aux->next = *list_a;
             *list_a = NULL;
         }
-        if (*list_b != NULL){
+        if (*list_b != NULL) {
             aux->next = *list_b;
             *list_b = NULL;
         }
@@ -87,20 +86,18 @@ void merge(ListNode_t * *list_a, ListNode_t * *list_b, ListNode_t * *list_res) {
     }
 }
 
-ListNode_t * sort_list_merge(ListNode_t * head){
-    ListNode_t * list_b, *list_res;
+ListNode_t *sort_list_merge (ListNode_t *head) {
+    ListNode_t *list_b, *list_res;
 
     if (head != NULL && head->next != NULL) {
-        split_list(head, &list_b);
-        head = sort_list_merge(head);
-        list_b = sort_list_merge(list_b);
-        merge(&head, &list_b, &list_res);
+        split_list (head, &list_b);
+        head = sort_list_merge (head);
+        list_b = sort_list_merge (list_b);
+        merge (&head, &list_b, &list_res);
         head = list_res;
     }
     return head;
 }
-
-
 
 // inplace without recursion in order to use in MCU with small Stack RAM
 ListNode_t *sortList (ListNode_t *head_node) {

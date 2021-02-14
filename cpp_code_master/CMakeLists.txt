@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 set(add_c_src ON)
 
-set(generate_parentheses ON)
+set(generate_parentheses OFF)
 set(interval_list_intersections OFF)
 set(merge_interval OFF)
 set(insert_interval OFF)
@@ -40,6 +40,11 @@ set(OPT -Wall -fexceptions -g -Weffc++ -std=c++14  -I${INCL_PATH_TESTS}
 list(APPEND OPT -I${INCL_PATH_LEET_CODE})
 list(APPEND LIST_SRC ${PATH_SRC}/..//leet_code/majority_element.cpp)
 list(APPEND LIST_SRC ${PATH_SRC}/..//tests/test_majority_element.cpp )
+ 
+list(APPEND OPT "-DBULLS_AND_COWS" )
+list(APPEND OPT "-DDEBUG_BULLS_COWS" )
+list(APPEND LIST_SRC ${PATH_SRC}/..//leet_code/bulls_and_cows.cpp)
+list(APPEND LIST_SRC ${PATH_SRC}/..//tests/test_bulls_and_cows.cpp )
   
 if(${FINDREPEATEDDNASEQUENCES})
   message("  FINDREPEATEDDNASEQUENCES ${FINDREPEATEDDNASEQUENCES}")

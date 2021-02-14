@@ -61,7 +61,6 @@ bool u_tests (void);
     } while (0);
 #endif
 
-
 #define EXPECT_EQ_MEM(memL, memR, len)                                                                                 \
     do {                                                                                                               \
         if (0 != memcmp (memL, memR, len)) {                                                                           \

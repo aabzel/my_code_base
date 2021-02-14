@@ -7,6 +7,10 @@
 
 #include "test_majority_element.h"
 
+#ifdef BULLS_AND_COWS
+#include "test_bulls_and_cows.h"
+#endif
+
 #ifdef GENERATE_PARENTHESES
 #include "test_generate_parentheses.h"
 #endif
@@ -74,6 +78,10 @@ int a_val4 = init_by_foo4 ();
 
 bool u_tests (void) {
     cout << __FUNCTION__ << endl;
+#ifdef BULLS_AND_COWS
+    EXPECT_TRUE (test_bulls_and_cows ());
+#endif
+
     EXPECT_TRUE (test_majority_element ());
 
 #ifdef GENERATE_PARENTHESES

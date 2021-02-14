@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+//#include <boost/lexical_cast.hpp>
 
 using namespace std;
 
@@ -58,6 +59,31 @@ void print_vector_ints (vector<int> nums) {
     cout << endl;
 }
 
+template<class Type>
+void print_vector (vector<Type> words){
+    //cout << __FUNCTION__ << endl;
+    cout << endl;
+    for (int i = 0; i < words.size (); i++) {
+        cout << "[";
+        cout << words[i] << ' ';
+        cout << "]" << endl;
+    }
+    cout << endl;
+}
+
+
+void print_vector_chars (vector<char> nums) {
+    cout << __FUNCTION__ << endl;
+    cout << endl;
+    for (int i = 0; i < nums.size (); i++) {
+        cout << "[";
+        cout << nums[i] << ' ';
+        cout << "]" << endl;
+    }
+    cout << endl;
+}
+
+
 void print_vector_strs (vector<string> words) {
     cout << __FUNCTION__ << endl;
     cout << endl;
@@ -78,6 +104,15 @@ int string_to_int (string text, int *outVal) {
         return 0;
     }
     return 1;
+}
+
+
+string int_to_string(int val){
+    string str;          // The string
+    ostringstream temp;  // 'temp' as in temporary
+    temp << val;
+    str = temp.str();    // str is 'temp' as string
+	return str;
 }
 
 bool findAndReplaceAll (string &data, string toSearch, string replaceStr) {

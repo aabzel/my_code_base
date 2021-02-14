@@ -16,7 +16,6 @@
 #include "test_sort_list.h"
 #endif
 
-
 #ifdef HAS_LCD_TEST
 #include "lcd_api.h"
 #endif
@@ -273,8 +272,8 @@ static bool test_parse_phy_addr (void) {
     EXPECT_TRUE ( parse_8bit_reg_addr (inStr, strlen (inStr), &reg_addr);
 
         if (2 != reg_addr) {
-            printf ("\n phy addr exp 2 real [%u]", reg_addr);
-            return false;
+        printf ("\n phy addr exp 2 real [%u]", reg_addr);
+        return false;
         }
 
 
@@ -283,8 +282,8 @@ static bool test_parse_phy_addr (void) {
     EXPECT_TRUE (parse_8bit_reg_addr (inStr, sizeof (inStr), &reg_addr);
 
         if (9 != reg_addr) {
-            printf ("\n phy addr exp 9 real %u", reg_addr);
-            return false;
+        printf ("\n phy addr exp 9 real %u", reg_addr);
+        return false;
         }
 
     return true;
@@ -338,9 +337,9 @@ bool unit_test (void) {
     bool res = false;
     (void)res;
 #ifdef SORT_LIST
-    EXPECT_TRUE (test_sort_list());
+    EXPECT_TRUE (test_sort_list ());
 #endif
-	
+
 #ifdef TEST_HEAP_MEM
     EXPECT_TRUE (test_free_zero ());
     // EXPECT_TRUE (test_malloc_zero()); fails
@@ -371,7 +370,7 @@ bool unit_test (void) {
 #endif
 
 #ifdef HAS_TREE_LIONS
-    EXPECT_TRUE ( test_lion_man_task ());
+    EXPECT_TRUE (test_lion_man_task ());
     EXPECT_TRUE (run_tree_lions ());
 #endif
 
