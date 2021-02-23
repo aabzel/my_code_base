@@ -418,3 +418,36 @@ bool concatenate_array (uint8_t *out_fin_array, uint32_t fin_array_len, uint8_t 
     }
     return res;
 }
+
+int *find_common(int *arr1, int len1,
+                int *arr2, int len2) {
+
+    bool loop = true;
+    int index1=0, cnt=0;
+    int index2=0;
+
+    int *result_arr = malloc(min(len1,len2)*sizeof(int));
+    if(result_arr) {
+        while(true==loop) {
+            if(arr2[index2]<arr1[index1]) {
+               index2++;
+            }else if(arr2[index2]==arr1[index1]) {
+               result_arr[cnt]=arr1[index1];
+               cnt++;
+               index1++;
+               index2++;
+            }else {
+                //b>a
+                index1++;
+            }
+            if(len1<=index1) {
+            	loop = false;
+            }
+            if(len2<=index2) {
+               	loop = false;
+            }
+       }
+       return result_arr;
+    }
+    return NULL;
+}

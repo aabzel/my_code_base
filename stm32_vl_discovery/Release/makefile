@@ -8,6 +8,11 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include utils_stm32/subdir.mk
+-include utilities/subdir.mk
+-include components/lib/diag_page/subdir.mk
+-include com_utils/subdir.mk
+-include bsp/subdir.mk
 -include Src/subdir.mk
 -include subdir.mk
 -include objects.mk

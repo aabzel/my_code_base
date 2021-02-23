@@ -34,6 +34,8 @@ void print_array_of_arrays (int **arrOfArr, int amountOfLine, int amountOfCol);
 uint64_t sum_arr (uint32_t *arr, uint32_t size);
 float calc_avarage (uint32_t *arr, uint32_t size);
 bool test_single_number (void);
+int *find_common(int *arr1, int len1,
+                int *arr2, int len2);
 
 #ifdef __cplusplus
 }

@@ -29,5 +29,30 @@
 			<type>2</type>
 			<location>C:/1_lessons/C_programming_language/trainings/training/STM32Cube_FW_F1_V1.8.3/Drivers/STM32F1xx_HAL_Driver/Src</location>
 		</link>
+		<link>
+			<name>bsp</name>
+			<type>2</type>
+			<location>C:/1_lessons/C_programming_language/trainings/training/stm32_vl_discovery/bsp</location>
+		</link>
+		<link>
+			<name>com_utils</name>
+			<type>2</type>
+			<location>C:/1_lessons/C_programming_language/trainings/training/com_utils</location>
+		</link>
+		<link>
+			<name>components</name>
+			<type>2</type>
+			<location>C:/1_lessons/C_programming_language/trainings/training/components</location>
+		</link>
+		<link>
+			<name>utilities</name>
+			<type>2</type>
+			<location>C:/1_lessons/C_programming_language/trainings/training/utils</location>
+		</link>
+		<link>
+			<name>utils_stm32</name>
+			<type>2</type>
+			<location>C:/1_lessons/C_programming_language/trainings/training/utils_stm32</location>
+		</link>
 	</linkedResources>
 </projectDescription>
