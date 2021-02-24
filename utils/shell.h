@@ -1,8 +1,10 @@
-#ifndef UTILS_SHELL_H_
-#define UTILS_SHELL_H_
+#ifndef UTILS_SHELL_H
+#define UTILS_SHELL_H
+
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
+
 #include "device.h"
 #include "ostream.h"
 
@@ -38,15 +40,13 @@ typedef struct {
 #define EXT_WDT_TEST
 #endif
 
-#ifdef TEST_FIRMWARE
+
 bool cmd_read_memory (int32_t argc, char *argv []);
 
 #define TEST_FIRMWARE_COMMANDS \
     SHELL_CMD("read_mem", "rm", cmd_read_memory, "Read memory address"), \
     SHELL_CMD("uarts","u", cmd_uarts, "Print UARTs statistics"),
-#else
-#define TEST_FIRMWARE_COMMANDS
-#endif
+
 
 #if defined (BOOTLOADER)
 #define DEFAULT_COMMANDS \
@@ -58,6 +58,12 @@ bool cmd_read_memory (int32_t argc, char *argv []);
     EXT_WDT_TEST \
     DEFAULT_CORE0_COMMANDS
 #else
+
+#define TEST_DEFAULT_COMMANDS                                                                                          \
+    SHELL_CMD ("launch_function", "lfun", cmd_launch_function, "Launch any function by address in ROM"),               \
+    SHELL_CMD ("try_stack", "tstk", cmd_try_stack, "Explore stack RAM"),                                           \
+    SHELL_CMD ("repeat", "rpt", cmd_repeat, "Repeat any command N time with period"),
+
 #define DEFAULT_COMMANDS \
     SHELL_CMD("help","h", cmd_help, "Print list of shell commands"), \
     SHELL_CMD("version", "vi", cmd_version, "Print version information"), \
@@ -65,9 +71,11 @@ bool cmd_read_memory (int32_t argc, char *argv []);
     SHELL_CMD("soft_reboot", "reboot", cmd_soft_reboot, "Reboot board"), \
     SHELL_CMD("wd_test", "wd_test", cmd_wd_test, "Stop board (for watchdog test)"), \
     EXT_WDT_TEST \
+	TEST_DEFAULT_COMMANDS\
     TEST_FIRMWARE_COMMANDS \
     DEFAULT_CORE0_COMMANDS
 #endif
+
 
 #define COMMANDS_END         SHELL_CMD(NULL,NULL,NULL,NULL)
 
@@ -76,6 +84,9 @@ void shell_prompt(void);
 void print_version (void);
 void print_version_s (ostream_t* stream);
 
+bool cmd_repeat (int32_t argc, char *argv[]);
+bool cmd_launch_function (int32_t argc, char *argv[]);
+bool cmd_try_stack (int32_t argc, char *argv[]);
 bool cmd_help(int32_t argc, char *argv[]);
 bool cmd_version(int32_t argc, char *argv[]);
 void start_banner(void);
@@ -83,14 +94,14 @@ bool dump_cmd_result(bool res);
 bool dump_cmd_result_ex(bool res, const char* message);
 bool cmd_wd_test(int32_t argc, char *argv[]);
 bool cmd_wd_test_hw (int32_t argc, char *argv []);
-
 bool cmd_sysinfo(int32_t argc, char *argv[]);
 void help_dump_key (const char *subName1, const char *subName2);
 
 void reboot(void);
 bool cmd_soft_reboot(int32_t argc, char *argv[]);
+
 #ifdef  __cplusplus
 }
 #endif
 
-#endif /* UTILS_SHELL_H_ */
+#endif /* UTILS_SHELL_H */

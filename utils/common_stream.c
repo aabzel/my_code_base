@@ -5,21 +5,21 @@
 #include "string_writer.h"
 
 #ifdef SPC58xC
-#    include "sections.h"
-#    define SECTION SRAM2_NOINIT
+#include "sections.h"
+#define SECTION SRAM2_NOINIT
 #endif /* SPC58xC */
 
 #ifdef SPC58xN
-#   include "sections.h"
-#   ifdef BOOTLOADER
-#       define SECTION SRAM2_NOINIT
-#   else /* BOOTLOADER */
-#       define SECTION CORE1_RAM_NOINIT
-#   endif /* BOOTLOADER */
+#include "sections.h"
+#ifdef BOOTLOADER
+#define SECTION SRAM2_NOINIT
+#else /* BOOTLOADER */
+#define SECTION CORE1_RAM_NOINIT
+#endif /* BOOTLOADER */
 #endif /* SPC58xN */
 
 #ifndef SECTION
-#   define SECTION
+#define SECTION
 #endif /* SECTION */
 
 static char ccp_stream_str [1024*10 + 1] SECTION;
@@ -32,7 +32,7 @@ ostream_t* ccp_stream_init(void) {
 }
 
 void ccp_stream_dump(const char* cmd) {
-#if defined(CUBEMX)||defined(COMPRESS_DATA)
+#if defined(CUBEMX) || defined(COMPRESS_DATA)
     dump_data64 (cmd, (const uint8_t*)ccp_stream.data, ccp_stream.pos, true);
 #else
     dump_data64 (cmd, (const uint8_t*)ccp_stream.data, ccp_stream.pos);

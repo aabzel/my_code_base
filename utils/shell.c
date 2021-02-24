@@ -8,43 +8,23 @@
 #include <strings.h>
 #endif
 
-#include "io_utils.h"
-#include "oprintf.h"
-#ifdef TEST_FIRMWARE
-#include "rx_uart.h"
-#endif
-#include "rx_uart_misra.h"
-#include "str_utils.h"
-#include "log_commands.h"
+#include "board_config.h"
 #include "convert.h"
-#include "terminal_codes.h"
+#include "device_flash_info.h"
 #include "device_id.h"
 #include "diag_report.h"
+#include "io_utils.h"
+#include "log_commands.h"
 #include "none_blocking_pause.h"
+#include "oprintf.h"
+#include "read_mem.h"
+#include "rx_uart_misra.h"
 #include "shell_commands.h"
+#include "str_utils.h"
+#include "terminal_codes.h"
 #include "watchdog.h"
-#include "board_config.h"
-#include "device_flash_info.h"
+#include "rx_uart.h"
 
-#ifdef HAS_TIC12400
-#include "tic12400.h"
-#endif
-
-#ifdef HAS_CAN
-#include "canif.h"
-#endif
-
-#if defined(SPC5) && !defined(BOOTLOADER)
-#include "for_bootloader_commands.h"
-#endif
-
-#if defined(SPC58) && defined(FOR_BOOTLOADER)
-#include "reboot_info.h"
-#endif
-
-#if defined(HAS_SPC58_RESET_INFO)
-#include "exception_handlers.h"
-#endif
 
 #ifdef EMBEDDED_TEST
 #include "print_buffer.h"
@@ -54,29 +34,18 @@
 #include "board_type_id.h"
 #endif
 
-#ifdef HAS_MODULE_POWER
-#include "module_power.h"
-#endif
-
-static const shell_cmd_info_t shell_commands [] = {
-    SHELL_COMMANDS
-    COMMANDS_END
-};
+static const shell_cmd_info_t shell_commands[] = {SHELL_COMMANDS COMMANDS_END};
 
 bool show_shell_prompt = true;
 bool user_mode = true;
 
-#ifdef TEST_FIRMWARE
-#include "read_mem.h"
-#endif
-
 /*logic AND for keyWords */
-static bool is_print_cmd (const shell_cmd_info_t * const cmd, const char * const subName1, const char * const subName2) {
+static bool is_print_cmd (const shell_cmd_info_t *const cmd, const char *const subName1, const char *const subName2) {
     bool res = false;
     if (NULL != cmd) {
-        if ((NULL == subName1) && (NULL == subName2) ) {
+        if ((NULL == subName1) && (NULL == subName2)) {
             res = true;
-        } else  if (  (NULL != subName1) && (NULL == subName2)) {
+        } else if ((NULL != subName1) && (NULL == subName2)) {
             /*one subname done*/
             res = false;
             if (NULL != cmd->short_name) {
@@ -94,7 +63,7 @@ static bool is_print_cmd (const shell_cmd_info_t * const cmd, const char * const
                     res = true;
                 }
             }
-        } else if (  (NULL != subName1) && (NULL != subName2)) {
+        } else if ((NULL != subName1) && (NULL != subName2)) {
             /*two subnames done*/
             res = false;
             if (NULL != cmd->short_name) {
@@ -125,18 +94,15 @@ static bool is_print_cmd (const shell_cmd_info_t * const cmd, const char * const
 }
 
 void help_dump_key (const char *subName1, const char *subName2) {
-    const shell_cmd_info_t* cmd = shell_commands;
+    const shell_cmd_info_t *cmd = shell_commands;
     rx_printf ("Available commands: ");
     rx_putstr (CRLF);
     rx_putstr ("|   short |          long command | Description" CRLF);
     rx_putstr ("|---------|-----------------------|-----" CRLF);
     while (cmd->handler) {
         if (is_print_cmd (cmd, subName1, subName2)) {
-            rx_printf (
-                "|%8s |%22s | %s" CRLF,
-                cmd->short_name ? cmd->short_name : "",
-                cmd->long_name ? cmd->long_name : "",
-                cmd->description ? cmd->description : "");
+            rx_printf ("|%8s |%22s | %s" CRLF, cmd->short_name ? cmd->short_name : "",
+                       cmd->long_name ? cmd->long_name : "", cmd->description ? cmd->description : "");
 
             flush_printf ();
         }
@@ -146,7 +112,7 @@ void help_dump_key (const char *subName1, const char *subName2) {
 
 bool cmd_help (int32_t argc, char *argv[]) {
     bool res = false;
-    if (3<=argc) {
+    if (3 <= argc) {
         rx_printf ("Usage: help [subname1]  " CRLF);
         rx_printf ("       help [subname1]  [subname2]" CRLF);
         res = false;
@@ -168,23 +134,21 @@ bool cmd_help (int32_t argc, char *argv[]) {
     return res;
 }
 
-#ifdef TEST_FIRMWARE
-
 /* variable address can be obtained from *.elf due to readelf tool*/
-bool cmd_read_memory (int32_t argc, char *argv []) {
+bool cmd_read_memory (int32_t argc, char *argv[]) {
     bool res = false;
     if (1 == argc) {
         uint32_t address_val = 0u;
         uint32_t value = 0u;
-        res = try_str2uint32 (argv [0], &address_val);
+        res = try_str2uint32 (argv[0], &address_val);
         if (false == res) {
-            LOG_ERROR (SYS, "Invalid address hex value %s", argv [0]);
+            LOG_ERROR (SYS, "Invalid address hex value %s", argv[0]);
         } else {
-            rx_printf ("address: 0x%08x\n\r", (unsigned int) address_val);
+            rx_printf ("address: 0x%08x\n\r", (unsigned int)address_val);
         }
         if (true == res) {
             value = read_addr_32bit (address_val);
-            rx_printf ("value: 0x%08x 0b%s\n\r", (unsigned int) value, utoa_bin32(value));
+            rx_printf ("value: 0x%08x 0b%s\n\r", (unsigned int)value, utoa_bin32 (value));
         }
     }
     if (2 == argc) {
@@ -192,21 +156,21 @@ bool cmd_read_memory (int32_t argc, char *argv []) {
         uint32_t num_of_byte = 0u;
         uint8_t value_byte = 0u;
         uint32_t index = 0u;
-        res = try_str2uint32 (argv [0], &address_val);
+        res = try_str2uint32 (argv[0], &address_val);
         if (false == res) {
-            LOG_ERROR (SYS, "Invalid address hex value %s", argv [0]);
+            LOG_ERROR (SYS, "Invalid address hex value %s", argv[0]);
         } else {
-            rx_printf ("address: 0x%08x \n\r", (unsigned int) address_val);
+            rx_printf ("address: 0x%08x \n\r", (unsigned int)address_val);
         }
-        res = try_str2uint32 (argv [1], &num_of_byte);
+        res = try_str2uint32 (argv[1], &num_of_byte);
         if (false == res) {
-            LOG_ERROR (SYS, "Invalid amount of byte %s", argv [1]);
+            LOG_ERROR (SYS, "Invalid amount of byte %s", argv[1]);
         } else {
-            rx_printf ("num_of_byte: %d \n\r", (unsigned int) num_of_byte);
+            rx_printf ("num_of_byte: %d \n\r", (unsigned int)num_of_byte);
         }
         for (index = 0; index < num_of_byte; index++) {
             value_byte = read_addr_8bit (address_val + index);
-            rx_printf ("%02x", (unsigned int) value_byte);
+            rx_printf ("%02x", (unsigned int)value_byte);
         }
         rx_printf ("\n\r");
     }
@@ -218,30 +182,26 @@ bool cmd_read_memory (int32_t argc, char *argv []) {
     }
     return res;
 }
-#endif
 
-bool cmd_sysinfo (int32_t argc, char *argv []) {
-    (void) argv;
+bool cmd_sysinfo (int32_t argc, char *argv[]) {
+    (void)argv;
     if (argc != 0) {
         LOG_ERROR (SYS, "Usage: sysinfo: help");
         return false;
     }
     rx_printf ("Mcu=%s" CRLF, get_mcu_name ());
-#ifdef SPC5
-    return show_diag_report (DIAG_PAGE_SYSINFO);
-#else
+
     return true;
-#endif
 }
 
-bool cmd_wd_test (int32_t argc, char *argv []) {
+bool cmd_wd_test (int32_t argc, char *argv[]) {
     uint32_t delay_in_ms = 1000;
     if (argc != 1) {
         LOG_ERROR (SYS, "Usage: wd_test time_ms");
         return false;
     }
-    if (!try_str2uint32 (argv [0], &delay_in_ms)) {
-        LOG_ERROR (SYS, "Invalid delay value %s", argv [0]);
+    if (!try_str2uint32 (argv[0], &delay_in_ms)) {
+        LOG_ERROR (SYS, "Invalid delay value %s", argv[0]);
         return false;
     }
     LOG_WARNING (SYS, "Delay for %" PRIu32 " ms", delay_in_ms);
@@ -250,14 +210,14 @@ bool cmd_wd_test (int32_t argc, char *argv []) {
     return true;
 }
 
-bool cmd_wd_test_hw (int32_t argc, char *argv []) {
+bool cmd_wd_test_hw (int32_t argc, char *argv[]) {
     uint32_t delay_in_ms = 1000;
     if (argc != 1) {
         LOG_ERROR (SYS, "Usage: wd_test_hw time_ms");
         return false;
     }
-    if (!try_str2uint32 (argv [0], &delay_in_ms)) {
-        LOG_ERROR (SYS, "Invalid delay value %s", argv [0]);
+    if (!try_str2uint32 (argv[0], &delay_in_ms)) {
+        LOG_ERROR (SYS, "Invalid delay value %s", argv[0]);
         return false;
     }
     LOG_WARNING (SYS, "Delay for %" PRIu32 " ms", delay_in_ms);
@@ -266,7 +226,7 @@ bool cmd_wd_test_hw (int32_t argc, char *argv []) {
         uint32_t end_time = get_time_ms32 () + delay_in_ms;
         while (get_time_ms32 () <= end_time) {
 #ifdef HAS_SWT
-            wdt_reset_sw();
+            wdt_reset_sw ();
 #endif
         }
     }
@@ -279,37 +239,22 @@ void shell_prompt (void) {
     }
 }
 
-void print_version (void) {
-    print_version_s (get_console_stream ());
-}
+void print_version (void) { print_version_s (get_console_stream ()); }
 
-void print_version_s (ostream_t* stream) {
-#ifdef CAN_FLASHER_ON_SPC58
-/* Substitution for flash_tool*/
-    oprintf (stream, "CanFlasher on CanFlash Version 0.4.4.0.23 GCC Release 19/1/2020 23:19:09 FlashId:2707ABC4 Serial:202B17BC00C0 by Arrival\r\n");
-#else
-    const char* mcu;
-    oprintf (
-        stream,
-        "%s on %s Version %u.%u.%u.%u.%" PRIu32,
-        flash_info.firmware_name,
+void print_version_s (ostream_t *stream) {
+    const char *mcu;
+    oprintf (stream, "%s on %s Version %u.%u.%u.%u.%" PRIu32, flash_info.firmware_name,
 #ifdef HAS_BOARD_TYPE_ID
-        get_board_name (),
+             get_board_name (),
 #else
-        HARDWARE_NAME,
+             HARDWARE_NAME,
 #endif
-        flash_info.version_generation,
-        flash_info.version_major,
-        flash_info.version_minor,
-        flash_info.version_fix,
-        flash_info.version_build32);
-#ifdef __ghs__
-    oputs (stream, " GHS");
-#else
+             flash_info.version_generation, flash_info.version_major, flash_info.version_minor, flash_info.version_fix,
+             flash_info.version_build32);
 #ifdef __GNUC__
     oputs (stream, " GCC");
 #endif
-#endif
+
 
 #ifdef RELEASE
 #ifdef CHECK_ALL
@@ -327,28 +272,17 @@ void print_version_s (ostream_t* stream) {
 #endif
 #endif
 
-    oprintf (
-        stream,
-        " %u/%u/%u %02u:%02u:%02u",
-        flash_info.compile_day,
-        flash_info.compile_month,
-        flash_info.compile_year,
-        flash_info.compile_hour,
-        flash_info.compile_min,
-        flash_info.compile_sec);
-    oprintf (stream, " FlashId:0x%08" PRIX32, get_flash_crc ((const flash_info_t*)&flash_info));
+    oprintf (stream, " %u/%u/%u %02u:%02u:%02u", flash_info.compile_day, flash_info.compile_month,
+             flash_info.compile_year, flash_info.compile_hour, flash_info.compile_min, flash_info.compile_sec);
+    oprintf (stream, " FlashId:0x%08" PRIX32, get_flash_crc ((const flash_info_t *)&flash_info));
     oprintf (stream, " Serial:%" PRIX64, get_device_serial ());
     mcu = get_mcu_name ();
     if ((NULL != mcu) && (*mcu != '\0')) {
         oprintf (stream, " MCU:%s", get_mcu_name ());
     }
-#ifdef SPC58
-    oputs (stream, " ");
-    oputs (stream, get_mcu_mask_id ());
-#endif
-    oputs (stream, " by Arrival");
+
+    oputs (stream, " by aabdev");
     oputs (stream, CRLF);
-#endif
 }
 
 void start_banner (void) {
@@ -356,13 +290,13 @@ void start_banner (void) {
     print_version ();
 #if !defined(FOR_BOOTLOADER) && !defined(BOOTLOADER)
     if (APP_START_ADDRESS) {
-        LOG_ERROR(SYS, "FOR_BOOTLOADER not defined but application linked for bootloader use");
+        LOG_ERROR (SYS, "FOR_BOOTLOADER not defined but application linked for bootloader use");
     }
 #endif
 }
 
-bool cmd_version (int32_t argc, char *argv []) {
-    (void) (argv);
+bool cmd_version (int32_t argc, char *argv[]) {
+    (void)(argv);
     if (argc != 0) {
         LOG_ERROR (SYS, "Usage: version");
         return false;
@@ -384,20 +318,20 @@ bool dump_cmd_result (bool res) {
         }
     } else {
 #endif
-    if (res) {
-        rx_putstr ("!OK" CRLF);
-    } else {
-        rx_putstr ("!ERROR" CRLF);
-    }
+        if (res) {
+            rx_putstr ("!OK" CRLF);
+        } else {
+            rx_putstr ("!ERROR" CRLF);
+        }
 #ifndef EMBEDDED_TEST
     }
 #endif
     return res;
 }
 
-bool dump_cmd_result_ex (bool res, const char* message) {
+bool dump_cmd_result_ex (bool res, const char *message) {
 #ifdef EMBEDDED_TEST
-    STRNCPY(last_cmd_result_str, message);
+    STRNCPY (last_cmd_result_str, message);
 #endif
     if (user_mode) {
         if (res) {
@@ -415,22 +349,22 @@ bool dump_cmd_result_ex (bool res, const char* message) {
     return res;
 }
 
-void process_shell_cmd (char* cmd_line) {
+void process_shell_cmd (char *cmd_line) {
     static int shell_argc = 0;
-    static char *shell_argv [SHELL_MAX_ARG_COUNT];
-    char*p = cmd_line;
-    const shell_cmd_info_t* cmd = shell_commands;
+    static char *shell_argv[SHELL_MAX_ARG_COUNT];
+    char *p = cmd_line;
+    const shell_cmd_info_t *cmd = shell_commands;
 
     shell_argc = 0;
-    memset(shell_argv, 0, sizeof(shell_argv));
+    memset (shell_argv, 0, sizeof (shell_argv));
     while ((shell_argc < SHELL_MAX_ARG_COUNT) && (*p != 0)) {
-        while (isspace((uint8_t ) *p)) {
+        while (isspace ((uint8_t)*p)) {
             p++;
         }
         if (*p != '\0') {
-            shell_argv [shell_argc] = p;
+            shell_argv[shell_argc] = p;
             shell_argc++;
-            while (*p && !isspace((uint8_t ) *p)) {
+            while (*p && !isspace ((uint8_t)*p)) {
                 p++;
             }
             if (*p != '\0') {
@@ -444,8 +378,8 @@ void process_shell_cmd (char* cmd_line) {
         return;
     }
     while (cmd->handler) {
-        if ((cmd->long_name && strcasecmp (cmd->long_name, shell_argv [0]) == 0)
-                || (cmd->short_name && strcasecmp (cmd->short_name, shell_argv [0]) == 0)) {
+        if ((cmd->long_name && strcasecmp (cmd->long_name, shell_argv[0]) == 0) ||
+            (cmd->short_name && strcasecmp (cmd->short_name, shell_argv[0]) == 0)) {
             cmd->handler (shell_argc - 1, shell_argv + 1);
             shell_prompt ();
             return;
@@ -453,7 +387,7 @@ void process_shell_cmd (char* cmd_line) {
         cmd++;
     }
     if (user_mode) {
-        LOG_ERROR (SYS, "Unknown command [%s]", shell_argv [0]);
+        LOG_ERROR (SYS, "Unknown command [%s]", shell_argv[0]);
     } else {
         dump_cmd_result_ex (false, "Unknown command");
     }
@@ -465,47 +399,114 @@ void reboot (void) {
     LOG_INFO (SYS, "Reboot device");
     flush_printf ();
 
-#ifdef HAS_TIC12400
-    tic12400_hw_reset ();
-#endif
-
 #ifdef HAS_MODULE_POWER
     poweroff_5v_aux (0U);
 #endif
 
-#if defined(HAS_SPC58_RESET_INFO)
-    reset_exception_frame();
-#endif
     delay (10);
 #ifdef EXT_WDT_PRESENT
     wdt_enable_ext (false);
 #endif
 
-#if defined(SPC58) && defined(FOR_BOOTLOADER)
-    reboot_info_reset_restart_counter ();
-#endif
-
-#ifdef HAS_MCAN
-    (void) canif_deinit ();
-#endif
-
 #ifdef CUBEMX
     NVIC_SystemReset ();
 #endif
-
-#ifdef SPC5
-    SPCSetRunMode (0x00);
-#endif
 }
 
-bool cmd_soft_reboot (int32_t argc, char *argv []) {
-    (void) (argv);
+bool cmd_soft_reboot (int32_t argc, char *argv[]) {
+    (void)(argv);
     bool res = false;
     if (0 == argc) {
-      res=true;
-      reboot ();
+        res = true;
+        reboot ();
     } else {
         LOG_ERROR (SYS, "Usage: reboot");
+    }
+    return res;
+}
+
+bool cmd_repeat (int32_t argc, char *argv[]) {
+    bool res = false;
+    if (3 == argc) {
+        char command[50];
+        res = true;
+        uint32_t period_ms;
+        uint32_t num;
+        strncpy (command, argv[0], sizeof (command));
+        if (true == res) {
+            res = try_str2uint32 (argv[1], &period_ms);
+        }
+        if (true == res) {
+            res = try_str2uint32 (argv[2], &num);
+        }
+        uint32_t iter = 0;
+        for (iter = 0; iter < num; iter++) {
+            process_shell_cmd (command);
+            wait_in_loop_ms (period_ms);
+        }
+    } else {
+        LOG_ERROR (SYS, "Usage: rpt command period times ");
+    }
+    return res;
+}
+
+static bool is_arr_pat (uint8_t *arr, uint32_t size, uint8_t patt) {
+    bool res = true;
+    for (uint32_t i = 0; i < size; i++) {
+        if (patt != arr[i]) {
+            res = false;
+        }
+    }
+    return res;
+}
+
+static bool try_alloc_on_stack (int n, uint8_t pat) {
+    uint8_t array[n];
+    bool res = false;
+    memset (array, pat, n);
+    if (is_arr_pat (array, n, pat)) {
+        res = true;
+    }
+    return res;
+}
+
+bool cmd_try_stack (int32_t argc, char *argv[]) {
+    bool res = false;
+    if (1 == argc) {
+        res = true;
+        uint32_t size = 0;
+        if (true == res) {
+            res = try_str2uint32 (argv[0], &size);
+        }
+        if (true == res) {
+            res = try_alloc_on_stack (size, 0x5A);
+        }
+
+    } else {
+        LOG_ERROR (SYS, "Usage: tstk size");
+    }
+    return res;
+}
+
+bool cmd_launch_function (int32_t argc, char *argv[]) {
+    bool res = false;
+    if (1 == argc) {
+        res = true;
+        uint32_t function_address = 0;
+        void (*function_ptr) (void);
+        if (true == res) {
+            res = try_str2uint32 (argv[0], &function_address);
+            if (false == res) {
+                LOG_ERROR (SYS, "Unable to parse address %s", argv[0]);
+            }
+        }
+        if (true == res) {
+            function_ptr = (void (*) (void))function_address;
+            function_ptr ();
+        }
+
+    } else {
+        LOG_ERROR (SYS, "Usage: lfun func_address_hex");
     }
     return res;
 }

@@ -3,8 +3,7 @@
 static volatile bool timer_already_init;
 uint32_t critical_nesting_level;
 
-uint32_t HAL_GetTick(void)
-{
+uint32_t HAL_GetTick(void) {
     return get_time_ms32();
 }
 
@@ -44,13 +43,11 @@ uint64_t getRunTimeCounterValue64(void) {
     return wrap_counter | value;
 }
 
-uint32_t get_time_ms32(void)
-{
+uint32_t get_time_ms32(void) {
     return getRunTimeCounterValue64 () / (COUNTER_FREQ * 1000);
 }
 
-uint64_t get_time_ms64(void)
-{
+uint64_t get_time_ms64(void) {
     return getRunTimeCounterValue64 () / (COUNTER_FREQ * 1000);
 }
 

@@ -8,7 +8,7 @@
 #define VERSION_MINOR           0
 #define VERSION_FIX             0
 
-#define HARDWARE_NAME           "STM32L10"
-#define VERSION_FIRMWARE_NAME   "STMLVDISCOVERY"
+#define HARDWARE_NAME           "STM32F10"
+#define VERSION_FIRMWARE_NAME   "STM32LVDISC"
 
 #endif

@@ -5,8 +5,11 @@
 
 #include "main_loop.h"
 #include "gpio.h"
+#include "rx_uart.h"
 #include "uarts.h"
-
+#include "common_functions.h"
+#include "log.h"
+#include "device.h"
 
 static void Error_Handler (void) {
     __disable_irq ();
@@ -54,9 +57,22 @@ void HAL_MspInit (void) {
     MX_GPIO_Init ();
     MX_USART1_UART_Init ();
 	
-    (void)main_loop();
-    while (1) {
 
+
+    configureTimerForRunTimeStats ();
+    uarts_init ();
+    //start_banner ();
+    //print_detected_board_type ();
+
+    set_log_level (SYS, LOG_LEVEL_DEBUG);
+    set_log_level (CAN, LOG_LEVEL_CRITICAL);
+
+    LOG_NOTICE(SYS, "FW started");
+
+
+    common_main_loop ( );
+    while (1) {
+        ;
     }
 
     return 0;

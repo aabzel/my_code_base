@@ -2,6 +2,7 @@
 
 #include "gpio.h"
 #include "uarts.h"
+#include "uart_driver_stm32.h"
 
 uint32_t g_uart_tx_cnt=0;
 uint32_t g_uart_rx_cnt=0;
@@ -23,12 +24,10 @@ void MX_USART1_UART_Init (void) {
     huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
     huart1.Init.OverSampling = UART_OVERSAMPLING_16;
     if (HAL_UART_Init (&huart1) == HAL_OK) {
-        HAL_UART_Transmit_IT(&huart1, "[d] uart 1 init fine", strlen("[d] start"));
+        HAL_UART_Transmit(&huart1, "[d] uart 1 init fine", strlen("[d] start"),100);
     }
-    if( HAL_UART_Receive_IT(&huart1,  &uart1RxBuffer[0], UART1_RX_BUFF_SIZE) != HAL_OK )
-    {
-       //
-    }
+    HAL_UART_Receive_IT(&huart1,  &uart1RxBuffer[0], UART1_RX_BUFF_SIZE);
+
 
 }
 

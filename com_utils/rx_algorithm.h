@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#ifdef	__cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 
@@ -13,10 +13,10 @@ typedef struct {
 } lookup_table_rec16_t;
 
 /* Find element in sorted uint32_t array */
-int32_t lower_bound_u32(uint32_t key_u32, const uint32_t base_u32[], uint32_t count_u32);
-int32_t lookup_table16(int16_t key, const lookup_table_rec16_t base[], uint32_t count);
+int32_t lower_bound_u32 (uint32_t key_u32, const uint32_t base_u32[], uint32_t count_u32);
+int32_t lookup_table16 (int16_t key, const lookup_table_rec16_t base[], uint32_t count);
 
-#ifdef	__cplusplus
+#ifdef __cplusplus
 }
 #endif
 

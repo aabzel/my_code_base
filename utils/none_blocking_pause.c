@@ -1,8 +1,8 @@
 #include "none_blocking_pause.h"
 
 #include "common_functions.h"
-#include "timer_utils.h"
 #include "task_info.h"
+#include "timer_utils.h"
 
 /*none blocking wait for self test and poling*/
 bool wait_in_loop_ms (uint64_t wait_pause_ms) {
@@ -12,8 +12,7 @@ bool wait_in_loop_ms (uint64_t wait_pause_ms) {
     start_ms = get_time_ms64 ();
     bool loop = true;
     while (loop) {
-        MAIN_LOOP_START
-        MEASURE_TASK_INTERVAL(LED, 10000, common_update_leds_state);
+    	MAIN_LOOP_START;
         common_loop (loop_start_time);
 
         curr_ms = get_time_ms64 ();

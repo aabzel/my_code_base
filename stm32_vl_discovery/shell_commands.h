@@ -1,18 +1,16 @@
 #include <stdio.h>
 
-#include "shell.h"
+#include "common_commands.h"
 #include "log.h"
-//#include "for_bootloader_commands.h"
-//#include "lan_commands.h"
-
-
-#define SHELL_COMMANDS \
-    DEFAULT_COMMANDS \
-    LOG_COMMANDS \
+#include "shell.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#define SHELL_COMMANDS \
+	COMMON_COMMANDS\
+    LOG_COMMANDS
 
 #ifdef __cplusplus
 } /* extern "C" */

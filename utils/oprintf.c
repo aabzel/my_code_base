@@ -1,11 +1,9 @@
 #include "oprintf.h"
+
 #include <stdint.h>
 #include <stdbool.h>
-#include "rx_utils.h"
 
-#ifdef __ghs__
-typedef int32_t ssize_t;
-#endif
+#include "rx_utils.h"
 
 #ifdef __GNUC__
 #include <unistd.h>

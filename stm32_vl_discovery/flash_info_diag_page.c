@@ -3,6 +3,7 @@
  *****************************************************************************/
 
 #include <inttypes.h>
+
 #include "flash_info_diag_page.h"
 #include "device_flash_info.h"
 #include "diag_page.h"

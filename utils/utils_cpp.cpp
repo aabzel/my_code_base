@@ -59,9 +59,8 @@ void print_vector_ints (vector<int> nums) {
     cout << endl;
 }
 
-template<class Type>
-void print_vector (vector<Type> words){
-    //cout << __FUNCTION__ << endl;
+template <class Type> void print_vector (vector<Type> words) {
+    // cout << __FUNCTION__ << endl;
     cout << endl;
     for (int i = 0; i < words.size (); i++) {
         cout << "[";
@@ -70,7 +69,6 @@ void print_vector (vector<Type> words){
     }
     cout << endl;
 }
-
 
 void print_vector_chars (vector<char> nums) {
     cout << __FUNCTION__ << endl;
@@ -82,7 +80,6 @@ void print_vector_chars (vector<char> nums) {
     }
     cout << endl;
 }
-
 
 void print_vector_strs (vector<string> words) {
     cout << __FUNCTION__ << endl;
@@ -106,13 +103,12 @@ int string_to_int (string text, int *outVal) {
     return 1;
 }
 
-
-string int_to_string(int val){
-    string str;          // The string
-    ostringstream temp;  // 'temp' as in temporary
+string int_to_string (int val) {
+    string str;         // The string
+    ostringstream temp; // 'temp' as in temporary
     temp << val;
-    str = temp.str();    // str is 'temp' as string
-	return str;
+    str = temp.str (); // str is 'temp' as string
+    return str;
 }
 
 bool findAndReplaceAll (string &data, string toSearch, string replaceStr) {

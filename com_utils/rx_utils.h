@@ -3,14 +3,15 @@
 
 #include <stdint.h>
 
-#ifdef	__cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 
 #if defined(__ghs__)
 /* MISRA 2004 Rule 19.7: function-like macro not allowed -- use function instead */
 #pragma ghs nowarning 1862
-/* MISRA 2004 Rule 19.4: macro definition can only be used for a braced initializer, constant, parenthesized expression, type qualifier, storage class  */
+/* MISRA 2004 Rule 19.4: macro definition can only be used for a braced initializer, constant, parenthesized expression,
+ * type qualifier, storage class  */
 #pragma ghs nowarning 1859
 /* MISRA 2004 Rule 19.10: parameter of function-like macro must be enclosed in parentheses */
 #pragma ghs nowarning 1829
@@ -18,20 +19,19 @@ extern "C" {
 #pragma ghs nowarning 1830
 #endif
 
-#define RX_ARRAY_SIZE(x) (sizeof(x)/sizeof((x)[0]))
+#define RX_ARRAY_SIZE(x) (sizeof (x) / sizeof ((x)[0]))
 
 #ifdef __GNUC__
-#   define RX_DATA_SECTION_ATTR(name) __attribute__ ((section (name)))
-#   ifndef INLINE
-#       define INLINE inline
-#   endif
-#   ifdef SPC58
-#       define NOINIT
-#   else /* SPC58 */
-#       define NOINIT __attribute__ ((section (".noinit")))
-#   endif /* SPC58 */
-#endif  /* __GNUC__ */
-
+#define RX_DATA_SECTION_ATTR(name) __attribute__ ((section (name)))
+#ifndef INLINE
+#define INLINE inline
+#endif
+#ifdef SPC58
+#define NOINIT
+#else /* SPC58 */
+#define NOINIT __attribute__ ((section (".noinit")))
+#endif /* SPC58 */
+#endif /* __GNUC__ */
 
 #ifdef __ghs__
 #define RX_DATA_SECTION_ATTR(name) __attribute__ ((section (name)))
@@ -46,8 +46,11 @@ extern "C" {
  * are not expanded, so we need to expand __LINE__ with one indirection
  * before doing the actual concatenation. */
 #define ASSERT_CONCAT_(a, b) a##b
-#define ASSERT_CONCAT(a, b) ASSERT_CONCAT_(a,b)
-#define ct_assert(e) { enum { ASSERT_CONCAT(assert_line_, __LINE__) = 1/(!!(e)) }; }
+#define ASSERT_CONCAT(a, b) ASSERT_CONCAT_ (a, b)
+#define ct_assert(e)                                                                                                   \
+    {                                                                                                                  \
+        enum { ASSERT_CONCAT (assert_line_, __LINE__) = 1 / (!!(e)) };                                                 \
+    }
 
 #if defined(__ghs__)
 #pragma ghs endnowarning 1830
@@ -70,9 +73,9 @@ int32_t rx_max32 (int32_t max32_x1, int32_t max32_x2);
 int32_t rx_min32 (int32_t min32_x1, int32_t min32_x2);
 uint32_t swap32 (uint32_t u32_num);
 uint16_t swap16 (uint16_t u16_num);
-const char* get_spaces_str (uint32_t spaces_length);
+const char *get_spaces_str (uint32_t spaces_length);
 
-#ifdef	__cplusplus
+#ifdef __cplusplus
 }
 #endif
 

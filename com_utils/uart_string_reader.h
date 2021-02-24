@@ -7,13 +7,13 @@
 #include "fifo_char_buffer.h"
 #include "uart_common.h"
 
-typedef void (*handle_string_f)(char* s);
+typedef void (*handle_string_f) (char *s);
 
 typedef struct {
-    UartHandle_t* huart;
+    UartHandle_t *huart;
     uint16_t string_size;
     handle_string_f callback;
-    char* string;
+    char *string;
     fifo_char_t fifo;
     uint16_t string_len;
     int64_t error_count;
@@ -25,11 +25,11 @@ typedef struct {
 
 extern uint64_t uart_rx_last_data_time_stamp_us;
 
-bool uart_string_reader_init(uart_string_reader_t* r);
-void uart_string_reader_rx_callback(uart_string_reader_t* r, char c);
-void uart_string_reader_error_callback(uart_string_reader_t* r);
-void uart_string_reader_proccess(uart_string_reader_t* r);
-void uart_string_reader_clear_str(uart_string_reader_t* r); /* clear current string */
-const char* uart_string_reader_get_str(const uart_string_reader_t* r);
+bool uart_string_reader_init (uart_string_reader_t *r);
+void uart_string_reader_rx_callback (uart_string_reader_t *r, char c);
+void uart_string_reader_error_callback (uart_string_reader_t *r);
+void uart_string_reader_proccess (uart_string_reader_t *r);
+void uart_string_reader_clear_str (uart_string_reader_t *r); /* clear current string */
+const char *uart_string_reader_get_str (const uart_string_reader_t *r);
 
 #endif /* SRC_UART_STRING_READER_H */
