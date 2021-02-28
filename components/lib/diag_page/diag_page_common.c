@@ -1,4 +1,6 @@
 #include <inttypes.h>
+
+#include "shell.h"
 #include "diag_page.h"
 #include "device_flash_info.h"
 #include "io_utils.h"

@@ -141,33 +141,6 @@ cpp_training/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/build
 .PHONY : cpp_training/fast
 
-C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.obj: C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.cpp.obj
-
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.obj
-
-# target to build an object file
-C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.cpp.obj
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.cpp.obj
-
-C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.i: C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.cpp.i
-
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.i
-
-# target to preprocess a source file
-C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.cpp.i
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.cpp.i
-
-C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.s: C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.cpp.s
-
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.s
-
-# target to generate assembly for a file
-C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.cpp.s
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.cpp.s
-
 C_/1_lessons/C_programming_language/trainings/training/leet_code/majority_element.obj: C_/1_lessons/C_programming_language/trainings/training/leet_code/majority_element.cpp.obj
 
 .PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/majority_element.obj
@@ -194,6 +167,33 @@ C_/1_lessons/C_programming_language/trainings/training/leet_code/majority_elemen
 C_/1_lessons/C_programming_language/trainings/training/leet_code/majority_element.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/leet_code/majority_element.cpp.s
 .PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/majority_element.cpp.s
+
+C_/1_lessons/C_programming_language/trainings/training/leet_code/roman_to_numbers.obj: C_/1_lessons/C_programming_language/trainings/training/leet_code/roman_to_numbers.cpp.obj
+
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/roman_to_numbers.obj
+
+# target to build an object file
+C_/1_lessons/C_programming_language/trainings/training/leet_code/roman_to_numbers.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/leet_code/roman_to_numbers.cpp.obj
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/roman_to_numbers.cpp.obj
+
+C_/1_lessons/C_programming_language/trainings/training/leet_code/roman_to_numbers.i: C_/1_lessons/C_programming_language/trainings/training/leet_code/roman_to_numbers.cpp.i
+
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/roman_to_numbers.i
+
+# target to preprocess a source file
+C_/1_lessons/C_programming_language/trainings/training/leet_code/roman_to_numbers.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/leet_code/roman_to_numbers.cpp.i
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/roman_to_numbers.cpp.i
+
+C_/1_lessons/C_programming_language/trainings/training/leet_code/roman_to_numbers.s: C_/1_lessons/C_programming_language/trainings/training/leet_code/roman_to_numbers.cpp.s
+
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/roman_to_numbers.s
+
+# target to generate assembly for a file
+C_/1_lessons/C_programming_language/trainings/training/leet_code/roman_to_numbers.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/leet_code/roman_to_numbers.cpp.s
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/leet_code/roman_to_numbers.cpp.s
 
 C_/1_lessons/C_programming_language/trainings/training/main_cpp.obj: C_/1_lessons/C_programming_language/trainings/training/main_cpp.cpp.obj
 
@@ -222,33 +222,6 @@ C_/1_lessons/C_programming_language/trainings/training/main_cpp.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/main_cpp.cpp.s
 .PHONY : C_/1_lessons/C_programming_language/trainings/training/main_cpp.cpp.s
 
-C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.obj: C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.cpp.obj
-
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.obj
-
-# target to build an object file
-C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.cpp.obj
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.cpp.obj
-
-C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.i: C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.cpp.i
-
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.i
-
-# target to preprocess a source file
-C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.cpp.i
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.cpp.i
-
-C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.s: C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.cpp.s
-
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.s
-
-# target to generate assembly for a file
-C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.cpp.s
-.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.cpp.s
-
 C_/1_lessons/C_programming_language/trainings/training/tests/test_majority_element.obj: C_/1_lessons/C_programming_language/trainings/training/tests/test_majority_element.cpp.obj
 
 .PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_majority_element.obj
@@ -275,6 +248,33 @@ C_/1_lessons/C_programming_language/trainings/training/tests/test_majority_eleme
 C_/1_lessons/C_programming_language/trainings/training/tests/test_majority_element.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/tests/test_majority_element.cpp.s
 .PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_majority_element.cpp.s
+
+C_/1_lessons/C_programming_language/trainings/training/tests/test_roman_numbers.obj: C_/1_lessons/C_programming_language/trainings/training/tests/test_roman_numbers.cpp.obj
+
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_roman_numbers.obj
+
+# target to build an object file
+C_/1_lessons/C_programming_language/trainings/training/tests/test_roman_numbers.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/tests/test_roman_numbers.cpp.obj
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_roman_numbers.cpp.obj
+
+C_/1_lessons/C_programming_language/trainings/training/tests/test_roman_numbers.i: C_/1_lessons/C_programming_language/trainings/training/tests/test_roman_numbers.cpp.i
+
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_roman_numbers.i
+
+# target to preprocess a source file
+C_/1_lessons/C_programming_language/trainings/training/tests/test_roman_numbers.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/tests/test_roman_numbers.cpp.i
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_roman_numbers.cpp.i
+
+C_/1_lessons/C_programming_language/trainings/training/tests/test_roman_numbers.s: C_/1_lessons/C_programming_language/trainings/training/tests/test_roman_numbers.cpp.s
+
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_roman_numbers.s
+
+# target to generate assembly for a file
+C_/1_lessons/C_programming_language/trainings/training/tests/test_roman_numbers.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\cpp_training.dir\build.make CMakeFiles/cpp_training.dir/C_/1_lessons/C_programming_language/trainings/training/tests/test_roman_numbers.cpp.s
+.PHONY : C_/1_lessons/C_programming_language/trainings/training/tests/test_roman_numbers.cpp.s
 
 C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.obj: C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.cpp.obj
 
@@ -339,21 +339,21 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... cpp_training
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.obj
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.i
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/bulls_and_cows.s
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/majority_element.obj
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/majority_element.i
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/majority_element.s
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/roman_to_numbers.obj
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/roman_to_numbers.i
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/leet_code/roman_to_numbers.s
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/main_cpp.obj
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/main_cpp.i
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/main_cpp.s
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.obj
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.i
-	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_bulls_and_cows.s
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_majority_element.obj
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_majority_element.i
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_majority_element.s
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_roman_numbers.obj
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_roman_numbers.i
+	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/test_roman_numbers.s
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.obj
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.i
 	@echo ... C_/1_lessons/C_programming_language/trainings/training/tests/u_tests.s

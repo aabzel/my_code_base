@@ -12,6 +12,7 @@
 #include "rx_utils.h"
 #include "sections.h"
 #include "table_utils.h"
+#include "diag_page_nums.h"
 #include "watchdog.h"
 #include "writer_generic.h"
 #include "writer_uart.h"

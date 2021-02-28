@@ -1,11 +1,13 @@
-// hello.cpp
-#include <iostream>
 
+#include <iostream>
 #include <cstring>
 
 #include "uTests.h"
-
 #include "test_majority_element.h"
+
+#ifdef ROMAN_TO_NUMBERS
+#include "test_roman_numbers.h"
+#endif
 
 #ifdef BULLS_AND_COWS
 #include "test_bulls_and_cows.h"
@@ -78,6 +80,10 @@ int a_val4 = init_by_foo4 ();
 
 bool u_tests (void) {
     cout << __FUNCTION__ << endl;
+#ifdef ROMAN_TO_NUMBERS
+    EXPECT_TRUE (test_roman_numbers ());
+#endif
+
 #ifdef BULLS_AND_COWS
     EXPECT_TRUE (test_bulls_and_cows ());
 #endif

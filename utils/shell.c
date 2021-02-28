@@ -12,18 +12,20 @@
 #include "convert.h"
 #include "device_flash_info.h"
 #include "device_id.h"
+#include "clocks.h"
+#include "sys.h"
 #include "diag_report.h"
 #include "io_utils.h"
 #include "log_commands.h"
 #include "none_blocking_pause.h"
 #include "oprintf.h"
 #include "read_mem.h"
+#include "rx_uart.h"
 #include "rx_uart_misra.h"
 #include "shell_commands.h"
 #include "str_utils.h"
 #include "terminal_codes.h"
 #include "watchdog.h"
-#include "rx_uart.h"
 
 
 #ifdef EMBEDDED_TEST
@@ -183,15 +185,63 @@ bool cmd_read_memory (int32_t argc, char *argv[]) {
     return res;
 }
 
-bool cmd_sysinfo (int32_t argc, char *argv[]) {
-    (void)argv;
-    if (argc != 0) {
-        LOG_ERROR (SYS, "Usage: sysinfo: help");
-        return false;
+bool stack_dir(int *main_local_addr) {
+	bool res = false;
+	int32_t fun_local;
+    if (main_local_addr < &fun_local) {
+    	rx_printf("Stack grows from small addr to big addr -> \n"CRLF);
+    } else {
+    	rx_printf("Stack grows from big addr to small addr <- \n"CRLF);
     }
-    rx_printf ("Mcu=%s" CRLF, get_mcu_name ());
+    return res;
+}
 
-    return true;
+bool explore_stack_dir(void) {
+    // fun's local variable
+	bool res=false;
+	int32_t main_local;
+    res = stack_dir(&main_local);
+    return res;
+}
+
+typedef union union_u32_u8x {
+	uint32_t i;
+	uint8_t c[4];
+} union_u32_u8x_t;
+
+bool is_big_endian(void) {
+	union_u32_u8x_t bint;
+	bint.i = 0x01020304;
+	return bint.c[0] == 1;
+}
+
+bool is_little_endian(void) {
+	union_u32_u8x_t bint;
+	bint.i = 0x01020304;
+	return bint.c[0] == 4;
+}
+
+bool cmd_sysinfo(int32_t argc, char *argv[]) {
+	(void) argv;
+	bool res = false;
+	if (argc != 0) {
+		LOG_ERROR(SYS, "Usage: sysinfo");
+		res = false;
+	} else {
+		rx_printf("up time: %u [ms] / %u [s]" CRLF, g_up_time_ms,
+				g_up_time_ms / 1000);
+		rx_printf("MCU = %s" CRLF, get_mcu_name());
+		explore_stack_dir();
+		print_sysinfo();
+		if(is_little_endian()){
+			rx_printf("Little endian" CRLF);
+		}else{
+			rx_printf("big endian" CRLF);
+		}
+		res = true;
+	}
+
+	return true;
 }
 
 bool cmd_wd_test (int32_t argc, char *argv[]) {
@@ -243,38 +293,27 @@ void print_version (void) { print_version_s (get_console_stream ()); }
 
 void print_version_s (ostream_t *stream) {
     const char *mcu;
-    oprintf (stream, "%s on %s Version %u.%u.%u.%u.%" PRIu32, flash_info.firmware_name,
-#ifdef HAS_BOARD_TYPE_ID
-             get_board_name (),
-#else
-             HARDWARE_NAME,
-#endif
-             flash_info.version_generation, flash_info.version_major, flash_info.version_minor, flash_info.version_fix,
-             flash_info.version_build32);
+    oprintf (stream, "%s ", HARDWARE_NAME);
+    oprintf (stream, "%s ", __DATE__);
+    oprintf (stream, "%s ", __TIME__);
+    oprintf (stream, "%s ", __TIMESTAMP__ );
+    oprintf (stream, "Cstd %u ", __STDC__ );
+    oprintf (stream, "%u ", __STDC_VERSION__ );
+
 #ifdef __GNUC__
     oputs (stream, " GCC");
 #endif
 
-
 #ifdef RELEASE
-#ifdef CHECK_ALL
-    oputs (stream, " ReleaseCheck");
-#else
     oputs (stream, " Release");
 #endif
-#endif
+
 
 #ifdef __DEBUG
-#ifdef CHECK_ALL
-    oputs (stream, " DebugCheck");
-#else
     oputs (stream, " Debug");
 #endif
-#endif
 
-    oprintf (stream, " %u/%u/%u %02u:%02u:%02u", flash_info.compile_day, flash_info.compile_month,
-             flash_info.compile_year, flash_info.compile_hour, flash_info.compile_min, flash_info.compile_sec);
-    oprintf (stream, " FlashId:0x%08" PRIX32, get_flash_crc ((const flash_info_t *)&flash_info));
+
     oprintf (stream, " Serial:%" PRIX64, get_device_serial ());
     mcu = get_mcu_name ();
     if ((NULL != mcu) && (*mcu != '\0')) {

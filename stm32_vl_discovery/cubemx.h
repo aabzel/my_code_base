@@ -11,8 +11,8 @@
 
 /* MCU info */
 #define MCU_FAMILY STM32F1
-#define MCU_SUB_FAMILY
-#define MCU_PARTNUMBER
+//#define MCU_SUB_FAMILY
+#define MCU_PARTNUMBER STM32F100RBT6B
 
 /* General info */
 //#define HAS_IPP_IWDG

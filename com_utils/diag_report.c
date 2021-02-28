@@ -10,6 +10,7 @@
 #include "common_stream.h"
 #include "device_flash_info.h"
 #include "device_id.h"
+#include "diag_page_nums.h"
 #include "log.h"
 #include "rx_uart_config.h"
 #include "rx_utils.h"
@@ -117,6 +118,7 @@ bool diag_page_base (uint8_t page, ostream_t *stream) {
     return res;
 }
 
+#if 0
 bool show_diag_report (uint8_t page_number) {
     bool result = true;
     int64_t char_at_start;
@@ -129,6 +131,7 @@ bool show_diag_report (uint8_t page_number) {
     LOG_DEBUG (SYS, "%lld chars in report", dbg_o.total_char_count - char_at_start);
     return result;
 }
+
 
 bool dump_diag_report (uint8_t page_number) {
     bool result = true;
@@ -154,3 +157,5 @@ bool cmd_diag_report (int32_t argc, char *argv[]) {
     }
     return dump_cmd_result (show_diag_report (page_number));
 }
+
+#endif

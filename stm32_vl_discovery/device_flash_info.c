@@ -20,71 +20,52 @@
  *****************************************************************************/
 
 #include "device_flash_info.h"
-#include "flash_info_diag_page.h"
-#include "pointer_utils.h"
 #include "board_config.h"
-#include "version.h"
+#include "flash_info_diag_page.h"
 #include "oprintf.h"
-#if defined(SPC58) && defined(HAS_SPC58_RESET_INFO)
-#    include "reboot_info.h"
-#endif
+#include "pointer_utils.h"
+#include "version.h"
 
 #ifdef HAS_BOARD_TYPE_ID
-#    include "board_type_id.h"
+#include "board_type_id.h"
 #endif
 
 #include <inttypes.h>
 #include <string.h>
 
-_Static_assert (sizeof(HARDWARE_NAME) <= 9U,           "HARDWARE_NAME length must be <= 8");
-_Static_assert (sizeof(VERSION_FIRMWARE_NAME) <= 17U,  "VERSION_FIRMWARE_NAME length must be <= 16");
+_Static_assert(sizeof (HARDWARE_NAME) <= 9U, "HARDWARE_NAME length must be <= 8");
+_Static_assert(sizeof (VERSION_FIRMWARE_NAME) <= 17U, "VERSION_FIRMWARE_NAME length must be <= 16");
 #ifdef OVERRIDE_FIRMWARE_NAME
-_Static_assert (sizeof(OVERRIDE_FIRMWARE_NAME) <= 17U, "OVERRIDE_FIRMWARE_NAME length must be <= 16");
+_Static_assert(sizeof (OVERRIDE_FIRMWARE_NAME) <= 17U, "OVERRIDE_FIRMWARE_NAME length must be <= 16");
 #endif
-_Static_assert (sizeof(flash_info_t) == 256U,          "Invalid flash_info_t structure size");
+_Static_assert(sizeof (flash_info_t) == 256U, "Invalid flash_info_t structure size");
 
 #ifndef VERSION_GENERATION
-#    define VERSION_GENERATION  0U
+#define VERSION_GENERATION 0U
 #endif
 
 #ifndef VERSION_FIX
-#    define VERSION_FIX         0U
+#define VERSION_FIX 0U
 #endif
 
 #ifndef VERSION_FIRMWARE_NAME
-#    error Please define VERSION_FIRMWARE_NAME
+#error Please define VERSION_FIRMWARE_NAME
 #endif
 
 #ifndef HARDWARE_NAME
-#    error HARDWARE_NAME must be defined in board_config.h file
+#error HARDWARE_NAME must be defined in board_config.h file
 #endif
 
 #ifndef SUPPORTED_HARDWARE
-#    define SUPPORTED_HARDWARE "|" HARDWARE_NAME "|"
-#endif
-
-#ifdef SPC5
-#    if !defined(__DEBUG) && !defined(RELEASE)
-#        error __DEBUG or RELEASE must be defined
-#    endif
-#endif
-
-#ifdef __ghs__
-#    pragma ghs nowarning 2101
-#    pragma ghs nowarning 1836
-#    pragma ghs nowarning 2106
-#    pragma ghs nowarning 2107
-#    pragma ghs nowarning 1868
-#    pragma ghs nowarning 2100
+#define SUPPORTED_HARDWARE "|" HARDWARE_NAME "|"
 #endif
 
 #ifdef HAS_BL_FLASH_INFO
-const volatile flash_info_t bl_flash_info __attribute__((section(".BL_FLASH_INFO")));
+const volatile flash_info_t bl_flash_info __attribute__ ((section (".BL_FLASH_INFO")));
 #endif
 
 /* @formatter:off */
-const volatile flash_info_t flash_info __attribute__((section(".FLASH_INFO"))) =
-{
+const volatile flash_info_t flash_info __attribute__ ((section (".FLASH_INFO"))) = {
     /* .signature           = */ FLASH_INFO_SIGNATURE,
     /* .info_version        = */ FLASH_INFO_VERSION,
     /* .compile_year        = */ 0,
@@ -112,32 +93,29 @@ const volatile flash_info_t flash_info __attribute__((section(".FLASH_INFO"))) =
     /* reserved3            = */ "",
     /* .version_fix         = */ VERSION_FIX,
 #ifdef __DEBUG
-#    ifdef CHECK_ALL
-            /* .target      = */ TARGET_DEBUG_CHECK,
-#    else
-            /* .target      = */ TARGET_DEBUG,
-#    endif
+#ifdef CHECK_ALL
+    /* .target      = */ TARGET_DEBUG_CHECK,
 #else
-#    ifdef RELEASE
-#        ifdef CHECK_ALL
-            /* .target      = */ TARGET_RELEASE_CHECK,
-#        else
-            /* .target      = */ TARGET_RELEASE,
-#        endif
-#    else
-        /* .target          = */ TARGET_NA,
-#    endif
+    /* .target      = */ TARGET_DEBUG,
 #endif
-    /* reserved4            = */ ""
-};
+#else
+#ifdef RELEASE
+#ifdef CHECK_ALL
+    /* .target      = */ TARGET_RELEASE_CHECK,
+#else
+    /* .target      = */ TARGET_RELEASE,
+#endif
+#else
+    /* .target          = */ TARGET_NA,
+#endif
+#endif
+    /* reserved4            = */ ""};
 /* @formatter:on */
 
-bool flash_info_init (void) {
-    return flash_info_diag_page_init ();
-}
+bool flash_info_init (void) { return flash_info_diag_page_init (); }
 
 void flash_info_print (ostream_t *stream, const volatile flash_info_t *fi) {
-    const char* board;
+    const char *board;
 
 #ifdef HAS_BOARD_TYPE_ID
     board = get_board_name ();
@@ -145,41 +123,27 @@ void flash_info_print (ostream_t *stream, const volatile flash_info_t *fi) {
     board = HARDWARE_NAME;
 #endif
 
-    oprintf (stream,
-        "%s on %s Version %u.%u.%u.%u.%" PRIu32,
-        fi->firmware_name,
-        board,
-        fi->version_generation,
-        fi->version_major,
-        fi->version_minor,
-        fi->version_fix,
-        fi->version_build32);
+    oprintf (stream, "%s on %s Version %u.%u.%u.%u.%" PRIu32, fi->firmware_name, board, fi->version_generation,
+             fi->version_major, fi->version_minor, fi->version_fix, fi->version_build32);
 
 #ifdef RELEASE
-#    ifdef CHECK_ALL
-                oputs (stream, " ReleaseCheck");
-#    else
-                oputs (stream, " Release");
-#    endif
+#ifdef CHECK_ALL
+    oputs (stream, " ReleaseCheck");
+#else
+    oputs (stream, " Release");
+#endif
 #endif
 
 #ifdef __DEBUG
-#    ifdef CHECK_ALL
-                oputs (stream, " DebugCheck");
-#    else
-                oputs (stream, " Debug");
-#    endif
+#ifdef CHECK_ALL
+    oputs (stream, " DebugCheck");
+#else
+    oputs (stream, " Debug");
+#endif
 #endif
 
-    oprintf (
-        stream,
-        " %u/%u/%u %02u:%02u:%02u",
-        fi->compile_day,
-        fi->compile_month,
-        fi->compile_year,
-        fi->compile_hour,
-        fi->compile_min,
-        fi->compile_sec);
+    oprintf (stream, " %u/%u/%u %02u:%02u:%02u", fi->compile_day, fi->compile_month, fi->compile_year, fi->compile_hour,
+             fi->compile_min, fi->compile_sec);
 
     oprintf (stream, " CRC:%08" PRIX32 " ", fi->flash_crc);
 }
@@ -187,27 +151,8 @@ void flash_info_print (ostream_t *stream, const volatile flash_info_t *fi) {
 bool is_flash_range_accessable (void const *addr, uint32_t size) {
     bool retval = true;
 
-#if defined(SPC58) && defined(HAS_SPC58_RESET_INFO)
-    void const * ecc_error_addr = u32_to_cvp (reboot_state.exception_frame.addr_error_ecc);
-    void const * end_addr = u32_to_cvp ((cvp_2_u32 (addr) + size));
-
-    bool lower_bound_check = (cvp_2_u32 (ecc_error_addr) >= cvp_2_u32 (addr));
-    bool upper_bound_check = (cvp_2_u32 (ecc_error_addr) <= cvp_2_u32 (end_addr));
-    retval = !((true == lower_bound_check) && (true == upper_bound_check));
-
-#else
-    (void) addr;
-    (void) size;
-#endif
+    (void)addr;
+    (void)size;
 
     return retval;
 }
-
-#ifdef __ghs__
-#    pragma ghs endnowarning 2100
-#    pragma ghs endnowarning 1868
-#    pragma ghs endnowarning 2107
-#    pragma ghs endnowarning 2106
-#    pragma ghs endnowarning 1836
-#    pragma ghs endnowarning 2101
-#endif
