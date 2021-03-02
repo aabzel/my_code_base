@@ -12,6 +12,7 @@
 #include "convert.h"
 #include "device_flash_info.h"
 #include "device_id.h"
+#include "version.h"
 #include "clocks.h"
 #include "sys.h"
 #include "diag_report.h"

@@ -118,6 +118,7 @@ typedef enum {
     size_normal,
     size_long,
     size_long_long,
+    size_long_long_long=8,
     size_size_t
 } format_size_t;
 
@@ -189,6 +190,11 @@ void ovprintf (ostream_t* s, const char *fmt, va_list va) {
                 fmt++;
                 size = size_long_long;
             }
+            if (ch == 'l' || ch == 'L') {
+                ch = *fmt;
+                fmt++;
+                size = size_long_long_long;
+            }
 
             if (ch==0) {
                 return;
@@ -200,7 +206,10 @@ void ovprintf (ostream_t* s, const char *fmt, va_list va) {
                             ui2a(va_arg(va, unsigned long), 10, false, bf);
                             break;
                         case size_long_long:
-                            uli2a(va_arg(va, unsigned long long), 10, false, bf);
+                            uli2a(va_arg(va, uint64_t), 10, false, bf);
+                            break;
+                        case size_long_long_long:
+                            uli2a(va_arg(va, uint64_t), 10, false, bf);
                             break;
                         case size_size_t:
                             ui2a (va_arg(va, size_t), 10, false, bf);
@@ -245,7 +254,7 @@ void ovprintf (ostream_t* s, const char *fmt, va_list va) {
                             ui2a (va_arg (va, size_t), 16, (ch == 'X'), bf);
                             break;
                         case size_long_long:
-                            uli2a(va_arg(va, unsigned long long), 16, (ch == 'X'), bf);
+                            uli2a(va_arg(va, uint64_t), 16, (ch == 'X'), bf);
                             break;
                         case size_short:
                         case size_signed_char:

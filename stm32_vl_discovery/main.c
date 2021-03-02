@@ -9,6 +9,8 @@
 #include "device.h"
 #include "gpio.h"
 #include "gpio_diag_page.h"
+#include "none_blocking_pause.h"
+#include "sd_card_driver.h"
 #include "gpio_pwm.h"
 #include "log.h"
 #include "main_loop.h"
@@ -47,23 +49,34 @@ int main (void) {
     bool res = false;
     HAL_Init ();
     set_log_level (SYS, LOG_LEVEL_DEBUG);
-    set_log_level (CAN, LOG_LEVEL_CRITICAL);
 
-    res = SystemClock_Config ();
-    LOG_NOTICE (SYS, "[d] Clock init ", (true == res) ? "OK" : "Err");
+	res = SystemClock_Config ();
+	LOG_INFO (SYS, "[d] Clock init ", (true == res) ? "OK" : "Err");
+
+	wait_in_loop_ms (3);
+
     res = gpio_init ();
-    LOG_NOTICE (SYS, "[d] GPIO init ", (true == res) ? "OK" : "Err");
+    LOG_INFO (SYS, "GPIO init ", (true == res) ? "OK" : "Err");
+
     res = spi1_init ();
-    LOG_NOTICE (SYS, "[d] SPI init ", (true == res) ? "OK" : "Err");
+    LOG_INFO (SYS, "SPI init ", (true == res) ? "OK" : "Err");
+
     res = init_gpio_pwm ();
-    LOG_NOTICE (SYS, "[d] GPIO pwm init ", (true == res) ? "OK" : "Err");
+    LOG_INFO (SYS, " GPIO pwm init ", (true == res) ? "OK" : "Err");
+
     res = gpio_diag_page_init ();
-    MX_USART1_UART_Init ();
+
+    res =mx_usart1_uart_init ();
+    uarts_init ();
+    LOG_INFO (SYS, "UART init ", (true == res) ? "OK" : "Err");
+
     res = timers_init ();
-    LOG_NOTICE (SYS, "[d] TIM init ", (true == res) ? "OK" : "Err");
+    LOG_INFO (SYS, " TIM init ", (true == res) ? "OK" : "Err");
+
+    //res = sd_card_init( );
+    //LOG_INFO (SYS, " SD card init ", (true == res) ? "OK" : "Err");
 
     configureTimerForRunTimeStats ();
-    uarts_init ();
     // start_banner ();
     // print_detected_board_type ();
 

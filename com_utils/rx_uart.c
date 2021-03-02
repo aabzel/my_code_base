@@ -1,6 +1,7 @@
 #include "rx_uart.h"
 
 #include <inttypes.h>
+#include <stdbool.h>
 
 #include "rx_uart_misra.h"
 #include "convert.h"
@@ -16,7 +17,8 @@
 #include "watchdog.h"
 #include "writer_generic.h"
 #include "writer_uart.h"
-#include <stdbool.h>
+#include "none_blocking_pause.h"
+
 
 #ifdef CUBEMX
 #include "uart_driver_stm32.h"
@@ -311,3 +313,13 @@ bool cmd_uarts (int32_t argc, char *argv[]) {
 }
 
 ostream_t *get_console_stream (void) { return DBG; }
+
+
+bool print_mem(uint8_t *addr, uint16_t len){
+	rx_printf (CRLF"0x");
+	for(uint32_t pos=0; pos<len; pos++){
+		rx_printf ("%02x", *(addr+pos));
+		wait_in_loop_ms (3);
+	}
+	rx_printf (CRLF);
+}

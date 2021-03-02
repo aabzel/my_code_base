@@ -23,16 +23,18 @@ bool init_spi_gpio(void) {
 
 	GPIO_InitStruct.Pin = GPIO_PIN_6;
 	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Pull = GPIO_PULLUP;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
 	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 }
 
 bool spi1_init(void) {
+	bool res = true;
 	__SPI1_CLK_ENABLE()
 	;
 
 	init_spi_gpio();
-	bool res = true;
+
 	hspi1.Instance = SPI1;
 	hspi1.Init.Mode = SPI_MODE_MASTER;
 	hspi1.Init.Direction = SPI_DIRECTION_2LINES;
@@ -40,7 +42,7 @@ bool spi1_init(void) {
 	hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
 	hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
 	hspi1.Init.NSS = SPI_NSS_SOFT;
-	hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
+	hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
 	hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
 	hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
 	hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -51,12 +53,75 @@ bool spi1_init(void) {
 	return res;
 }
 
-bool spi1_send_byte(uint8_t tx_byte, uint8_t *rx_byte) {
+bool spi1_send_receive_byte(uint8_t tx_byte, uint8_t *rx_byte) {
 	bool res= true;
 	(*rx_byte) = 0;
-	uint32_t init_spi1_tx_cnt = spi1_tx_cnt;
 	uint32_t init_spi1_rxtx_cnt = spi1_rxtx_cnt;
 	if (HAL_SPI_TransmitReceive_IT(&hspi1, &tx_byte, rx_byte, 1) != HAL_OK) {
+		res= false;
+	}
+
+	if ( true == res ) {
+    	res = false;
+		for (uint32_t i = 0; i < 0x000FFFFF; i++) {
+	    	if(init_spi1_rxtx_cnt!=spi1_rxtx_cnt){
+	    		res= true;
+		    	break;
+	    	}
+	    }
+	}
+
+	return res;
+}
+
+
+uint8_t SPIx_WriteRead(uint8_t Byte) {
+	uint8_t receivedbyte = 0;
+	HAL_SPI_TransmitReceive(&hspi1, (uint8_t*) &Byte, (uint8_t*) &receivedbyte,
+			1, 0x1000);
+	return receivedbyte;
+}
+
+uint8_t SPI_ReceiveByte(void) {
+	uint8_t bt = SPIx_WriteRead(0xFF);
+	return bt;
+}
+
+void SPI_SendByte(uint8_t bt) {
+	SPIx_WriteRead(bt);
+}
+
+void SPI_Release(void){
+  SPIx_WriteRead(0xFF);
+}
+
+bool spi1_receive_byte(uint8_t *rx_byte) {
+	bool res= true;
+	(*rx_byte) = 0;
+	uint32_t init_spi1_rx_cnt = spi1_rx_cnt;
+	if (HAL_SPI_Receive_IT(&hspi1,   rx_byte, 1) != HAL_OK) {
+		res= false;
+	}
+
+	if ( true == res ) {
+    	res = false;
+		for (uint32_t i = 0; i < 0x000FFFFF; i++) {
+	    	if (init_spi1_rx_cnt != spi1_rx_cnt) {
+	    		res= true;
+		    	break;
+	    	}
+	    }
+	}
+
+	return res;
+}
+
+
+
+bool spi1_send_byte(uint8_t tx_byte) {
+	bool res= true;
+	uint32_t init_spi1_tx_cnt = spi1_tx_cnt;
+	if (HAL_SPI_Transmit_IT(&hspi1, &tx_byte, 1) != HAL_OK) {
 		res= false;
 	}
 
@@ -67,15 +132,13 @@ bool spi1_send_byte(uint8_t tx_byte, uint8_t *rx_byte) {
 	    		res= true;
 		    	break;
 	    	}
-	    	if(init_spi1_rxtx_cnt!=spi1_rxtx_cnt){
-	    		res= true;
-		    	break;
-	    	}
 	    }
 	}
 
 	return res;
 }
+
+
 
 void HAL_SPI_MspInit(SPI_HandleTypeDef *hspi) {
 	GPIO_InitTypeDef GPIO_InitStruct;

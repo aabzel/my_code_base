@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "rx_io.h"
+
 #ifdef	__cplusplus
 extern "C" {
 #endif

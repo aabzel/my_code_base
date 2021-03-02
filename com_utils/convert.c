@@ -1524,6 +1524,27 @@ static bool is_false (const char *false_str_to_check) {
     return is_false_result;
 }
 
+const char *utoa_bin8 (uint8_t u8_bin_data) {
+    uint8_t cell8 = 0u;
+    uint8_t mask8 = 0x80U;
+    static char outBitStr8[sizeof ("0000_0000") + 1U] = "0000_0000";
+    while (mask8 != 0U) {
+        if (outBitStr8[cell8] == '_') {
+            cell8++;
+        }
+        if (0u != (u8_bin_data & mask8)) {
+            outBitStr8[cell8] = '1';
+        } else {
+            outBitStr8[cell8] = '0';
+        }
+        mask8 >>= 1U;
+        cell8++;
+    }
+    outBitStr8[sizeof (outBitStr8) - 1u] = '\0';
+    return outBitStr8;
+}
+
+
 const char *utoa_bin16 (uint16_t u16_bin_data) {
     uint8_t cell16 = 0u;
     uint16_t mask16 = 0x8000U;
