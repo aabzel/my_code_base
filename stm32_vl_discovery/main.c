@@ -20,11 +20,7 @@
 #include "timers.h"
 #include "uarts.h"
 
-static void Error_Handler (void) {
-    __disable_irq ();
-    while (1) {
-    }
-}
+
 
 void HAL_MspInit (void) {
     __HAL_RCC_AFIO_CLK_ENABLE ();

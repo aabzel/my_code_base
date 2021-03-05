@@ -1,4 +1,9 @@
 #include "data_utils.h"
+
+#include <inttypes.h>
+#include <string.h>
+#include <math.h>
+
 #include "bit_order.h"
 #include "convert.h"
 #include "crc32.h"
@@ -7,9 +12,6 @@
 #include "rx_utils.h"
 #include "sections.h"
 #include "shell.h"
-#include <inttypes.h>
-#include <math.h>
-#include <string.h>
 
 #ifndef H__BITORDER_H
 #error bit_order.h must be included
@@ -165,4 +167,15 @@ void dump_crc_str (const char *cmd, const uint8_t *data, uint16_t data_size) {
     crc = crc32 (data, data_size);
     rx_printf ("%s 0x%08" PRIX32 "%s", cmd, crc, data);
     rx_putstr (CRLF);
+}
+
+bool init_array_123(uint8_t *const array, uint16_t len){
+	bool res = false;
+	if (NULL!=array) {
+		for (uint16_t i=0; i<len; i++){
+			array[i]=0x30+(i%10);
+		}
+		res = true;
+	}
+	return res;
 }

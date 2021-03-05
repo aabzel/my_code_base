@@ -6,7 +6,7 @@
 #include "gpio.h"
 #include "stm32f1xx_hal_gpio.h"
 
-const pin_info_t pin_info[] = {
+pin_info_t const pin_info[] = {
     {1, (uint8_t)0xFFU, "VBAT", 0xFFFFFFFF, GPIO_NOPULL, GPIO_SPEED_FREQ_LOW, GPIO_PIN_RESET},
     {2, PAD_EX (PORT_C, 13), "PC13", GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, GPIO_SPEED_FREQ_LOW, GPIO_PIN_RESET},
     {3, (uint8_t)0xFFU, "OSC32_IN", 0xFFFFFFFF, GPIO_NOPULL, GPIO_SPEED_FREQ_LOW, GPIO_PIN_RESET},

@@ -3,11 +3,14 @@
 #include <stdint.h>
 
 #include "unit_test_check.h"
+#include "test_sd_card_driver.h"
 
 extern uint64_t mul64(uint32_t a, uint32_t b);
 
-unit_test_info_t test_list[UTEST_NUMBER] = { { "test_64bit_mult", test_64bit_mult }, {
-		"test_utoa_bin8", test_utoa_bin8 } };
+unit_test_info_t test_list[UTEST_NUMBER] = {
+		{ "test_sd_card_driver", test_sd_card_driver },
+		{ "test_64bit_mult", test_64bit_mult },
+		{ "test_utoa_bin8", test_utoa_bin8 } };
 
 static bool print_mem(uint8_t *addr, uint16_t len) {
 	rx_printf(CRLF"0x");

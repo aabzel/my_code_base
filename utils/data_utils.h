@@ -1,9 +1,11 @@
-#ifndef SRC_DATA_UTILS_H_
-#define SRC_DATA_UTILS_H_
-#include <stdint.h>
+#ifndef SRC_DATA_UTILS_H
+#define SRC_DATA_UTILS_H
+
 #include <stdbool.h>
-#include "device.h" 
 #include <stddef.h>
+#include <stdint.h>
+
+#include "device.h" 
 
 #ifdef  __cplusplus
 extern "C" {
@@ -31,6 +33,8 @@ extern data_utils_err_t data_utils_last_err;
 
 #define DATA_STRING_STREAM() { { string_putc, string_puts}, (char*)data_buffer, sizeof(data_buffer), 0, false};
 
+bool init_array_123(uint8_t *const array, uint16_t len);
+
 #ifdef COMPRESS_DATA
 void dump_data64 (const char* cmd, const uint8_t* data, uint16_t data_size, bool not_compress);
 #else
@@ -43,4 +47,4 @@ void dump_crc_str(const char* cmd, const uint8_t* data, uint16_t data_size);
 }
 #endif
 
-#endif /* SRC_DATA_UTILS_H_ */
+#endif /* SRC_DATA_UTILS_H */

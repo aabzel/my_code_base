@@ -10,6 +10,7 @@ RM := rm -rf
 -include sources.mk
 -include utils_stm32/subdir.mk
 -include utilities/subdir.mk
+-include components/tests/test_sd_card/subdir.mk
 -include components/lib/unit_test/src/subdir.mk
 -include components/lib/stm32_tim/src/subdir.mk
 -include components/lib/stm32_spi/src/subdir.mk

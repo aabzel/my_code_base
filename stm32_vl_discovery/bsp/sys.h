@@ -8,8 +8,9 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 
-void print_vector_table (void) ;
+void print_vector_table (void);
 void print_sysinfo (void);
+void Error_Handler (void);
 
 #ifdef __cplusplus
 }

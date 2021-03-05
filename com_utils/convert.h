@@ -64,6 +64,7 @@ bool try_str2double (const char double_str[], double_t *double_value);
 
 const char *ltoa32_ (int32_t s32_data, char s32_stringified[], uint8_t s32_base, uint32_t *s32_len);
 const char *ltoa64_ (int64_t s64_data, char s64_stringified[], uint8_t s64_base, uint32_t *s64_len);
+const char *utoa_bin8 (uint8_t u8_bin_data);
 const char *utoa32_ (uint32_t u32_data, char u32_stringified[], uint8_t u32_base, uint32_t *u32_len);
 const char *utoa64_ (uint64_t u64_data, char u64_stringified[], uint8_t u64_base, uint32_t *u64_len);
 void dtoa_ (double_t double_data_, int32_t double_precision_, char double_stringified_[]);
