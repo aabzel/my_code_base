@@ -93,6 +93,7 @@ static bool test_reverse_dec (void) {
 }
 
 bool test_bin_utils (void) {
+    printf ("\n%s()", __FUNCTION__);
     EXPECT_TRUE (test_binary_swap_u8_all ());
     EXPECT_TRUE (test_swap_bits_u8_slow ());
     EXPECT_TRUE (test_binary_swap_u8 ());

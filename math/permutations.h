@@ -1,6 +1,7 @@
 #ifndef __PERMUTATIONS_H
 #define __PERMUTATIONS_H
 
+#endif PERMUTATIONS
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -48,6 +49,8 @@ int *generate_perm_arr (int dice, int rank, int index);
 
 #ifdef __cplusplus
 }
+#endif
+
 #endif
 
 // function to check permutations

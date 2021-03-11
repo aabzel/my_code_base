@@ -7,7 +7,7 @@ extern "C" {
 
 #include <stdbool.h>
 
-bool test_bit_utils (void);
+bool test_bin_utils (void);
 
 #ifdef __cplusplus
 }

@@ -1,12 +1,23 @@
-#ifndef __cplusplus
+#include "uTests.h"
 
+
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
 #include <malloc.h>
 #include <time.h>
 
-#include "uTests.h"
+#ifdef HAS_SD_CARD
+#include "test_parse_sd_card_regs.h"
+#endif
+
 #include "utils.h"
 
+#ifdef SYSTEM_EXPLORE
 #include "system_explore.h"
+#endif
 
 #ifdef INTERVIEW_TASKS
 #include "dsol_task.h"
@@ -24,8 +35,12 @@
 #include "exafore_task.h"
 #endif
 
-#ifdef TEST_BIT_UTILS
-#include "test_bit_utils.h"
+#ifdef BIT_UTILS
+#include "test_bin_utils.h"
+#endif
+
+#ifdef BYTE_UTILS
+#include "test_byte_utils.h"
 #endif
 
 #ifdef HAS_AURIGA_TASK
@@ -75,11 +90,11 @@
 #if 0
 #include "bin_utils_test.h"
 #include "tree_lions.h"
+#include "compare_version_test.h"
 #endif
 
-#include "compare_version_test.h"
 
-#ifdef HAS_PARSE_REG
+#ifdef HAS_TIC12400
 #include "parse_tja1101_regs.h"
 #endif
 
@@ -113,8 +128,12 @@
 #include "test_convert.h"
 #endif
 
-#include "float_utils.h"
+#ifdef HAS_LEET_CODE
+#include "test_hash_set.h"
 #include "test_decode_way.h"
+#endif
+
+#include "float_utils.h"
 
 #ifdef TEST_LINKED_LIST
 #include "linked_list.h"
@@ -141,7 +160,10 @@
 //#include "slidingWindowMax.h"
 //#include "slidingWindowMid.h"
 #include "str_ops.h"
+
+#ifdef TEST_STR_OPS
 #include "test_str_ops.h"
+#endif
 //#include "test_avl_tree.h"
 #ifdef TEST_FIFO
 #include "test_fifo_char.h"
@@ -149,13 +171,6 @@
 //#include "test_lifo_char.h"
 #include "utils.h"
 
-#include "test_hash_set.h"
-
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
 
 #if 0
 static bool test_parse_mac (void) {
@@ -165,12 +180,12 @@ static bool test_parse_mac (void) {
     uint8_t expMac[6] = {0xd4, 0x3b, 0x04, 0xa0, 0xa2, 0x21};
     strncpy (inStr, "Device: CAN_FLASHER Serial 0x202b17d3015a from IP 192.168.0.11 MAC d4:3b:04:a0:a2:21",
              sizeof (inStr));
-    EXPECT_TRUE ( parse_mac (inStr, sizeof (inStr), curMac);
+    EXPECT_TRUE( parse_mac (inStr, sizeof (inStr), curMac);
     if (false == res) {
         printf ("\nunable to parse mac");
         return false;
     }
-    EXPECT_TRUE ( is_mem_equal (curMac, expMac, 6);
+    EXPECT_TRUE( is_mem_equal (curMac, expMac, 6);
     if (false == cmpRes) {
         printf ("\nexp mac d4:3b:04:a0:a2:21");
         printf ("\ncur mac ");
@@ -192,7 +207,7 @@ static bool test_parse_serial (void) {
     strncpy (inStr, "Device: IOV4_A Serial 0x907a08b from IP 192.168.0.11 MAC d4:3b:04:a0:a2:214:a0:a2:21",
              sizeof (inStr));
     uint64_t serial64BitNumber = 0;
-    EXPECT_TRUE (parse_serial (inStr, sizeof (inStr), &serial64BitNumber);
+    EXPECT_TRUE(parse_serial (inStr, sizeof (inStr), &serial64BitNumber);
     if (true == res) {
         if (0x907a08b != serial64BitNumber) {
             printf ("\n Serial 0x[%08llx] exp 0x907a08b", (long long unsigned int)serial64BitNumber);
@@ -238,7 +253,7 @@ static bool test_parse_vi (void) {
              "Serial:202B17D3015A by Arrival\n\r1.013:I [SYS] Ok!\n\r-->",
              sizeof (inStr));
     uint64_t serial64BitNumber = 0U;
-    EXPECT_TRUE (parse_serial (inStr, sizeof (inStr), &serial64BitNumber);
+    EXPECT_TRUE(parse_serial (inStr, sizeof (inStr), &serial64BitNumber);
     if (true == res) {
         if (0x0000202B17D3015A != serial64BitNumber) {
             printf ("\n Serial 0x[%08llx] exp 0x0000202B17D3015A", (long long unsigned int)serial64BitNumber);
@@ -249,7 +264,7 @@ static bool test_parse_vi (void) {
         return false;
     }
 
-    EXPECT_TRUE ( test_parse_vi_devname ();
+    EXPECT_TRUE( test_parse_vi_devname ();
     if (false == res) {
         printf ("\n Unable to extract dev name form vi");
         return false;
@@ -269,7 +284,7 @@ static bool test_parse_phy_addr (void) {
 
     strncpy (inStr, "reg addr: 02 reg val: 0x0180 Ob_0000_0001_1000_0000", sizeof (inStr));
 
-    EXPECT_TRUE ( parse_8bit_reg_addr (inStr, strlen (inStr), &reg_addr);
+    EXPECT_TRUE( parse_8bit_reg_addr (inStr, strlen (inStr), &reg_addr);
 
         if (2 != reg_addr) {
         printf ("\n phy addr exp 2 real [%u]", reg_addr);
@@ -279,7 +294,7 @@ static bool test_parse_phy_addr (void) {
 
     strncpy (inStr, "reg addr: 09 reg val: 0x0000 Ob_0000_0000_0000_0000", sizeof (inStr));
 
-    EXPECT_TRUE (parse_8bit_reg_addr (inStr, sizeof (inStr), &reg_addr);
+    EXPECT_TRUE(parse_8bit_reg_addr (inStr, sizeof (inStr), &reg_addr);
 
         if (9 != reg_addr) {
         printf ("\n phy addr exp 9 real %u", reg_addr);
@@ -298,7 +313,7 @@ static bool test_parse_phy_reg_vals (void) {
     uint16_t reg16_val;
     strncpy (inStr, "reg addr: 02 reg val: 0x0180 Ob_0000_0001_1000_0000", sizeof (inStr));
 
-    EXPECT_TRUE (try_canch_hex_uint16 (inStr, strlen (inStr), &reg16_val);
+    EXPECT_TRUE(try_canch_hex_uint16 (inStr, strlen (inStr), &reg16_val);
 
         if ((0x0180 != reg16_val)) {
             printf ("\n reg16_val %x exp  0x0180", reg16_val);
@@ -307,14 +322,14 @@ static bool test_parse_phy_reg_vals (void) {
 
 
     strncpy (inStr, "reg addr: 19 reg val: 0x3241 Ob_0011_0010_0100_0001", sizeof (inStr));
-    EXPECT_TRUE ( try_canch_hex_uint16 (inStr, strlen (inStr), &reg16_val);
+    EXPECT_TRUE( try_canch_hex_uint16 (inStr, strlen (inStr), &reg16_val);
     if ((0x3241 != reg16_val)) {
         printf ("\n reg16_val %x exp 0x3241 ", reg16_val);
         return false;
     }
 
     strncpy (inStr, "reg addr: 27 reg val: 0x2020 Ob_0010_0000_0010_0000", sizeof (inStr));
-    EXPECT_TRUE ( try_canch_hex_uint16 (inStr, strlen (inStr), &reg16_val);
+    EXPECT_TRUE( try_canch_hex_uint16 (inStr, strlen (inStr), &reg16_val);
     if (0x2020 != reg16_val) {
         printf ("\n reg16_val %x exp 0x2020 ", reg16_val);
         return false;
@@ -336,79 +351,88 @@ bool unit_test (void) {
     printf ("\n[d] %s()", __FUNCTION__);
     bool res = false;
     (void)res;
+#ifdef BYTE_UTILS
+
+    EXPECT_TRUE( test_byte_utils ());
+#endif
+
 #ifdef SORT_LIST
-    EXPECT_TRUE (test_sort_list ());
+    EXPECT_TRUE(test_sort_list ());
+#endif
+
+#ifdef HAS_SD_CARD
+    EXPECT_TRUE(test_parse_reg_sd_card());
 #endif
 
 #ifdef TEST_HEAP_MEM
-    EXPECT_TRUE (test_free_zero ());
-    // EXPECT_TRUE (test_malloc_zero()); fails
-    EXPECT_TRUE (test_malloc ());
+    EXPECT_TRUE(test_free_zero ());
+    // EXPECT_TRUE(test_malloc_zero()); fails
+    EXPECT_TRUE(test_malloc ());
     test_heap ();
     test_heap_set ();
 #endif
-    EXPECT_TRUE (test_dsol ());
+
+#ifdef TEST_DSOL
+    EXPECT_TRUE(test_dsol ());
+#endif
+
 #ifdef WIN_UTILS
 #ifdef HAS_LCD_TEST
     char tx_text[] = "\n\r[d]Test TCP server";
     uint32_t tcp_server_ip;
-    EXPECT_TRUE (try_strl2ipv4 ("127.0.0.1", strlen ("127.0.0.1"), &tcp_server_ip);
-                 EXPECT_TRUE (sent_to_tcp_server (tx_text, strlen (tx_text), LCD_PORT, tcp_server_ip)));
+    EXPECT_TRUE(try_strl2ipv4 ("127.0.0.1", strlen ("127.0.0.1"), &tcp_server_ip);
+                 EXPECT_TRUE(sent_to_tcp_server (tx_text, strlen (tx_text), LCD_PORT, tcp_server_ip)));
 #endif
 #endif
 
 #ifdef EXAFORE
-    EXPECT_TRUE (test_struct ());
-#endif
-
-#ifdef BIT_UTILS
-    EXPECT_TRUE (test_bit_utils ());
+    EXPECT_TRUE(test_struct ());
 #endif
 
 #ifdef MICROAVIA_TASK
-    EXPECT_TRUE (test_microavia ());
+    EXPECT_TRUE(test_microavia ());
 #endif
 
 #ifdef HAS_TREE_LIONS
-    EXPECT_TRUE (test_lion_man_task ());
-    EXPECT_TRUE (run_tree_lions ());
+    EXPECT_TRUE(test_lion_man_task ());
+    EXPECT_TRUE(run_tree_lions ());
 #endif
 
 #ifdef HAS_TEST_ALGORITHM
-    EXPECT_TRUE ( test_algorithms ();
+    EXPECT_TRUE( test_algorithms ();
 
 #endif
 
 #ifdef HAS_VECTOR_CALC
-    EXPECT_TRUE ( test_vector_calc ();
+    EXPECT_TRUE( test_vector_calc ();
 #endif
 
 #ifdef HAS_HOTEL
-    EXPECT_TRUE (test_guests ();
+    EXPECT_TRUE(test_guests ();
 #endif
 
 #ifdef TEST_LINKED_LIST
-    EXPECT_TRUE ( test_linked_list_ints ();
+    EXPECT_TRUE( test_linked_list_ints ();
 #endif
 
 #ifdef TEST_HASH_SET
-    EXPECT_TRUE ( test_hash_set ();
+    EXPECT_TRUE( test_hash_set ();
 #endif
 
 #if 0
-    EXPECT_TRUE (test_text_addr ();
+    EXPECT_TRUE(test_text_addr ();
 #endif
 
 #ifdef TEST_STACK_NUM
-    EXPECT_TRUE (test_stack ();
+    EXPECT_TRUE(test_stack ();
 #endif
 
 #ifdef TEST_ENCODE_STRING
-    EXPECT_TRUE ( test_encode_string ();
+    EXPECT_TRUE( test_encode_string ();
 #endif
 
 #if 0
-    EXPECT_TRUE ( test_decode_ways ();
+    EXPECT_TRUE( test_decode_ways ();
 #endif
     //    res = test_is_mapped ( );
     //    if (false == res) {
@@ -417,14 +441,14 @@ bool unit_test (void) {
     //    }
 
 #if 0
-    EXPECT_TRUE ( test_valid_ip_address ();
+    EXPECT_TRUE( test_valid_ip_address ();
 #endif
 
 #if 0
     uint32_t nn=10;
     while (1) {
       nn *=2 ;
-      EXPECT_TRUE (work_with_stack (nn, 0x55);
+      EXPECT_TRUE(work_with_stack (nn, 0x55);
       if (false == res) {
           printf ("work_with_stack error %d", nn);
           return STACK_ERROR;
@@ -438,44 +462,45 @@ bool unit_test (void) {
     // return 1;
 #ifdef HAS_AURIGA_TASK
     printf ("\n%s %s", val_2_str (3), val_2_str (4));
-    EXPECT_TRUE ( test_auriga_task ());
+    EXPECT_TRUE( test_auriga_task ());
 #endif
 
-#if 0
-    EXPECT_TRUE ( test_bin_utils ());
+#ifdef BIT_UTILS
+    EXPECT_TRUE( test_bin_utils ());
 #endif
+
 
 #ifdef TEST_MATRIX_ACCESS
-    EXPECT_TRUE ( test_matrix_accsess ());
+    EXPECT_TRUE( test_matrix_accsess ());
 #endif
 
 #if 0
-    EXPECT_TRUE (  test_static ());
+    EXPECT_TRUE(  test_static ());
 #endif
 
 #ifdef HAS_CONVERT
-    EXPECT_TRUE (test_convert ());
+    EXPECT_TRUE(test_convert ());
 #endif
 
 #ifdef HAS_GENERATE_REG_PARSER_TEST
     //#error test_build
-    EXPECT_TRUE (test_generate_reg_parser ();
+    EXPECT_TRUE(test_generate_reg_parser ();
 #endif
 
 #ifdef TEST_ARRAY
-    EXPECT_TRUE ( test_array ();
+    EXPECT_TRUE( test_array ();
 #endif
 
 #ifdef HAS_PERMUTATIONS_TEST
-    EXPECT_TRUE (test_permutation ();
+    EXPECT_TRUE(test_permutation ();
 #endif
 
 #ifdef HAS_COMBINATION_TEST
-    EXPECT_TRUE (test_combinations ();
+    EXPECT_TRUE(test_combinations ();
 #endif
 
 #ifdef HAS_ALGORITHM_TEST
-    EXPECT_TRUE ( test_algorithm ();
+    EXPECT_TRUE( test_algorithm ();
 #endif
 
 #ifdef BEAM_TRAIL
@@ -498,11 +523,11 @@ bool unit_test (void) {
 #endif
 
 #ifdef HAS_COMPARE_VERSION_TEST
-    EXPECT_TRUE ( compare_version_test ();
+    EXPECT_TRUE( compare_version_test ();
 #endif
 
 #ifdef HAS_BIN_UTILS_TEST
-    EXPECT_TRUE ( test_binary_gap ();
+    EXPECT_TRUE( test_binary_gap ();
 #endif
 
 #if 0
@@ -528,39 +553,39 @@ bool unit_test (void) {
 #endif
 
 #if 0
-    EXPECT_TRUE ( is_hex_str ("ab1234ba", 8, &shift);
+    EXPECT_TRUE( is_hex_str ("ab1234ba", 8, &shift);
 #endif
 
 #if 0
-    EXPECT_TRUE (is_hex_str ("0x1234ba", 8, &shift);
+    EXPECT_TRUE(is_hex_str ("0x1234ba", 8, &shift);
 #endif
 
 #if 0
-    EXPECT_TRUE ( test_parse_serial ();
+    EXPECT_TRUE( test_parse_serial ();
 #endif
 
 #if 0
-    EXPECT_TRUE ( test_parse_mac ();
+    EXPECT_TRUE( test_parse_mac ();
 #endif
 
 #ifdef TEST_PARSE_REG
-    EXPECT_TRUE ( test_parse_phy_addr ();
-    EXPECT_TRUE ( test_parse_phy_reg_vals ();
+    EXPECT_TRUE( test_parse_phy_addr ();
+    EXPECT_TRUE( test_parse_phy_reg_vals ();
 #endif
 
 #ifdef TEST_SHA256
-    EXPECT_TRUE ( test_sha256 ();
+    EXPECT_TRUE( test_sha256 ();
 #endif
 
 #ifdef TEST_AES
-    EXPECT_TRUE ( test_aes ();
+    EXPECT_TRUE( test_aes ();
 #endif
 
 #if 0
-    EXPECT_TRUE ( test_parse_vi ();
+    EXPECT_TRUE( test_parse_vi ();
 #endif
 
-#if TEST_FLOART
+#ifdef TEST_FLOART
     printf ("a %f b %f a+b %f", a, b, c);
     sample16bit = float_to_uint16 (c);
     if (20000U != sample16bit) {
@@ -568,7 +593,7 @@ bool unit_test (void) {
     }
 #endif
 
-#if TEST_FLOATS
+#ifdef TEST_FLOATS
     print_biggest_mantissa ();
     sample16bit = float_to_uint16 (c);
     if (0U != sample16bit) {
@@ -600,209 +625,209 @@ bool unit_test (void) {
 #endif
 
 #ifdef TEST_MY_PRINTF
-    EXPECT_TRUE ( test_my_printf ();
+    EXPECT_TRUE( test_my_printf ();
 #endif
 
 #ifdef TEST_MAX_ENFELOP
-    EXPECT_TRUE ( maxEnvelopes_test ();
+    EXPECT_TRUE( maxEnvelopes_test ());
 #endif
 
 #if TEST_LIST_SORT
-    EXPECT_TRUE ( test_list_sort ();
+    EXPECT_TRUE( test_list_sort ());
 #endif
 
-#if 0
-    EXPECT_TRUE ( test_str_ops ();
+#ifdef TEST_STR_OPS
+    EXPECT_TRUE( test_str_ops ());
 #endif
 
 #ifdef TEST_FIFO
-    EXPECT_TRUE ( test_fifo_char ();
+    EXPECT_TRUE( test_fifo_char ());
 #endif
 
 #ifdef HAS_TEST_PARSE_MK
-    EXPECT_TRUE ( test_mk_2_dot ();
+    EXPECT_TRUE( test_mk_2_dot ());
 #endif
 
 #if DEPLOY_TEST_SINGLE_NUMBER
-    EXPECT_TRUE ( test_single_number ();
+    EXPECT_TRUE( test_single_number ());
 #endif
 
 #if DEPLOY_TEST_BOOL_EXPRESS
-    EXPECT_TRUE ( test_lifo ();
-    EXPECT_TRUE ( test_Valid_Parentheses ();
-    EXPECT_TRUE ( test_calc_paratasis_nesting ();
-    EXPECT_TRUE ( test_parse_num_operands ();
-    EXPECT_TRUE ( test_operand_extract ();
-    EXPECT_TRUE ( test_parse_and ();
-    EXPECT_TRUE ( test_parse_not ();
-    EXPECT_TRUE ( test_parseBoolExpr ();
+    EXPECT_TRUE( test_lifo ());
+    EXPECT_TRUE( test_Valid_Parentheses ());
+    EXPECT_TRUE( test_calc_paratasis_nesting ());
+    EXPECT_TRUE( test_parse_num_operands ());
+    EXPECT_TRUE( test_operand_extract ());
+    EXPECT_TRUE( test_parse_and ());
+    EXPECT_TRUE( test_parse_not ());
+    EXPECT_TRUE( test_parseBoolExpr ());
 #endif
 
 #if DEPLOY_TEST_NUM_STRING
-    EXPECT_TRUE ( test_num_to_bin_str ();
+    EXPECT_TRUE( test_num_to_bin_str ();
 #endif
     // int ret = 0;
 #if TEST_ATOI
-    EXPECT_TRUE ( test_myAtoi ();
+    EXPECT_TRUE( test_myAtoi ();
 #endif
 
 #if 0
-    EXPECT_TRUE ( test_reverse ();
-    EXPECT_TRUE ( test_detect_change ();
+    EXPECT_TRUE( test_reverse ();
+    EXPECT_TRUE( test_detect_change ();
 #endif
 
 #if DEPLOY_DIF_SUB_STR_ERROR
-    EXPECT_TRUE (test_lengthOfLongestSubstring ();
+    EXPECT_TRUE(test_lengthOfLongestSubstring ();
 
 #endif
 
 #if DEPLOY_TEST_AVL_TREE
-    EXPECT_TRUE ( test_avl_tree ();
+    EXPECT_TRUE( test_avl_tree ();
 
 #endif
 
 #if 0
     EXPECT_TRUE(test_heap_api ());
-    EXPECT_TRUE ( test_delim_amount ();
-    EXPECT_TRUE ( test_string_clean ();
+    EXPECT_TRUE( test_delim_amount ();
+    EXPECT_TRUE( test_string_clean ();
 #endif
 
 #if DEBUG_MAIL
-    EXPECT_TRUE ( test_split ();
+    EXPECT_TRUE( test_split ();
 
 #endif
 
 #if 0
-    EXPECT_TRUE ( test_sliding_window_max ();
+    EXPECT_TRUE( test_sliding_window_max ();
 
-    EXPECT_TRUE ( test_is_bin_tree ();
+    EXPECT_TRUE( test_is_bin_tree ();
 
 #endif
 
 #if TEST_HEAP_DELET_ONE
-    EXPECT_TRUE ( test_bin_heap_rand_add_and_del_one ();
+    EXPECT_TRUE( test_bin_heap_rand_add_and_del_one ();
 
 #endif
 
 #if TEST_HEAP_DELET
-    EXPECT_TRUE ( test_bin_heap_delete ();
+    EXPECT_TRUE( test_bin_heap_delete ();
 
 #endif
 
 #if TEST_HEAP_SAME
-    EXPECT_TRUE ( test_bin_heap_same_add ();
+    EXPECT_TRUE( test_bin_heap_same_add ();
 
 #endif
 
 #if TEST_HEAP_CON
-    EXPECT_TRUE ( test_bin_heap_dec_add ();
+    EXPECT_TRUE( test_bin_heap_dec_add ();
 
 #endif
 
 #if BIN_HEAP_RAND_ADD
-    EXPECT_TRUE (test_bin_heap_rand_add ();
+    EXPECT_TRUE(test_bin_heap_rand_add ();
 
 #endif
 
 #if 0
-    EXPECT_TRUE ( test_algo ();
+    EXPECT_TRUE( test_algo ();
 
-    EXPECT_TRUE ( test_k_smallest ();
+    EXPECT_TRUE( test_k_smallest ();
 
-    EXPECT_TRUE ( test_medianSlidingWindow ();
+    EXPECT_TRUE( test_medianSlidingWindow ();
 
 #endif
 
 #if 0
-    EXPECT_TRUE (test_valid_float_number ();
+    EXPECT_TRUE(test_valid_float_number ();
 
 #endif
 #if TEST_KDBX
-    EXPECT_TRUE ( try_to_open_kdbx_file ();
+    EXPECT_TRUE( try_to_open_kdbx_file ();
 
 #endif
 
 #if TEST_STR_STR
-    EXPECT_TRUE ( test_stsstr ();
+    EXPECT_TRUE( test_stsstr ();
 
 #endif
 
 #if TEST_MIN_PATH
-    EXPECT_TRUE ( test_min_path ();
+    EXPECT_TRUE( test_min_path ();
 
 #endif
 
 #if TEST_MIN_PATH_DIAG
-    EXPECT_TRUE ( test_min_path_diag ();
+    EXPECT_TRUE( test_min_path_diag ();
 
 #endif
 
 #if TEST_MIN_DIAG_SCALE_SUMM
-    EXPECT_TRUE ( test_min_diag_scale_summ ();
+    EXPECT_TRUE( test_min_diag_scale_summ ();
 
 #endif
 
 #if TEST_FIND_MIN_DIAG_SCALE_SUMM
-    EXPECT_TRUE ( test_find_min_diag_scale_summ ();
+    EXPECT_TRUE( test_find_min_diag_scale_summ ();
 
-    EXPECT_TRUE ( test_find_min_diag_scale_summ2 ();
+    EXPECT_TRUE( test_find_min_diag_scale_summ2 ();
 
 #endif
 
-#if TEST_FLOAT
-    EXPECT_TRUE ( test_float ();
+#ifdef TEST_FLOAT
+    EXPECT_TRUE( test_float ();
 #endif
 
-#if TEST_UIO_COMB
-    EXPECT_TRUE (save_the_amount_of_uio ();
+#ifdef TEST_UIO_COMB
+    EXPECT_TRUE(save_the_amount_of_uio ();
 #endif
 
-#if TEST_ARR_COMB
+#ifdef TEST_ARR_COMB
     test_heap ();
-    EXPECT_TRUE ( test_array_combinations ();
+    EXPECT_TRUE( test_array_combinations ();
 
 #endif
 
 #if TEST_YA_TASK
-    EXPECT_TRUE ( test_ya_task ();
+    EXPECT_TRUE( test_ya_task ();
 
 #endif
 
-#if TEST_UNIQ_DIAG_PATH_TASK
-    EXPECT_TRUE ( test_uniq_path_diag ();
+#ifdef TEST_UNIQ_DIAG_PATH_TASK
+    EXPECT_TRUE( test_uniq_path_diag ();
 
 #endif
 
-#if TEST_UNIQ_PATH_TASK
-    EXPECT_TRUE ( test_uniq_path ();
+#ifdef TEST_UNIQ_PATH_TASK
+    EXPECT_TRUE( test_uniq_path ();
 
 #endif
 
-#if DEPLOY_REMAINED_TESTS
-    EXPECT_TRUE ( test_parse_bin_tree_init_array ();
+#ifdef DEPLOY_REMAINED_TESTS
+    EXPECT_TRUE( test_parse_bin_tree_init_array ();
 
-    EXPECT_TRUE ( test_bin_tree_init_array ();
-
-
-    EXPECT_TRUE ( test_bin_tree ();
-
-    EXPECT_TRUE ( test_reverse_list ();
+    EXPECT_TRUE( test_bin_tree_init_array ();
 
 
-    EXPECT_TRUE ( test_max_bit_val ();
+    EXPECT_TRUE( test_bin_tree ();
+
+    EXPECT_TRUE( test_reverse_list ();
 
 
-    EXPECT_TRUE ( test_grey_conversation ();
+    EXPECT_TRUE( test_max_bit_val ();
+
+
+    EXPECT_TRUE( test_grey_conversation ();
 
 
     int arr1[] = {1, 2};
     int arr2[] = {2, 1};
-    EXPECT_TRUE ( is_permutation (arr1, arr2, 2);
+    EXPECT_TRUE( is_permutation (arr1, arr2, 2);
 
 
     int arra1[] = {1, 2, 5};
     int arra2[] = {2, 1, 6};
-    EXPECT_TRUE (is_permutation (arra1, arra2, 3);
+    EXPECT_TRUE(is_permutation (arra1, arra2, 3);
 
 
     outArray = generate_num_array (4);
@@ -866,7 +891,7 @@ bool unit_test (void) {
 #endif
     free (outStr);
 
-    EXPECT_TRUE ( test_linked_list ();
+    EXPECT_TRUE( test_linked_list ();
 
 #endif
     printf ("\n %s done", __FUNCTION__);
@@ -3466,4 +3491,4 @@ bool test_print_matrix (void) {
 }
 #endif
 
-#endif
+

@@ -18,7 +18,6 @@ extern xReg_map_t RegMap[MAX_NUM_REG];
 
 bool parse_bit_range (char *cur_file_str, int strlen, uint8_t *bit_old, uint8_t *bit_little, char *prefix);
 bool parse_uint8_after_prefix (char *cur_file_str, int in_str_len, uint16_t *val, char *prefix);
-bool parse_text_after_prefix (char *cur_file_str, int strlen, char *out_text, char *prefix);
 // bool parse_reg_name(char *cur_file_str, int strlen,char * reg_nane);
 // bool parse_bit_text(char *cur_file_str, int strlen,char *bit_text);
 // bool parse_bit_type(char *cur_file_str, int strlen,char *bit_type);

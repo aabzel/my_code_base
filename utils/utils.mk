@@ -4,6 +4,7 @@ UTILS_DIR = $(PROJECT_ROOT)utils
 CFLAGS			+= -I$(UTILS_DIR)
 
 SOURCES += $(UTILS_DIR)/bit_utils.c
+SOURCES += $(UTILS_DIR)/byte_utils.c
 SOURCES += $(UTILS_DIR)/convert.c
 SOURCES += $(UTILS_DIR)/float_utils.c
 SOURCES += $(UTILS_DIR)/str_ops.c

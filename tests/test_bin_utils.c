@@ -1,4 +1,4 @@
-#include "test_bit_utils.h"
+#include "test_bin_utils.h"
 
 #include "bit_utils.h"
 #include "uTests.h"
@@ -36,8 +36,51 @@ static bool test_missing_number (void) {
     return true;
 }
 
-bool test_bit_utils (void) {
+
+
+static bool test_extract_sub_val(void) {
     printf ("\n[d] %s()", __FUNCTION__);
+    uint32_t sub_val;
+
+    uint8_t reg_array_blob_40bit[]={0xfe,0x27,0x50,0x48,0x53};
+    sub_val = eject_value_from_array(reg_array_blob_40bit, 5, 35, 4);
+    EXPECT_EQ (0xe2750485, sub_val);
+
+    //        fe2_75048534_4
+    uint8_t reg_array_blob[]={0xfe,0x27,0x50,0x48,0x53,0x44};
+    //8*6 = 48 bit
+
+    sub_val = eject_value_from_array(reg_array_blob, 6, 35, 4);
+    EXPECT_EQ (0x75048534, sub_val);
+
+    sub_val = eject_value_from_array(reg_array_blob, 6, 7+4, 0+4);
+    EXPECT_EQ (0x34, sub_val);
+
+    sub_val= eject_value_from_array(reg_array_blob, 6, 7, 0);
+    EXPECT_EQ (0x44, sub_val);
+
+    printf ("\n[d] %s() end", __FUNCTION__);
+    return true;
+}
+
+
+bool test_extract_subval_utils16 (void) {
+    printf ("\n[d] %s()", __FUNCTION__);
+    EXPECT_EQ (0x0034, extract_subval_from_16bit (0x5344, 11, 4));
+    EXPECT_EQ (0x000f, extract_subval_from_16bit (0xF000, 15, 12));
+    EXPECT_EQ (0x000f, extract_subval_from_16bit (0x0F00, 11, 8));
+    EXPECT_EQ (0x000f, extract_subval_from_16bit (0x000F, 3, 0));
+    return true;
+}
+
+
+
+bool test_bin_utils (void) {
+    printf ("\n[d] %s()", __FUNCTION__);
+
+    EXPECT_TRUE (test_extract_subval_utils16 ());
+    EXPECT_TRUE (test_extract_sub_val ());
+
     EXPECT_TRUE (test_missing_number ());
     EXPECT_EQ (2, hammingDistance (1, 4));
 
@@ -59,54 +102,16 @@ bool test_bit_utils (void) {
     EXPECT_EQ (MASK_14_BITS, calc_16_mask (14));
     EXPECT_EQ (MASK_15_BITS, calc_16_mask (15));
     EXPECT_EQ (MASK_16_BITS, calc_16_mask (16));
-
-    uint32_t reg16bitVal;
-    reg16bitVal = generate_16bit_left_mask (1);
-    if (0x0001 != reg16bitVal) {
-        return GENERATE_BIT_MASK_ERROR;
-    }
-    reg16bitVal = generate_16bit_left_mask (2);
-    if (0x0003 != reg16bitVal) {
-        return GENERATE_BIT_MASK_ERROR;
-    }
-    reg16bitVal = generate_16bit_left_mask (4);
-    if (0x000f != reg16bitVal) {
-        return GENERATE_BIT_MASK_ERROR;
-    }
-    reg16bitVal = generate_16bit_left_mask (5);
-    if (0x001f != reg16bitVal) {
-        return GENERATE_BIT_MASK_ERROR;
-    }
-    reg16bitVal = extract_subval_from_16bit (0xF000, 15, 12);
-    if (0x000f != reg16bitVal) {
-        return EXTRACT_BITS_ERROR;
-    }
-
-    // 0x0f00   0000 1111 0000 0000
-    reg16bitVal = extract_subval_from_16bit (0x0F00, 11, 8);
-    if (0x000f != reg16bitVal) {
-        return EXTRACT_BITS_ERROR;
-    }
-    reg16bitVal = extract_subval_from_16bit (0x000F, 3, 0);
-    if (0x000f != reg16bitVal) {
-        return EXTRACT_BITS_ERROR;
-    }
-
-    uint32_t n;
-    n = reverseBits32 (0x00000001);
-    if (0x80000000 != n) {
-        return REV_BIT_ERROR;
-    }
-    n = reverseBits32 (0x0000000F);
-    if (0xF0000000 != n) {
-        return REV_BIT_ERROR;
-    }
-
-    uint8_t numSetBit = hamming_weight (56);
-    if (3 != numSetBit) {
-        printf ("\n numSetBit:%d\n", numSetBit);
-        return ONE_BIT_ERROR;
-    }
+    EXPECT_EQ (0x0001, generate_16bit_left_mask (1));
+    EXPECT_EQ (0x0003, generate_16bit_left_mask (2));
+    EXPECT_EQ (0x000f, generate_16bit_left_mask (4));
+    EXPECT_EQ (0x001f, generate_16bit_left_mask (5));
+    EXPECT_EQ (0x000f, extract_subval_from_16bit (0xF000, 15, 12));
+    EXPECT_EQ (0x000f, extract_subval_from_16bit (0x0F00, 11, 8));
+    EXPECT_EQ (0x000f, extract_subval_from_16bit (0x000F, 3, 0));
+    EXPECT_EQ (0x80000000, reverseBits32 (0x00000001));
+    EXPECT_EQ (0xF0000000, reverseBits32 (0x0000000F));
+    EXPECT_EQ (3, hamming_weight (56));
 
     return true;
 }

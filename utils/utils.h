@@ -14,6 +14,7 @@ extern "C" {
 #include "custom_type.h"
 
 #include <stdint.h>
+#include <stdio.h>
 
 #define NOT_NUM (-999999)
 #define INT_MIN (-2147483648)
@@ -60,7 +61,7 @@ void print_sub_str (char *const str, int len);
 void print_array (int *alphabet, int sizeOfAlphabet, int k);
 void print_array_int (int *alphabet, int sizeOfAlphabet);
 bool print_mem_vertical (uint8_t *memPtr, uint32_t numByte, bool printChars);
-bool print_mem_horisonal (uint8_t *memPtr, uint32_t numByte);
+bool print_mem_horisonal (FILE *out_file_prt,uint8_t *memPtr, uint32_t numByte, bool gap);
 double avrage_two (int val1, int val2);
 uint32_t max_val (uint32_t amountofbit);
 int *grayCode (int n, int *returnSize);
@@ -90,8 +91,7 @@ double fraction_sim (uint32_t mantissa);
 float cacl_percent (float numerator, float denominator);
 uint32_t pack_ipv4 (uint8_t ipAddrByte1, uint8_t ipAddrByte2, uint8_t ipAddrByte3, uint8_t ipAddrByte4);
 bool print_mac_addr (uint8_t *mac_addr);
-uint16_t reverse_byte_order_uint16 (const uint16_t in2byteVal);
-uint32_t reverse_byte_order_uint32 (const uint32_t in4byteVal);
+
 
 bool print_mac_addr (uint8_t *mac_addr);
 

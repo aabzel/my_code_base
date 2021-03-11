@@ -1,6 +1,11 @@
 #include "algorithms.h"
 
-#include "float_utils.h"
+#include <limits.h>
+#include <math.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #if 0
 #include "arrays.h"
@@ -8,15 +13,13 @@
 #include "permutations.h"
 #endif
 
+#include "float_utils.h"
 #include "str_ops.h"
 #include "utils.h"
 
-#include <limits.h>
-#include <math.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#ifdef ADT
+#include "lifo_char.h"
+#endif
 
 uint32_t average_quick (uint32_t a, uint32_t b) {
     uint32_t res;
@@ -455,7 +458,7 @@ static int cnt_comb (int d, int f, int t, int *in_arr, int len) {
 int numRollsToTarget (int dmax, int f, int target) {
     // printf ("\n[d] %s() d:%d f:%d t:%d", __FUNCTION__, dmax, f, target);
     int cnt = 0;
-    int tt = 0;
+
 
     if ((0 == dmax) && (0 == target)) {
         return 0;
@@ -477,3 +480,34 @@ int numRollsToTarget (int dmax, int f, int target) {
     }
     return cnt % (1000000000 + 7);
 }
+
+#ifdef ADT
+#error sds
+bool is_valid_parentheses (const char *s) {
+    bool res = false;
+    Lifo_array_t lifoObj;
+    int str_len = strlen (s);
+    char *array = (char *)malloc (str_len);
+    if (array) {
+        lifo_init (&lifoObj, str_len, array);
+        char out_char = 'x';
+        for (int i = 0; i < str_len; i++) {
+            out_char = 'x';
+            if (is_bracket (s[i])) {
+                lifo_peek (&lifoObj, &out_char);
+                if (true == brackets_same_type (out_char, s[i])) {
+                    lifo_pull (&lifoObj, &out_char);
+                } else {
+                    lifo_push (&lifoObj, s[i]);
+                }
+            }
+        }
+        if (0 == lifoObj.lifoStat.len) {
+            res = true;
+        }
+        free (array);
+    }
+    return res;
+}
+#endif
+

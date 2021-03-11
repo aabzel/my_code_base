@@ -5,10 +5,13 @@ CFLAGS			+= -I$(TESTS_DIR)
 
 SOURCES += $(TESTS_DIR)/uTests.c
 SOURCES += $(TESTS_DIR)/test_convert.c
-SOURCES += $(TESTS_DIR)/test_sort_list.c
+SOURCES += $(TESTS_DIR)/test_byte_utils.c
+SOURCES += $(TESTS_DIR)/test_bin_utils.c
+SOURCES += $(TESTS_DIR)/test_str_ops.c
+#SOURCES += $(TESTS_DIR)/test_sort_list.c
 
-CPP_SOURCES += $(TESTS_DIR)/test_merge_interval.cpp
-CPP_SOURCES += $(TESTS_DIR)/test_insert_interval.cpp
-CPP_SOURCES += $(TESTS_DIR)/u_tests.cpp
+#CPP_SOURCES += $(TESTS_DIR)/test_merge_interval.cpp
+#CPP_SOURCES += $(TESTS_DIR)/test_insert_interval.cpp
+#CPP_SOURCES += $(TESTS_DIR)/u_tests.cpp
  
 

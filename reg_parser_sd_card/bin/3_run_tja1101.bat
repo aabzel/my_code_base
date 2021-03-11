@@ -1,0 +1,3 @@
+reg_paraser_v1.exe tsti_v1_2_lack_link.txt tsti_v1_2_lack_link_confuguration.txt
+pause
+

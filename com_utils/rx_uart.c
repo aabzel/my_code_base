@@ -314,15 +314,19 @@ bool cmd_uarts (int32_t argc, char *argv[]) {
 
 ostream_t *get_console_stream (void) { return DBG; }
 
-
-bool print_mem(uint8_t *addr, uint16_t len){
-	rx_printf (CRLF"0x");
-	for(uint32_t pos=0; pos<len; pos++){
-		if(0==(pos%16)){
-			rx_printf (CRLF);
+bool print_mem(uint8_t *addr, int32_t len) {
+	rx_printf(CRLF);
+	bool res = false;
+	if (0 < len) {
+		for (uint32_t pos = 0; pos < len; pos++) {
+			if (0 == (pos % 16)) {
+				rx_printf(CRLF);
+			}
+			rx_printf("%02x", *(addr + pos));
+			wait_in_loop_ms(3);
+			res = true;
 		}
-		rx_printf ("%02x", *(addr+pos));
-		wait_in_loop_ms (3);
+		rx_printf(CRLF);
 	}
-	rx_printf (CRLF);
+	return res;
 }

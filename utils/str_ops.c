@@ -10,7 +10,6 @@
 
 //#include "algorithms.h"
 #include "convert.h"
-#include "lifo_char.h"
 //#include "custom_type.h"
 
 #if 0
@@ -1068,7 +1067,9 @@ bool extract_numbers (char *inOutStr, int length) {
     }
     return res;
 }
+#endif
 
+#if 0
 uint16_t calc_ip_val_len (char *inStr) {
     uint16_t strValLen = 0;
     if (inStr) {
@@ -1083,6 +1084,7 @@ uint16_t calc_ip_val_len (char *inStr) {
     }
     return strValLen;
 }
+#endif
 
 uint16_t calc_hex_val_len (char *inStr) {
     uint16_t strValLen = 0;
@@ -1098,7 +1100,7 @@ uint16_t calc_hex_val_len (char *inStr) {
     }
     return strValLen;
 }
-
+#if 0
 bool is_ip_number (char letter) {
     bool res = false;
     switch (letter) {
@@ -1118,6 +1120,7 @@ bool is_ip_number (char letter) {
     }
     return res;
 }
+#endif
 
 bool is_hex_number (char letter) {
     bool res = false;
@@ -1153,7 +1156,7 @@ bool is_hex_number (char letter) {
 
 
 /// reg addr: 0x04 reg val: 0x0000 Ob_0000_0000_0000_0000
-bool try_canch_hex_uint8 (char *inStr, int str_len, uint8_t *val8b) {
+bool try_extract_hex_uint8 (char *inStr, int str_len, uint8_t *val8b) {
     int i = 0;
     int startIndex = 0;
     bool res = false;
@@ -1197,7 +1200,7 @@ bool try_canch_hex_uint8 (char *inStr, int str_len, uint8_t *val8b) {
 }
 
 /// reg addr: 0x04 reg val: 0x0000 Ob_0000_0000_0000_0000
-bool try_canch_hex_uint16 (char *inStr, int str_len, uint16_t *val16b) {
+bool try_extract_hex_uint16 (char *inStr, int str_len, uint16_t *val16b) {
     int i = 0;
     (void)val16b;
     bool res = false;
@@ -1239,8 +1242,72 @@ bool try_canch_hex_uint16 (char *inStr, int str_len, uint16_t *val16b) {
     return res;
 }
 
+
+
+//< REG="Basic Control" Addr=0
+bool parse_text_after_prefix (char *cur_file_str, int in_str_len, char *out_text, uint16_t *text_len, char *prefix, char terminator) {
+    bool res = false;
+    (*text_len)=0;
+    int prefix_len = strlen (prefix);
+    char *ptr = strstr (cur_file_str, prefix);
+    if (ptr) {
+#ifdef DEBUG_GENERATE_REG_PARSER
+        printf ("\n spot prefix [%s]", prefix);
+#endif
+        res = true;
+        int i = 0;
+        for (i = 0; i < in_str_len; i++) {
+            if (('"' != *(ptr + prefix_len + i)) &&(terminator != *(ptr + prefix_len + i))) {
+                out_text[i] = *(ptr + prefix_len + i);
+                (*text_len)++;
+                res = true;
+            } else {
+                break;
+            }
+        }
+        out_text[i] = 0x00;
+    } else {
+        res = false;
+#ifdef DEBUG_GENERATE_REG_PARSER
+        printf ("\n lack of prefix [%s]", prefix);
+#endif
+    }
+    return res;
+}
+
+bool try_extract_hex_uint8_array (char *inStr, int str_len, uint8_t *val_array, uint16_t *out_reg_blob_len){
+    bool res=false;
+#ifdef DEBUG_EXTRACT_HEX_ARRAY
+	 printf ("\n %s() %s len: %u", __FUNCTION__,inStr,str_len);
+#endif
+    (*out_reg_blob_len )= 0;
+    char out_text[str_len*2];
+    uint16_t text_len = 0;
+	res = parse_text_after_prefix (inStr, str_len, out_text, &text_len, "0s",'|');
+	if(true==res){
+		 uint32_t cnt=0;
+		 uint32_t i=0;
+#ifdef DEBUG_EXTRACT_HEX_ARRAY
+		 printf ("\n extracted [%s] %u", out_text,text_len);
+#endif
+		 for( i=0,cnt=0; i<text_len;i+=2,cnt++){
+#ifdef DEBUG_EXTRACT_HEX_ARRAY
+			 printf ("\n parse [%s]", &out_text[i]);
+#endif
+		    res=try_strl2uint8_hex(&out_text[i],2,&val_array[cnt]);
+		    if(true==res){
+		    	(*out_reg_blob_len )++;
+		    }else{
+
+		    	printf ("\n Unable to parse uint8 [%s]", &out_text[i]);
+		    }
+		 }
+	}
+	return res;
+}
+
 ///      DEVICE_ID[0x01]: 0x00000020 0b_0000_0000_0000_0000_0000_0000_0010_0000
-bool try_canch_hex_uint32 (char *inStr, int str_len, uint32_t *val32b) {
+bool try_extract_hex_uint32 (char *inStr, int str_len, uint32_t *val32b) {
     int i = 0;
     (void)val32b;
     bool res = false;
@@ -1282,27 +1349,34 @@ bool try_canch_hex_uint32 (char *inStr, int str_len, uint32_t *val32b) {
     return res;
 }
 
+#if 0
 bool delete_char (char *inOutStr, int curIndex) {
     bool res = false;
     (void)inOutStr;
     (void)curIndex;
     return res;
 }
+#endif
 
+#if 0
 char *mac_to_str (uint8_t *mac_addr) {
     static char macStrOut[100] = "";
     snprintf ((char *)macStrOut, sizeof (macStrOut), "%02x:%02x:%02x:%02x:%02x:%02x", mac_addr[0], mac_addr[1],
               mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
     return macStrOut;
 }
+#endif
 
+#if 0
 char *ip_to_str (uint8_t *ip_addr) {
     static char ipStrOut[100] = "";
     snprintf ((char *)ipStrOut, sizeof (ipStrOut), "%02d.%02d.%02d.%02d", ip_addr[3], ip_addr[2], ip_addr[1],
               ip_addr[0]);
     return ipStrOut;
 }
+#endif
 
+#if 0
 bool parse_substr_name (const char *const inStr, uint16_t inStrLen, char *const outStr, char openBracket,
                         char closedBracket) {
     if ((NULL != outStr) && (NULL != inStr)) {
@@ -1328,7 +1402,9 @@ bool parse_substr_name (const char *const inStr, uint16_t inStrLen, char *const 
     }
     return true;
 }
+#endif
 
+#if 0
 bool parse_holder_name (char *inStr, uint16_t inStrLen, char *holderName) {
     /*TODO: <>*/
     if (NULL != inStr) {
@@ -1341,7 +1417,9 @@ bool parse_holder_name (char *inStr, uint16_t inStrLen, char *holderName) {
     }
     return true;
 }
+#endif
 
+#if 0
 // Device: CAN_FLASHER Serial 0x202b17d3015a from IP 192.168.0.11 MAC d4:3b:04:a0:a2:21C
 bool parse_mac (char *inStr, uint16_t inStrLen, uint8_t *outMacAddr) {
     bool res = false;
@@ -1355,7 +1433,9 @@ bool parse_mac (char *inStr, uint16_t inStrLen, uint8_t *outMacAddr) {
     }
     return res;
 }
+#endif
 
+#if 0
 bool parse_ip (char *inStr, uint16_t inStrLen, uint32_t *outIpAddr) {
     bool res = false;
     if (strlen ("IP ") < inStrLen) {
@@ -1370,7 +1450,10 @@ bool parse_ip (char *inStr, uint16_t inStrLen, uint32_t *outIpAddr) {
     }
     return res;
 }
+#endif
 
+
+#if 0
 // CanFlasher on CanFlash Version 0.17.1.1.34 GCC Release 11/7/2020 19:34:29 FlashId:E58F0042 Serial:202B17D3015A by
 // Arrival
 bool parse_serial (char *inStr, uint16_t inStrLen, uint64_t *outSerial64bNumber) {
@@ -1403,7 +1486,9 @@ bool parse_serial (char *inStr, uint16_t inStrLen, uint64_t *outSerial64bNumber)
 
     return res;
 }
+#endif
 
+#if 0
 bool lower_case_str (char *str) {
     bool res = false;
     if (str) {
@@ -1414,7 +1499,10 @@ bool lower_case_str (char *str) {
     }
     return res;
 }
+#endif
 
+
+#if 0
 char *upper_case_str (char *str) {
     static char out_str[100];
     strncpy (out_str, str, sizeof (out_str));
@@ -1426,7 +1514,9 @@ char *upper_case_str (char *str) {
     }
     return out_str;
 }
+#endif
 
+#if 0
 bool is_camel_case (const char *in) {
     bool res = true;
     uint16_t len = strlen (in);
@@ -1442,7 +1532,9 @@ bool is_camel_case (const char *in) {
 
     return res;
 }
+#endif
 
+#if 0
 char *toSnakeCase (const char *in) {
     static char out_str[200];
     strcpy (out_str, "");
@@ -1486,7 +1578,9 @@ char *toSnakeCase (const char *in) {
     out_str[n++] = 0;
     return out_str;
 }
+#endif
 
+#if 0
 char *camel_case_2_snake_case1 (char *camel_case_str) {
     static char out_str[200];
     strcpy (out_str, "");
@@ -1534,7 +1628,9 @@ char *camel_case_2_snake_case1 (char *camel_case_str) {
     }
     return out_str;
 }
+#endif
 
+#if 0
 char *str_append (char *in_str, char letter) {
 #ifdef DEBUG_STR_OPS
     printf ("\n%s()", __FUNCTION__);
@@ -1559,6 +1655,7 @@ char *str_append (char *in_str, char letter) {
 
 #endif
 
+#if 0
 bool is_bracket (char ch) {
     bool res = false;
     switch (ch) {
@@ -1578,7 +1675,9 @@ bool is_bracket (char ch) {
     }
     return res;
 }
+#endif
 
+#if 0
 bool brackets_same_type (char open, char close) {
     if (('(' == open) && (')' == close)) {
         return true;
@@ -1594,34 +1693,9 @@ bool brackets_same_type (char open, char close) {
     }
     return false;
 }
+#endif
 
-bool is_valid_parentheses (const char *s) {
-    bool res = false;
-    Lifo_array_t lifoObj;
-    int str_len = strlen (s);
-    char *array = (char *)malloc (str_len);
-    if (array) {
-        lifo_init (&lifoObj, str_len, array);
-        char out_char = 'x';
-        for (int i = 0; i < str_len; i++) {
-            out_char = 'x';
-            if (is_bracket (s[i])) {
-                lifo_peek (&lifoObj, &out_char);
-                if (true == brackets_same_type (out_char, s[i])) {
-                    lifo_pull (&lifoObj, &out_char);
-                } else {
-                    lifo_push (&lifoObj, s[i]);
-                }
-            }
-        }
-        if (0 == lifoObj.lifoStat.len) {
-            res = true;
-        }
-        free (array);
-    }
-    return res;
-}
-
+#if 0
 char *str_cat_dyn (char *in_str1, char *in_str2) {
     char *out_str = NULL;
     int len1 = strlen (in_str1);
@@ -1634,3 +1708,4 @@ char *str_cat_dyn (char *in_str1, char *in_str2) {
     }
     return out_str;
 }
+#endif

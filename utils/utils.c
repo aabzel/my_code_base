@@ -501,16 +501,29 @@ bool print_mem_vertical (uint8_t *memPtr, uint32_t numByte, bool printChars) {
     return res;
 }
 
-bool print_mem_horisonal (uint8_t *memPtr, uint32_t numByte) {
+bool print_mem_horisonal (FILE *out_file_prt,uint8_t *memPtr, uint32_t numByte, bool gap) {
     bool res = false;
-    printf ("\n\nval : ");
+#if 0
+
+    fprintf (out_file_prt, "\n\n %s() %u [byte]",__FUNCTION__, numByte);
+    fprintf (stdout, "\n\n %s() %u [byte]",__FUNCTION__, numByte);
     if (NULL != memPtr) {
         uint32_t i = 0;
+        fprintf (out_file_prt, "\n\nind : ");
         for (i = 0; i < numByte; i++) {
-            if (0 == (i % 4) && (0 != i)) {
-                printf (" ");
+            if ((0 == (i % 4)) && (0 != i) && (true==gap)) {
+                fprintf (out_file_prt, " ");
             }
-            printf ("%02X", memPtr[i]);
+        	fprintf (out_file_prt,"%02u",i);
+        	fprintf (stdout,"%02u",i);
+        }
+        fprintf (out_file_prt, "\n\nval : ");
+        for (i = 0; i < numByte; i++) {
+            if ((0 == (i % 4)) && (0 != i) && (true==gap)) {
+                fprintf (out_file_prt, " ");
+            }
+            fprintf (out_file_prt, "%02x", memPtr[i]);
+            fprintf (stdout, "%02x", memPtr[i]);
         }
         printf ("\nadr : ");
         for (i = 0; i < numByte; i += 4) {
@@ -518,6 +531,7 @@ bool print_mem_horisonal (uint8_t *memPtr, uint32_t numByte) {
             printf (" ");
         }
     }
+#endif
     return res;
 }
 
@@ -644,21 +658,6 @@ uint16_t float_to_uint16 (float inVal) {
     return outVal;
 }
 #endif
-
-uint16_t reverse_byte_order_uint16 (const uint16_t in2byteVal) {
-    uint16_t swapped = 0;
-    swapped = (in2byteVal >> 8) | (in2byteVal << 8);
-    return swapped;
-}
-
-uint32_t reverse_byte_order_uint32 (const uint32_t in4byteVal) {
-    uint32_t retval;
-    retval = in4byteVal & 0xFF;
-    retval = (retval << 8) | ((in4byteVal >> 8) & 0xFF);
-    retval = (retval << 8) | ((in4byteVal >> 16) & 0xFF);
-    retval = (retval << 8) | ((in4byteVal >> 24) & 0xFF);
-    return retval;
-}
 
 void print_indent (int indent) {
     for (int i = 0; i < indent; i++) {

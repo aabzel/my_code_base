@@ -9,6 +9,8 @@
 #include <iostream>
 #endif
 
+bool unit_test (void);
+
 #define EXPECT_EQ_STR(strL, strR)                                                                                      \
     do {                                                                                                               \
         if (0 != strcmp (strL, strR)) {                                                                                \
@@ -90,8 +92,10 @@ bool u_tests (void);
     do {                                                                                                               \
         /*int val1 = vala; */                                                                                              \
         /*int val2 = val2; */                                                                                              \
-        if (val1 != valb) {                                                                                            \
-        	rx_printf ("\n%s():Line: %d in val1: %u val2: %u ", __FUNCTION__, __LINE__, val1, val2);                      \
+        if (val1 != val2) {                                                                                            \
+        	printf ("\n%s():\n\rLine: %d "\
+        			"\n\r exp  val: %u 0x%016llxx" \
+        			"\n\r real val: %u 0x%016llxx ", __FUNCTION__, __LINE__, val1, val1, val2, val2);                      \
             /*printf ("   val1: 0x%x val2: 0x%x  ", (int)val1, (int)val2);*/                                           \
             return false;                                                                                              \
         } else {                                                                                                       \

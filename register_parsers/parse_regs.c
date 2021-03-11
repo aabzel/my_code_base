@@ -16,6 +16,10 @@
 #include "parse_tja1145_regs.h"
 #endif
 
+#ifdef HAS_SD_CARD
+#include "parse_sd_card_regs.h"
+#endif
+
 #include "str_ops.h"
 #include "utils.h"
 
@@ -31,6 +35,16 @@ bool parse_regs_file (char *in_file_name, char *out_file_name) {
     if (NULL == out_file_name) {
         out_file_name = "reg_interpretation.txt";
     }
+#ifdef HAS_SD_CARD
+    ch = strstr (in_file_name, "sd_card");
+    if (NULL != ch) {
+        res = parse_sd_card_regs_file (in_file_name, out_file_name);
+        if (false == res) {
+            printf ("\nError in parsing sr_card register blob");
+        }
+    }
+#endif
+
 #ifdef HAS_TJA1101
     ch = strstr (in_file_name, "tja1101");
     if (NULL != ch) {

@@ -11,34 +11,6 @@
 
 xReg_map_t RegMap[MAX_NUM_REG];
 
-//< REG="Basic Control" Addr=0
-bool parse_text_after_prefix (char *cur_file_str, int in_str_len, char *out_text, char *prefix) {
-    bool res = false;
-    int prefix_len = strlen (prefix);
-    char *ptr = strstr (cur_file_str, prefix);
-    if (ptr) {
-#ifdef DEBUG_GENERATE_REG_PARSER
-        printf ("\n spot prefix [%s]", prefix);
-#endif
-        res = true;
-        int i = 0;
-        for (i = 0; i < in_str_len; i++) {
-            if ('"' != *(ptr + prefix_len + i)) {
-                out_text[i] = *(ptr + prefix_len + i);
-                res = true;
-            } else {
-                break;
-            }
-        }
-        out_text[i] = 0x00;
-    } else {
-        res = false;
-#ifdef DEBUG_GENERATE_REG_PARSER
-        printf ("\n lack of prefix [%s]", prefix);
-#endif
-    }
-    return res;
-}
 
 bool parse_uint8_after_prefix (char *cur_file_str, int in_str_len, uint16_t *val, char *prefix) {
     bool res = false;
