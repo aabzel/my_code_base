@@ -98,7 +98,7 @@ static bool is_print_cmd (const shell_cmd_info_t *const cmd, const char *const s
 
 void help_dump_key (const char *subName1, const char *subName2) {
     const shell_cmd_info_t *cmd = shell_commands;
-    rx_printf ("Available commands: ");
+    rx_printf ("Available commands: K1:%s K2:%s",subName1,subName2);
     rx_putstr (CRLF);
     rx_putstr ("|   short |          long command | Description" CRLF);
     rx_putstr ("|---------|-----------------------|-----" CRLF);
@@ -115,6 +115,7 @@ void help_dump_key (const char *subName1, const char *subName2) {
 
 bool cmd_help (int32_t argc, char *argv[]) {
     bool res = false;
+    rx_printf ("argc %u " CRLF,argc);
     if (3 <= argc) {
         rx_printf ("Usage: help [subname1]  " CRLF);
         rx_printf ("       help [subname1]  [subname2]" CRLF);

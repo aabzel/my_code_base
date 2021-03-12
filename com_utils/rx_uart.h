@@ -7,6 +7,9 @@
 #include "uart_string_reader.h"
 #include "writer_generic.h"
 
+
+#define TX_ARRAY_SIZE 600
+
 #if !defined(CUBEMX) || defined(HAS_IPP_UART)
 #define UART_WRITER(os, uart, size) extern generic_writer_t os;
 UART_WRITERS

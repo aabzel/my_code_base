@@ -9,9 +9,9 @@ extern generic_writer_t dbg_o;
 
 #define DBG_UART1 &huart1
 
-#define UART_WRITERS UART_WRITER (dbg_o, DBG_UART1, 1000)
+#define UART_WRITERS UART_WRITER (dbg_o, DBG_UART1, 500)
 
-#define UART_READERS UART_READER (cmd_reader, DBG_UART1, 1000, 1000, process_shell_cmd)
+#define UART_READERS UART_READER (cmd_reader, DBG_UART1, 500, 500, process_shell_cmd)
 
 #define DBG (&dbg_o.s)
 

@@ -11,6 +11,7 @@
 #include "fatfs.h"
 #endif
 #include "gpio.h"
+#include "diag_page_common.h"
 #include "gpio_diag_page.h"
 #include "none_blocking_pause.h"
 #include "sd_card_driver.h"
@@ -78,6 +79,7 @@ int main(void) {
 
 	configureTimerForRunTimeStats();
 
+	diag_page_common_init ();
 #ifdef FAT_FS
 	res = fat_fs_init();
 	LOG_NOTICE(SYS, " FAT FS init %s", (true == res) ? "OK" : "Err");

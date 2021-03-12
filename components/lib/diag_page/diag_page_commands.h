@@ -8,14 +8,13 @@
 extern "C" {
 #endif
 
-bool diag_page_list_cmd (int32_t argc, char *argv []);
+bool diag_page_list_cmd (int32_t argc, char *argv[]);
 
 #ifndef HAS_MCAL
 
 #define cmd_diag_report diag_page_list_cmd
 
-#define DIAG_COMMANDS \
-    SHELL_CMD("diag_page", "dr", diag_page_list_cmd, "lists all diagnostic pages"), \
+#define DIAG_COMMANDS SHELL_CMD ("diag_page", "dr", diag_page_list_cmd, "lists all diagnostic pages"),
 
 #endif
 

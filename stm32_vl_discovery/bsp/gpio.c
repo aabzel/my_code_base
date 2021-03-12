@@ -42,8 +42,8 @@ uint32_t calc_port_addr (uint8_t port) {
     return addr;
 }
 
-bool init_pin (const pin_info_t *pin_info) {
-    bool res = false;
+uint8_t init_pin (const pin_info_t *pin_info) {
+	uint8_t ret = 0;
     if ((0xFFFFFFFF != pin_info->Mode) && (0xFF != pin_info->pin_pad)) {
 
         GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -60,7 +60,7 @@ bool init_pin (const pin_info_t *pin_info) {
         GPIO_InitStruct.Speed = pin_info->Speed;
 
         HAL_GPIO_Init (GPIOx, &GPIO_InitStruct);
-        res = true;
+        ret = 1;
     }
-    return res;
+    return ret;
 }

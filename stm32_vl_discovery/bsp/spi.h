@@ -17,7 +17,6 @@ extern uint32_t spi1_tx_cnt;
 extern uint32_t spi1_err_cnt;
 extern uint32_t spi1_rxtx_cnt;
 extern SPI_HandleTypeDef SD_SPI_HANDLE;
-
 bool spi1_send_receive_byte (uint8_t tx_byte, uint8_t *rx_byte);
 bool spi1_receive_byte (uint8_t *rx_byte);
 bool spi1_send_byte (uint8_t tx_byte);

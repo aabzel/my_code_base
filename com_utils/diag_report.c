@@ -63,11 +63,6 @@ __attribute__ ((weak)) bool diag_page_version (ostream_t *stream) {
 
 __attribute__ ((weak)) bool diag_page_sysinfo (ostream_t *stream) {
     (void)stream; /* May be unused depending on configuration */
-
-
-#ifdef HAS_TSENS
-    oprintf (stream, "MCU Temperature: %1.2f" CRLF, getTSENS_Temp ());
-#endif
     return true;
 }
 
