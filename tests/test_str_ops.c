@@ -27,7 +27,6 @@ static bool test_camel_case_2_snake_case (void) {
 }
 #endif
 
-
 #if 0
 bool test_extract_sub_string (void) {
     char outStr[100] = "";
@@ -452,7 +451,6 @@ static bool test_try_extract_hex_uint8 (void) {
     return true;
 }
 
-
 static bool test_try_extract_hex_uint32 (void) {
     printf ("\n%s", __FUNCTION__);
     uint32_t val_32_b = 0;
@@ -461,7 +459,6 @@ static bool test_try_extract_hex_uint32 (void) {
     strncpy (inStr, "reg addr: 0x7A reg val: 0xc0ff8000 ", sizeof (inStr));
     EXPECT_TRUE (try_extract_hex_uint32 (inStr, strlen (inStr), &val_32_b));
     EXPECT_EQ (0xc0ff8000, val_32_b);
-
 
     strncpy (inStr, "       INT_STAT[0x02]: 0x00000600 0b_0000_0000_0000_0000_0000_0110_0000_0000", sizeof (inStr));
     EXPECT_TRUE (try_extract_hex_uint32 (inStr, strlen (inStr), &val_32_b));
@@ -473,7 +470,6 @@ static bool test_try_extract_hex_uint32 (void) {
     printf ("\n%s OK!", __FUNCTION__);
     return true;
 }
-
 
 #if 0
 static bool test_2_upper_case (void) {
@@ -507,32 +503,30 @@ static bool test_parse_reg_name (void) {
     char cur_file_str[500];
     char reg_name[500];
     uint8_t reg_blob[512];
-    memset(reg_blob,0x00,sizeof(reg_blob));
+    memset (reg_blob, 0x00, sizeof (reg_blob));
     uint16_t reg_blob_len = 0;
 
     strncpy (cur_file_str, "< REG=\"Basic Control\" Addr=0", sizeof (cur_file_str));
-    EXPECT_TRUE ( parse_text_after_prefix (cur_file_str, strlen (cur_file_str), reg_name,&reg_blob_len, "REG=\"",'\"'));
+    EXPECT_TRUE (
+        parse_text_after_prefix (cur_file_str, strlen (cur_file_str), reg_name, &reg_blob_len, "REG=\"", '\"'));
     EXPECT_EQ_STR ("Basic Control", reg_name);
 
-    memset(reg_name,0x00,sizeof(reg_name));
+    memset (reg_name, 0x00, sizeof (reg_name));
     strncpy (cur_file_str, "reg addr: 0x4A 0sfe275048534434474250dad49145011977852f| ", sizeof (cur_file_str));
-    EXPECT_TRUE ( parse_text_after_prefix (cur_file_str, strlen (cur_file_str), reg_name,&reg_blob_len, "0s",'|'));
+    EXPECT_TRUE (parse_text_after_prefix (cur_file_str, strlen (cur_file_str), reg_name, &reg_blob_len, "0s", '|'));
     EXPECT_EQ_STR ("fe275048534434474250dad49145011977852f", reg_name);
 
+    EXPECT_TRUE (try_extract_hex_uint8_array (cur_file_str, strlen (cur_file_str), reg_blob, &reg_blob_len));
+    EXPECT_EQ (19, reg_blob_len);
+    // fe275048534434474250dad49145011977852f
+    EXPECT_EQ (0xfe, reg_blob[0]);
+    EXPECT_EQ (0x27, reg_blob[1]);
+    EXPECT_EQ (0x50, reg_blob[2]);
 
-    EXPECT_TRUE ( try_extract_hex_uint8_array(cur_file_str, strlen (cur_file_str),reg_blob,&reg_blob_len));
-    EXPECT_EQ(19,reg_blob_len);
-    //fe275048534434474250dad49145011977852f
-    EXPECT_EQ(0xfe,reg_blob[0]);
-    EXPECT_EQ(0x27,reg_blob[1]);
-    EXPECT_EQ(0x50,reg_blob[2]);
-
-    EXPECT_EQ(0x2f,reg_blob[18]);
+    EXPECT_EQ (0x2f, reg_blob[18]);
 
     return true;
 }
-
-
 
 bool test_str_ops (void) {
     printf ("\n%s", __FUNCTION__);
@@ -546,8 +540,8 @@ bool test_str_ops (void) {
     EXPECT_TRUE (test_detect_change ());
     EXPECT_TRUE (test_find_the_difference ());
 #endif
-    EXPECT_TRUE (test_parse_reg_name());
-    EXPECT_TRUE ( test_try_extract_hex_uint8 ());
-    EXPECT_TRUE ( test_try_extract_hex_uint32 ());
+    EXPECT_TRUE (test_parse_reg_name ());
+    EXPECT_TRUE (test_try_extract_hex_uint8 ());
+    EXPECT_TRUE (test_try_extract_hex_uint32 ());
     return true;
 }

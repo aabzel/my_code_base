@@ -6,7 +6,7 @@
 
 #include "unit_test_info.h"
 
-#define UTEST_NUMBER 3U
+#define UTEST_NUMBER 4U
 
 unit_test_info_t test_list[UTEST_NUMBER];
 

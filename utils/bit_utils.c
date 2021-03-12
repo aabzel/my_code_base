@@ -6,7 +6,11 @@
  * */
 #include "bit_utils.h"
 
+#ifdef X86
 #include <stdio.h>
+#endif
+
+#include "byte_utils.h"
 
 #define SKIP_ZER 0
 #define CNT_ZER 1
@@ -36,18 +40,15 @@ int proc_bit(int bit, int *cur_state, int *cnt) {
 			(*cur_state) = SKIP_ZER;
 		}
 		if (1 == bit) {
-			printf("count 0\n");
 			(*cur_state) = CNT_ZER;
 			(*cnt) = 0;
 		}
 	}
 	if (CNT_ZER == *cur_state) {
 		if (0 == bit) {
-			printf("0");
 			(*cnt)++;
 		}
 		if (1 == bit) {
-			printf("cnt %u\n", *cnt);
 			cur_gap = *cnt;
 			(*cnt) = 0;
 		}
@@ -242,8 +243,10 @@ typedef union xUtmp64_bit_t{
 //fe2_75048534_4
 uint32_t eject_value_from_array(uint8_t *reg_array_blob, uint16_t reg_blob_len,
 		uint16_t maxBit, uint16_t minBit) {
+#ifdef X86
     printf ("\n[d] %s()", __FUNCTION__);
     print_mem_horisonal (stdout,reg_array_blob,   reg_blob_len, false);
+#endif
 	//len*8....9876543210
 	// maxBit from right
 	// minBit from right
@@ -257,11 +260,9 @@ uint32_t eject_value_from_array(uint8_t *reg_array_blob, uint16_t reg_blob_len,
 	printf("\n total_num_of_bit %u bit %u byte", total_num_of_bit,reg_blob_len );
 #endif
 	if (maxBit < minBit) {
-		printf("\n Error maxBit<minBit");
 		return 0;
 	}
 	if (total_num_of_bit <= maxBit) {
-		printf("\n total_num_of_bit<=maxBit");
 		return 0;
 	}
 	uint16_t lbitPosMax = (total_num_of_bit - 1) - maxBit;
@@ -280,7 +281,22 @@ uint32_t eject_value_from_array(uint8_t *reg_array_blob, uint16_t reg_blob_len,
 				7 - lbitPosMax % 8, 7 - lbitPosMin % 8);
 	} else {
 		uint16_t byte_len = byteMin - byteMax +1;
-		printf("\n Sub val len %u byte", byte_len);
+		if (3 == byte_len) {
+			uint16_t max_bit = 7 - lbitPosMax % 8 + (byte_len-1) * 8;
+			uint16_t min_bit = 7 - lbitPosMin % 8;
+			UnTmp64_t unVal;
+			unVal.ldwd=0;
+			unVal.ch[0]=reg_array_blob[byteMax+2];
+			unVal.ch[1]=reg_array_blob[byteMax+1];
+			unVal.ch[2]=reg_array_blob[byteMax+0];
+			unVal.ch[3]=0;
+			unVal.ch[4]=0;
+			unVal.ch[5]=0;
+			unVal.ch[6]=0;
+			unVal.ch[7]=0;
+			unVal.ldwd = extract_subval_from_64bit(unVal.ldwd, max_bit, min_bit);
+			sub_val = unVal.dwd[0] ;
+		}
 		if (5 == byte_len) {
 			uint16_t max_bit = 7 - lbitPosMax % 8 + (byte_len-1) * 8;
 			uint16_t min_bit = 7 - lbitPosMin % 8;
@@ -296,13 +312,7 @@ uint32_t eject_value_from_array(uint8_t *reg_array_blob, uint16_t reg_blob_len,
 			unVal.ch[7]=reg_array_blob[byteMax]*0;
 			//uint64_t sub_val64=0;
 			//memcpy(&sub_val64, &reg_array_blob[byteMax], 8);
-			printf("\n Sub val     0x%016llx ", unVal.ldwd);
-			//sub_val64 = reverse_byte_order_uint64(sub_val64);
-			//unVal.ldwd=unVal.ldwd>>min_bit;
-			printf("\n Sub val rev 0x%016llx ", unVal.ldwd);
-			printf("\n bit frame [63...[%u...%u]..0]", max_bit, min_bit);
 			unVal.ldwd = extract_subval_from_64bit(unVal.ldwd, max_bit, min_bit);
-			printf("\n Sub val ext 0x%016llx ", unVal.ldwd);
 			sub_val = unVal.dwd[0] ;
 		}
 
@@ -311,8 +321,6 @@ uint32_t eject_value_from_array(uint8_t *reg_array_blob, uint16_t reg_blob_len,
 			uint16_t min_bit = 7 - lbitPosMin % 8;
 			memcpy(&sub_val, &reg_array_blob[byteMax], byte_len);
 			sub_val = reverse_byte_order_uint32(sub_val);
-			printf("\n Sub val 0x%08x ", sub_val);
-			printf("\n bit frame [31...[%u...%u]..0]", max_bit, min_bit);
 			sub_val = extract_subval_from_32bit(sub_val, max_bit, min_bit);
 		}
 		if (2 == byte_len) {
@@ -321,10 +329,7 @@ uint32_t eject_value_from_array(uint8_t *reg_array_blob, uint16_t reg_blob_len,
 			uint16_t min_bit = 7 - (lbitPosMin % 8);
 			memcpy(&sub_val16, &reg_array_blob[byteMax], byte_len);
 			sub_val16 = reverse_byte_order_uint16(sub_val16);
-			printf("\n Sub val big endian 0x%04x ", sub_val16);
-			printf("\n bit frame [15...[%u...%u]..0]", max_bit, min_bit);
 			sub_val16 = extract_subval_from_16bit(sub_val16, max_bit, min_bit);
-			printf("\n extracted 0x%04x ", sub_val16);
 			sub_val = sub_val16;
 		}
 	}
@@ -556,14 +561,12 @@ int hammingDistance(int x, int y) {
 }
 
 int missingNumber(int *nums, int numsSize) {
-	printf("\n[d] %s()", __FUNCTION__);
 	int missing = numsSize;
 	int temp = 0;
 	for (int i = 0; i < numsSize; i++) {
 		missing ^= i ^ nums[i];
 		temp ^= nums[i];
 	}
-	printf("\n [d] temp %d missing %d", temp, missing);
 	return missing;
 }
 

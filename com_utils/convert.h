@@ -1,12 +1,13 @@
 #ifndef H__RX_CONVERT_H
 #define H__RX_CONVERT_H
 
-#include "float_utils.h"
 #include <math.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
+
+#include "float_utils.h"
 
 #ifdef __cplusplus
 extern "C" {

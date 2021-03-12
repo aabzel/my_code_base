@@ -36,33 +36,37 @@ static bool test_missing_number (void) {
     return true;
 }
 
-
-
-static bool test_extract_sub_val(void) {
+static bool test_extract_sub_val (void) {
     printf ("\n[d] %s()", __FUNCTION__);
     uint32_t sub_val;
 
-    uint8_t reg_array_blob_40bit[]={0xfe,0x27,0x50,0x48,0x53};
-    sub_val = eject_value_from_array(reg_array_blob_40bit, 5, 35, 4);
+    uint8_t reg_array_blob_40bit[] = {0xfe, 0x27, 0x50, 0x48, 0x53};
+    sub_val = eject_value_from_array (reg_array_blob_40bit, sizeof (reg_array_blob_40bit), 19, 4);
+    EXPECT_EQ (0x0485, sub_val);
+
+    sub_val = eject_value_from_array (reg_array_blob_40bit, sizeof (reg_array_blob_40bit), 23, 8);
+    EXPECT_EQ (0x5048, sub_val);
+
+
+    sub_val = eject_value_from_array (reg_array_blob_40bit, sizeof (reg_array_blob_40bit), 35, 4);
     EXPECT_EQ (0xe2750485, sub_val);
 
     //        fe2_75048534_4
-    uint8_t reg_array_blob[]={0xfe,0x27,0x50,0x48,0x53,0x44};
-    //8*6 = 48 bit
+    uint8_t reg_array_blob[] = {0xfe, 0x27, 0x50, 0x48, 0x53, 0x44};
+    // 8*6 = 48 bit
 
-    sub_val = eject_value_from_array(reg_array_blob, 6, 35, 4);
+    sub_val = eject_value_from_array (reg_array_blob, 6, 35, 4);
     EXPECT_EQ (0x75048534, sub_val);
 
-    sub_val = eject_value_from_array(reg_array_blob, 6, 7+4, 0+4);
+    sub_val = eject_value_from_array (reg_array_blob, 6, 7 + 4, 0 + 4);
     EXPECT_EQ (0x34, sub_val);
 
-    sub_val= eject_value_from_array(reg_array_blob, 6, 7, 0);
+    sub_val = eject_value_from_array (reg_array_blob, 6, 7, 0);
     EXPECT_EQ (0x44, sub_val);
 
     printf ("\n[d] %s() end", __FUNCTION__);
     return true;
 }
-
 
 bool test_extract_subval_utils16 (void) {
     printf ("\n[d] %s()", __FUNCTION__);
@@ -72,8 +76,6 @@ bool test_extract_subval_utils16 (void) {
     EXPECT_EQ (0x000f, extract_subval_from_16bit (0x000F, 3, 0));
     return true;
 }
-
-
 
 bool test_bin_utils (void) {
     printf ("\n[d] %s()", __FUNCTION__);

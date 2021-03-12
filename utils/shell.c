@@ -186,10 +186,10 @@ bool cmd_read_memory (int32_t argc, char *argv[]) {
     return res;
 }
 
-bool stack_dir(int *main_local_addr) {
+static bool stack_dir(int32_t *main_local_addr) {
 	bool res = false;
 	int32_t fun_local;
-    if (main_local_addr < &fun_local) {
+    if (((void*)main_local_addr) < ((void*) &fun_local)) {
     	rx_printf("Stack grows from small addr to big addr -> \n"CRLF);
     } else {
     	rx_printf("Stack grows from big addr to small addr <- \n"CRLF);

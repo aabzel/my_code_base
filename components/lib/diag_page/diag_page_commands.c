@@ -1,6 +1,8 @@
 #include "diag_page_commands.h"
-#include "log.h"
+
 #include "convert.h"
+#include "diag_page_nums.h"
+#include "log.h"
 
 bool diag_page_list_cmd (int32_t argc, char *argv []) {
     bool success = true;

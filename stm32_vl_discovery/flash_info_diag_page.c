@@ -1,12 +1,10 @@
-/*****************************************************************************
- * @file    flash_info_diag_page.c
- *****************************************************************************/
+#include "flash_info_diag_page.h"
 
 #include <inttypes.h>
 
-#include "device_flash_info.h"
 #include "diag_page.h"
-#include "flash_info_diag_page.h"
+#include "diag_page_nums.h"
+#include "device_flash_info.h"
 
 #ifdef HAS_MCAL
 #include "uid.h"

@@ -1,9 +1,9 @@
 
-#include <iostream>
 #include <cstring>
+#include <iostream>
 
-#include "uTests.h"
 #include "test_majority_element.h"
+#include "uTests.h"
 
 #ifdef ROMAN_TO_NUMBERS
 #include "test_roman_numbers.h"

@@ -156,3 +156,8 @@ bool is_flash_range_accessable (void const *addr, uint32_t size) {
 
     return retval;
 }
+
+
+uint32_t get_flash_crc (const flash_info_t *fi) {
+    return 0;
+}

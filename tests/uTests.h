@@ -90,12 +90,13 @@ bool u_tests (void);
 
 #define EXPECT_EQ(val1, val2)                                                                                          \
     do {                                                                                                               \
-        /*int val1 = vala; */                                                                                              \
-        /*int val2 = val2; */                                                                                              \
+        /*int val1 = vala; */                                                                                          \
+        /*int val2 = val2; */                                                                                          \
         if (val1 != val2) {                                                                                            \
-        	printf ("\n%s():\n\rLine: %d "\
-        			"\n\r exp  val: %u 0x%016llxx" \
-        			"\n\r real val: %u 0x%016llxx ", __FUNCTION__, __LINE__, val1, val1, val2, val2);                      \
+            printf ("\n%s():\n\rLine: %d "                                                                             \
+                    "\n\r exp  val: %u 0x%016llxx"                                                                     \
+                    "\n\r real val: %u 0x%016llxx ",                                                                   \
+                    __FUNCTION__, __LINE__, val1, val1, val2, val2);                                                   \
             /*printf ("   val1: 0x%x val2: 0x%x  ", (int)val1, (int)val2);*/                                           \
             return false;                                                                                              \
         } else {                                                                                                       \

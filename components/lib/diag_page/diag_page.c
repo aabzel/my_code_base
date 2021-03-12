@@ -3,6 +3,7 @@
 #include "log.h"
 #include "common_stream.h"
 #include "io_utils.h"
+#include "diag_page_nums.h"
 
 #ifndef HAS_MCAL
 #include "diag_page_common.h"

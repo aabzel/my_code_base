@@ -1,5 +1,5 @@
-#ifndef OSTREAM_H_
-#define OSTREAM_H_
+#ifndef OSTREAM_H
+#define OSTREAM_H
 
 #include <stdint.h>
 
@@ -20,7 +20,7 @@ void oputc (ostream_t *ostream, char c);
 }
 #endif
 
-#endif /* OSTREAM_H_ */
+#endif /* OSTREAM_H*/
 
 
 

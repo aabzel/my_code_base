@@ -9,17 +9,6 @@ extern "C" {
 #include "stream.h"
 #include "convert.h"
 
-#define DIAG_PAGE_INDEX          (0U)
-#define DIAG_PAGE_VERSION        (1U)
-#define DIAG_PAGE_CAN            (2U)
-#define DIAG_PAGE_MODEL          (4U)
-#define DIAG_PAGE_SYSINFO        (5U)
-#define DIAG_PAGE_TASKS          (6U)
-#ifdef TEST_FIRMWARE
-#define DIAG_PAGE_UARTS          (7U)
-#endif
-#define DIAG_PAGE_PARAMS         (8U)
-
 #define WIDTH_OF_VOLTS_COLUMN (7)
 
 struct diag_page_rec_s;

@@ -83,11 +83,9 @@ extern const volatile flash_info_t flash_info;
 extern const volatile flash_info_t bl_flash_info;
 #endif /* FOR_BOOTLOADER */
 
-#if 0
-static inline uint32_t get_flash_crc (const flash_info_t *fi) {
-    return fi->flash_crc;
-}
-#endif
+
+uint32_t get_flash_crc (const flash_info_t *fi);
+
 
 static inline uint32_t get_version_build (const flash_info_t *fi) {
     return (fi->info_version == 2U) ? fi->version_build32 : fi->version_build16;

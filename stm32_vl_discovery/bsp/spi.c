@@ -128,6 +128,40 @@ bool spi1_send_byte (uint8_t tx_byte) {
     return res;
 }
 
+uint8_t spi_read(void) {
+	uint8_t rx_byte = 0xFF;
+	spi1_receive_byte(&rx_byte);
+	return rx_byte;
+}
+
+
+
+bool spi1_receive_array(uint8_t *out_buff, uint32_t arr_len) {
+	bool res = false;
+	if (NULL != out_buff) {
+		res = true;
+		uint32_t cnt = 0;
+		for (cnt = 0; cnt < arr_len; cnt++) {
+			(*(out_buff++)) =spi_read ();
+		}
+	}
+	return res;
+}
+
+bool spi1_sent_array(const uint8_t *in_buff, uint32_t arr_len) {
+	bool res = false;
+	if (NULL != in_buff) {
+		res = true;
+		uint32_t cnt = 0;
+		for (cnt = 0; cnt < arr_len; cnt++) {
+			spi1_send_byte(*(in_buff));
+			in_buff++;
+		}
+	}
+	return res;
+}
+
+
 void HAL_SPI_MspInit (SPI_HandleTypeDef *hspi) {
     GPIO_InitTypeDef GPIO_InitStruct;
     if (hspi->Instance == SPI1) {

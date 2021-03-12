@@ -14,7 +14,9 @@
 #include <ctype.h>
 #include <float.h>
 #include <limits.h>
+#ifdef X85
 #include <stdio.h>
+#endif
 #include <stdlib.h>
 
 static const char symbols[] = "FEDCBA9876543210123456789ABCDEF";

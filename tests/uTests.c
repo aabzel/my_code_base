@@ -1,16 +1,18 @@
 #include "uTests.h"
 
-
+#include <malloc.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <malloc.h>
-#include <time.h>
 
 #ifdef HAS_SD_CARD
 #include "test_parse_sd_card_regs.h"
+#endif
+
+#ifdef CD_CARD_CRC7
+#include "test_sd_card_crc.h"
 #endif
 
 #include "utils.h"
@@ -89,10 +91,9 @@
 
 #if 0
 #include "bin_utils_test.h"
-#include "tree_lions.h"
 #include "compare_version_test.h"
+#include "tree_lions.h"
 #endif
-
 
 #ifdef HAS_TIC12400
 #include "parse_tja1101_regs.h"
@@ -129,8 +130,8 @@
 #endif
 
 #ifdef HAS_LEET_CODE
-#include "test_hash_set.h"
 #include "test_decode_way.h"
+#include "test_hash_set.h"
 #endif
 
 #include "float_utils.h"
@@ -170,7 +171,6 @@
 #endif
 //#include "test_lifo_char.h"
 #include "utils.h"
-
 
 #if 0
 static bool test_parse_mac (void) {
@@ -352,50 +352,53 @@ bool unit_test (void) {
     bool res = false;
     (void)res;
 #ifdef BYTE_UTILS
+    EXPECT_TRUE(test_byte_utils ());
+#endif
 
-    EXPECT_TRUE( test_byte_utils ());
+#ifdef CD_CARD_CRC7
+    EXPECT_TRUE(test_crc7());
 #endif
 
 #ifdef SORT_LIST
-    EXPECT_TRUE(test_sort_list ());
+    EXPECT_TRUE (test_sort_list ());
 #endif
 
 #ifdef HAS_SD_CARD
-    EXPECT_TRUE(test_parse_reg_sd_card());
+    EXPECT_TRUE (test_parse_reg_sd_card ());
 #endif
 
 #ifdef TEST_HEAP_MEM
-    EXPECT_TRUE(test_free_zero ());
+    EXPECT_TRUE (test_free_zero ());
     // EXPECT_TRUE(test_malloc_zero()); fails
-    EXPECT_TRUE(test_malloc ());
+    EXPECT_TRUE (test_malloc ());
     test_heap ();
     test_heap_set ();
 #endif
 
 #ifdef TEST_DSOL
-    EXPECT_TRUE(test_dsol ());
+    EXPECT_TRUE (test_dsol ());
 #endif
 
 #ifdef WIN_UTILS
 #ifdef HAS_LCD_TEST
     char tx_text[] = "\n\r[d]Test TCP server";
     uint32_t tcp_server_ip;
-    EXPECT_TRUE(try_strl2ipv4 ("127.0.0.1", strlen ("127.0.0.1"), &tcp_server_ip);
-                 EXPECT_TRUE(sent_to_tcp_server (tx_text, strlen (tx_text), LCD_PORT, tcp_server_ip)));
+    EXPECT_TRUE (try_strl2ipv4 ("127.0.0.1", strlen ("127.0.0.1"), &tcp_server_ip);
+                 EXPECT_TRUE (sent_to_tcp_server (tx_text, strlen (tx_text), LCD_PORT, tcp_server_ip)));
 #endif
 #endif
 
 #ifdef EXAFORE
-    EXPECT_TRUE(test_struct ());
+    EXPECT_TRUE (test_struct ());
 #endif
 
 #ifdef MICROAVIA_TASK
-    EXPECT_TRUE(test_microavia ());
+    EXPECT_TRUE (test_microavia ());
 #endif
 
 #ifdef HAS_TREE_LIONS
-    EXPECT_TRUE(test_lion_man_task ());
-    EXPECT_TRUE(run_tree_lions ());
+    EXPECT_TRUE (test_lion_man_task ());
+    EXPECT_TRUE (run_tree_lions ());
 #endif
 
 #ifdef HAS_TEST_ALGORITHM
@@ -468,7 +471,6 @@ bool unit_test (void) {
 #ifdef BIT_UTILS
     EXPECT_TRUE( test_bin_utils ());
 #endif
-
 
 #ifdef TEST_MATRIX_ACCESS
     EXPECT_TRUE( test_matrix_accsess ());
@@ -3490,5 +3492,3 @@ bool test_print_matrix (void) {
     return true;
 }
 #endif
-
-

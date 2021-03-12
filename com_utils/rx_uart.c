@@ -3,26 +3,23 @@
 #include <inttypes.h>
 #include <stdbool.h>
 
-#include "rx_uart_misra.h"
 #include "convert.h"
+#include "diag_page_nums.h"
 #include "diag_report.h"
 #include "log.h"
+#include "none_blocking_pause.h"
 #include "oprintf.h"
 #include "rx_io.h"
 #include "rx_uart_config.h"
+#include "rx_uart_misra.h"
 #include "rx_utils.h"
 #include "sections.h"
 #include "table_utils.h"
-#include "diag_page_nums.h"
 #include "watchdog.h"
 #include "writer_generic.h"
 #include "writer_uart.h"
-#include "none_blocking_pause.h"
 
-
-#ifdef CUBEMX
 #include "uart_driver_stm32.h"
-#endif
 
 #ifdef EMBEDDED_TEST
 #include "print_buffer.h"
@@ -33,143 +30,82 @@
 #pragma GCC diagnostic ignored "-Wcast-qual"
 #endif
 
-#if defined(SPC58xC) || defined(SPC58xN)
-#include "sections.h"
-#define SECTION SRAM2 ("noinit")
-#else
-#define SECTION
-#endif
 
-#ifdef ENABLE_MULTICORE
-#define UART_WRITER(os, uart, size)                                                                                    \
-    NOINIT static char os##_data[(size)] SECTION;                                                                      \
-    generic_writer_t (os) = {{writer_putc, writer_puts},                                                               \
-                             0,                                                                                        \
-                             0,                                                                                        \
-                             0,                                                                                        \
-                             0,                                                                                        \
-                             FIFO_CHAR_INIT_WITH_IC_MUTEX ((size), (os##_data), IC_MUTEX_LOG),                         \
-                             uart_writer_transmit,                                                                     \
-                             (void *)(uart)};
-UART_WRITERS
-#else
-#define UART_WRITER(os, uart, size)                                                                                    \
-    NOINIT static char os##_data[(size)] SECTION;                                                                      \
-    generic_writer_t (os) = {{writer_putc, writer_puts},                                                               \
-                             0,                                                                                        \
-                             0,                                                                                        \
-                             0,                                                                                        \
-                             0,                                                                                        \
-                             FIFO_CHAR_INIT ((size), (os##_data)),                                                     \
-                             uart_writer_transmit,                                                                     \
-                             (void *)(uart)};
-UART_WRITERS
-#endif
-#undef UART_WRITER
+#define SECTION
+
+static char dbg_o_data[500];
+generic_writer_t dbg_o = { { writer_putc, writer_puts },//ostream_t
+		0,//fifo_index_t
+		0,//lost_char_count
+		0, //total_char_count
+		0, //error_count
+		{ {	100, 0, 0, 0, 0 },	//fifo_index_info_t
+				dbg_o_data
+		}, //fifo_char_t
+		uart_writer_transmit,//f_transmit
+		(void*) (&huart1) //instance
+};
+
 
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
 #endif
 
 bool uarts_init_done = false;
-#define UART_READER(r, uart, str_size, queue_size, f_callback)                                                         \
-    NOINIT static char r##_data[(queue_size)] SECTION;                                                                 \
-    NOINIT static char r##_string[(str_size)] SECTION;                                                                 \
-    uart_string_reader_t (r) = {/*.huart = */ (uart),                                                                  \
-                                /*.string_size = */ (str_size),                                                        \
-                                /*.callback = */ (f_callback),                                                         \
-                                /*.string = */ r##_string,                                                             \
-                                /*.fifo = */ FIFO_CHAR_INIT (queue_size, r##_data),                                    \
-                                /*.string_len = */ 0,                                                                  \
-                                /*.error_count = */ 0,                                                                 \
-                                /*.lost_char_count = */ 0,                                                             \
-                                /*.total_char_count = */ 0,                                                            \
-                                /*.total_string_count = */ 0,                                                          \
-                                /*.echo = */ false};
-UART_READERS
-#undef UART_READER
 
-#define UART_READER(r, uart, string_len, queue_size, callback)                                                         \
-    if (uart == h) {                                                                                                   \
-        return &r;                                                                                                     \
+static char cmd_reader_data[100];
+static char cmd_reader_string[500];
+uart_string_reader_t cmd_reader = {
+		&huart1,//UartHandle_t
+		sizeof(cmd_reader_string),//string_size
+		(process_shell_cmd),
+		cmd_reader_string,
+		{ { (100), 0, 0, 0, 0 },  cmd_reader_data },//fifo
+        0, 0, 0, 0, 0, 0 };
+
+
+uart_string_reader_t *get_uart_reader (const UartHandle_t *UartHandle) {
+    if (&huart1 == UartHandle) {
+    	return &cmd_reader;
     };
-uart_string_reader_t *get_uart_reader (const UartHandle_t *h) {
-    UART_READERS
     return NULL;
 }
-#undef UART_READER
 
-#define UART_WRITER(os, uart, size)                                                                                    \
-    if (h == uart) {                                                                                                   \
-        return &os;                                                                                                    \
+
+generic_writer_t *get_uart_writer (const UartHandle_t *UartHandle) {
+    if (UartHandle == &huart1) {
+    	return &dbg_o;
     }
-generic_writer_t *get_uart_writer (const UartHandle_t *h) {
-    UART_WRITERS
     return NULL;
 }
-#undef UART_WRITER
 
-#if defined(CUBEMX)
-void RX_UART_Error_callback (UartHandle_t *UartHandle, rx_uart_error_t error) {
-    /* void HAL_UART_ErrorCallback(UART_HandleTypeDef *UartHandle) {
-         LOG_ERROR(UART, "%s: %s error", #r, uart_error2str(error)); */
 
-    (void)error; /* UNUSED */
 
-#define UART_READER(r, uart, string_len, queue_size, callback)                                                         \
-    if (UartHandle == r.huart) {                                                                                       \
-        uart_string_reader_error_callback (&r);                                                                        \
-    }
-    UART_READERS
-#undef UART_READER
-#define UART_WRITER(os, uart, size)                                                                                    \
-    if (UartHandle == uart) {                                                                                          \
-        writer_error_callback (&os);                                                                                   \
-    }
-    UART_WRITERS
-#undef UART_WRITER
-}
-#endif
-
-#if defined(CUBEMX)
-void HAL_UART_TxCpltCallback (UartHandle_t *UartHandle) {
-#define UART_WRITER(os, uart, size)                                                                                    \
-    if (UartHandle == uart) {                                                                                          \
-        os.f_transmit (&os);                                                                                           \
-    }
-    UART_WRITERS
-#undef UART_WRITER
+void RX_UART_Error_callback(UartHandle_t *UartHandle, rx_uart_error_t error) {
+	(void) error;
+	if (UartHandle == cmd_reader.huart) {
+		uart_string_reader_error_callback(&cmd_reader);
+	}
+	if (UartHandle == &huart1) {
+		writer_error_callback(&dbg_o);
+	}
 }
 
-void RX_UART_Recv_callback (UartHandle_t *_uart, char c) {
-#define UART_READER(r, uart, string_len, queue_size, callback)                                                         \
-    if (_uart == r.huart) {                                                                                            \
-        uart_string_reader_rx_callback (&r, c);                                                                        \
-    }
-    UART_READERS
-#undef UART_READER
+void HAL_UART_TxCpltCallback(UartHandle_t *UartHandle) {
+	if (UartHandle == &huart1) {
+		dbg_o.f_transmit(&dbg_o);
+	}
 }
 
-/*void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle) {
-#define UART_READER(r, uart, string_len, queue_size, callback) if (UartHandle == r.huart) {
-uart_string_reader_rx_callback(&r, r.char_to_get); } UART_READERS #undef  UART_READER
-}*/
+void RX_UART_Recv_callback (UartHandle_t *huart, char c) {
+    if (huart == cmd_reader.huart) {
+    	uart_string_reader_rx_callback (&cmd_reader, c);
+    }
+}
 
-#endif
 
-#define UART_READER(r, uart, string_len, queue_size, callback)                                                         \
-    oprintf (stream,                                                                                                   \
-             TABLE_LEFT "%15s " TABLE_SEPARATOR "%16" PRId64 " " TABLE_SEPARATOR "%12" PRId64 " " TABLE_SEPARATOR      \
-                        "%10" PRId64 " " TABLE_SEPARATOR "%10" PRId64 " " TABLE_RIGHT CRLF,                            \
-             #r, r.total_char_count, r.lost_char_count, r.total_string_count, r.error_count);
 
-#define GENERIC_WRITER(os)                                                                                             \
-    oprintf (stream,                                                                                                   \
-             TABLE_LEFT "%15s " TABLE_SEPARATOR "%16" PRId64 " " TABLE_SEPARATOR "%12" PRId64 " " TABLE_SEPARATOR      \
-                        "           " TABLE_SEPARATOR "%10" PRId64 " " TABLE_RIGHT CRLF,                               \
-             #os, os.total_char_count, os.lost_char_count, os.error_count);
 
-#define UART_WRITER(os, uart, size) GENERIC_WRITER (os)
 
 
 bool diag_page_uarts (ostream_t *stream) {
@@ -178,78 +114,68 @@ bool diag_page_uarts (ostream_t *stream) {
     };
 
     table_header (stream, cols, RX_ARRAY_SIZE (cols));
-    UART_READERS
-    UART_WRITERS
+    oprintf (stream,                                                                                                   \
+             TABLE_LEFT "%15s " TABLE_SEPARATOR "%16" PRId64 " " TABLE_SEPARATOR "%12" PRId64 " " TABLE_SEPARATOR      \
+                        "%10" PRId64 " " TABLE_SEPARATOR "%10" PRId64 " " TABLE_RIGHT CRLF,                            \
+						"cmd_reader", cmd_reader.total_char_count, cmd_reader.lost_char_count, cmd_reader.total_string_count, cmd_reader.error_count);
+
+    oprintf (stream,                                                                                                   \
+             TABLE_LEFT "%15s " TABLE_SEPARATOR "%16" PRId64 " " TABLE_SEPARATOR "%12" PRId64 " " TABLE_SEPARATOR      \
+                        "           " TABLE_SEPARATOR "%10" PRId64 " " TABLE_RIGHT CRLF,                               \
+						"dbg_o", dbg_o.total_char_count, dbg_o.lost_char_count, dbg_o.error_count);
+
     table_row_bottom (stream, cols, RX_ARRAY_SIZE (cols));
     return true;
 }
 
-
-#undef UART_READER
-#undef UART_WRITER
-
-#ifdef CUBEMX
-#define READER_PORT_INIT(uart)
-#endif
-
-
-#define UART_WRITER(os, uart, size)                                                                                    \
-    sciEnableNotification (uart, SCI_FE_INT | SCI_OE_INT | SCI_PE_INT | SCI_RX_INT | SCI_TX_INT | SCI_BREAK_INT);
-#define UART_READER(r, uart, string_len, queue_size, callback)                                                         \
-    READER_PORT_INIT (uart);                                                                                           \
-    if (!uart_string_reader_init (&r)) {                                                                               \
-        return false;                                                                                                  \
-    }
-
 bool uarts_init (void) {
-    UART_READERS
+	if (false==uart_string_reader_init (&cmd_reader)){
+		return false;
+	}
     set_echo (true);
     uarts_init_done = true;
     return true;
 }
-#undef UART_READER
-#undef UART_WRITER
 
-#define UART_READER(r, uart, string_len, queue_size, callback) uart_string_reader_proccess (&r);
+
+
 void process_uarts (void) {
     static bool entry = false; /* recursive protection from test which call common_loop during execution */
     if (!entry) {
         entry = true;
-        UART_READERS
+		uart_string_reader_proccess (&cmd_reader);
         entry = false;
     }
 }
 
-#undef UART_READER
+
 void rx_putstr (const char *str) {
     if (uarts_init_done) {
-        oputs (DBG, str);
+        oputs (&dbg_o.s, str);
     }
-#ifdef UNIT_TEST_STREAM
+
     if (print_buf_stream_en) {
-        oputs (UNIT_TEST_STREAM, str);
+        oputs (print_buf_ostream(), str);
     }
-#endif
+
 }
 
 void set_echo (bool echo_val) { cmd_reader.echo = echo_val; }
 
 void rx_putchar (char ch) {
     if (uarts_init_done) {
-        DBG->f_putch (DBG, ch);
+    	(&dbg_o.s)->f_putch (&dbg_o.s, ch);
     }
-#ifdef UNIT_TEST_STREAM
     if (print_buf_stream_en) {
-        UNIT_TEST_STREAM->f_putch (UNIT_TEST_STREAM, ch);
+    	print_buf_ostream()->f_putch (print_buf_ostream(), ch);
     }
-#endif
 }
 
 void rx_printf (const char *format, ...) {
     if (uarts_init_done) {
         va_list vlist;
         va_start (vlist, format);
-        ovprintf (DBG, format, vlist);
+        ovprintf (&dbg_o.s, format, vlist);
         va_end (vlist);
     }
 #ifdef UNIT_TEST_STREAM

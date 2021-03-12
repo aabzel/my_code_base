@@ -1,6 +1,4 @@
 #include "uart_driver_stm32.h"
-//#include "log.h"
-//#include "convert.h"
 
 void RX_UART_IRQHandler(UartHandle_t* uart);
 
