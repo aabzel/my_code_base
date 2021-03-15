@@ -94,8 +94,8 @@ bool u_tests (void);
         /*int val2 = val2; */                                                                                          \
         if (val1 != val2) {                                                                                            \
             printf ("\n%s():\n\rLine: %d "                                                                             \
-                    "\n\r exp  val: %u 0x%016llxx"                                                                     \
-                    "\n\r real val: %u 0x%016llxx ",                                                                   \
+                    "\n\r exp  val: %u 0x%x"                                                                     \
+                    "\n\r real val: %u 0x%x ",                                                                   \
                     __FUNCTION__, __LINE__, val1, val1, val2, val2);                                                   \
             /*printf ("   val1: 0x%x val2: 0x%x  ", (int)val1, (int)val2);*/                                           \
             return false;                                                                                              \

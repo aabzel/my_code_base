@@ -1,10 +1,9 @@
 #include "writer_generic.h"
+
+#include <string.h>
+
 #include "rx_utils.h"
 #include "uart_common.h"
-#include <string.h>
-#ifdef ENABLE_CORE0
-#include "multicore.h"
-#endif
 
 void writer_putc (void *_s, char ch) {
     generic_writer_t *s = (generic_writer_t *)_s;

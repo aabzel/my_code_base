@@ -1,20 +1,20 @@
 #include <inttypes.h>
 
+#include "common_stream.h"
 #include "convert.h"
 #include "device.h"
-#include "diag_report.h"
-#include "oprintf.h"
-#include "rx_io.h"
-#include "rx_uart.h"
-#include "uart_string_reader.h"
-#include "common_stream.h"
 #include "device_flash_info.h"
 #include "device_id.h"
 #include "diag_page_nums.h"
+#include "diag_report.h"
 #include "log.h"
+#include "oprintf.h"
+#include "rx_io.h"
+#include "rx_uart.h"
 #include "rx_uart_config.h"
 #include "rx_utils.h"
 #include "task_info.h"
+#include "uart_string_reader.h"
 
 #ifdef HAS_TSENS
 #include "tsens.h"
@@ -98,8 +98,6 @@ bool diag_page_base (uint8_t page, ostream_t *stream) {
     case DIAG_PAGE_UARTS:
         res = diag_page_uarts (stream);
         break;
-
-
 
 #ifdef TASKS
     case DIAG_PAGE_TASKS:

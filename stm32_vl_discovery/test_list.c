@@ -12,7 +12,7 @@ extern uint64_t mul64(uint32_t a, uint32_t b);
 unit_test_info_t test_list[UTEST_NUMBER] = {
 		{ "test_sd_card_driver", test_sd_card_driver },
 		{ "test_64bit_mult", test_64bit_mult },
-		{ "test_crc7", test_crc7 } ,
+		{ "test_crc", test_crc } ,
 		{ "test_utoa_bin8", test_utoa_bin8 }
 };
 

@@ -12,7 +12,7 @@ bool wait_in_loop_ms (uint64_t wait_pause_ms) {
     start_ms = get_time_ms64 ();
     bool loop = true;
     while (loop) {
-    	MAIN_LOOP_START;
+        MAIN_LOOP_START;
         common_loop (loop_start_time);
 
         curr_ms = get_time_ms64 ();
@@ -24,4 +24,3 @@ bool wait_in_loop_ms (uint64_t wait_pause_ms) {
     }
     return res;
 }
-

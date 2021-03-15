@@ -1,14 +1,14 @@
 #include "task_info.h"
+
+#include <inttypes.h>
+
 #include "device.h"
 #include "diag_report.h"
 #include "rx_io.h"
+#include "rx_uart.h"
 #include "shell.h"
 #include "table_utils.h"
-#include <inttypes.h>
 
-#ifdef CORE0_TASKS
-#include "multicore_diag_page.h"
-#endif /* CORE0_TASKS */
 
 static uint64_t total_time0;
 static uint64_t total_time_ms0;
@@ -21,15 +21,8 @@ task_data_t task_data[] = {
 };
 #endif /* TASKS */
 
-#ifdef CORE0_TASKS
-task_data_t task_core0_data[] CORE0_RAM_DATA = {
-#define TASK(task_name) {.name = #task_name},
-    CORE0_TASKS
-#undef TASK
-};
-#endif /* CORE0_TASKS */
-
 bool diag_page_tasks (ostream_t *stream) {
+	stream = &dbg_o.s;
     static const table_col_t cols[] = {
         {22, "Task name"}, {8, "Calls/s"}, {6, "CPU[%]"}, {12, "Rmax[us]"}, {12, "Tavg[us]"}, {12, "Tmax[us]"},
     };
@@ -46,17 +39,11 @@ bool diag_page_tasks (ostream_t *stream) {
 #ifdef TASKS
         task_data,
 #endif
-#ifdef CORE0_TASKS
-        task_core0_data,
-#endif
         NULL};
 
     const int32_t count[] = {
 #ifdef TASKS
         TASK_ID_COUNT,
-#endif
-#ifdef CORE0_TASKS
-        TASK_CORE0_ID_COUNT,
 #endif
         0};
 
@@ -104,15 +91,6 @@ bool cmd_task_clear (int32_t argc, char *argv[]) {
     }
 #endif
 
-#ifdef CORE0_TASKS
-    for (id = 0; id < TASK_CORE0_ID_COUNT; id++) {
-        task_core0_data[id].start_count = 0;
-        task_core0_data[id].run_time_total = 0;
-        task_core0_data[id].run_time_max = 0;
-        task_core0_data[id].start_period_max = 0;
-    }
-#endif
-
     total_time0 = getRunTimeCounterValue64 ();
     total_time_ms0 = get_time_ms64 ();
 
@@ -122,6 +100,5 @@ bool cmd_task_clear (int32_t argc, char *argv[]) {
 bool cmd_task_report (int32_t argc, char *argv[]) {
     (void)(argc);
     (void)(argv);
-
     return show_diag_report (DIAG_PAGE_TASKS);
 }

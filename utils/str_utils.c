@@ -1,12 +1,12 @@
 #include "str_utils.h"
 
-#include "rx_io.h"
-#include "rx_utils.h"
-
 #include <string.h>
 #include <stdint.h>
 #include <stdarg.h>
 #include <ctype.h>
+
+#include "rx_io.h"
+#include "rx_utils.h"
 
 static INLINE int is_trim_char (char c);
 

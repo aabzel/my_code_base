@@ -1,16 +1,12 @@
-#ifndef SRC_TASK_INFO_H_
-#define SRC_TASK_INFO_H_
+#ifndef SRC_TASK_INFO_H
+#define SRC_TASK_INFO_H
+
+#include <stdint.h>
 
 #include "task_config.h"
-
-#ifdef ENABLE_CORE0
-#include "core0_task_config.h"
-#endif
-
 #include "device.h"
 #include "oprintf.h"
 #include "sections.h"
-#include <stdint.h>
 
 typedef struct task_data_tag {
     bool init;
@@ -34,16 +30,6 @@ typedef enum {
 } task_id_t;
 #endif /* TASKS */
 
-#ifdef CORE0_TASKS
-extern task_data_t task_core0_data[];
-
-typedef enum {
-#define TASK(id) TASK_CORE0_ID_##id,
-    CORE0_TASKS
-#undef TASK
-        TASK_CORE0_ID_COUNT
-} task_core0_id_t;
-#endif /* CORE0_TASKS */
 
 #define TASK_CHECK_UNIQUE_ID(id)                                                                                       \
     typedef uint32_t TASK_CHECK_UNIQUE_ID_##id;                                                                        \
@@ -144,4 +130,4 @@ bool cmd_task_clear (int32_t argc, char *argv[]);
 
 #define CORE0_TASK_COMMANDS /* Has been removed */
 
-#endif /* SRC_TASK_INFO_H_ */
+#endif /* SRC_TASK_INFO_H */

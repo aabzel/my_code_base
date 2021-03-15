@@ -9,12 +9,10 @@
 #endif
 
 #include "board_config.h"
+#include "clocks.h"
 #include "convert.h"
 #include "device_flash_info.h"
 #include "device_id.h"
-#include "version.h"
-#include "clocks.h"
-#include "sys.h"
 #include "diag_report.h"
 #include "io_utils.h"
 #include "log_commands.h"
@@ -25,9 +23,10 @@
 #include "rx_uart_misra.h"
 #include "shell_commands.h"
 #include "str_utils.h"
+#include "sys.h"
 #include "terminal_codes.h"
+#include "version.h"
 #include "watchdog.h"
-
 
 #ifdef EMBEDDED_TEST
 #include "print_buffer.h"
@@ -98,7 +97,7 @@ static bool is_print_cmd (const shell_cmd_info_t *const cmd, const char *const s
 
 void help_dump_key (const char *subName1, const char *subName2) {
     const shell_cmd_info_t *cmd = shell_commands;
-    rx_printf ("Available commands: K1:%s K2:%s",subName1,subName2);
+    rx_printf ("Available commands: K1:%s K2:%s", subName1, subName2);
     rx_putstr (CRLF);
     rx_putstr ("|   short |          long command | Description" CRLF);
     rx_putstr ("|---------|-----------------------|-----" CRLF);
@@ -115,7 +114,7 @@ void help_dump_key (const char *subName1, const char *subName2) {
 
 bool cmd_help (int32_t argc, char *argv[]) {
     bool res = false;
-    rx_printf ("argc %u " CRLF,argc);
+    rx_printf ("argc %u " CRLF, argc);
     if (3 <= argc) {
         rx_printf ("Usage: help [subname1]  " CRLF);
         rx_printf ("       help [subname1]  [subname2]" CRLF);
@@ -187,63 +186,62 @@ bool cmd_read_memory (int32_t argc, char *argv[]) {
     return res;
 }
 
-static bool stack_dir(int32_t *main_local_addr) {
-	bool res = false;
-	int32_t fun_local;
-    if (((void*)main_local_addr) < ((void*) &fun_local)) {
-    	rx_printf("Stack grows from small addr to big addr -> \n"CRLF);
+static bool stack_dir (int32_t *main_local_addr) {
+    bool res = false;
+    int32_t fun_local;
+    if (((void *)main_local_addr) < ((void *)&fun_local)) {
+        rx_printf ("Stack grows from small addr to big addr -> \n" CRLF);
     } else {
-    	rx_printf("Stack grows from big addr to small addr <- \n"CRLF);
+        rx_printf ("Stack grows from big addr to small addr <- \n" CRLF);
     }
     return res;
 }
 
-bool explore_stack_dir(void) {
+bool explore_stack_dir (void) {
     // fun's local variable
-	bool res=false;
-	int32_t main_local;
-    res = stack_dir(&main_local);
+    bool res = false;
+    int32_t main_local;
+    res = stack_dir (&main_local);
     return res;
 }
 
 typedef union union_u32_u8x {
-	uint32_t i;
-	uint8_t c[4];
+    uint32_t i;
+    uint8_t c[4];
 } union_u32_u8x_t;
 
-bool is_big_endian(void) {
-	union_u32_u8x_t bint;
-	bint.i = 0x01020304;
-	return bint.c[0] == 1;
+bool is_big_endian (void) {
+    union_u32_u8x_t bint;
+    bint.i = 0x01020304;
+    return bint.c[0] == 1;
 }
 
-bool is_little_endian(void) {
-	union_u32_u8x_t bint;
-	bint.i = 0x01020304;
-	return bint.c[0] == 4;
+bool is_little_endian (void) {
+    union_u32_u8x_t bint;
+    bint.i = 0x01020304;
+    return bint.c[0] == 4;
 }
 
-bool cmd_sysinfo(int32_t argc, char *argv[]) {
-	(void) argv;
-	bool res = false;
-	if (argc != 0) {
-		LOG_ERROR(SYS, "Usage: sysinfo");
-		res = false;
-	} else {
-		rx_printf("up time: %u [ms] / %u [s]" CRLF, g_up_time_ms,
-				g_up_time_ms / 1000);
-		rx_printf("MCU = %s" CRLF, get_mcu_name());
-		explore_stack_dir();
-		print_sysinfo();
-		if(is_little_endian()){
-			rx_printf("Little endian" CRLF);
-		}else{
-			rx_printf("big endian" CRLF);
-		}
-		res = true;
-	}
+bool cmd_sysinfo (int32_t argc, char *argv[]) {
+    (void)argv;
+    bool res = false;
+    if (argc != 0) {
+        LOG_ERROR (SYS, "Usage: sysinfo");
+        res = false;
+    } else {
+        rx_printf ("up time: %u [ms] / %u [s]" CRLF, g_up_time_ms, g_up_time_ms / 1000);
+        rx_printf ("MCU = %s" CRLF, get_mcu_name ());
+        explore_stack_dir ();
+        print_sysinfo ();
+        if (is_little_endian ()) {
+            rx_printf ("Little endian" CRLF);
+        } else {
+            rx_printf ("big endian" CRLF);
+        }
+        res = true;
+    }
 
-	return true;
+    return true;
 }
 
 bool cmd_wd_test (int32_t argc, char *argv[]) {
@@ -298,9 +296,9 @@ void print_version_s (ostream_t *stream) {
     oprintf (stream, "%s ", HARDWARE_NAME);
     oprintf (stream, "%s ", __DATE__);
     oprintf (stream, "%s ", __TIME__);
-    oprintf (stream, "%s ", __TIMESTAMP__ );
-    oprintf (stream, "Cstd %u ", __STDC__ );
-    oprintf (stream, "%u ", __STDC_VERSION__ );
+    oprintf (stream, "%s ", __TIMESTAMP__);
+    oprintf (stream, "Cstd %u ", __STDC__);
+    oprintf (stream, "%u ", __STDC_VERSION__);
 
 #ifdef __GNUC__
     oputs (stream, " GCC");
@@ -310,11 +308,9 @@ void print_version_s (ostream_t *stream) {
     oputs (stream, " Release");
 #endif
 
-
 #ifdef __DEBUG
     oputs (stream, " Debug");
 #endif
-
 
     oprintf (stream, " Serial:%" PRIX64, get_device_serial ());
     mcu = get_mcu_name ();
@@ -549,5 +545,58 @@ bool cmd_launch_function (int32_t argc, char *argv[]) {
     } else {
         LOG_ERROR (SYS, "Usage: lfun func_address_hex");
     }
+    return res;
+}
+
+bool cmd_find_addr (int32_t argc, char *argv[]){
+    bool res = false;
+    if (3 == argc) {
+        res = true;
+        uint16_t byte_num = 0;
+        uint32_t val = 0;
+        uint8_t mem = 0;
+        if (true == res) {
+            res = try_str2uint16 (argv[0], &byte_num);
+            if (false == res) {
+                LOG_ERROR (SYS, "Unable to byte_num %s", argv[0]);
+            }
+        }
+
+        if (true == res) {
+            res = try_str2uint32 (argv[1], &val);
+            if (false == res) {
+                LOG_ERROR (SYS, "Unable to parse value %s", argv[1]);
+            }
+        }
+
+        if (true == res) {
+            res = try_str2uint8 (argv[2], &mem);
+            if (false == res) {
+                LOG_ERROR (SYS, "Unable to parse mem %s", argv[2]);
+            }
+        }
+
+		if (true == res) {
+			if (0 == mem) {
+				res = find_addr_by_val(byte_num, val, RAM_START, RAM_END);
+				if (false == res) {
+					LOG_ERROR(SYS, "Unable to find addr for value %u", byte_num,
+							val);
+				}
+			}
+			if (1 == mem) {
+				res = find_addr_by_val(byte_num, val, ROM_START, ROM_END);
+				if (false == res) {
+					LOG_ERROR(SYS, "Unable to find addr for value %u", byte_num,
+							val);
+				}
+			}
+		}
+	} else {
+		LOG_ERROR(SYS, "Usage: faddr val_len value mem");
+		LOG_INFO(SYS, "val_len [1 2 4]");
+		LOG_INFO(SYS, "byte_num 32bitval");
+		LOG_INFO(SYS, "mem [0-RAM, 1-Flash]");
+	}
     return res;
 }

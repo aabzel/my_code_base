@@ -14,7 +14,7 @@
 SPI_HandleTypeDef *hspi;
 #endif /*HAS_CHIP_UID*/
 
-#define ID_UNIQUE_ADDRESS 0x1FFFF7E8 //0x1FFF7A10
+#define ID_UNIQUE_ADDRESS 0x1FFFF7E8 // 0x1FFF7A10
 #define DEVICE_ID_SIZE 12
 #define TM_ID_GetUnique8(x) *(((const uint8_t *)ID_UNIQUE_ADDRESS) + x)
 #define TM_ID_GetUnique32(x) *(((const uint32_t *)ID_UNIQUE_ADDRESS) + x)
@@ -34,4 +34,3 @@ uint64_t get_device_serial (void) {
 #endif
 const char *get_mcu_name (void) { return TOSTRING (MCU_PARTNUMBER); }
 #endif
-

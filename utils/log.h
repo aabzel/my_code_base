@@ -25,48 +25,13 @@ typedef enum {
 typedef enum {
     UNKNOWN_FACILITY,
     SYS,
-#ifdef ENABLE_CORE0
-    SYS0,
-#endif
     USER1, /* USED in HVBMs, LVBMs, Pack Controller, Bender driver, UAVCAN, Cambridge */
     USER2,
     USER5, /* USED in HVBMs STGAP driver */
-#ifdef HAS_MODEL
-    MODEL,
-#endif
     UART,
-    CANH,
-    CAN,
+	GPIO_PWM,
     SPI,
-    J1939,
     DIAG,
-#ifdef HAS_BMS
-    BMS,
-#endif
-#ifdef HAS_LTC6811
-    LTC,
-#endif
-#ifdef HAS_UIO
-    UIO,
-#endif /*HAS_UIO*/
-#ifdef HAS_TIC12400
-    TIC,
-#endif
-#ifdef HAS_BRIDGE
-    BRIDGE,
-#endif
-#ifdef HAS_CAN_GATEWAY
-    GATEWAY,
-#endif
-#if defined(HAS_LIN) || defined(HAS_TJA1021)  || defined(HAS_LIN_LLD)
-    LIN,
-#endif
-#if defined (HAS_XCP_CLIENT) || defined (HAS_XCP_SERVER)
-    XCP,
-#endif
-#ifdef HAS_CSE
-    SEC, /* Security Engine */
-#endif
     ALL_FACILITY
 } log_facility_t;
 

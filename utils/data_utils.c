@@ -1,8 +1,8 @@
 #include "data_utils.h"
 
 #include <inttypes.h>
-#include <string.h>
 #include <math.h>
+#include <string.h>
 
 #include "bit_order.h"
 #include "convert.h"
@@ -169,13 +169,41 @@ void dump_crc_str (const char *cmd, const uint8_t *data, uint16_t data_size) {
     rx_putstr (CRLF);
 }
 
-bool init_array_123(uint8_t *const array, uint16_t len){
-	bool res = false;
-	if (NULL!=array) {
-		for (uint16_t i=0; i<len; i++){
-			array[i]=0x30+(i%10);
-		}
-		res = true;
-	}
-	return res;
+bool init_array_123 (uint8_t *const array, uint16_t len) {
+    bool res = false;
+    if (NULL != array) {
+        for (uint16_t i = 0; i < len; i++) {
+            array[i] = i ;
+        }
+        res = true;
+    }
+    return res;
 }
+
+bool fill_array_pat(uint8_t *array, int32_t len, uint8_t pattern){
+    bool res = false;
+    if (NULL != array) {
+        for (uint16_t i = 0; i < len; i++) {
+            array[i] = pattern ;
+        }
+        res = true;
+    }
+    return res;
+}
+
+bool uniq_array(uint8_t *addr, int32_t len) {
+    bool res = false;
+    uint16_t cnt=0;
+    if (addr) {
+        for (uint32_t pos = 0; pos < len; pos++) {
+            if (0 == addr[pos]) {
+                cnt++;
+            }
+        }
+        if(cnt<len){
+        	res = true;
+        }
+    }
+    return res;
+}
+

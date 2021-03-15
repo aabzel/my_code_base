@@ -42,6 +42,8 @@ void dump_data64 (const char* cmd, const uint8_t* data, uint16_t data_size);
 #endif
 bool decode_base64_arg (const char *arg_data, const char *arg_crc, uint32_t* data_size);
 void dump_crc_str(const char* cmd, const uint8_t* data, uint16_t data_size);
+bool uniq_array(uint8_t *addr, int32_t len);
+bool fill_array_pat(uint8_t *addr, int32_t len, uint8_t pattern);
 
 #ifdef  __cplusplus
 }

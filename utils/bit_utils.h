@@ -43,15 +43,15 @@ uint8_t swap_bits_odd_even (uint8_t val);
 uint8_t generate_8bit_left_mask (uint8_t bitlen);
 uint16_t generate_16bit_left_mask (uint8_t bitlen);
 uint32_t generate_32bit_left_mask (uint8_t bitlen);
-uint64_t generate_64bit_left_mask(uint8_t bitlen);
+uint64_t generate_64bit_left_mask (uint8_t bitlen);
 uint16_t calc_16_mask (uint8_t num_of_bit);
-uint32_t eject_value_from_array(uint8_t *reg_array_blob, uint16_t reg_blob_len, uint16_t maxBit, uint16_t minBit);
+uint32_t eject_value_from_array (uint8_t *reg_array_blob, uint16_t reg_blob_len, uint16_t maxBit, uint16_t minBit);
 bool is_power_of_two (uint32_t const val);
 bool is_parity_odd (uint32_t const inVal);
 uint8_t count_set_bits (uint32_t const inVal32bit);
 int missingNumber_sum (int *nums, int numsSize);
 
-uint8_t extract_subval_from_8bit (uint8_t inVal, uint8_t maxBit, uint8_t minBit) ;
+uint8_t extract_subval_from_8bit (uint8_t inVal, uint8_t maxBit, uint8_t minBit);
 uint16_t extract_subval_from_16bit (uint16_t inVal, uint8_t maxBit, uint8_t minBit);
 uint32_t extract_subval_from_32bit (uint32_t inVal, uint8_t maxBit, uint8_t minBit);
 

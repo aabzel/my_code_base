@@ -356,7 +356,7 @@ bool unit_test (void) {
 #endif
 
 #ifdef CD_CARD_CRC7
-    EXPECT_TRUE(test_crc7());
+    EXPECT_TRUE(test_crc());
 #endif
 
 #ifdef SORT_LIST

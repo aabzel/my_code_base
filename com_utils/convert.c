@@ -1544,7 +1544,6 @@ const char *utoa_bin8 (uint8_t u8_bin_data) {
     return outBitStr8;
 }
 
-
 const char *utoa_bin16 (uint16_t u16_bin_data) {
     uint8_t cell16 = 0u;
     uint16_t mask16 = 0x8000U;
