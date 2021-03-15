@@ -89,28 +89,26 @@ int main(void) {
 	//some variables for FatFs
 	FATFS FatFs; 	//Fatfs handle
 	FIL fil; 		//File handle
-	FRESULT fres; //Result after operations
+	FRESULT ret; //Result after operations
 	wait_in_loop_ms(100);
 	res = true;
 	//Open the file system
 #ifdef FAT_FS
-	fres = f_mount(&FatFs, "", 1); //1=mount now
-	if (fres != FR_OK) {
-		rx_printf("%s() %u" CRLF, __FUNCTION__, __LINE__);
-		LOG_ERROR(SYS, "f_mount error: %u", fres);
+	ret = f_mount(&FatFs, "", 1); //1=mount now
+	if (ret != FR_OK) {
+		LOG_ERROR(SYS, "f_mount error: %u", ret);//13
 		res = false;
 	}else{
-		rx_printf("%s() %u" CRLF, __FUNCTION__, __LINE__);
 		LOG_NOTICE(SYS, " mount OK");
 	}
-	rx_printf("%s() %u" CRLF, __FUNCTION__, __LINE__);
 	DWORD free_clusters, free_sectors, total_sectors;
 	FATFS *getFreeFs;
 	if (true == res) {
+    	rx_printf("%s() %u" CRLF, __FUNCTION__, __LINE__);
 		//Let's get some statistics from the SD card
-		fres = f_getfree("", &free_clusters, &getFreeFs);
-		if (fres != FR_OK) {
-			LOG_ERROR(SYS, "f_getfree error (%i)\r\n", fres);
+		ret = f_getfree("", &free_clusters, &getFreeFs);
+		if (ret != FR_OK) {
+			LOG_ERROR(SYS, "f_getfree error %u\r\n", ret);
 			res = false;
 		}
 	}
@@ -125,13 +123,13 @@ int main(void) {
 				total_sectors / 2, free_sectors / 2);
 
 		//Now let's try to open file "test.txt"
-		fres = f_open(&fil, "test.txt", FA_READ);
-		if (fres != FR_OK) {
+		ret = f_open(&fil, "test.txt", FA_READ);
+		if (ret != FR_OK) {
 			rx_printf("%s() %u" CRLF, __FUNCTION__, __LINE__);
 			LOG_ERROR(SYS, "f_open error (%i)\r\n");
 			res = false;
 		}else{
-			rx_printf("%s() %u" CRLF, __FUNCTION__, __LINE__);
+			rx_printf("f_open ok" CRLF);
 		}
 
 		f_close(&fil);
