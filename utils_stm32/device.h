@@ -1,11 +1,10 @@
-#ifndef EXTERNAL_UTILS_STM32_DEVICE_STM32_H_
-#define EXTERNAL_UTILS_STM32_DEVICE_STM32_H_
+#ifndef EXTERNAL_UTILS_DEVICE_STM32_H
+#define EXTERNAL_UTILS_DEVICE_STM32_H
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "rx_utils.h"
 
-//#include "cubemx.h"
+#include "rx_utils.h"
 #include "uarts.h"
 #include "watchdog.h"
 
@@ -16,9 +15,6 @@
 
 #define isFromInterrupt() ((SCB->ICSR & SCB_ICSR_VECTACTIVE_Msk) != 0)
 
-/*
- * From device.h
- */
 #define US_TO_COUNTER(us) (uint64_t)((uint64_t)(us) * (COUNTER_FREQ))
 #define MS_TO_COUNTER(ms) (uint64_t)(((ms) * 1000UL) * (COUNTER_FREQ))
 #define COUNTER_TO_US(counter) ((counter) / (COUNTER_FREQ))
@@ -31,9 +27,7 @@ extern "C" {
 extern uint32_t critical_nesting_level;
 #define CRITICAL_LEVEL    critical_nesting_level
 
-/*
- *
- */
+
 static INLINE void enter_critical(void) {
     if (!isFromInterrupt ()) {
 		if (CRITICAL_LEVEL == 0) {
@@ -43,9 +37,7 @@ static INLINE void enter_critical(void) {
 	}
 }
 
-/*
- *
- */
+
 static INLINE void exit_critical(void) {
     if (!isFromInterrupt ()) {
         if (CRITICAL_LEVEL) {
@@ -72,4 +64,4 @@ uint64_t get_time_us (void);
 }
 #endif
 
-#endif /* EXTERNAL_UTILS_STM32_DEVICE_STM32_H_ */
+#endif /* EXTERNAL_UTILS_DEVICE_STM32_H */

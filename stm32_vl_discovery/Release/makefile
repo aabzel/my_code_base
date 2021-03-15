@@ -16,6 +16,9 @@ RM := rm -rf
 -include components/lib/stm32_spi/src/subdir.mk
 -include components/lib/stm32_gpio/src/subdir.mk
 -include components/lib/sd_card/subdir.mk
+-include components/lib/fat_fs/src/option/subdir.mk
+-include components/lib/fat_fs/src/subdir.mk
+-include components/lib/fat_fs/Target/subdir.mk
 -include components/lib/diag_page/subdir.mk
 -include com_utils/subdir.mk
 -include bsp/subdir.mk

@@ -13,7 +13,7 @@ extern uint32_t g_uart_rx_cnt;
 
 extern UART_HandleTypeDef huart1;
 
-bool mx_usart1_uart_init (void);
+bool usart1_uart_init (void);
 
 #ifdef __cplusplus
 }

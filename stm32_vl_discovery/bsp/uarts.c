@@ -10,7 +10,7 @@ uint32_t g_uart_rx_cnt = 0;
 UART_HandleTypeDef huart1;
 uint8_t uart1RxBuffer[UART1_RX_BUFF_SIZE + 5];
 
-bool mx_usart1_uart_init (void) {
+bool usart1_uart_init (void) {
     bool res = false;
     g_uart_tx_cnt = 0;
     g_uart_rx_cnt = 0;

@@ -227,9 +227,6 @@ void log_write_end (void) {
         flush_printf ();
     }
 #endif
-#ifdef ENABLE_MULTICORE
-    ic_mutex_unlock (IC_MUTEX_LOG);
-#endif
 }
 
 void log_write_ (log_level_t level, log_facility_t facility, const char *format, ...) {

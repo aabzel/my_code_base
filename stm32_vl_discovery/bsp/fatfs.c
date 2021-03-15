@@ -9,7 +9,6 @@ char USERPath[4]; /* USER logical drive path */
 
 bool fat_fs_init(void) {
 	bool res = false;
-	/*## FatFS: Link the USER driver ###########################*/
 	retUSER = FATFS_LinkDriver(&USER_Driver, USERPath);
 	if (0 == retUSER) {
 		res = true;

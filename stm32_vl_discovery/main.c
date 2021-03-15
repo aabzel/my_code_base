@@ -53,26 +53,18 @@ int main(void) {
 	set_log_level(SYS, LOG_LEVEL_DEBUG);
 
 	res = SystemClock_Config();
-	LOG_NOTICE(SYS, "[d] Clock init %s", (true == res) ? "OK" : "Err");
-
-	wait_in_loop_ms(3);
 
 	res = gpio_init();
-	LOG_NOTICE(SYS, "GPIO init %s", (true == res) ? "OK" : "Err");
 
 	res = spi1_init();
-	LOG_NOTICE(SYS, "SPI init %s", (true == res) ? "OK" : "Err");
 
 	res = init_gpio_pwm();
-	LOG_NOTICE(SYS, " GPIO pwm init %s", (true == res) ? "OK" : "Err");
 
 	res = gpio_diag_page_init();
 
-
-	res = mx_usart1_uart_init();
+	res = usart1_uart_init();
 	uarts_init();
 	LOG_NOTICE(SYS, "UART init %s", (true == res) ? "OK" : "Err");
-	uarts_init ();
 
 	res = timers_init();
 	LOG_NOTICE(SYS, " TIM init %s", (true == res) ? "OK" : "Err");
@@ -93,22 +85,25 @@ int main(void) {
 
 	LOG_NOTICE(SYS, "FW started");
 	LOG_NOTICE(SYS, "main %p", main);
+	wait_in_loop_ms (10);
 	//some variables for FatFs
 	FATFS FatFs; 	//Fatfs handle
 	FIL fil; 		//File handle
 	FRESULT fres; //Result after operations
-	wait_in_loop_ms(1000);
+	wait_in_loop_ms(100);
 	res = true;
 	//Open the file system
 #ifdef FAT_FS
 	fres = f_mount(&FatFs, "", 1); //1=mount now
 	if (fres != FR_OK) {
-		LOG_ERROR(SYS, "f_mount error (%i)\r\n", fres);
+		rx_printf("%s() %u" CRLF, __FUNCTION__, __LINE__);
+		LOG_ERROR(SYS, "f_mount error: %u", fres);
 		res = false;
 	}else{
+		rx_printf("%s() %u" CRLF, __FUNCTION__, __LINE__);
 		LOG_NOTICE(SYS, " mount OK");
 	}
-
+	rx_printf("%s() %u" CRLF, __FUNCTION__, __LINE__);
 	DWORD free_clusters, free_sectors, total_sectors;
 	FATFS *getFreeFs;
 	if (true == res) {
@@ -119,8 +114,8 @@ int main(void) {
 			res = false;
 		}
 	}
-
 	if (true == res) {
+		rx_printf("%s() %u" CRLF, __FUNCTION__, __LINE__);
 		//Formula comes from ChaN's documentation
 		total_sectors = (getFreeFs->n_fatent - 2) * getFreeFs->csize;
 		free_sectors = free_clusters * getFreeFs->csize;
@@ -132,11 +127,16 @@ int main(void) {
 		//Now let's try to open file "test.txt"
 		fres = f_open(&fil, "test.txt", FA_READ);
 		if (fres != FR_OK) {
+			rx_printf("%s() %u" CRLF, __FUNCTION__, __LINE__);
 			LOG_ERROR(SYS, "f_open error (%i)\r\n");
 			res = false;
+		}else{
+			rx_printf("%s() %u" CRLF, __FUNCTION__, __LINE__);
 		}
 
 		f_close(&fil);
+	}else{
+    	rx_printf("%s() %u" CRLF, __FUNCTION__, __LINE__);
 	}
 #endif
 	common_main_loop();
