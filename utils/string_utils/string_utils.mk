@@ -1,0 +1,9 @@
+STRING_UTILS_DIR = $(PROJECT_ROOT)utils/string_utils
+#@echo $(error STRING_UTILS_DIR=$(STRING_UTILS_DIR))
+#@echo $(error CFLAGS= $(CFLAGS))
+CFLAGS			+= -I$(STRING_UTILS_DIR)
+OPT += -DHAS_STR_UTILS
+
+SOURCES += $(STRING_UTILS_DIR)/convert.c
+SOURCES += $(STRING_UTILS_DIR)/str_ops.c
+SOURCES += $(STRING_UTILS_DIR)/str_utils.c

@@ -3,6 +3,6 @@
 
 #include <stdbool.h>
 
-bool test_encode_string (void);
+bool test_encode_string(void);
 
 #endif /*TEST_ENCODE_STRING_H*/
